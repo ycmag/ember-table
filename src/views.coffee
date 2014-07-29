@@ -203,11 +203,11 @@ Ember.View.extend Ember.AddeparMixins.StyleBindingsMixin,
   scrollLeft:     Ember.computed.alias 'controller._tableScrollLeft'
 
   ###*
-  * Options for jQuery UI sortable
+  * Options for jQuery UI sortable, which is used to reorder columns
   * @memberof Ember.Table.HeaderRow
   * @instance
   ###
-  sortableOption: Ember.computed ->
+  reorderableOption: Ember.computed ->
     axis: 'x'
     containment: 'parent'
     cursor: 'move'
@@ -228,27 +228,27 @@ Ember.View.extend Ember.AddeparMixins.StyleBindingsMixin,
   didInsertElement: ->
     @_super()
     if @get('controller.enableColumnReorder')
-      @$('> div').sortable(@get('sortableOption'))
+      @$('> div').sortable(@get('reorderableOption'))
 
   onScroll: (event) ->
     @set 'scrollLeft', event.target.scrollLeft
     event.preventDefault()
 
   onColumnSortStop: (event, ui) ->
-    @set 'controller._isShowingSortableIndicator', no
+    @set 'controller._isShowingReorderableIndicator', no
 
   onColumnSortChange: (event, ui) ->
     left = @$('.ui-state-highlight').offset().left -
            @$().closest('.ember-table-tables-container').offset().left
-    @set 'controller._isShowingSortableIndicator', yes
-    @set 'controller._sortableIndicatorLeft', left
+    @set 'controller._isShowingReorderableIndicator', yes
+    @set 'controller._reorderableIndicatorLeft', left
 
   onColumnSortDone: (event, ui) ->
     newIndex = ui.item.index()
     view     = Ember.View.views[ui.item.attr('id')]
     column   = view.get 'column'
     @get('controller').onColumnSort column, newIndex
-    @set 'controller._isShowingSortableIndicator', no
+    @set 'controller._isShowingReorderableIndicator', no
 
 ###*
 * Header Cell
@@ -260,7 +260,7 @@ Ember.Table.HeaderCell =
 Ember.View.extend Ember.AddeparMixins.StyleBindingsMixin,
   templateName:       'header-cell'
   classNames:         ['ember-table-cell', 'ember-table-header-cell']
-  classNameBindings:  ['column.isSortable:sortable', 'column.textAlign']
+  classNameBindings:  ['column.isReorderable:sortable', 'column.textAlign']
   styleBindings:      ['width', 'height']
   column:         Ember.computed.alias 'content'
   width:          Ember.computed.alias 'column.columnWidth'
@@ -321,12 +321,12 @@ Ember.View.extend Ember.AddeparMixins.StyleBindingsMixin,
 
 ################################################################################
 
-Ember.Table.ColumnSortableIndicator =
+Ember.Table.ColumnReorderableIndicator =
 Ember.View.extend Ember.AddeparMixins.StyleBindingsMixin,
-  classNames: 'ember-table-column-sortable-indicator'
-  classNameBindings: 'controller._isShowingSortableIndicator:active'
+  classNames: 'ember-table-column-reorderable-indicator'
+  classNameBindings: 'controller._isShowingReorderableIndicator:active'
   styleBindings: ['left', 'height']
-  left:   Ember.computed.alias 'controller._sortableIndicatorLeft'
+  left:   Ember.computed.alias 'controller._reorderableIndicatorLeft'
   height: Ember.computed.alias 'controller._height'
 
 ###*

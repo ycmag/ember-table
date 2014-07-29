@@ -170,15 +170,22 @@ App.MyTableView = EmberTable.TableContainerView.extend (...)</pre>
         <tr>
           <td>isResizable</td>
           <td>yes</td>
-          <td><p>If yes then the column can be resized, otherwise it
-            cannot.</p></td>
+          <td><p>If yes, then the column can be manually resized by dragging on
+            its boundary.</p></td>
         </tr>
         <tr>
           <td>isSortable</td>
-          <td>yes</td>
-          <td><p>If yes then the column can be sorted.</p></td>
+          <td>no</td>
+          <td><p>If yes, then the column's content can be sorted by clicking its
+            header cell.</p></td>
         </tr>
         <tr>
+        <tr>
+          <td>isReorderable</td>
+          <td>yes</td>
+          <td><p>If yes, then the column can be dragged to reorder it and other
+            columns.</p></td>
+        </tr>
           <td>textAlign</td>
           <td>'text-align-right'</td>
           <td><p>Aligns text left/center/right in the column.</p></td>

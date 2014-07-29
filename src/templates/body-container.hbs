@@ -3,7 +3,7 @@
     <div class="ember-table-table-scrollable-wrapper">
       {{#if controller.numFixedColumns}}
         {{view Ember.Table.LazyTableBlock classNames="ember-table-left-table-block"
-          contentBinding="controller.bodyContent"
+          contentBinding="controller.bodyContent.arrangedContent"
           columnsBinding="controller.fixedColumns"
           widthBinding="controller._fixedBlockWidth"
           numItemsShowingBinding="controller._numItemsShowing"
@@ -12,7 +12,7 @@
         }}
       {{/if}}
       {{view Ember.Table.LazyTableBlock classNames="ember-table-right-table-block"
-        contentBinding="controller.bodyContent"
+        contentBinding="controller.bodyContent.arrangedContent"
         columnsBinding="controller.tableColumns"
         scrollLeftBinding="controller._tableScrollLeft"
         widthBinding="controller._tableBlockWidth"

@@ -6,7 +6,6 @@
 Ember.Table.EmberTableComponent =
 Ember.Component.extend Ember.AddeparMixins.StyleBindingsMixin,
 Ember.AddeparMixins.ResizeHandlerMixin,
-Ember.Table.SimpleSortMixin,
   layoutName:   'components/ember-table'
   classNames:     ['ember-table-tables-container']
   classNameBindings: ['enableContentSelection:ember-table-content-selectable']
@@ -42,6 +41,9 @@ Ember.Table.SimpleSortMixin,
 
   selection: null
 
+  sortColumn: Ember.computed.alias 'bodyContent.sortColumn'
+  sortAscending: Ember.computed.alias 'bodyContent.sortAscending'
+
   # specify the view class to use for rendering the table rows
   tableRowViewClass: 'Ember.Table.TableRow'
 
@@ -53,6 +55,23 @@ Ember.Table.SimpleSortMixin,
 
   actions:
     addColumn: Ember.K
+
+    sortByColumn : (column) ->
+      @get('sortColumn')?.set 'isSortColumn', no
+
+      if column is @get 'bodyContent.sortColumn'
+        @toggleProperty 'bodyContent.sortAscending'
+        # Force the table to update by making it look like the arranged
+        # content changed, even though it didn't recompute (there's an observer
+        # on sortAscending which reverses arrangedContent).
+        @get('bodyContent.arrangedContent').arrayContentDidChange(0, 0, 1)
+      else if column.get 'isSortable'
+        @set 'bodyContent.sortAscending', yes
+        @set 'bodyContent.sortColumn', column
+
+      @set 'sortColumn.isSortColumn', yes
+      @set 'sortColumn.isSortedAscending', @get('bodyContent.sortAscending')
+      return
 
   onColumnSort: (column, newIndex) ->
     columns  = @get 'tableColumns'

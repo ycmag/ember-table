@@ -131,7 +131,7 @@ App.FinancialTableComponent = Ember.Table.EmberTableComponent.extend
       headerCellName: name
       columnWidth: 400
       isTreeColumn: yes
-      isSortable: no
+      isReorderable: no
       textAlign: 'text-align-left'
       headerCellViewClass:  'App.FinancialTableHeaderTreeCell'
       tableCellViewClass:   'App.FinancialTableTreeCell'

@@ -21,7 +21,7 @@ Ember.MouseWheelHandlerMixin = Ember.Mixin.create
     @$().bind 'mousewheel', (event, delta, deltaX, deltaY) =>
       Ember.run this, @onMouseWheel, event, delta, deltaX, deltaY
   willDestroyElement: ->
-    @$()?.unbind 'mousewheel'
+    @$()?.unbind 'MouseWheelHandlerMixin'
     @_super()
 
 Ember.ScrollHandlerMixin = Ember.Mixin.create
@@ -83,6 +83,37 @@ Ember.Table.RowArrayController = Ember.ArrayController.extend
     subControllers[idx] = subController;
     return subController;
 
+  sortColumn: null
+
+  # Overriding orderBy lets us compare based on sortColumn's custom sorting
+  # function rather than sortProperties, which makes the table more flexible.
+  orderBy: (a, b) ->
+    return 0 unless @get('sortColumn')
+
+    # TODO(azirbel): Ugly hack. Since compareCellValues expects to get
+    # Ember.Table.Row objects, we creat them. This works but should not be
+    # merged into master.
+    rowA = Ember.Table.Row.create
+      content: a
+      parentController: @get('parentController') or this
+    rowB = Ember.Table.Row.create
+      content: b
+      parentController: @get('parentController') or this
+    @get('sortColumn').compareCellValues rowA, rowB
+
+  # Overriding this lets us specify when it should be updated. By default, this
+  # is whenever sortProperties changes; we want it to be when sortColumn changes
+  arrangedContent: Ember.computed ->
+    if @get('content')
+      content = @get('content').slice();
+      content.sort (item1, item2) =>
+        @orderBy(item1, item2)
+      content.map (row) =>
+        Ember.Table.Row.create
+          content: row
+          parentController: @get('parentController') or this
+  .property 'content', 'sortColumn'
+
 # HACK: We want the horizontal scroll to show on mouse enter and leave.
 Ember.Table.ShowHorizontalScrollMixin = Ember.Mixin.create
   mouseEnter: (event) ->
@@ -94,33 +125,3 @@ Ember.Table.ShowHorizontalScrollMixin = Ember.Mixin.create
     $tablesContainer = $(event.target).parents('.ember-table-tables-container')
     $horizontalScroll = $tablesContainer.find('.antiscroll-scrollbar-horizontal')
     $horizontalScroll.removeClass('antiscroll-scrollbar-shown')
-
-# A mixin to enable soring in ember tables by clicking on the header of columns
-# The user can define a compare values method for each column to determine how the values are sorted
-Ember.Table.SimpleSortMixin = Ember.Mixin.create
-  sortColumn: null
-  descending: false
-
-  performSort: (->
-    sortColumn = @get('sortColumn')
-    return unless sortColumn?
-    content = @get('content')
-    descending = @get('descending')
-    newContent = content.sort (a,b) ->
-        if descending
-            sortColumn.compareCellValues b, a
-        else
-            sortColumn.compareCellValues a, b
-    newContent = newContent.slice 0
-    @set('content', newContent)
-    return
-  ).observes('sortColumn', 'descending')
-
-  actions:
-    sortByColumn : (column) ->
-        if column is @get('sortColumn')
-            @toggleProperty('descending')
-        else if column.get 'isSortable'
-            @setProperties({'sortColumn': column, 'descending' : false})
-        return
-

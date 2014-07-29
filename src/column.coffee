@@ -18,10 +18,12 @@ Ember.Table.ColumnDefinition = Ember.Object.extend
   defaultColumnWidth: 150
   # TODO(Peter): Rename it to width
   columnWidth:  Ember.computed.oneWay 'defaultColumnWidth'
-  # wether the colum is resizable
+  # whether the column can be manually resized by dragging on its boundary
   isResizable:  yes
-  # wether the column is sortable
+  # whether the column's content can be sorted by clicking its header cell
   isSortable:  no
+  # whether the column can be dragged to reorder it and other columns
+  isReorderable: yes
   # text align left | center | right
   textAlign: 'text-align-right'
   canAutoResize: yes
@@ -30,6 +32,9 @@ Ember.Table.ColumnDefinition = Ember.Object.extend
   headerCellViewClass:  'Ember.Table.HeaderCell'
   # The view class we want to use for the table cells
   tableCellViewClass:   'Ember.Table.TableCell'
+
+  isSortColumn: no
+  isSortedAscending: no
 
   resize: (width) -> @set 'columnWidth', width
 
@@ -54,13 +59,7 @@ Ember.Table.ColumnDefinition = Ember.Object.extend
   * @argument secondRow {Ember.Table.Row}
   ###
   compareCellValues: (firstRow, secondRow) ->
-    path = @get 'contentPath'
-    Ember.assert "You must either provide a contentPath or override " +
-      "compareCellValues in your column definition", path?
-    if firstRow.get?  #Assuming both rows are either ember objects or both are not
-        return firstRow.get path - secondRow.get path
-    else
-        return firstRow[path] - secondRow[path]
+    return @getCellContent(firstRow) - @getCellContent(secondRow)
 
   ###*
   * Set Cell Content
