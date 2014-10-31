@@ -2840,7 +2840,7 @@ helpers = this.merge(helpers, Ember.Handlebars.helpers); data = data || {};
 
 Ember.Table = Ember.Namespace.create();
 
-Ember.Table.VERSION = '0.2.2';
+Ember.Table.VERSION = '0.2.3';
 
 if ((_ref = Ember.libraries) != null) {
   _ref.register('Ember Table', Ember.Table.VERSION);
@@ -3254,11 +3254,6 @@ Ember.Table.ShowHorizontalScrollMixin = Ember.Mixin.create({
 })();
 (function() {
 
-/**
- * Column Definition
- * @class
- * @alias Ember.Table.ColumnDefinition
-*/
 
 Ember.Table.ColumnDefinition = Ember.Object.extend({
   headerCellName: void 0,
@@ -3266,7 +3261,6 @@ Ember.Table.ColumnDefinition = Ember.Object.extend({
   minWidth: void 0,
   maxWidth: void 0,
   defaultColumnWidth: 150,
-  columnWidth: Ember.computed.oneWay('defaultColumnWidth'),
   isResizable: true,
   isSortable: true,
   textAlign: 'text-align-right',
@@ -3275,76 +3269,33 @@ Ember.Table.ColumnDefinition = Ember.Object.extend({
   headerCellViewClass: Ember.computed.alias('headerCellView'),
   tableCellView: 'Ember.Table.TableCell',
   tableCellViewClass: Ember.computed.alias('tableCellView'),
-  resize: function(width) {
-    return this.set('columnWidth', width);
-  },
-  /**
-  * Get Cell Content - This gives a formatted value e.g. $20,000,000
-  * @memberof Ember.Table.ColumnDefinition
-  * @instance
-  * @argument row {Ember.Table.Row}
-  * @todo More detailed doc needed!
-  */
-
   getCellContent: function(row) {
     var path;
     path = this.get('contentPath');
     Ember.assert("You must either provide a contentPath or override " + "getCellContent in your column definition", path != null);
     return Ember.get(row, path);
   },
-  /**
-  * Set Cell Content
-  * @memberof Ember.Table.ColumnDefinition
-  * @instance
-  */
-
-  setCellContent: Ember.K
+  setCellContent: Ember.K,
+  columnWidth: Ember.computed.oneWay('defaultColumnWidth'),
+  resize: function(width) {
+    return this.set('columnWidth', width);
+  }
 });
 
-/**
- * Table Row
- * @class
- * @alias Ember.Table.Row
-*/
+
+})();
+(function() {
 
 
 Ember.Table.Row = Ember.ObjectProxy.extend({
-  /**
-  * Content of the row
-  * @memberof Ember.Table.Row
-  * @member content
-  * @instance
-  */
-
   content: null,
-  /**
-  * Is Selected?
-  * @memberof Ember.Table.Row
-  * @member {Boolean} isSelected
-  * @instance
-  */
-
   isSelected: Ember.computed(function(key, val) {
     if (arguments.length > 1) {
       this.get('parentController').setSelected(this, val);
     }
     return this.get('parentController').isSelected(this);
   }).property('parentController._selection.[]'),
-  /**
-  * Is Showing?
-  * @memberof Ember.Table.Row
-  * @member {Boolean} isShowing
-  * @instance
-  */
-
   isShowing: true,
-  /**
-  * Is Active?
-  * @memberof Ember.Table.Row
-  * @member {Boolean} isHovered
-  * @instance
-  */
-
   isHovered: false
 });
 
@@ -3352,26 +3303,11 @@ Ember.Table.Row = Ember.ObjectProxy.extend({
 })();
 (function() {
 
-/**
-* Table Container
-* @class
-* @alias Ember.Table.TableContainer
-* @mixes Ember.AddeparMixins.StyleBindingsMixin
-*/
 
 Ember.Table.TableContainer = Ember.View.extend(Ember.AddeparMixins.StyleBindingsMixin, {
   classNames: ['ember-table-table-container'],
   styleBindings: ['height', 'width']
 });
-
-/**
-* Table Block
-* @class
-* @alias Ember.Table.TableBlock
-* @mixes Ember.AddeparMixins.StyleBindingsMixin
-* @todo This should be a mixin
-*/
-
 
 Ember.Table.TableBlock = Ember.CollectionView.extend(Ember.AddeparMixins.StyleBindingsMixin, {
   classNames: ['ember-table-table-block'],
@@ -3380,12 +3316,6 @@ Ember.Table.TableBlock = Ember.CollectionView.extend(Ember.AddeparMixins.StyleBi
   columns: null,
   content: null,
   scrollLeft: null,
-  /**
-  * On scroll left did change callback
-  * @memberof Ember.Table.TableBlock
-  * @instance
-  */
-
   onScrollLeftDidChange: Ember.observer(function() {
     return this.$().scrollLeft(this.get('scrollLeft'));
   }, 'scrollLeft'),
@@ -3393,13 +3323,6 @@ Ember.Table.TableBlock = Ember.CollectionView.extend(Ember.AddeparMixins.StyleBi
     return this.get('controller._headerHeight');
   }).property('controller._headerHeight')
 });
-
-/**
-* Lazy Table Block
-* @class
-* @alias Ember.Table.LazyTableBlock
-*/
-
 
 Ember.Table.LazyTableBlock = Ember.LazyContainerView.extend({
   classNames: ['ember-table-table-block'],
@@ -3410,23 +3333,10 @@ Ember.Table.LazyTableBlock = Ember.LazyContainerView.extend({
   content: null,
   scrollLeft: null,
   scrollTop: null,
-  /**
-  * On scroll left did change callback
-  * @memberof Ember.Table.LazyTableBlock
-  * @instance
-  */
-
   onScrollLeftDidChange: Ember.observer(function() {
     return this.$().scrollLeft(this.get('scrollLeft'));
   }, 'scrollLeft')
 });
-
-/**
-* Table Row
-* @class
-* @alias Ember.Table.TableRow
-*/
-
 
 Ember.Table.TableRow = Ember.LazyItemView.extend({
   templateName: 'table-row',
@@ -3440,13 +3350,6 @@ Ember.Table.TableRow = Ember.LazyItemView.extend({
   isLastRow: Ember.computed(function() {
     return this.get('row') === this.get('controller.bodyContent.lastObject');
   }).property('controller.bodyContent.lastObject', 'row'),
-  /**
-  * Mouse enter callback
-  * @memberof Ember.Table.TableRow
-  * @instance
-  * @param event jQuery event
-  */
-
   mouseEnter: function(event) {
     var row;
     row = this.get('row');
@@ -3454,13 +3357,6 @@ Ember.Table.TableRow = Ember.LazyItemView.extend({
       return row.set('isHovered', true);
     }
   },
-  /**
-  * Mouse leave callback
-  * @memberof Ember.Table.TableRow
-  * @instance
-  * @param event jQuery event
-  */
-
   mouseLeave: function(event) {
     var row;
     row = this.get('row');
@@ -3468,12 +3364,6 @@ Ember.Table.TableRow = Ember.LazyItemView.extend({
       return row.set('isHovered', false);
     }
   },
-  /**
-  * Teardown content
-  * @memberof Ember.Table.TableRow
-  * @instance
-  */
-
   teardownContent: function() {
     var row;
     row = this.get('row');
@@ -3483,27 +3373,19 @@ Ember.Table.TableRow = Ember.LazyItemView.extend({
   }
 });
 
-/**
-* Table Cell
-* @class
-* @alias Ember.Table.TableCell
-* @mixes Ember.AddeparMixins.StyleBindingsMixin
-*/
-
-
 Ember.Table.TableCell = Ember.View.extend(Ember.AddeparMixins.StyleBindingsMixin, {
   templateName: 'table-cell',
   classNames: ['ember-table-cell'],
   classNameBindings: 'column.textAlign',
   styleBindings: 'width',
-  row: Ember.computed.alias('parentView.row'),
-  column: Ember.computed.alias('content'),
-  width: Ember.computed.alias('column.columnWidth'),
   init: function() {
     this._super();
     this.contentPathDidChange();
     return this.contentDidChange();
   },
+  row: Ember.computed.alias('parentView.row'),
+  column: Ember.computed.alias('content'),
+  width: Ember.computed.alias('column.columnWidth'),
   contentDidChange: function() {
     return this.notifyPropertyChange('cellContent');
   },
@@ -3521,12 +3403,6 @@ Ember.Table.TableCell = Ember.View.extend(Ember.AddeparMixins.StyleBindingsMixin
       return this.addObserver("row." + contentPath, this, this.contentDidChange);
     }
   }).observesBefore('column.contentPath'),
-  /**
-  * Computed Cell Content
-  * @memberof Ember.Table.TableCell
-  * @instance
-  */
-
   cellContent: Ember.computed(function(key, value) {
     var column, row;
     row = this.get('row');
@@ -3543,35 +3419,13 @@ Ember.Table.TableCell = Ember.View.extend(Ember.AddeparMixins.StyleBindingsMixin
   }).property('row.isLoaded', 'column')
 });
 
-/**
-* HeaderBlock
-* @class
-* @alias Ember.Table.HeaderBlock
-* @augments Ember.Table.TableBlock
-*/
-
-
 Ember.Table.HeaderBlock = Ember.Table.TableBlock.extend({
   classNames: ['ember-table-header-block'],
   itemViewClass: 'Ember.Table.HeaderRow',
-  /**
-  * Computed Content
-  * @memberof Ember.Table.HeaderBlock
-  * @instance
-  */
-
   content: Ember.computed(function() {
     return [this.get('columns')];
   }).property('columns')
 });
-
-/**
-* Header Row
-* @class
-* @alias Ember.Table.HeaderRow
-* @mixes Ember.AddeparMixins.StyleBindingsMixin
-*/
-
 
 Ember.Table.HeaderRow = Ember.View.extend(Ember.AddeparMixins.StyleBindingsMixin, {
   templateName: 'header-row',
@@ -3580,12 +3434,6 @@ Ember.Table.HeaderRow = Ember.View.extend(Ember.AddeparMixins.StyleBindingsMixin
   columns: Ember.computed.alias('content'),
   width: Ember.computed.alias('controller._rowWidth'),
   scrollLeft: Ember.computed.alias('controller._tableScrollLeft'),
-  /**
-  * Options for jQuery UI sortable
-  * @memberof Ember.Table.HeaderRow
-  * @instance
-  */
-
   sortableOption: Ember.computed(function() {
     return {
       axis: 'x',
@@ -3634,14 +3482,6 @@ Ember.Table.HeaderRow = Ember.View.extend(Ember.AddeparMixins.StyleBindingsMixin
   }
 });
 
-/**
-* Header Cell
-* @class
-* @alias Ember.Table.HeaderCell
-* @mixes Ember.AddeparMixins.StyleBindingsMixin
-*/
-
-
 Ember.Table.HeaderCell = Ember.View.extend(Ember.AddeparMixins.StyleBindingsMixin, {
   templateName: 'header-cell',
   classNames: ['ember-table-cell', 'ember-table-header-cell'],
@@ -3652,12 +3492,6 @@ Ember.Table.HeaderCell = Ember.View.extend(Ember.AddeparMixins.StyleBindingsMixi
   height: Ember.computed(function() {
     return this.get('controller._headerHeight');
   }).property('controller._headerHeight'),
-  /**
-  * jQuery UI resizable option
-  * @memberof Ember.Table.HeaderCell
-  * @instance
-  */
-
   resizableOption: Ember.computed(function() {
     return {
       handles: 'e',
@@ -3669,12 +3503,6 @@ Ember.Table.HeaderCell = Ember.View.extend(Ember.AddeparMixins.StyleBindingsMixi
       stop: jQuery.proxy(this.onColumnResize, this)
     };
   }),
-  /**
-  * Did insert element callback
-  * @memberof Ember.Table.HeaderCell
-  * @instance
-  */
-
   didInsertElement: function() {
     this.elementSizeDidChange();
     if (this.get('column.isResizable')) {
@@ -3682,13 +3510,6 @@ Ember.Table.HeaderCell = Ember.View.extend(Ember.AddeparMixins.StyleBindingsMixi
       this._resizableWidget = this.$().resizable('widget');
     }
   },
-  /**
-  * On column resize callback
-  * @memberof Ember.Table.HeaderCell
-  * @instance
-  * @argument event jQuery event
-  */
-
   onColumnResize: function(event, ui) {
     this.elementSizeDidChange();
     if (this.get('controller.forceFillColumns') && this.get('controller.columns').filterProperty('canAutoResize').length > 1) {
@@ -3718,32 +3539,12 @@ Ember.Table.ColumnSortableIndicator = Ember.View.extend(Ember.AddeparMixins.Styl
   height: Ember.computed.alias('controller._height')
 });
 
-/**
-* Header Table Container
-* @class
-* @alias Ember.Table.HeaderTableContainer
-* @augments Ember.Table.TableContainer
-* @mixes Ember.MouseWheelHandlerMixin
-* @mixes Ember.TouchMoveHandlerMixin
-*/
-
-
 Ember.Table.HeaderTableContainer = Ember.Table.TableContainer.extend(Ember.Table.ShowHorizontalScrollMixin, {
   templateName: 'header-container',
   classNames: ['ember-table-table-container', 'ember-table-fixed-table-container', 'ember-table-header-container'],
   height: Ember.computed.alias('controller._headerHeight'),
   width: Ember.computed.alias('controller._tableContainerWidth')
 });
-
-/**
-* Body Table Container
-* @class
-* @alias Ember.Table.BodyTableContainer
-* @mixes Ember.MouseWheelHandlerMixin
-* @mixes Ember.TouchMoveHandlerMixin
-* @mixes Ember.ScrollHandlerMixin
-*/
-
 
 Ember.Table.BodyTableContainer = Ember.Table.TableContainer.extend(Ember.MouseWheelHandlerMixin, Ember.TouchMoveHandlerMixin, Ember.ScrollHandlerMixin, Ember.Table.ShowHorizontalScrollMixin, {
   templateName: 'body-container',
@@ -3753,27 +3554,10 @@ Ember.Table.BodyTableContainer = Ember.Table.TableContainer.extend(Ember.MouseWh
   scrollTop: Ember.computed.alias('controller._tableScrollTop'),
   scrollLeft: Ember.computed.alias('controller._tableScrollLeft'),
   scrollElementSelector: '.antiscroll-inner',
-  /**
-  * On scroll callback
-  * @memberof Ember.Table.BodyTableContainer
-  * @instance
-  * @argument event jQuery event
-  */
-
   onScroll: function(event) {
     this.set('scrollTop', event.target.scrollTop);
     return event.preventDefault();
   },
-  /**
-  * On mouse wheel callback callback
-  * @memberof Ember.Table.BodyTableContainer
-  * @instance
-  * @argument event jQuery event
-  * @argument delta
-  * @argument deltaX {Integer}
-  * @argument deltaY {Integer}
-  */
-
   onMouseWheel: function(event, delta, deltaX, deltaY) {
     var scrollLeft;
     if (!(Math.abs(deltaX) > Math.abs(deltaY))) {
@@ -3783,15 +3567,6 @@ Ember.Table.BodyTableContainer = Ember.Table.TableContainer.extend(Ember.MouseWh
     this.set('scrollLeft', scrollLeft);
     return event.preventDefault();
   },
-  /**
-  * On touch move callback
-  * @memberof Ember.Table.BodyTableContainer
-  * @instance
-  * @argument event jQuery event
-  * @argument deltaX {Integer}
-  * @argument deltaY {Integer}
-  */
-
   onTouchMove: function(event, deltaX, deltaY) {
     var scrollLeft;
     if (!(Math.abs(deltaX) > Math.abs(deltaY))) {
@@ -3802,15 +3577,6 @@ Ember.Table.BodyTableContainer = Ember.Table.TableContainer.extend(Ember.MouseWh
     return event.preventDefault();
   }
 });
-
-/**
-* Footer Table Container
-* @class
-* @alias Ember.Table.FooterTableContainer
-* @mixes Ember.MouseWheelHandlerMixin
-* @mixes Ember.TouchMoveHandlerMixin
-*/
-
 
 Ember.Table.FooterTableContainer = Ember.Table.TableContainer.extend(Ember.MouseWheelHandlerMixin, Ember.TouchMoveHandlerMixin, Ember.Table.ShowHorizontalScrollMixin, {
   templateName: 'footer-container',
@@ -3844,15 +3610,6 @@ Ember.Table.FooterTableContainer = Ember.Table.TableContainer.extend(Ember.Mouse
   }
 });
 
-/**
-* Scroll Container
-* @class
-* @alias Ember.Table.ScrollContainer
-* @mixes Ember.AddeparMixins.StyleBindingsMixin
-* @mixes Ember.ScrollHandlerMixin
-*/
-
-
 Ember.Table.ScrollContainer = Ember.View.extend(Ember.AddeparMixins.StyleBindingsMixin, Ember.ScrollHandlerMixin, {
   templateName: 'scroll-container',
   classNames: ['ember-table-scroll-container'],
@@ -3867,37 +3624,16 @@ Ember.Table.ScrollContainer = Ember.View.extend(Ember.AddeparMixins.StyleBinding
     this._super();
     return this.onScrollLeftDidChange();
   },
-  /**
-  * On scroll callback
-  * @memberof Ember.Table.ScrollContainer
-  * @instance
-  * @argument event jQuery event
-  */
-
   onScroll: function(event) {
     this.set('scrollLeft', event.target.scrollLeft);
     return event.preventDefault();
   },
-  /**
-  * On scroll left did change observer
-  * @memberof Ember.Table.ScrollContainer
-  * @instance
-  */
-
   onScrollLeftDidChange: Ember.observer(function() {
     var selector;
     selector = this.get('scrollElementSelector');
     return this.$(selector).scrollLeft(this.get('scrollLeft'));
   }, 'scrollLeft', 'scrollElementSelector')
 });
-
-/**
-* ScrollPanel
-* @class
-* @alias Ember.Table.ScrollPanel
-* @mixes Ember.AddeparMixins.StyleBindingsMixin
-*/
-
 
 Ember.Table.ScrollPanel = Ember.View.extend(Ember.AddeparMixins.StyleBindingsMixin, {
   classNames: ['ember-table-scroll-panel'],
@@ -3910,18 +3646,13 @@ Ember.Table.ScrollPanel = Ember.View.extend(Ember.AddeparMixins.StyleBindingsMix
 })();
 (function() {
 
-/**
-* Table Component
-* @class
-* @alias Ember.Table.EmberTableComponent
-*/
 
 Ember.Table.EmberTableComponent = Ember.Component.extend(Ember.AddeparMixins.StyleBindingsMixin, Ember.AddeparMixins.ResizeHandlerMixin, {
   layoutName: 'components/ember-table',
   classNames: ['ember-table-tables-container'],
   classNameBindings: ['enableContentSelection:ember-table-content-selectable'],
   styleBindings: ['height'],
-  height: Ember.computed.alias('_tablesContainerHeight'),
+  content: null,
   columns: null,
   numFixedColumns: 0,
   numFooterRow: 0,
@@ -3933,16 +3664,7 @@ Ember.Table.EmberTableComponent = Ember.Component.extend(Ember.AddeparMixins.Sty
   forceFillColumns: false,
   enableColumnReorder: true,
   enableContentSelection: false,
-  persistedSelection: Ember.computed(function() {
-    return new Ember.Set();
-  }),
-  rangeSelection: Ember.computed(function() {
-    return new Ember.Set();
-  }),
   selectionMode: 'single',
-  _selection: Ember.computed(function() {
-    return this.get('persistedSelection').copy().addEach(this.get('rangeSelection'));
-  }).property('persistedSelection.[]', 'rangeSelection.[]'),
   selection: Ember.computed(function(key, val) {
     var content, _i, _len, _ref, _ref1;
     if (arguments.length > 1 && val) {
@@ -3966,8 +3688,6 @@ Ember.Table.EmberTableComponent = Ember.Component.extend(Ember.AddeparMixins.Sty
       });
     }
   }).property('_selection.[]', 'selectionMode'),
-  tableRowView: 'Ember.Table.TableRow',
-  tableRowViewClass: Ember.computed.alias('tableRowView'),
   init: function() {
     this._super();
     if (!$.ui) {
@@ -3984,18 +3704,15 @@ Ember.Table.EmberTableComponent = Ember.Component.extend(Ember.AddeparMixins.Sty
     addColumn: Ember.K,
     sortByColumn: Ember.K
   },
+  height: Ember.computed.alias('_tablesContainerHeight'),
+  tableRowView: 'Ember.Table.TableRow',
+  tableRowViewClass: Ember.computed.alias('tableRowView'),
   onColumnSort: function(column, newIndex) {
     var columns;
     columns = this.get('tableColumns');
     columns.removeObject(column);
     return columns.insertAt(newIndex, column);
   },
-  /**
-  * Table Body Content - Array of Ember.Table.Row
-  * @memberof Ember.Table.EmberTableComponent
-  * @instance
-  */
-
   bodyContent: Ember.computed(function() {
     return Ember.Table.RowArrayController.create({
       target: this,
@@ -4005,12 +3722,6 @@ Ember.Table.EmberTableComponent = Ember.Component.extend(Ember.AddeparMixins.Sty
       content: this.get('content')
     });
   }).property('content'),
-  /**
-  * Table Footer Content - Array of Ember.Table.Row
-  * @memberof Ember.Table.EmberTableComponent
-  * @instance
-  */
-
   footerContent: Ember.computed(function(key, value) {
     if (value) {
       return value;
@@ -4018,13 +3729,6 @@ Ember.Table.EmberTableComponent = Ember.Component.extend(Ember.AddeparMixins.Sty
       return Ember.A();
     }
   }).property(),
-  /**
-  * Table Fixed Columns
-  * @memberof Ember.Table.EmberTableComponent
-  * @instance
-  * @todo Much more doc needed
-  */
-
   fixedColumns: Ember.computed(function() {
     var columns, numFixedColumns;
     columns = this.get('columns');
@@ -4036,13 +3740,6 @@ Ember.Table.EmberTableComponent = Ember.Component.extend(Ember.AddeparMixins.Sty
     this.prepareTableColumns(columns);
     return columns;
   }).property('columns.@each', 'numFixedColumns'),
-  /**
-  * Table Columns
-  * @memberof Ember.Table.EmberTableComponent
-  * @instance
-  * @todo Much more doc needed
-  */
-
   tableColumns: Ember.computed(function() {
     var columns, numFixedColumns;
     columns = this.get('columns');
@@ -4062,21 +3759,9 @@ Ember.Table.EmberTableComponent = Ember.Component.extend(Ember.AddeparMixins.Sty
     this.set('_tableScrollTop', 0);
     return this.elementSizeDidChange();
   },
-  /**
-  * On resize end callback
-  * @memberof Ember.Table.EmberTableComponent
-  * @instance
-  */
-
   onResizeEnd: function() {
     return Ember.run(this, this.elementSizeDidChange);
   },
-  /**
-  * Element size did change callback
-  * @memberof Ember.Table.EmberTableComponent
-  * @instance
-  */
-
   elementSizeDidChange: function() {
     if ((this.get('_state') || this.get('state')) !== 'inDOM') {
       return;
@@ -4150,23 +3835,9 @@ Ember.Table.EmberTableComponent = Ember.Component.extend(Ember.AddeparMixins.Sty
       return height;
     }
   }).property('_height', '_tableContentHeight', '_headerHeight', '_footerHeight'),
-  /**
-  * Actual width of the fixed columns (frozen columns)
-  * @memberof Ember.Table.EmberTableComponent
-  * @instance
-  * @private
-  */
-
   _fixedColumnsWidth: Ember.computed(function() {
     return this._getTotalWidth(this.get('fixedColumns'));
   }).property('fixedColumns.@each.columnWidth'),
-  /**
-  * Actual width of the table columns (non-frozen columns)
-  * @memberof Ember.Table.EmberTableComponent
-  * @instance
-  * @private
-  */
-
   _tableColumnsWidth: Ember.computed(function() {
     var availableWidth, contentWidth;
     contentWidth = (this._getTotalWidth(this.get('tableColumns'))) + 3;
@@ -4177,13 +3848,6 @@ Ember.Table.EmberTableComponent = Ember.Component.extend(Ember.AddeparMixins.Sty
       return availableWidth;
     }
   }).property('tableColumns.@each.columnWidth', '_width', '_fixedColumnsWidth'),
-  /**
-  * Computed Row Width
-  * @memberof Ember.Table.EmberTableComponent
-  * @instance
-  * @private
-  */
-
   _rowWidth: Ember.computed(function() {
     var columnsWidth, nonFixedTableWidth;
     columnsWidth = this.get('_tableColumnsWidth');
@@ -4210,13 +3874,6 @@ Ember.Table.EmberTableComponent = Ember.Component.extend(Ember.AddeparMixins.Sty
       return 0;
     }
   }).property('footerHeight', 'hasFooter'),
-  /**
-  * Computed Body Height
-  * @memberof Ember.Table.EmberTableComponent
-  * @instance
-  * @private
-  */
-
   _bodyHeight: Ember.computed(function() {
     var bodyHeight;
     bodyHeight = this.get('_tablesContainerHeight');
@@ -4228,64 +3885,22 @@ Ember.Table.EmberTableComponent = Ember.Component.extend(Ember.AddeparMixins.Sty
     }
     return bodyHeight;
   }).property('_tablesContainerHeight', '_hasHorizontalScrollbar', '_headerHeight', 'footerHeight', 'hasHeader', 'hasFooter'),
-  /**
-  * Computed Table Block Width
-  * @memberof Ember.Table.EmberTableComponent
-  * @instance
-  * @private
-  */
-
   _tableBlockWidth: Ember.computed(function() {
     return this.get('_width') - this.get('_fixedColumnsWidth');
   }).property('_width', '_fixedColumnsWidth'),
   _fixedBlockWidthBinding: '_fixedColumnsWidth',
-  /**
-  * Computed Table Content Height
-  * @memberof Ember.Table.EmberTableComponent
-  * @instance
-  * @private
-  */
-
   _tableContentHeight: Ember.computed(function() {
     return this.get('rowHeight') * this.get('bodyContent.length');
   }).property('rowHeight', 'bodyContent.length'),
-  /**
-  * Table Container Width
-  * @memberof Ember.Table.EmberTableComponent
-  * @instance
-  * @private
-  */
-
   _tableContainerWidth: Ember.computed(function() {
     return this.get('_width');
   }).property('_width'),
-  /**
-  * Computed Scroll Container Width
-  * @memberof Ember.Table.EmberTableComponent
-  * @instance
-  * @private
-  */
-
   _scrollContainerWidth: Ember.computed(function() {
     return this.get('_width') - this.get('_fixedColumnsWidth');
   }).property('_width', '_fixedColumnsWidth'),
-  /**
-  * Computed number of items showing
-  * @memberof Ember.Table.EmberTableComponent
-  * @instance
-  * @private
-  */
-
   _numItemsShowing: Ember.computed(function() {
     return Math.floor(this.get('_bodyHeight') / this.get('rowHeight'));
   }).property('_bodyHeight', 'rowHeight'),
-  /**
-  * Computed Start Index
-  * @memberof Ember.Table.EmberTableComponent
-  * @instance
-  * @raw
-  */
-
   _startIndex: Ember.computed(function() {
     var index, numContent, numViews, rowHeight, scrollTop;
     numContent = this.get('bodyContent.length');
@@ -4302,14 +3917,6 @@ Ember.Table.EmberTableComponent = Ember.Component.extend(Ember.AddeparMixins.Sty
       return index;
     }
   }).property('bodyContent.length', '_numItemsShowing', 'rowHeight', '_tableScrollTop'),
-  /**
-  * Get Total Width
-  * @memberof Ember.Table.EmberTableComponent
-  * @instance
-  * @private
-  * @argument columns Columns to calculate width for
-  */
-
   _getTotalWidth: function(columns, columnWidthPath) {
     var widths;
     if (columnWidthPath == null) {
@@ -4334,6 +3941,15 @@ Ember.Table.EmberTableComponent = Ember.Component.extend(Ember.AddeparMixins.Sty
       return this.get('persistedSelection').remove(row);
     }
   },
+  persistedSelection: Ember.computed(function() {
+    return new Ember.Set();
+  }),
+  rangeSelection: Ember.computed(function() {
+    return new Ember.Set();
+  }),
+  _selection: Ember.computed(function() {
+    return this.get('persistedSelection').copy().addEach(this.get('rangeSelection'));
+  }).property('persistedSelection.[]', 'rangeSelection.[]'),
   click: function(event) {
     var curIndex, lastIndex, maxIndex, minIndex, row;
     row = this.getRowForEvent(event);
@@ -18033,7 +17649,7 @@ helpers = this.merge(helpers, Ember.Handlebars.helpers); data = data || {};
   var buffer = '';
 
 
-  data.buffer.push("\n<nav class=\"navbar navbar-transparent addepar-navbar\" role=\"navigation\">\n  <div class=\"navbar-header\">\n    <button type=\"button\" class=\"navbar-toggle\" data-toggle=\"collapse\" data-target=\".navbar-ex1-collapse\">\n      <span class=\"sr-only\">Toggle navigation</span>\n      <span class=\"icon-bar\"></span>\n      <span class=\"icon-bar\"></span>\n      <span class=\"icon-bar\"></span>\n    </button>\n    <a class=\"navbar-brand\" href=\"http://addepar.github.io/\">\n      <img id=\"logo_dark\" class=\"logo\" src=\"img/addepar_logo_light.png\" /><span class=\"navbar-title\">Open Source</span>\n    </a>\n  </div>\n\n  <div class=\"collapse navbar-collapse navbar-ex1-collapse\">\n    <ul class=\"nav navbar-nav navbar-right\">\n      <li><a href=\"#\">Ember Table</a></li>\n      <li><a href=\"http://addepar.github.io/#/ember-widgets\">Ember Widgets</a></li>\n      <li><a href=\"http://addepar.github.io/#/ember-charts\">Ember Charts</a></li>\n    </ul>\n  </div><!-- /.navbar-collapse -->\n</nav>\n");
+  data.buffer.push("\n<nav class=\"navbar navbar-transparent addepar-navbar\" role=\"navigation\">\n  <div class=\"navbar-header\">\n    <button type=\"button\" class=\"navbar-toggle\" data-toggle=\"collapse\" data-target=\".navbar-ex1-collapse\">\n      <span class=\"sr-only\">Toggle navigation</span>\n      <span class=\"icon-bar\"></span>\n      <span class=\"icon-bar\"></span>\n      <span class=\"icon-bar\"></span>\n    </button>\n    <a class=\"navbar-brand\" href=\"http://addepar.github.io/\">\n      <img id=\"logo_dark\" class=\"logo\" src=\"img/addepar_logo_light.png\" /><span class=\"navbar-title\">Open Source</span>\n    </a>\n  </div>\n\n  <div class=\"collapse navbar-collapse navbar-ex1-collapse\">\n    <ul class=\"nav navbar-nav navbar-right\">\n      <li><a href=\"#\">Ember Table</a></li>\n      <li><a href=\"http://addepar.github.io/ember-charts\">Ember Charts</a></li>\n      <li><a href=\"http://addepar.github.io/ember-widgets\">Ember Widgets</a></li>\n    </ul>\n  </div><!-- /.navbar-collapse -->\n</nav>\n");
   return buffer;
   
 });
@@ -18314,7 +17930,7 @@ helpers = this.merge(helpers, Ember.Handlebars.helpers); data = data || {};
   var buffer = '';
 
 
-  data.buffer.push("    \n    <div class=\"col-md-10 col-md-offset-2 left-border main-content-container\">\n      <h1>API &amp; Documentation</h1>\n      <h2>Ember.Table.TableComponent Options</h2>\n\n      <table class=\"table ember-table-options\">\n        <tr>\n          <th style=\"width: 200px;\">Option</th>\n          <th style=\"width: 150px;\">Default</th>\n          <th>Description</th>\n        </tr>\n        <tr>\n          <td>content <b>(required)</b></td>\n          <td>null</td>\n          <td>\n            <p>\n              An array which returns row objects. Each column definition\n              must define a function which takes a row object and\n              returns the value for that cell. E.g. the row object might\n              be a hash, in which case the column definition's function\n              might simply get the value corresponding to its key. The\n              row object might be a function, in which case the column\n              definition's function might evaluate the function at a\n              given value. Etc.\n            </p>\n          </td>\n        <tr>\n          <td>columns <b>(required)</b></td>\n          <td>null</td>\n          <td>\n            <p>\n              An array of column definitions. Allows you to specify\n              column configuration - e.g. whether the column is resizable,\n              its css class, etc. (see column definition API for more\n              details)\n            </p>\n          </td>\n        </tr>\n        <tr>\n          <td>numFixedColumns</td>\n          <td>0</td>\n          <td><p>The number of frozen column on the left table.</p></td>\n        </tr>\n        <tr>\n          <td>numFooterRow</td>\n          <td>0</td>\n          <td><p>The number of footer rows in the table.</p></td>\n        </tr>\n        <tr>\n          <td>rowHeight</td>\n          <td>30</td>\n          <td><p>The row height, which is necessary to calculate the height for the lazy rendering.</p></td>\n        </tr>\n        <tr>\n          <td>minHeaderHeight</td>\n          <td>30</td>\n          <td><p>The minimum header height in pixels.</p></td>\n        </tr>\n        <tr>\n          <td>footerHeight</td>\n          <td>30</td>\n          <td><p>The minimum footer height in pixels.</p></td>\n        </tr>\n        <tr>\n          <td>hasHeader</td>\n          <td>true</td>\n          <td><p>Shows the header block.</p></td>\n        </tr>\n        <tr>\n          <td>hasFooter</td>\n          <td>true</td>\n          <td><p>Shows a the footer block.</p></td>\n        </tr>\n        <tr>\n          <td>forceFillColumns</td>\n          <td>false</td>\n          <td><p>Expands the columns to fill the given width.</p></td>\n        </tr>\n        <tr>\n          <td>enableColumnReorder</td>\n          <td>true</td>\n          <td><p>Allows the user the reorder the columns to their liking.</p></td>\n        </tr>\n        <tr>\n          <td>enableContentSelection</td>\n          <td>false</td>\n          <td><p>Allows the user to select a table cell text content.</p></td>\n        </tr>\n        <tr>\n          <td>selectionMode</td>\n          <td>\"single\"</td>\n          <td><p>Sets which row selection behavior to follow. Possible values are \"none\" (clicking on a row does nothing), \"single\" (clicking on a row selects it and deselects other rows), and \"multiple\" (multiple rows can be selected through ctrl/cmd-click or shift-click).</p></td>\n        </tr>\n      </table>\n\n      <h2>Ember.Table.ColumnDefinition Options</h2>\n      <table class=\"table ember-table-options\">\n        <tr>\n          <th style=\"width: 200px;\">Option</th>\n          <th style=\"width: 150px;\">Default</th>\n          <th>Description</th>\n        </tr>\n        <tr>\n          <td>headerCellName</td>\n          <td>undefined</td>\n          <td><p>Text that appears in the column header.</p></td>\n        </tr>\n        <tr>\n          <td>contentPath</td>\n          <td>undefined</td>\n          <td><p>Path of the content for a cell. Given a row, this is the\n            path of the value that is extracted from that row.</p></td>\n        </tr>\n        <tr>\n          <td>minWidth</td>\n          <td>undefined</td>\n          <td><p>Minimum width of the column.</p></td>\n        </tr>\n        <tr>\n          <td>maxWidth</td>\n          <td>undefined</td>\n          <td><p>Maximum width of the column.</p></td>\n        </tr>\n        <tr>\n          <td>defaultColumnWidth</td>\n          <td>150</td>\n          <td><p>The width of the column, by default (in pixels).</p></td>\n        </tr>\n        <tr>\n          <td>isResizable</td>\n          <td>yes</td>\n          <td><p>If yes then the column can be resized, otherwise it\n            cannot.</p></td>\n        </tr>\n        <tr>\n          <td>isSortable</td>\n          <td>yes</td>\n          <td><p>If yes then the column can be sorted.</p></td>\n        </tr>\n        <tr>\n          <td>textAlign</td>\n          <td>'text-align-right'</td>\n          <td><p>Aligns text left/center/right in the column.</p></td>\n        </tr>\n        <tr>\n          <td>canAutoResize</td>\n          <td>yes</td>\n          <td><p>If yes then column will automatically resized to be\n            larger when there is additional space for the table.</p></td>\n        </tr>\n      </table>\n\n      <h2>Ember.Table.TableCell Options</h2>\n      <table class=\"table ember-table-options\">\n        <tr>\n          <th style=\"width: 200px;\">Option</th>\n          <th style=\"width: 150px;\">Default</th>\n          <th>Description</th>\n        </tr>\n        <tr>\n          <td>templateName</td>\n          <td>'table-cell'</td>\n          <td><p>The name of the template to be rendered into the cell.\n            Used for rendering custom templates<p></td>\n        </tr>\n        <tr>\n          <td>classNames</td>\n          <td>['ember-table-cell']</td>\n          <td><p>The class names applied to the cell. Override to give\n            the cell custom styling (border, background color, etc.)<p></td>\n        </tr>\n        <tr>\n          <td>classNameBindings</td>\n          <td>'column.textAlign'</td>\n          <td><p>A binding used to dynamically associate class names\n            with this table cell. E.g. you can bind to a column property\n            to have cell colors or styles vary across columns.<p></td>\n        </tr>\n        <tr>\n          <td>styleBindings</td>\n          <td>'width'</td>\n          <td><p>Values which are bound to the cell's style attr. See\n            Ember.STyleBindingsMixin documentation for more details.<p></td>\n        </tr>\n      </table>\n\n      <h2>Ember.Table.HeaderCell Options</h2>\n      <table class=\"table ember-table-options\">\n        <tr>\n          <th style=\"width: 200px;\">Option</th>\n          <th style=\"width: 150px;\">Default</th>\n          <th>Description</th>\n        </tr>\n        <tr>\n          <td>templateName</td>\n          <td>'table-cell'</td>\n          <td><p>The name of the template to be rendered into the cell.\n            Used for rendering custom templates<p></td>\n        </tr>\n        <tr>\n          <td>classNames</td>\n          <td>['ember-table-cell']</td>\n          <td><p>The class names applied to the cell. Override to give\n            the cell custom styling (border, background color, etc.)<p></td>\n        </tr>\n        <tr>\n          <td>classNameBindings</td>\n          <td>'column.textAlign'</td>\n          <td><p>A binding used to dynamically associate class names\n            with this table cell. E.g. you can bind to a column property\n            to have cell colors or styles vary across columns.<p></td>\n        </tr>\n        <tr>\n          <td>styleBindings</td>\n          <td>'width'</td>\n          <td><p>Values which are bound to the cell's style attr. See\n            Ember.STyleBindingsMixin documentation for more details.<p></td>\n      </table>\n    </div>\n  </div>\n</div>\n");
+  data.buffer.push("\n<div class=\"col-md-10 col-md-offset-2 left-border main-content-container\">\n  <h1>API &amp; Documentation</h1>\n  <h2>Ember.Table.TableComponent Options</h2>\n\n  <table class=\"table ember-table-options\">\n    <tr>\n      <th style=\"min-width: 200px;\">Option</th>\n      <th style=\"min-width: 150px;\">Default</th>\n      <th>Description</th>\n    </tr>\n    <tr>\n      <td>content <b>(required)</b></td>\n      <td>null</td>\n      <td>\n        <p>\n          An array of row objects. Usually a hash where the keys are column\n          names and the values are the rows's values. However, could be any\n          object, since each column can define a function to return the column\n          value given the row object. See\n          <code>Ember.Table.ColumnDefinition.getCellContent</code>.\n        </p>\n      </td>\n    </tr>\n    <tr>\n      <td>columns <b>(required)</b></td>\n      <td>null</td>\n      <td>\n        <p>\n          An array of column definitions: see\n          <code>Ember.Table.ColumnDefinition</code>.  Allows each column to\n          have its own configuration.\n        </p>\n      </td>\n    </tr>\n    <tr>\n      <td>numFixedColumns</td>\n      <td>0</td>\n      <td>\n        <p>\n          The number of fixed columns on the left side of the table. Fixed\n          columns are always visible, even when the table is scrolled\n          horizontally.\n        </p>\n      </td>\n    </tr>\n    <tr>\n      <td>numFooterRow</td>\n      <td>0</td>\n      <td>\n        <p>\n          The number of footer rows in the table. Footer rows appear at the\n          bottom of the table and are always visible.\n        </p>\n      </td>\n    </tr>\n    <tr>\n      <td>rowHeight</td>\n      <td>30</td>\n      <td>\n        <p>\n          The row height in pixels. A consistent row height is necessary to\n          calculate which rows are being shown, to enable lazy rendering.\n        </p>\n      </td>\n    </tr>\n    <tr>\n      <td>minHeaderHeight</td>\n      <td>30</td>\n      <td>\n        <p>\n          The minimum header height in pixels. Headers will grow in height if\n          given more content than they can display.\n        </p>\n      </td>\n    </tr>\n    <tr>\n      <td>footerHeight</td>\n      <td>30</td>\n      <td><p>The footer height in pixels.</p></td>\n    </tr>\n    <tr>\n      <td>hasHeader</td>\n      <td>true</td>\n      <td><p>Enables or disables the header block.</p></td>\n    </tr>\n    <tr>\n      <td>hasFooter</td>\n      <td>true</td>\n      <td><p>Enables or disables the footer block.</p></td>\n    </tr>\n    <tr>\n      <td>forceFillColumns</td>\n      <td>false</td>\n      <td>\n        <p>\n          If true, columns with <code>canAutoResize=true</code> (the default\n          setting) will attempt to fill the width of the table when possible.\n          After a column is manually resized, any other columns with\n          <code>canAutoResize=true</code> will distribute the change in width\n          between them. Once manually resized, a column will no longer\n          automatically resize.\n        </p>\n      </td>\n    </tr>\n    <tr>\n      <td>enableColumnReorder</td>\n      <td>true</td>\n      <td>\n        <p>\n          Allow the columns to be rearranged by drag-and-drop. Only columns\n          with <code>isSortable=true</code> (the default setting) will be\n          affected.\n        </p>\n      </td>\n    </tr>\n    <tr>\n      <td>enableContentSelection</td>\n      <td>false</td>\n      <td><p>Allow users to select the content of table cells.</p></td>\n    </tr>\n    <tr>\n      <td>selectionMode</td>\n      <td>'single'</td>\n      <td>\n        <p>\n          Sets which row selection behavior to follow. Possible values are\n          <code>'none'</code> (clicking on a row does nothing),\n          <code>'single'</code> (clicking on a row selects it and deselects\n          other rows), and <code>'multiple'</code> (multiple rows can be\n          selected through ctrl/cmd-click or shift-click).\n        </p>\n      </td>\n    </tr>\n    <tr>\n      <td>selection (output)</td>\n      <td>undefined</td>\n      <td>\n        <p>\n          An array of the rows currently selected. If\n          <code>selectionMode</code> is set to <code>'single'</code>, the array\n          will contain either one or zero elements.\n        </p>\n      </td>\n    </tr>\n    <tr>\n      <td>styleBindings</td>\n      <td>'height'</td>\n      <td>\n        <p>\n          Values which are bound to the table's style attr. See\n          <code>Ember.StyleBindingsMixin</code> documentation for more details.\n        <p>\n      </td>\n    </tr>\n  </table>\n\n  <h2>Ember.Table.ColumnDefinition Options</h2>\n  <table class=\"table ember-table-options\">\n    <tr>\n      <th style=\"min-width: 200px;\">Option</th>\n      <th style=\"min-width: 150px;\">Default</th>\n      <th>Description</th>\n    </tr>\n    <tr>\n      <td>headerCellName</td>\n      <td>undefined</td>\n      <td><p>Name of the column, to be displayed in the header.</p></td>\n    </tr>\n    <tr>\n      <td>contentPath</td>\n      <td>undefined</td>\n      <td>\n        <p>\n          Path of the content for this cell. If the row object is a hash of\n          keys and values to specify data for each column,\n          <code>contentPath</code> corresponds to the key. Use either this or\n          <code>getCellContent</code>.\n        </p>\n      </td>\n    </tr>\n    <tr>\n      <td>minWidth</td>\n      <td>undefined</td>\n      <td>\n        <p>\n          Minimum column width. Affects both manual resizing and automatic\n          resizing (in <code>forceFillColumns</code> mode).\n        </p>\n      </td>\n    </tr>\n    <tr>\n      <td>maxWidth</td>\n      <td>undefined</td>\n      <td>\n        <p>\n          Maximum column width. Affects both manual resizing and automatic\n          resizing (in <code>forceFillColumns</code> mode).\n        </p>\n      </td>\n    </tr>\n    <tr>\n      <td>defaultColumnWidth</td>\n      <td>150</td>\n      <td>\n        <p>\n          Default column width. Specifies the initial width of the column; if\n          the column is later resized automatically, it will be proportional to\n          this.\n        </p>\n      </td>\n    </tr>\n    <tr>\n      <td>isResizable</td>\n      <td>true</td>\n      <td><p>Whether the column can be manually resized.</p></td>\n    </tr>\n    <tr>\n      <td>isSortable</td>\n      <td>true</td>\n      <td>\n        <p>\n          Whether the column can be rearranged with other columns. Only matters\n          if the table's <code>enableColumnReorder</code> property is set to\n          true (the default).\n        </p>\n      </td>\n    </tr>\n    <tr>\n      <td>textAlign</td>\n      <td>'text-align-right'</td>\n      <td>\n        <p>\n          Alignment of the text in the cell. Possible values are\n          <code>'left'</code>, <code>'center'</code>, and <code>'right'</code>.\n        </p>\n      </td>\n    </tr>\n    <tr>\n      <td>canAutoResize</td>\n      <td>true</td>\n      <td>\n        <p>\n          Whether the column can automatically resize to fill space in the\n          table.  Only matters if the table is in <code>forceFillColumns</code>\n          mode.\n        </p>\n      </td>\n    </tr>\n    <tr>\n      <td>headerCellView</td>\n      <td>'Ember.Table.HeaderCell'</td>\n      <td>\n        <p>\n          Override to use a custom view for the header cell. Specified as a\n          string.\n        </p>\n      </td>\n    </tr>\n    <tr>\n      <td>tableCellView</td>\n      <td>'Ember.Table.TableCell'</td>\n      <td>\n        <p>\n          Override to use a custom view for table cells. Specified as a string.\n        </p>\n      </td>\n    </tr>\n    <tr>\n      <td>getCellContent</td>\n      <td>(function)</td>\n      <td>\n        <p>\n          Override to customize how the column gets data from each row object.\n          Given a row, should return a formatted cell value, e.g. $20,000,000.\n          Use either this or <code>contentPath</code>.\n        </p>\n      </td>\n    </tr>\n    <tr>\n      <td>setCellContent</td>\n      <td>Ember.K</td>\n      <td>\n        <p>\n          Override to maintain a consistent path to update cell values.\n          Recommended to make this a function which takes (row, value) and\n          updates the row value.\n        </p>\n      </td>\n    </tr>\n  </table>\n\n  <h2>Ember.Table.TableCell Options</h2>\n  <table class=\"table ember-table-options\">\n    <tr>\n      <th style=\"min-width: 200px;\">Option</th>\n      <th style=\"min-width: 150px;\">Default</th>\n      <th>Description</th>\n    </tr>\n    <tr>\n      <td>templateName</td>\n      <td>'table-cell'</td>\n      <td><p>The name of the template to be rendered into the cell.\n        Used for rendering custom templates.<p></td>\n    </tr>\n    <tr>\n      <td>classNames</td>\n      <td>['ember-table-cell']</td>\n      <td><p>The class names applied to the cell. Override to give\n        the cell custom styling (border, background color, etc).<p></td>\n    </tr>\n    <tr>\n      <td>classNameBindings</td>\n      <td>'column.textAlign'</td>\n      <td><p>A binding used to dynamically associate class names\n        with this table cell. E.g. you can bind to a column property\n        to have cell colors or styles vary across columns.<p></td>\n    </tr>\n    <tr>\n      <td>styleBindings</td>\n      <td>'width'</td>\n      <td>\n        <p>\n          Values which are bound to the cell's style attr. See\n          <code>Ember.StyleBindingsMixin</code> documentation for more details.\n        <p>\n      </td>\n    </tr>\n  </table>\n\n  <h2>Ember.Table.HeaderCell Options</h2>\n  <table class=\"table ember-table-options\">\n    <tr>\n      <th style=\"min-width: 200px;\">Option</th>\n      <th style=\"min-width: 150px;\">Default</th>\n      <th>Description</th>\n    </tr>\n    <tr>\n      <td>templateName</td>\n      <td>'header-cell'</td>\n      <td><p>See description in <code>Ember.Table.TableCell</code>.<p></td>\n    </tr>\n    <tr>\n      <td>classNames</td>\n      <td>['ember-table-cell', 'ember-table-header-cell']</td>\n      <td><p>See description in <code>Ember.Table.TableCell</code>.<p></td>\n    </tr>\n    <tr>\n      <td>classNameBindings</td>\n      <td>['column.isSortable:sortable', 'column.textAlign']</td>\n      <td><p>See description in <code>Ember.Table.TableCell</code>.<p></td>\n    </tr>\n    <tr>\n      <td>styleBindings</td>\n      <td>['width', 'height']</td>\n      <td><p>See description in <code>Ember.Table.TableCell</code>.<p></td>\n    </tr>\n  </table>\n</div>\n");
   return buffer;
   
 });
@@ -18645,7 +18261,7 @@ function program19(depth0,data) {
   data.buffer.push("\n      </div>\n      <p>Looking for more ways to extend ember-table? Check out the ");
   stack1 = (helper = helpers['link-to'] || (depth0 && depth0['link-to']),options={hash:{},hashTypes:{},hashContexts:{},inverse:self.noop,fn:self.program(19, program19, data),contexts:[depth0],types:["STRING"],data:data},helper ? helper.call(depth0, "emberTable.community-examples", options) : helperMissing.call(depth0, "link-to", "emberTable.community-examples", options));
   if(stack1 || stack1 === 0) { data.buffer.push(stack1); }
-  data.buffer.push(".</p>\n    </div>\n  </div>\n\n  <div class=\"row\">\n    <div class=\"col-md-6\">\n      <hr>\n      <h1>Getting Started</h1>\n      <p>You will need <a target=\"_BLANK\" href=\"http://nodejs.org/\">node</a> installed as a development dependency.</p>\n      <p><a target=\"_BLANK\" href=\"https://github.com/Addepar/ember-table/\">Clone it from Github</a> or <a target=\"_BLANK\" href=\"https://github.com/Addepar/ember-table/releases\">download the ZIP repo</a></p>\n      <div class=\"highlight\">\n<pre><code>$ npm install -g grunt-cli\n$ npm install\n$ grunt\n$ node examples.js</code></pre>\n      <p>Go to your browser and navigate to <a target=\"_BLANK\" href=\"http://localhost:8000/gh_pages\">localhost:8000/gh_pages</a></p>\n      </div>\n    </div>\n    <div class=\"col-md-6\">\n      <hr>\n      <h1>Contributing</h1>\n      <p>You can contribute to this project in one of two ways:\n      <ul class=\"styled\">\n        <li>Browse the ember-table <a target=\"_BLANK\" href=\"https://github.com/Addepar/ember-table/issues?state=open\">issues</a> and report bugs</li>\n        <li>Clone the ember-table repo, make some changes according to our development guidelines and issue a pull-request with your changes.</li>\n      </ul>\n      <p>We keep the ember-table.js code to the minimum necessary, giving users as much control as possible.</p>\n    </div>\n  </div>\n\n  <div class=\"row\">\n    <div class=\"col-md-6\">\n      <hr>\n      <h1>Changelog</h1>\n      <p>The current version is 0.2.2.\n      <p>For the full list of changes, please see <a target=\"_BLANK\" href=\"https://github.com/Addepar/ember-table/blob/master/CHANGELOG.md\">CHANGELOG.md</a>.</p>\n    </div>\n    <div class=\"col-md-6\">\n      <hr>\n      <h1>Acknowledgements</h1>\n      <p><a target=\"_BLANK\" href=\"https://github.com/Addepar/ember-table/graphs/contributors\">List of Contributors on Github</a></p>\n      <p>With lots of help from the Ember.js team</p>\n      <p><a target=\"_BLANK\" href=\"https://twitter.com/ebryn\">ebryn</a>, <a target=\"_BLANK\" href=\"https://twitter.com/tomdale\">tomdale</a>, <a target=\"_BLANK\" href=\"https://twitter.com/wycats\">wycats</a></p>\n      <p>The original idea for lazy rendering was inspired by Erik Bryn.</p>\n    </div>\n  </div>\n</div>\n");
+  data.buffer.push(".</p>\n    </div>\n  </div>\n\n  <div class=\"row\">\n    <div class=\"col-md-6\">\n      <hr>\n      <h1>Getting Started</h1>\n      <p>You will need <a target=\"_BLANK\" href=\"http://nodejs.org/\">node</a> installed as a development dependency.</p>\n      <p><a target=\"_BLANK\" href=\"https://github.com/Addepar/ember-table/\">Clone it from Github</a> or <a target=\"_BLANK\" href=\"https://github.com/Addepar/ember-table/releases\">download the ZIP repo</a></p>\n      <div class=\"highlight\">\n<pre><code>$ npm install -g grunt-cli\n$ npm install\n$ grunt\n$ node examples.js</code></pre>\n      <p>Go to your browser and navigate to <a target=\"_BLANK\" href=\"http://localhost:8000/gh_pages\">localhost:8000/gh_pages</a></p>\n      </div>\n    </div>\n    <div class=\"col-md-6\">\n      <hr>\n      <h1>Contributing</h1>\n      <p>You can contribute to this project in one of two ways:\n      <ul class=\"styled\">\n        <li>Browse the ember-table <a target=\"_BLANK\" href=\"https://github.com/Addepar/ember-table/issues?state=open\">issues</a> and report bugs</li>\n        <li>Clone the ember-table repo, make some changes according to our development guidelines and issue a pull-request with your changes.</li>\n      </ul>\n      <p>We keep the ember-table.js code to the minimum necessary, giving users as much control as possible.</p>\n    </div>\n  </div>\n\n  <div class=\"row\">\n    <div class=\"col-md-6\">\n      <hr>\n      <h1>Changelog</h1>\n      <p>The current version is 0.2.3.\n      <p>For the full list of changes, please see <a target=\"_BLANK\" href=\"https://github.com/Addepar/ember-table/blob/master/CHANGELOG.md\">CHANGELOG.md</a>.</p>\n    </div>\n    <div class=\"col-md-6\">\n      <hr>\n      <h1>Acknowledgements</h1>\n      <p><a target=\"_BLANK\" href=\"https://github.com/Addepar/ember-table/graphs/contributors\">List of Contributors on Github</a></p>\n      <p>With lots of help from the Ember.js team</p>\n      <p><a target=\"_BLANK\" href=\"https://twitter.com/ebryn\">ebryn</a>, <a target=\"_BLANK\" href=\"https://twitter.com/tomdale\">tomdale</a>, <a target=\"_BLANK\" href=\"https://twitter.com/wycats\">wycats</a></p>\n      <p>The original idea for lazy rendering was inspired by Erik Bryn.</p>\n    </div>\n  </div>\n</div>\n");
   return buffer;
   
 });
