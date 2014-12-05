@@ -2840,7 +2840,7 @@ helpers = this.merge(helpers, Ember.Handlebars.helpers); data = data || {};
 
 Ember.Table = Ember.Namespace.create();
 
-Ember.Table.VERSION = '0.2.3';
+Ember.Table.VERSION = '0.2.4';
 
 if ((_ref = Ember.libraries) != null) {
   _ref.register('Ember Table', Ember.Table.VERSION);
@@ -3389,20 +3389,20 @@ Ember.Table.TableCell = Ember.View.extend(Ember.AddeparMixins.StyleBindingsMixin
   contentDidChange: function() {
     return this.notifyPropertyChange('cellContent');
   },
-  contentPathWillChange: (function() {
+  contentPathWillChange: Ember.beforeObserver('column.contentPath', function() {
     var contentPath;
     contentPath = this.get('column.contentPath');
     if (contentPath) {
       return this.removeObserver("row." + contentPath, this, this.contentDidChange);
     }
-  }).observesBefore('column.contentPath'),
-  contentPathDidChange: (function() {
+  }),
+  contentPathDidChange: Ember.beforeObserver('column.contentPath', function() {
     var contentPath;
     contentPath = this.get('column.contentPath');
     if (contentPath) {
       return this.addObserver("row." + contentPath, this, this.contentDidChange);
     }
-  }).observesBefore('column.contentPath'),
+  }),
   cellContent: Ember.computed(function(key, value) {
     var column, row;
     row = this.get('row');
@@ -3670,12 +3670,12 @@ Ember.Table.EmberTableComponent = Ember.Component.extend(Ember.AddeparMixins.Sty
     if (arguments.length > 1 && val) {
       if (this.get('selectionMode') === 'single') {
         this.get('persistedSelection').clear();
-        this.get('persistedSelection').add(this.findRow(val));
+        this.get('persistedSelection').addObject(this.findRow(val));
       } else {
         this.get('persistedSelection').clear();
         for (_i = 0, _len = val.length; _i < _len; _i++) {
           content = val[_i];
-          this.get('persistedSelection').add(this.findRow(content));
+          this.get('persistedSelection').addObject(this.findRow(content));
         }
       }
       this.get('rangeSelection').clear();
@@ -3936,19 +3936,23 @@ Ember.Table.EmberTableComponent = Ember.Component.extend(Ember.AddeparMixins.Sty
   setSelected: function(row, val) {
     this.persistSelection();
     if (val) {
-      return this.get('persistedSelection').add(row);
+      return this.get('persistedSelection').addObject(row);
     } else {
-      return this.get('persistedSelection').remove(row);
+      return this.get('persistedSelection').removeObject(row);
     }
   },
   persistedSelection: Ember.computed(function() {
-    return new Ember.Set();
+    return Ember.ArrayProxy.createWithMixins(Ember.MutableArray, {
+      content: []
+    });
   }),
   rangeSelection: Ember.computed(function() {
-    return new Ember.Set();
+    return Ember.ArrayProxy.createWithMixins(Ember.MutableArray, {
+      content: []
+    });
   }),
   _selection: Ember.computed(function() {
-    return this.get('persistedSelection').copy().addEach(this.get('rangeSelection'));
+    return this.get('persistedSelection').toArray().copy().addObjects(this.get('rangeSelection'));
   }).property('persistedSelection.[]', 'rangeSelection.[]'),
   click: function(event) {
     var curIndex, lastIndex, maxIndex, minIndex, row;
@@ -3961,7 +3965,7 @@ Ember.Table.EmberTableComponent = Ember.Component.extend(Ember.AddeparMixins.Sty
     }
     if (this.get('selectionMode') === 'single') {
       this.get('persistedSelection').clear();
-      return this.get('persistedSelection').add(row);
+      return this.get('persistedSelection').addObject(row);
     } else {
       if (event.shiftKey) {
         this.get('rangeSelection').clear();
@@ -3978,9 +3982,9 @@ Ember.Table.EmberTableComponent = Ember.Component.extend(Ember.AddeparMixins.Sty
           this.persistSelection();
         }
         if (this.get('persistedSelection').contains(row)) {
-          this.get('persistedSelection').remove(row);
+          this.get('persistedSelection').removeObject(row);
         } else {
-          this.get('persistedSelection').add(row);
+          this.get('persistedSelection').addObject(row);
         }
         return this.set('lastSelected', row);
       }
@@ -4001,7 +4005,7 @@ Ember.Table.EmberTableComponent = Ember.Component.extend(Ember.AddeparMixins.Sty
     return (_ref = this.get('bodyContent')) != null ? _ref.indexOf(row) : void 0;
   },
   persistSelection: function() {
-    this.get('persistedSelection').addEach(this.get('rangeSelection'));
+    this.get('persistedSelection').addObjects(this.get('rangeSelection'));
     return this.get('rangeSelection').clear();
   },
   getRowForEvent: function(event) {
@@ -18261,7 +18265,7 @@ function program19(depth0,data) {
   data.buffer.push("\n      </div>\n      <p>Looking for more ways to extend ember-table? Check out the ");
   stack1 = (helper = helpers['link-to'] || (depth0 && depth0['link-to']),options={hash:{},hashTypes:{},hashContexts:{},inverse:self.noop,fn:self.program(19, program19, data),contexts:[depth0],types:["STRING"],data:data},helper ? helper.call(depth0, "emberTable.community-examples", options) : helperMissing.call(depth0, "link-to", "emberTable.community-examples", options));
   if(stack1 || stack1 === 0) { data.buffer.push(stack1); }
-  data.buffer.push(".</p>\n    </div>\n  </div>\n\n  <div class=\"row\">\n    <div class=\"col-md-6\">\n      <hr>\n      <h1>Getting Started</h1>\n      <p>You will need <a target=\"_BLANK\" href=\"http://nodejs.org/\">node</a> installed as a development dependency.</p>\n      <p><a target=\"_BLANK\" href=\"https://github.com/Addepar/ember-table/\">Clone it from Github</a> or <a target=\"_BLANK\" href=\"https://github.com/Addepar/ember-table/releases\">download the ZIP repo</a></p>\n      <div class=\"highlight\">\n<pre><code>$ npm install -g grunt-cli\n$ npm install\n$ grunt\n$ node examples.js</code></pre>\n      <p>Go to your browser and navigate to <a target=\"_BLANK\" href=\"http://localhost:8000/gh_pages\">localhost:8000/gh_pages</a></p>\n      </div>\n    </div>\n    <div class=\"col-md-6\">\n      <hr>\n      <h1>Contributing</h1>\n      <p>You can contribute to this project in one of two ways:\n      <ul class=\"styled\">\n        <li>Browse the ember-table <a target=\"_BLANK\" href=\"https://github.com/Addepar/ember-table/issues?state=open\">issues</a> and report bugs</li>\n        <li>Clone the ember-table repo, make some changes according to our development guidelines and issue a pull-request with your changes.</li>\n      </ul>\n      <p>We keep the ember-table.js code to the minimum necessary, giving users as much control as possible.</p>\n    </div>\n  </div>\n\n  <div class=\"row\">\n    <div class=\"col-md-6\">\n      <hr>\n      <h1>Changelog</h1>\n      <p>The current version is 0.2.3.\n      <p>For the full list of changes, please see <a target=\"_BLANK\" href=\"https://github.com/Addepar/ember-table/blob/master/CHANGELOG.md\">CHANGELOG.md</a>.</p>\n    </div>\n    <div class=\"col-md-6\">\n      <hr>\n      <h1>Acknowledgements</h1>\n      <p><a target=\"_BLANK\" href=\"https://github.com/Addepar/ember-table/graphs/contributors\">List of Contributors on Github</a></p>\n      <p>With lots of help from the Ember.js team</p>\n      <p><a target=\"_BLANK\" href=\"https://twitter.com/ebryn\">ebryn</a>, <a target=\"_BLANK\" href=\"https://twitter.com/tomdale\">tomdale</a>, <a target=\"_BLANK\" href=\"https://twitter.com/wycats\">wycats</a></p>\n      <p>The original idea for lazy rendering was inspired by Erik Bryn.</p>\n    </div>\n  </div>\n</div>\n");
+  data.buffer.push(".</p>\n    </div>\n  </div>\n\n  <div class=\"row\">\n    <div class=\"col-md-6\">\n      <hr>\n      <h1>Getting Started</h1>\n      <p>You will need <a target=\"_BLANK\" href=\"http://nodejs.org/\">node</a> installed as a development dependency.</p>\n      <p><a target=\"_BLANK\" href=\"https://github.com/Addepar/ember-table/\">Clone it from Github</a> or <a target=\"_BLANK\" href=\"https://github.com/Addepar/ember-table/releases\">download the ZIP repo</a></p>\n      <div class=\"highlight\">\n<pre><code>$ npm install -g grunt-cli\n$ npm install\n$ grunt\n$ node examples.js</code></pre>\n      <p>Go to your browser and navigate to <a target=\"_BLANK\" href=\"http://localhost:8000/gh_pages\">localhost:8000/gh_pages</a></p>\n      </div>\n    </div>\n    <div class=\"col-md-6\">\n      <hr>\n      <h1>Contributing</h1>\n      <p>You can contribute to this project in one of two ways:\n      <ul class=\"styled\">\n        <li>Browse the ember-table <a target=\"_BLANK\" href=\"https://github.com/Addepar/ember-table/issues?state=open\">issues</a> and report bugs</li>\n        <li>Clone the ember-table repo, make some changes according to our development guidelines and issue a pull-request with your changes.</li>\n      </ul>\n      <p>We keep the ember-table.js code to the minimum necessary, giving users as much control as possible.</p>\n    </div>\n  </div>\n\n  <div class=\"row\">\n    <div class=\"col-md-6\">\n      <hr>\n      <h1>Changelog</h1>\n      <p>The current version is 0.2.4.\n      <p>For the full list of changes, please see <a target=\"_BLANK\" href=\"https://github.com/Addepar/ember-table/blob/master/CHANGELOG.md\">CHANGELOG.md</a>.</p>\n    </div>\n    <div class=\"col-md-6\">\n      <hr>\n      <h1>Acknowledgements</h1>\n      <p><a target=\"_BLANK\" href=\"https://github.com/Addepar/ember-table/graphs/contributors\">List of Contributors on Github</a></p>\n      <p>With lots of help from the Ember.js team</p>\n      <p><a target=\"_BLANK\" href=\"https://twitter.com/ebryn\">ebryn</a>, <a target=\"_BLANK\" href=\"https://twitter.com/tomdale\">tomdale</a>, <a target=\"_BLANK\" href=\"https://twitter.com/wycats\">wycats</a></p>\n      <p>The original idea for lazy rendering was inspired by Erik Bryn.</p>\n    </div>\n  </div>\n</div>\n");
   return buffer;
   
 });
