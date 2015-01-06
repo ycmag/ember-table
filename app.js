@@ -2504,6 +2504,10 @@ Ember.AddeparMixins.ResizeHandlerMixin = Ember.Mixin.create({
     };
   }),
   handleWindowResize: function(event) {
+    if ((typeof event.target.id !== "undefined" && event.target.id !== null)
+        && (event.target.id !== this.elementId)) {
+      return;
+    }
     if (!this.get('resizing')) {
       this.set('resizing', true);
       if (typeof this.onResizeStart === "function") {
@@ -2840,7 +2844,7 @@ helpers = this.merge(helpers, Ember.Handlebars.helpers); data = data || {};
 
 Ember.Table = Ember.Namespace.create();
 
-Ember.Table.VERSION = '0.2.4';
+Ember.Table.VERSION = '0.3.0';
 
 if ((_ref = Ember.libraries) != null) {
   _ref.register('Ember Table', Ember.Table.VERSION);
@@ -2868,6 +2872,10 @@ Ember.AddeparMixins.ResizeHandlerMixin = Ember.Mixin.create({
     };
   }),
   handleWindowResize: function(event) {
+    if ((typeof event.target.id !== "undefined" && event.target.id !== null)
+        && (event.target.id !== this.elementId)) {
+      return;
+    }
     if (!this.get('resizing')) {
       this.set('resizing', true);
       if (typeof this.onResizeStart === "function") {
@@ -3258,9 +3266,9 @@ Ember.Table.ShowHorizontalScrollMixin = Ember.Mixin.create({
 Ember.Table.ColumnDefinition = Ember.Object.extend({
   headerCellName: void 0,
   contentPath: void 0,
-  minWidth: void 0,
+  minWidth: 25,
   maxWidth: void 0,
-  defaultColumnWidth: 150,
+  savedWidth: 150,
   isResizable: true,
   isSortable: true,
   textAlign: 'text-align-right',
@@ -3276,10 +3284,19 @@ Ember.Table.ColumnDefinition = Ember.Object.extend({
     return Ember.get(row, path);
   },
   setCellContent: Ember.K,
-  columnWidth: Ember.computed.oneWay('defaultColumnWidth'),
+  width: Ember.computed.oneWay('savedWidth'),
   resize: function(width) {
-    return this.set('columnWidth', width);
-  }
+    this.set('savedWidth', width);
+    return this.set('width', width);
+  },
+  nextColumn: null,
+  prevColumn: null,
+  isAtMinWidth: Ember.computed(function() {
+    return this.get('width') === this.get('minWidth');
+  }).property('width', 'minWidth'),
+  isAtMaxWidth: Ember.computed(function() {
+    return this.get('width') === this.get('maxWidth');
+  }).property('width', 'maxWidth')
 });
 
 
@@ -3385,7 +3402,7 @@ Ember.Table.TableCell = Ember.View.extend(Ember.AddeparMixins.StyleBindingsMixin
   },
   row: Ember.computed.alias('parentView.row'),
   column: Ember.computed.alias('content'),
-  width: Ember.computed.alias('column.columnWidth'),
+  width: Ember.computed.alias('column.width'),
   contentDidChange: function() {
     return this.notifyPropertyChange('cellContent');
   },
@@ -3488,34 +3505,77 @@ Ember.Table.HeaderCell = Ember.View.extend(Ember.AddeparMixins.StyleBindingsMixi
   classNameBindings: ['column.isSortable:sortable', 'column.textAlign'],
   styleBindings: ['width', 'height'],
   column: Ember.computed.alias('content'),
-  width: Ember.computed.alias('column.columnWidth'),
-  height: Ember.computed(function() {
-    return this.get('controller._headerHeight');
-  }).property('controller._headerHeight'),
+  width: Ember.computed.alias('column.width'),
+  minWidth: Ember.computed.alias('column.minWidth'),
+  maxWidth: Ember.computed.alias('column.maxWidth'),
+  nextResizableColumn: Ember.computed.alias('column.nextResizableColumn'),
+  height: Ember.computed.alias('controller._headerHeight'),
+  effectiveMinWidth: Ember.computed(function() {
+    var nextColumnMaxDiff;
+    if (this.get('controller.columnMode') === 'standard') {
+      return this.get('minWidth');
+    }
+    nextColumnMaxDiff = this.get('nextResizableColumn.maxWidth') - this.get('nextResizableColumn.width');
+    if (this.get('minWidth') && nextColumnMaxDiff) {
+      return Math.min(this.get('minWidth'), this.get('width') - nextColumnMaxDiff);
+    } else if (this.get('minWidth')) {
+      return this.get('minWidth');
+    } else {
+      return this.get('width') - nextColumnMaxDiff;
+    }
+  }).property('width', 'minWidth', 'controller.columnMode', 'nextResizableColumn.{width,maxWidth}'),
+  effectiveMaxWidth: Ember.computed(function() {
+    var nextColumnMaxDiff;
+    if (this.get('controller.columnMode') === 'standard') {
+      return this.get('maxWidth');
+    }
+    nextColumnMaxDiff = this.get('nextResizableColumn.width') - this.get('nextResizableColumn.minWidth');
+    if (this.get('maxWidth') && !Ember.isNone(nextColumnMaxDiff)) {
+      return Math.min(this.get('maxWidth'), this.get('width') + nextColumnMaxDiff);
+    } else if (this.get('maxWidth')) {
+      return this.get('maxWidth');
+    } else {
+      return this.get('width') + nextColumnMaxDiff;
+    }
+  }).property('width', 'minWidth', 'controller.columnMode', 'nextResizableColumn.{width,minWidth}'),
   resizableOption: Ember.computed(function() {
     return {
       handles: 'e',
-      minHeight: 40,
-      minWidth: this.get('column.minWidth') || 100,
-      maxWidth: this.get('column.maxWidth') || 500,
+      minWidth: Math.max(this.get('effectiveMinWidth') || 0, 10),
+      maxWidth: this.get('effectiveMaxWidth'),
       grid: this.get('column.snapGrid'),
       resize: jQuery.proxy(this.onColumnResize, this),
       stop: jQuery.proxy(this.onColumnResize, this)
     };
-  }),
+  }).property('effectiveMinWidth', 'effectiveMaxWidth'),
   didInsertElement: function() {
     this.elementSizeDidChange();
-    if (this.get('column.isResizable')) {
-      this.$().resizable(this.get('resizableOption'));
-      this._resizableWidget = this.$().resizable('widget');
-    }
+    return this.recomputeResizableHandle();
   },
-  onColumnResize: function(event, ui) {
-    this.elementSizeDidChange();
-    if (this.get('controller.forceFillColumns') && this.get('controller.columns').filterProperty('canAutoResize').length > 1) {
-      this.set('column.canAutoResize', false);
+  _isResizable: Ember.computed(function() {
+    if (this.get('controller.columnMode') === 'standard') {
+      return this.get('column.isResizable');
+    } else {
+      return this.get('column.isResizable') && this.get('nextResizableColumn');
     }
-    return this.get("column").resize(ui.size.width);
+  }).property('column.isResizable', 'controller.columnMode', 'nextResizableColumn'),
+  resizableObserver: Ember.observer(function() {
+    return this.recomputeResizableHandle();
+  }, '_isResizable', 'resizableOption'),
+  onColumnResize: function(event, ui) {
+    var diff;
+    if (this.get('controller.columnMode') === 'standard') {
+      this.get('column').resize(ui.size.width);
+      this.set('controller.columnsFillTable', false);
+    } else {
+      diff = this.get('width') - ui.size.width;
+      this.get('column').resize(ui.size.width);
+      this.get('nextResizableColumn').resize(this.get('nextResizableColumn.width') + diff);
+    }
+    this.elementSizeDidChange();
+    if (event.type === 'resizestop') {
+      this.get('controller').elementSizeDidChange();
+    }
   },
   elementSizeDidChange: function() {
     var maxHeight;
@@ -3527,7 +3587,16 @@ Ember.Table.HeaderCell = Ember.View.extend(Ember.AddeparMixins.StyleBindingsMixi
         return maxHeight = thisHeight;
       }
     });
-    this.set('controller._contentHeaderHeight', maxHeight);
+    return this.set('controller._contentHeaderHeight', maxHeight);
+  },
+  recomputeResizableHandle: function() {
+    if (this.get('_isResizable')) {
+      return this.$().resizable(this.get('resizableOption'));
+    } else {
+      if (this.$().is('.ui-resizable')) {
+        return this.$().resizable('destroy');
+      }
+    }
   }
 });
 
@@ -3661,9 +3730,9 @@ Ember.Table.EmberTableComponent = Ember.Component.extend(Ember.AddeparMixins.Sty
   footerHeight: 30,
   hasHeader: true,
   hasFooter: true,
-  forceFillColumns: false,
   enableColumnReorder: true,
   enableContentSelection: false,
+  columnMode: 'standard',
   selectionMode: 'single',
   selection: Ember.computed(function(key, val) {
     var content, _i, _len, _ref, _ref1;
@@ -3688,6 +3757,7 @@ Ember.Table.EmberTableComponent = Ember.Component.extend(Ember.AddeparMixins.Sty
       });
     }
   }).property('_selection.[]', 'selectionMode'),
+  columnsFillTable: true,
   init: function() {
     this._super();
     if (!$.ui) {
@@ -3711,7 +3781,8 @@ Ember.Table.EmberTableComponent = Ember.Component.extend(Ember.AddeparMixins.Sty
     var columns;
     columns = this.get('tableColumns');
     columns.removeObject(column);
-    return columns.insertAt(newIndex, column);
+    columns.insertAt(newIndex, column);
+    return this.prepareTableColumns();
   },
   bodyContent: Ember.computed(function() {
     return Ember.Table.RowArrayController.create({
@@ -3737,7 +3808,7 @@ Ember.Table.EmberTableComponent = Ember.Component.extend(Ember.AddeparMixins.Sty
     }
     numFixedColumns = this.get('numFixedColumns') || 0;
     columns = columns.slice(0, numFixedColumns) || [];
-    this.prepareTableColumns(columns);
+    this.prepareTableColumns();
     return columns;
   }).property('columns.@each', 'numFixedColumns'),
   tableColumns: Ember.computed(function() {
@@ -3748,18 +3819,42 @@ Ember.Table.EmberTableComponent = Ember.Component.extend(Ember.AddeparMixins.Sty
     }
     numFixedColumns = this.get('numFixedColumns') || 0;
     columns = columns.slice(numFixedColumns, columns.get('length')) || [];
-    this.prepareTableColumns(columns);
+    this.prepareTableColumns();
     return columns;
   }).property('columns.@each', 'numFixedColumns'),
-  prepareTableColumns: function(columns) {
-    return columns.setEach('controller', this);
+  allColumns: Ember.computed.union('fixedColumns', 'tableColumns'),
+  prepareTableColumns: function() {
+    var col, columns, i, _i, _len, _results;
+    columns = this.get('columns') || Ember.A();
+    columns.setEach('controller', this);
+    _results = [];
+    for (i = _i = 0, _len = columns.length; _i < _len; i = ++_i) {
+      col = columns[i];
+      _results.push(col.set('nextResizableColumn', this.getNextResizableColumn(columns, i)));
+    }
+    return _results;
+  },
+  getNextResizableColumn: function(columns, index) {
+    var column;
+    while (index < columns.length) {
+      index += 1;
+      column = columns.objectAt(index);
+      if (column != null ? column.get('isResizable') : void 0) {
+        return column;
+      }
+    }
+    return null;
   },
   didInsertElement: function() {
     this._super();
     this.set('_tableScrollTop', 0);
-    return this.elementSizeDidChange();
+    this.elementSizeDidChange();
+    return this.doForceFillColumns();
   },
   onResizeEnd: function() {
+    if (this.tableWidthNowTooSmall()) {
+      this.set('columnsFillTable', true);
+    }
     return Ember.run(this, this.elementSizeDidChange);
   },
   elementSizeDidChange: function() {
@@ -3770,30 +3865,63 @@ Ember.Table.EmberTableComponent = Ember.Component.extend(Ember.AddeparMixins.Sty
     this.set('_height', this.$().parent().outerHeight());
     return Ember.run.next(this, this.updateLayout);
   },
+  tableWidthNowTooSmall: function() {
+    var newTableWidth, oldTableWidth, totalColumnWidth;
+    oldTableWidth = this.get('_width');
+    newTableWidth = this.$().parent().outerWidth();
+    totalColumnWidth = this._getTotalWidth(this.get('tableColumns'));
+    return (oldTableWidth > totalColumnWidth) && (newTableWidth < totalColumnWidth);
+  },
+  expandResizeableColumnsToFillTable: function() {
+    var fixedColumnsWidth, tableColumns, totalResizableWidth, totalWidth, unresizableColumns, unresizableWidth;
+    totalWidth = this.get('_width');
+    fixedColumnsWidth = this.get('_fixedColumnsWidth');
+    tableColumns = this.get('tableColumns');
+    unresizableColumns = tableColumns.filterProperty('canAutoResize', false);
+    unresizableWidth = this._getTotalWidth(unresizableColumns);
+    return totalResizableWidth = totalWidth - unresizableWidth;
+  },
   updateLayout: function() {
     if ((this.get('_state') || this.get('state')) !== 'inDOM') {
       return;
     }
     this.$('.antiscroll-wrap').antiscroll().data('antiscroll').rebuild();
-    if (this.get('forceFillColumns')) {
+    if (this.get('columnsFillTable')) {
       return this.doForceFillColumns();
     }
   },
   doForceFillColumns: function() {
-    var additionWidthPerColumn, availableContentWidth, columnsToResize, contentWidth, fixedColumnsWidth, remainingWidth, tableColumns, totalWidth;
-    totalWidth = this.get('_width');
-    fixedColumnsWidth = this.get('_fixedColumnsWidth');
-    tableColumns = this.get('tableColumns');
-    contentWidth = this._getTotalWidth(tableColumns);
-    availableContentWidth = totalWidth - fixedColumnsWidth;
-    remainingWidth = availableContentWidth - contentWidth;
-    columnsToResize = tableColumns.filterProperty('canAutoResize');
-    additionWidthPerColumn = Math.floor(remainingWidth / columnsToResize.length);
-    return columnsToResize.forEach(function(column) {
-      var columnWidth;
-      columnWidth = column.get('columnWidth') + additionWidthPerColumn;
-      return column.set('columnWidth', columnWidth);
-    });
+    var allColumns, availableWidth, columnsToResize, doNextLoop, nextColumnsToResize, totalResizableWidth, unresizableColumns, _results,
+      _this = this;
+    allColumns = this.get('allColumns');
+    columnsToResize = allColumns.filterProperty('canAutoResize');
+    unresizableColumns = allColumns.filterProperty('canAutoResize', false);
+    availableWidth = this.get('_width') - this._getTotalWidth(unresizableColumns);
+    doNextLoop = true;
+    _results = [];
+    while (doNextLoop) {
+      doNextLoop = false;
+      nextColumnsToResize = [];
+      totalResizableWidth = this._getTotalWidth(columnsToResize);
+      columnsToResize.forEach(function(column) {
+        var newWidth;
+        newWidth = Math.floor((column.get('width') / totalResizableWidth) * availableWidth);
+        if (newWidth < column.get('minWidth')) {
+          doNextLoop = true;
+          column.set('width', column.get('minWidth'));
+          return availableWidth -= column.get('width');
+        } else if (newWidth > column.get('maxWidth')) {
+          doNextLoop = true;
+          column.set('width', column.get('maxWidth'));
+          return availableWidth -= column.get('width');
+        } else {
+          column.set('width', newWidth);
+          return nextColumnsToResize.pushObject(column);
+        }
+      });
+      _results.push(columnsToResize = nextColumnsToResize);
+    }
+    return _results;
   },
   onBodyContentLengthDidChange: Ember.observer(function() {
     return Ember.run.next(this, function() {
@@ -3837,17 +3965,17 @@ Ember.Table.EmberTableComponent = Ember.Component.extend(Ember.AddeparMixins.Sty
   }).property('_height', '_tableContentHeight', '_headerHeight', '_footerHeight'),
   _fixedColumnsWidth: Ember.computed(function() {
     return this._getTotalWidth(this.get('fixedColumns'));
-  }).property('fixedColumns.@each.columnWidth'),
+  }).property('fixedColumns.@each.width'),
   _tableColumnsWidth: Ember.computed(function() {
     var availableWidth, contentWidth;
-    contentWidth = (this._getTotalWidth(this.get('tableColumns'))) + 3;
+    contentWidth = this._getTotalWidth(this.get('tableColumns')) + 3;
     availableWidth = this.get('_width') - this.get('_fixedColumnsWidth');
     if (contentWidth > availableWidth) {
       return contentWidth;
     } else {
       return availableWidth;
     }
-  }).property('tableColumns.@each.columnWidth', '_width', '_fixedColumnsWidth'),
+  }).property('tableColumns.@each.width', '_width', '_fixedColumnsWidth'),
   _rowWidth: Ember.computed(function() {
     var columnsWidth, nonFixedTableWidth;
     columnsWidth = this.get('_tableColumnsWidth');
@@ -3920,7 +4048,7 @@ Ember.Table.EmberTableComponent = Ember.Component.extend(Ember.AddeparMixins.Sty
   _getTotalWidth: function(columns, columnWidthPath) {
     var widths;
     if (columnWidthPath == null) {
-      columnWidthPath = 'columnWidth';
+      columnWidthPath = 'width';
     }
     if (!columns) {
       return 0;
@@ -15957,6 +16085,92 @@ d3 = function() {
 
 (function() {
 
+  App.EmberTableOverviewController = Ember.Controller.extend({
+    data: Ember.computed(function() {
+      return App.data.treedata;
+    })
+  });
+
+}).call(this);
+
+
+})();
+(function() {
+
+(function() {
+
+  App.EmberTableSimpleController = Ember.Controller.extend({
+    numRows: 100,
+    columns: Ember.computed(function() {
+      var closeColumn, dateColumn, highColumn, lowColumn, openColumn;
+      dateColumn = Ember.Table.ColumnDefinition.create({
+        savedWidth: 150,
+        textAlign: 'text-align-left',
+        headerCellName: 'Date',
+        getCellContent: function(row) {
+          return row.get('date').toDateString();
+        }
+      });
+      openColumn = Ember.Table.ColumnDefinition.create({
+        savedWidth: 100,
+        headerCellName: 'Open',
+        getCellContent: function(row) {
+          return row.get('open').toFixed(2);
+        }
+      });
+      highColumn = Ember.Table.ColumnDefinition.create({
+        savedWidth: 100,
+        headerCellName: 'High',
+        getCellContent: function(row) {
+          return row.get('high').toFixed(2);
+        }
+      });
+      lowColumn = Ember.Table.ColumnDefinition.create({
+        savedWidth: 100,
+        headerCellName: 'Low',
+        getCellContent: function(row) {
+          return row.get('low').toFixed(2);
+        }
+      });
+      closeColumn = Ember.Table.ColumnDefinition.create({
+        savedWidth: 100,
+        headerCellName: 'Close',
+        getCellContent: function(row) {
+          return row.get('close').toFixed(2);
+        }
+      });
+      return [dateColumn, openColumn, highColumn, lowColumn, closeColumn];
+    }),
+    content: Ember.computed(function() {
+      var _i, _ref, _results;
+      return (function() {
+        _results = [];
+        for (var _i = 0, _ref = this.get('numRows'); 0 <= _ref ? _i < _ref : _i > _ref; 0 <= _ref ? _i++ : _i--){ _results.push(_i); }
+        return _results;
+      }).apply(this).map(function(index) {
+        var date;
+        date = new Date();
+        date.setDate(date.getDate() + index);
+        return {
+          date: date,
+          open: Math.random() * 100 - 50,
+          high: Math.random() * 100 - 50,
+          low: Math.random() * 100 - 50,
+          close: Math.random() * 100 - 50,
+          volume: Math.random() * 1000000
+        };
+      });
+    }).property('numRows')
+  });
+
+}).call(this);
+
+
+})();
+(function() {
+
+(function() {
+
   App.EmberTableAjaxLazyDataSource = Ember.ArrayProxy.extend({
     createGithubEvent: function(row, event) {
       row.set('type', event.type);
@@ -16007,7 +16221,7 @@ d3 = function() {
     columns: Ember.computed(function() {
       var avatar, columnNames, columns;
       avatar = Ember.Table.ColumnDefinition.create({
-        columnWidth: 80,
+        savedWidth: 80,
         headerCellName: 'avatar',
         tableCellViewClass: 'App.EmberTableAjaxImageTableCell',
         contentPath: 'avatar'
@@ -16015,7 +16229,7 @@ d3 = function() {
       columnNames = ['login', 'type', 'createdAt'];
       columns = columnNames.map(function(key, index) {
         return Ember.Table.ColumnDefinition.create({
-          columnWidth: 150,
+          savedWidth: 150,
           headerCellName: key.w(),
           contentPath: key
         });
@@ -16044,7 +16258,7 @@ d3 = function() {
       var colors, column1, columns;
       colors = ['blue', 'teal', 'green', 'yellow', 'orange'];
       column1 = Ember.Table.ColumnDefinition.create({
-        columnWidth: 50,
+        savedWidth: 50,
         headerCellName: 'Name',
         contentPath: 'key'
       });
@@ -16110,7 +16324,7 @@ d3 = function() {
       var colors, column1, columns;
       colors = ['blue', 'teal', 'green', 'yellow', 'orange'];
       column1 = Ember.Table.ColumnDefinition.create({
-        columnWidth: 50,
+        savedWidth: 50,
         headerCellName: 'Name',
         contentPath: 'key'
       });
@@ -16152,68 +16366,199 @@ d3 = function() {
 
 (function() {
 
-  App.EmberTableEditableController = Ember.Controller.extend({
-    numRows: 100,
+  App.EmberTableFinancialController = Ember.Controller.extend({
+    data: Ember.computed(function() {
+      return App.data.treedata;
+    })
+  });
+
+  Number.prototype.toCurrency = function() {
+    var value;
+    if (isNaN(this) || !isFinite(this)) {
+      return '-';
+    }
+    value = Math.abs(this).toFixed(2);
+    value = value.replace(/(\d)(?=(\d\d\d)+(?!\d))/g, '$1,');
+    return (this < 0 ? '-$' : '$') + value;
+  };
+
+  Number.prototype.toPercent = function() {
+    if (isNaN(this) || !isFinite(this)) {
+      return '-';
+    }
+    return Math.abs(this * 100).toFixed(2) + '%';
+  };
+
+  App.TreeTableExample = Ember.Namespace.create();
+
+  App.TreeTableExample.TreeDataAdapter = Ember.Mixin.create({
+    data: null,
     columns: Ember.computed(function() {
-      var columnNames, columns, dateColumn, ratingColumn;
-      columnNames = ['open', 'close'];
-      dateColumn = Ember.Table.ColumnDefinition.create({
-        columnWidth: 100,
-        headerCellName: 'Date',
-        tableCellViewClass: 'App.DatePickerTableCell',
-        getCellContent: function(row) {
-          return row.get('date').toString('yyyy-MM-dd');
-        },
-        setCellContent: function(row, value) {
-          return row.set('date', value);
-        }
-      });
-      ratingColumn = Ember.Table.ColumnDefinition.create({
-        columnWidth: 150,
-        headerCellName: 'Analyst Rating',
-        tableCellViewClass: 'App.RatingTableCell',
-        contentPath: 'rating',
-        setCellContent: function(row, value) {
-          return row.set('rating', value);
-        }
-      });
-      columns = columnNames.map(function(key, index) {
-        var name;
-        name = key.charAt(0).toUpperCase() + key.slice(1);
+      var columns, data, names;
+      data = this.get('data');
+      if (!data) {
+        return;
+      }
+      names = this.get('data.value_factors').getEach('display_name');
+      columns = names.map(function(name, index) {
         return Ember.Table.ColumnDefinition.create({
-          columnWidth: 100,
+          index: index,
           headerCellName: name,
-          tableCellViewClass: 'App.EditableTableCell',
           getCellContent: function(row) {
-            return row.get(key).toFixed(2);
-          },
-          setCellContent: function(row, value) {
-            return row.set(key, +value);
+            var object;
+            object = row.get('values')[this.get('index')];
+            if (object.type === 'money') {
+              return object.value.toCurrency();
+            }
+            if (object.type === 'percent') {
+              return object.value.toPercent();
+            }
+            return "-";
           }
         });
       });
-      columns.unshift(ratingColumn);
-      columns.unshift(dateColumn);
+      columns.unshiftObject(this.get('groupingColumn'));
       return columns;
-    }).property(),
-    content: Ember.computed(function() {
-      var _i, _ref, _results;
-      return (function() {
-        _results = [];
-        for (var _i = 0, _ref = this.get('numRows'); 0 <= _ref ? _i < _ref : _i > _ref; 0 <= _ref ? _i++ : _i--){ _results.push(_i); }
-        return _results;
-      }).apply(this).map(function(num, idx) {
-        return {
-          index: idx,
-          date: Date.now().add({
-            days: idx
-          }),
-          open: Math.random() * 100 - 50,
-          close: Math.random() * 100 - 50,
-          rating: Math.round(Math.random() * 4)
-        };
+    }).property('data.valueFactors.@each', 'groupingColumn'),
+    groupingColumn: Ember.computed(function() {
+      var groupingFactors, name;
+      groupingFactors = this.get('data.grouping_factors');
+      name = groupingFactors.getEach('display_name').join(' ▸ ');
+      return Ember.Table.ColumnDefinition.create({
+        headerCellName: name,
+        savedWidth: 400,
+        isTreeColumn: true,
+        isSortable: false,
+        textAlign: 'text-align-left',
+        headerCellViewClass: 'App.TreeTableExample.HeaderTreeCell',
+        tableCellViewClass: 'App.TreeTableExample.TreeCell',
+        contentPath: 'group_value'
       });
-    }).property('numRows')
+    }).property('data.grouping_factors.@each'),
+    root: Ember.computed(function() {
+      var data;
+      data = this.get('data');
+      if (!data) {
+        return;
+      }
+      return this.createTree(null, data.root);
+    }).property('data', 'sortAscending', 'sortColumn'),
+    rows: Ember.computed(function() {
+      var maxGroupingLevel, root, rows;
+      root = this.get('root');
+      if (!root) {
+        return Ember.A();
+      }
+      rows = this.flattenTree(null, root, Ember.A());
+      this.computeStyles(null, root);
+      maxGroupingLevel = Math.max.apply(rows.getEach('groupingLevel'));
+      rows.forEach(function(row) {
+        return row.computeRowStyle(maxGroupingLevel);
+      });
+      return rows;
+    }).property('root'),
+    bodyContent: Ember.computed(function() {
+      var rows;
+      rows = this.get('rows');
+      if (!rows) {
+        return Ember.A();
+      }
+      rows = rows.slice(1, rows.get('length'));
+      return rows.filterProperty('isShowing');
+    }).property('rows'),
+    footerContent: Ember.computed(function() {
+      var rows;
+      rows = this.get('rows');
+      if (!rows) {
+        return Ember.A();
+      }
+      return rows.slice(0, 1);
+    }).property('rows'),
+    orderBy: function(item1, item2) {
+      var result, sortAscending, sortColumn, value1, value2;
+      sortColumn = this.get('sortColumn');
+      sortAscending = this.get('sortAscending');
+      if (!sortColumn) {
+        return 1;
+      }
+      value1 = sortColumn.getCellContent(item1);
+      value2 = sortColumn.getCellContent(item2);
+      result = Ember.compare(value1, value2);
+      if (sortAscending) {
+        return result;
+      } else {
+        return -result;
+      }
+    },
+    createTree: function(parent, node) {
+      var children, row,
+        _this = this;
+      row = App.TreeTableExample.TreeTableRow.create();
+      children = (node.children || []).map(function(child) {
+        return _this.createTree(row, child);
+      });
+      row.setProperties({
+        isRoot: !parent,
+        isLeaf: Ember.isEmpty(children),
+        content: node,
+        parent: parent,
+        children: children,
+        groupName: node.group_name,
+        isCollapsed: false
+      });
+      return row;
+    },
+    flattenTree: function(parent, node, rows) {
+      var _this = this;
+      rows.pushObject(node);
+      (node.children || []).forEach(function(child) {
+        return _this.flattenTree(node, child, rows);
+      });
+      return rows;
+    },
+    computeStyles: function(parent, node) {
+      var _this = this;
+      node.computeStyles(parent);
+      return node.get('children').forEach(function(child) {
+        return _this.computeStyles(node, child);
+      });
+    }
+  });
+
+  App.TreeTableExample.TableComponent = Ember.Table.EmberTableComponent.extend(App.TreeTableExample.TreeDataAdapter, {
+    numFixedColumns: 1,
+    isCollapsed: false,
+    isHeaderHeightResizable: true,
+    rowHeight: 30,
+    hasHeader: true,
+    hasFooter: true,
+    headerHeight: 70,
+    sortAscending: false,
+    sortColumn: null,
+    toggleTableCollapse: function(event) {
+      var children, isCollapsed;
+      this.toggleProperty('isCollapsed');
+      isCollapsed = this.get('isCollapsed');
+      children = this.get('root.children');
+      if (!(children && children.get('length') > 0)) {
+        return;
+      }
+      children.forEach(function(child) {
+        return child.recursiveCollapse(isCollapsed);
+      });
+      return this.notifyPropertyChange('rows');
+    },
+    toggleCollapse: function(row) {
+      row.toggleProperty('isCollapsed');
+      return Ember.run.next(this, function() {
+        return this.notifyPropertyChange('rows');
+      });
+    },
+    sortByColumn: function(column) {
+      column.toggleProperty('sortAscending');
+      this.set('sortColumn', column);
+      return this.set('sortAscending', column.get('sortAscending'));
+    }
   });
 
 }).call(this);
@@ -16397,7 +16742,7 @@ d3 = function() {
       name = groupingFactors.getEach('display_name').join(' ▸ ');
       return Ember.Table.ColumnDefinition.create({
         headerCellName: name,
-        columnWidth: 400,
+        savedWidth: 400,
         isTreeColumn: true,
         isSortable: false,
         textAlign: 'text-align-left',
@@ -16506,261 +16851,65 @@ d3 = function() {
 
 (function() {
 
-  App.FluidColumnDefinition = Ember.Table.ColumnDefinition.extend({
-    isResizable: Ember.computed(function() {
-      if (this.get('_nextColumn')) {
-        return true;
-      } else {
-        return false;
-      }
-    }).property('_nextColumn'),
-    resize: function(pxWidth, tableWidth) {
-      var diff, newMaxWidth, newWidth, nextCol, oldWidth, percent;
-      newMaxWidth = null;
-      tableWidth = tableWidth || this.get("controller._tableContainerWidth");
-      if (!tableWidth) {
-        return;
-      }
-      percent = function(val) {
-        if ("string" === typeof val) {
-          return +(val.replace("%", ""));
-        } else {
-          return val * 100 / tableWidth;
-        }
-      };
-      oldWidth = percent(this.get("columnWidth"));
-      newWidth = 'number' === typeof pxWidth ? percent(pxWidth) : oldWidth;
-      nextCol = this.get("_nextColumn");
-      if (nextCol) {
-        diff = oldWidth - newWidth + percent(nextCol.get("columnWidth"));
-        nextCol.set("columnWidth", diff / 100 * tableWidth);
-        newMaxWidth = (newWidth + diff) / 100 * tableWidth - 100;
-      }
-      this.set("columnWidth", newWidth / 100 * tableWidth);
-      this.notifyPropertyChange("columnWidth");
-      return newMaxWidth;
-    },
-    _convertColumnToWidth: Ember.beforeObserver(function() {
-      var tableWidth;
-      tableWidth = this.get("controller._tableContainerWidth");
-      if (tableWidth) {
-        return this.set("columnWidth", this.get("columnWidth") / tableWidth * 100 + "%");
-      }
-    }, "controller._tableContainerWidth"),
-    _resizeToTable: Ember.observer(function() {
-      return this.resize();
-    }, "controller._tableContainerWidth")
-  });
-
-  App.FluidTable = Ember.Table.EmberTableComponent.extend({
-    _tableColumnsWidth: "100%",
-    prepareTableColumns: function(columns) {
-      var col, i, _i, _len, _results;
-      this._super(columns);
-      _results = [];
-      for (i = _i = 0, _len = columns.length; _i < _len; i = ++_i) {
-        col = columns[i];
-        _results.push(col.set("_nextColumn", columns.objectAt(i + 1)));
-      }
-      return _results;
-    }
-  });
-
-  App.EmberTableFluidController = Ember.Controller.extend({
+  App.EmberTableEditableController = Ember.Controller.extend({
     numRows: 100,
     columns: Ember.computed(function() {
-      var closeColumn, dateColumn, highColumn, lowColumn, openColumn;
-      dateColumn = App.FluidColumnDefinition.create({
-        columnWidth: "40",
-        headerCellName: 'Date',
-        getCellContent: function(row) {
-          return row.get('date').toDateString();
-        }
-      });
-      openColumn = App.FluidColumnDefinition.create({
-        columnWidth: "15",
-        headerCellName: 'Open',
-        getCellContent: function(row) {
-          return row.get('open').toFixed(2);
-        }
-      });
-      highColumn = App.FluidColumnDefinition.create({
-        columnWidth: "15",
-        headerCellName: 'High',
-        getCellContent: function(row) {
-          return row.get('high').toFixed(2);
-        }
-      });
-      lowColumn = App.FluidColumnDefinition.create({
-        columnWidth: "15",
-        headerCellName: 'Low',
-        getCellContent: function(row) {
-          return row.get('low').toFixed(2);
-        }
-      });
-      closeColumn = App.FluidColumnDefinition.create({
-        columnWidth: "15",
-        headerCellName: 'Close',
-        getCellContent: function(row) {
-          return row.get('close').toFixed(2);
-        }
-      });
-      return [dateColumn, openColumn, highColumn, lowColumn, closeColumn];
-    }),
-    content: Ember.computed(function() {
-      var _i, _ref, _results;
-      return (function() {
-        _results = [];
-        for (var _i = 0, _ref = this.get('numRows'); 0 <= _ref ? _i < _ref : _i > _ref; 0 <= _ref ? _i++ : _i--){ _results.push(_i); }
-        return _results;
-      }).apply(this).map(function(index) {
-        var date;
-        date = new Date();
-        date.setDate(date.getDate() + index);
-        return {
-          date: date,
-          open: Math.random() * 100 - 50,
-          high: Math.random() * 100 - 50,
-          low: Math.random() * 100 - 50,
-          close: Math.random() * 100 - 50,
-          volume: Math.random() * 1000000
-        };
-      });
-    }).property('numRows')
-  });
-
-}).call(this);
-
-
-})();
-(function() {
-
-(function() {
-
-  App.EmberTableHorizonController = Ember.Controller.extend({
-    numRows: 100,
-    columns: Ember.computed(function() {
-      var horizon, name;
-      name = Ember.Table.ColumnDefinition.create({
-        columnWidth: 100,
-        headerCellName: 'Name',
-        getCellContent: function(row) {
-          return 'Horizon ' + row.get('name');
-        }
-      });
-      horizon = Ember.Table.ColumnDefinition.create({
-        columnWidth: 600,
-        headerCellName: 'Horizon',
-        tableCellViewClass: 'App.HorizonTableCellView',
-        getCellContent: Ember.K
-      });
-      return [name, horizon];
-    }),
-    content: Ember.computed(function() {
-      var normal, _i, _ref, _results;
-      normal = d3.random.normal(1.5, 3);
-      return (function() {
-        _results = [];
-        for (var _i = 0, _ref = this.get('numRows'); 0 <= _ref ? _i < _ref : _i > _ref; 0 <= _ref ? _i++ : _i--){ _results.push(_i); }
-        return _results;
-      }).apply(this).map(function(num, index) {
-        var data, _i, _results;
-        data = (function() {
-          _results = [];
-          for (_i = 0; _i < 100; _i++){ _results.push(_i); }
-          return _results;
-        }).apply(this).map(function(i) {
-          return [i, normal()];
-        });
-        return {
-          name: index,
-          data: data
-        };
-      });
-    }).property('numRows')
-  });
-
-}).call(this);
-
-
-})();
-(function() {
-
-(function() {
-
-  App.EmberTableOverviewController = Ember.Controller.extend({
-    data: Ember.computed(function() {
-      return App.data.treedata;
-    })
-  });
-
-}).call(this);
-
-
-})();
-(function() {
-
-(function() {
-
-  App.EmberTableSimpleController = Ember.Controller.extend({
-    numRows: 100,
-    columns: Ember.computed(function() {
-      var closeColumn, dateColumn, highColumn, lowColumn, openColumn;
+      var columnNames, columns, dateColumn, ratingColumn;
+      columnNames = ['open', 'close'];
       dateColumn = Ember.Table.ColumnDefinition.create({
-        columnWidth: 150,
-        textAlign: 'text-align-left',
+        savedWidth: 100,
         headerCellName: 'Date',
+        tableCellViewClass: 'App.DatePickerTableCell',
         getCellContent: function(row) {
-          return row.get('date').toDateString();
+          return row.get('date').toString('yyyy-MM-dd');
+        },
+        setCellContent: function(row, value) {
+          return row.set('date', value);
         }
       });
-      openColumn = Ember.Table.ColumnDefinition.create({
-        columnWidth: 100,
-        headerCellName: 'Open',
-        getCellContent: function(row) {
-          return row.get('open').toFixed(2);
+      ratingColumn = Ember.Table.ColumnDefinition.create({
+        savedWidth: 150,
+        headerCellName: 'Analyst Rating',
+        tableCellViewClass: 'App.RatingTableCell',
+        contentPath: 'rating',
+        setCellContent: function(row, value) {
+          return row.set('rating', value);
         }
       });
-      highColumn = Ember.Table.ColumnDefinition.create({
-        columnWidth: 100,
-        headerCellName: 'High',
-        getCellContent: function(row) {
-          return row.get('high').toFixed(2);
-        }
+      columns = columnNames.map(function(key, index) {
+        var name;
+        name = key.charAt(0).toUpperCase() + key.slice(1);
+        return Ember.Table.ColumnDefinition.create({
+          savedWidth: 100,
+          headerCellName: name,
+          tableCellViewClass: 'App.EditableTableCell',
+          getCellContent: function(row) {
+            return row.get(key).toFixed(2);
+          },
+          setCellContent: function(row, value) {
+            return row.set(key, +value);
+          }
+        });
       });
-      lowColumn = Ember.Table.ColumnDefinition.create({
-        columnWidth: 100,
-        headerCellName: 'Low',
-        getCellContent: function(row) {
-          return row.get('low').toFixed(2);
-        }
-      });
-      closeColumn = Ember.Table.ColumnDefinition.create({
-        columnWidth: 100,
-        headerCellName: 'Close',
-        getCellContent: function(row) {
-          return row.get('close').toFixed(2);
-        }
-      });
-      return [dateColumn, openColumn, highColumn, lowColumn, closeColumn];
-    }),
+      columns.unshift(ratingColumn);
+      columns.unshift(dateColumn);
+      return columns;
+    }).property(),
     content: Ember.computed(function() {
       var _i, _ref, _results;
       return (function() {
         _results = [];
         for (var _i = 0, _ref = this.get('numRows'); 0 <= _ref ? _i < _ref : _i > _ref; 0 <= _ref ? _i++ : _i--){ _results.push(_i); }
         return _results;
-      }).apply(this).map(function(index) {
-        var date;
-        date = new Date();
-        date.setDate(date.getDate() + index);
+      }).apply(this).map(function(num, idx) {
         return {
-          date: date,
+          index: idx,
+          date: Date.now().add({
+            days: idx
+          }),
           open: Math.random() * 100 - 50,
-          high: Math.random() * 100 - 50,
-          low: Math.random() * 100 - 50,
           close: Math.random() * 100 - 50,
-          volume: Math.random() * 1000000
+          rating: Math.round(Math.random() * 4)
         };
       });
     }).property('numRows')
@@ -16779,41 +16928,41 @@ d3 = function() {
     columns: Ember.computed(function() {
       var close, high, low, name, open, spark;
       name = Ember.Table.ColumnDefinition.create({
-        columnWidth: 100,
+        savedWidth: 100,
         headerCellName: 'Name',
         getCellContent: function(row) {
           return 'Asset ' + row.get('name');
         }
       });
       open = Ember.Table.ColumnDefinition.create({
-        columnWidth: 100,
+        savedWidth: 100,
         headerCellName: 'Open',
         getCellContent: function(row) {
           return row.get('open').toFixed(2);
         }
       });
       spark = Ember.Table.ColumnDefinition.create({
-        columnWidth: 200,
+        savedWidth: 200,
         headerCellName: 'Sparkline',
         tableCellViewClass: 'App.SparkLineTableCellView',
         contentPath: 'timeseries'
       });
       close = Ember.Table.ColumnDefinition.create({
-        columnWidth: 100,
+        savedWidth: 100,
         headerCellName: 'Close',
         getCellContent: function(row) {
           return row.get('close').toFixed(2);
         }
       });
       low = Ember.Table.ColumnDefinition.create({
-        columnWidth: 100,
+        savedWidth: 100,
         headerCellName: 'Low',
         getCellContent: function(row) {
           return row.get('low').toFixed(2);
         }
       });
       high = Ember.Table.ColumnDefinition.create({
-        columnWidth: 100,
+        savedWidth: 100,
         headerCellName: 'High',
         getCellContent: function(row) {
           return row.get('high').toFixed(2);
@@ -16861,202 +17010,184 @@ d3 = function() {
 
 (function() {
 
-  App.EmberTableFinancialController = Ember.Controller.extend({
-    data: Ember.computed(function() {
-      return App.data.treedata;
-    })
-  });
-
-  Number.prototype.toCurrency = function() {
-    var value;
-    if (isNaN(this) || !isFinite(this)) {
-      return '-';
-    }
-    value = Math.abs(this).toFixed(2);
-    value = value.replace(/(\d)(?=(\d\d\d)+(?!\d))/g, '$1,');
-    return (this < 0 ? '-$' : '$') + value;
-  };
-
-  Number.prototype.toPercent = function() {
-    if (isNaN(this) || !isFinite(this)) {
-      return '-';
-    }
-    return Math.abs(this * 100).toFixed(2) + '%';
-  };
-
-  App.TreeTableExample = Ember.Namespace.create();
-
-  App.TreeTableExample.TreeDataAdapter = Ember.Mixin.create({
-    data: null,
+  App.EmberTableHorizonController = Ember.Controller.extend({
+    numRows: 100,
     columns: Ember.computed(function() {
-      var columns, data, names;
-      data = this.get('data');
-      if (!data) {
-        return;
-      }
-      names = this.get('data.value_factors').getEach('display_name');
-      columns = names.map(function(name, index) {
-        return Ember.Table.ColumnDefinition.create({
-          index: index,
-          headerCellName: name,
-          getCellContent: function(row) {
-            var object;
-            object = row.get('values')[this.get('index')];
-            if (object.type === 'money') {
-              return object.value.toCurrency();
-            }
-            if (object.type === 'percent') {
-              return object.value.toPercent();
-            }
-            return "-";
-          }
+      var horizon, name;
+      name = Ember.Table.ColumnDefinition.create({
+        savedWidth: 100,
+        headerCellName: 'Name',
+        getCellContent: function(row) {
+          return 'Horizon ' + row.get('name');
+        }
+      });
+      horizon = Ember.Table.ColumnDefinition.create({
+        savedWidth: 600,
+        headerCellName: 'Horizon',
+        tableCellViewClass: 'App.HorizonTableCellView',
+        getCellContent: Ember.K
+      });
+      return [name, horizon];
+    }),
+    content: Ember.computed(function() {
+      var normal, _i, _ref, _results;
+      normal = d3.random.normal(1.5, 3);
+      return (function() {
+        _results = [];
+        for (var _i = 0, _ref = this.get('numRows'); 0 <= _ref ? _i < _ref : _i > _ref; 0 <= _ref ? _i++ : _i--){ _results.push(_i); }
+        return _results;
+      }).apply(this).map(function(num, index) {
+        var data, _i, _results;
+        data = (function() {
+          _results = [];
+          for (_i = 0; _i < 100; _i++){ _results.push(_i); }
+          return _results;
+        }).apply(this).map(function(i) {
+          return [i, normal()];
         });
+        return {
+          name: index,
+          data: data
+        };
       });
-      columns.unshiftObject(this.get('groupingColumn'));
-      return columns;
-    }).property('data.valueFactors.@each', 'groupingColumn'),
-    groupingColumn: Ember.computed(function() {
-      var groupingFactors, name;
-      groupingFactors = this.get('data.grouping_factors');
-      name = groupingFactors.getEach('display_name').join(' ▸ ');
-      return Ember.Table.ColumnDefinition.create({
-        headerCellName: name,
-        columnWidth: 400,
-        isTreeColumn: true,
-        isSortable: false,
-        textAlign: 'text-align-left',
-        headerCellViewClass: 'App.TreeTableExample.HeaderTreeCell',
-        tableCellViewClass: 'App.TreeTableExample.TreeCell',
-        contentPath: 'group_value'
-      });
-    }).property('data.grouping_factors.@each'),
-    root: Ember.computed(function() {
-      var data;
-      data = this.get('data');
-      if (!data) {
-        return;
-      }
-      return this.createTree(null, data.root);
-    }).property('data', 'sortAscending', 'sortColumn'),
-    rows: Ember.computed(function() {
-      var maxGroupingLevel, root, rows;
-      root = this.get('root');
-      if (!root) {
-        return Ember.A();
-      }
-      rows = this.flattenTree(null, root, Ember.A());
-      this.computeStyles(null, root);
-      maxGroupingLevel = Math.max.apply(rows.getEach('groupingLevel'));
-      rows.forEach(function(row) {
-        return row.computeRowStyle(maxGroupingLevel);
-      });
-      return rows;
-    }).property('root'),
-    bodyContent: Ember.computed(function() {
-      var rows;
-      rows = this.get('rows');
-      if (!rows) {
-        return Ember.A();
-      }
-      rows = rows.slice(1, rows.get('length'));
-      return rows.filterProperty('isShowing');
-    }).property('rows'),
-    footerContent: Ember.computed(function() {
-      var rows;
-      rows = this.get('rows');
-      if (!rows) {
-        return Ember.A();
-      }
-      return rows.slice(0, 1);
-    }).property('rows'),
-    orderBy: function(item1, item2) {
-      var result, sortAscending, sortColumn, value1, value2;
-      sortColumn = this.get('sortColumn');
-      sortAscending = this.get('sortAscending');
-      if (!sortColumn) {
-        return 1;
-      }
-      value1 = sortColumn.getCellContent(item1);
-      value2 = sortColumn.getCellContent(item2);
-      result = Ember.compare(value1, value2);
-      if (sortAscending) {
-        return result;
+    }).property('numRows')
+  });
+
+}).call(this);
+
+
+})();
+(function() {
+
+(function() {
+
+  App.EmberTableConfigurableColumnsController = Ember.Controller.extend({
+    numRows: 100,
+    isFluid: false,
+    columnMode: Ember.computed(function() {
+      if (this.get('isFluid')) {
+        return 'fluid';
       } else {
-        return -result;
+        return 'standard';
       }
+    }).property('isFluid'),
+    showTable: true,
+    columns: Ember.computed(function() {
+      var closeColumn, dateColumn, highColumn, lowColumn, openColumn;
+      dateColumn = App.ConfigurableColumnDefinition.create({
+        textAlign: 'text-align-left',
+        headerCellName: 'Date',
+        minWidth: 150,
+        getCellContent: function(row) {
+          return row.get('date').toDateString();
+        }
+      });
+      openColumn = App.ConfigurableColumnDefinition.create({
+        headerCellName: 'Open',
+        getCellContent: function(row) {
+          return row.get('open').toFixed(2);
+        }
+      });
+      highColumn = App.ConfigurableColumnDefinition.create({
+        headerCellName: 'High',
+        getCellContent: function(row) {
+          return row.get('high').toFixed(2);
+        }
+      });
+      lowColumn = App.ConfigurableColumnDefinition.create({
+        headerCellName: 'Low',
+        getCellContent: function(row) {
+          return row.get('low').toFixed(2);
+        }
+      });
+      closeColumn = App.ConfigurableColumnDefinition.create({
+        headerCellName: 'Close',
+        getCellContent: function(row) {
+          return row.get('close').toFixed(2);
+        }
+      });
+      return [dateColumn, openColumn, highColumn, lowColumn, closeColumn];
+    }),
+    content: Ember.computed(function() {
+      var _i, _ref, _results;
+      return (function() {
+        _results = [];
+        for (var _i = 0, _ref = this.get('numRows'); 0 <= _ref ? _i < _ref : _i > _ref; 0 <= _ref ? _i++ : _i--){ _results.push(_i); }
+        return _results;
+      }).apply(this).map(function(index) {
+        var date;
+        date = new Date();
+        date.setDate(date.getDate() + index);
+        return {
+          date: date,
+          open: Math.random() * 100 - 50,
+          high: Math.random() * 100 - 50,
+          low: Math.random() * 100 - 50,
+          close: Math.random() * 100 - 50,
+          volume: Math.random() * 1000000
+        };
+      });
+    }).property('numRows'),
+    demoTableWidth: void 0,
+    updateDemoTableWidth: function(newWidth) {
+      return this.set('demoTableWidth', newWidth);
     },
-    createTree: function(parent, node) {
-      var children, row,
-        _this = this;
-      row = App.TreeTableExample.TreeTableRow.create();
-      children = (node.children || []).map(function(child) {
-        return _this.createTree(row, child);
-      });
-      row.setProperties({
-        isRoot: !parent,
-        isLeaf: Ember.isEmpty(children),
-        content: node,
-        parent: parent,
-        children: children,
-        groupName: node.group_name,
-        isCollapsed: false
-      });
-      return row;
-    },
-    flattenTree: function(parent, node, rows) {
-      var _this = this;
-      rows.pushObject(node);
-      (node.children || []).forEach(function(child) {
-        return _this.flattenTree(node, child, rows);
-      });
-      return rows;
-    },
-    computeStyles: function(parent, node) {
-      var _this = this;
-      node.computeStyles(parent);
-      return node.get('children').forEach(function(child) {
-        return _this.computeStyles(node, child);
-      });
+    actions: {
+      refreshTable: function() {
+        var _this = this;
+        this.set('showTable', false);
+        return Ember.run.next(function() {
+          return _this.set('showTable', true);
+        });
+      }
     }
   });
 
-  App.TreeTableExample.TableComponent = Ember.Table.EmberTableComponent.extend(App.TreeTableExample.TreeDataAdapter, {
-    numFixedColumns: 1,
-    isCollapsed: false,
-    isHeaderHeightResizable: true,
-    rowHeight: 30,
-    hasHeader: true,
-    hasFooter: true,
-    headerHeight: 70,
-    sortAscending: false,
-    sortColumn: null,
-    toggleTableCollapse: function(event) {
-      var children, isCollapsed;
-      this.toggleProperty('isCollapsed');
-      isCollapsed = this.get('isCollapsed');
-      children = this.get('root.children');
-      if (!(children && children.get('length') > 0)) {
-        return;
+  App.ConfigurableColumnDefinition = Ember.Table.ColumnDefinition.extend({
+    savedWidth: void 0,
+    savedWidthValue: Ember.computed(function(key, value) {
+      if (arguments.length === 1) {
+        return this.get('savedWidth');
+      } else {
+        this.set('savedWidth', parseInt(value));
+        return this.get('savedWidth');
       }
-      children.forEach(function(child) {
-        return child.recursiveCollapse(isCollapsed);
-      });
-      return this.notifyPropertyChange('rows');
-    },
-    toggleCollapse: function(row) {
-      row.toggleProperty('isCollapsed');
-      return Ember.run.next(this, function() {
-        return this.notifyPropertyChange('rows');
-      });
-    },
-    sortByColumn: function(column) {
-      column.toggleProperty('sortAscending');
-      this.set('sortColumn', column);
-      return this.set('sortAscending', column.get('sortAscending'));
-    },
-    onSelectionsDidChange: Ember.observer(function() {
-      return console.log('selectionsDidChange');
-    }, 'selection.@each')
+    }).property('savedWidth'),
+    minWidthValue: Ember.computed(function(key, value) {
+      if (arguments.length === 1) {
+        return this.get('minWidth');
+      } else {
+        this.set('minWidth', parseInt(value));
+        return this.get('minWidth');
+      }
+    }).property('minWidth'),
+    atMinWidth: Ember.computed(function() {
+      return this.get('width') === this.get('minWidth');
+    }).property('width', 'minWidth'),
+    atMaxWidth: Ember.computed(function() {
+      return this.get('width') === this.get('maxWidth');
+    }).property('width', 'maxWidth'),
+    maxWidth: void 0,
+    maxWidthValue: Ember.computed(function(key, value) {
+      if (arguments.length === 1) {
+        return this.get('maxWidth');
+      } else {
+        this.set('maxWidth', parseInt(value));
+        return this.get('maxWidth');
+      }
+    }).property('maxWidth'),
+    headerCellNameLowerCase: Ember.computed(function() {
+      return this.get('headerCellName').toLowerCase();
+    }).property('headerCellName'),
+    isDateCell: Ember.computed.equal('headerCellName', 'Date'),
+    textAlignIsDefault: Ember.computed.equal('textAlign', 'text-align-right'),
+    minWidthIsDefault: Ember.computed.equal('minWidth', 25)
+  });
+
+  App.ConfigurableTableComponent = Ember.Table.EmberTableComponent.extend({
+    parentWidthObserver: Ember.observer(function() {
+      return this.onResizeEnd();
+    }, 'parentWidth')
   });
 
 }).call(this);
@@ -17102,6 +17233,26 @@ d3 = function() {
     }
   });
 
+  App.ResizableDemoMixin = Ember.Mixin.create({
+    didInsertElement: function() {
+      this._super();
+      return this.$('.js-resizable-container').resizable({
+        handles: 'e',
+        minWidth: 100,
+        alsoResize: 'ember-table-fixed-wrapper',
+        resize: jQuery.proxy(this.onTableContainerResize, this),
+        stop: jQuery.proxy(this.onTableContainerResize, this)
+      });
+    },
+    willDestroyElement: function() {
+      this._super();
+      return this.$('.js-resizable-container').resizable('destroy');
+    },
+    onTableContainerResize: function(event, ui) {
+      return this.get('controller').updateDemoTableWidth(ui.size.width);
+    }
+  });
+
 }).call(this);
 
 
@@ -17124,7 +17275,7 @@ d3 = function() {
 
   App.EmberTableFinancialView = Ember.View.extend(App.CodePrettyPrintMixin, App.SmallHeroAffixMixin);
 
-  App.EmberTableFluidView = Ember.View.extend(App.CodePrettyPrintMixin, App.SmallHeroAffixMixin);
+  App.EmberTableConfigurableColumnsView = Ember.View.extend(App.CodePrettyPrintMixin, App.SmallHeroAffixMixin, App.ResizableDemoMixin);
 
   App.EmberTableHorizonView = Ember.View.extend(App.CodePrettyPrintMixin, App.SmallHeroAffixMixin);
 
@@ -17177,69 +17328,6 @@ d3 = function() {
 
 (function() {
 
-  App.EditableTableCell = Ember.Table.TableCell.extend({
-    className: 'editable-table-cell',
-    templateName: 'ember_table/editable_table/editable_table_cell',
-    isEditing: false,
-    type: 'text',
-    innerTextField: Ember.TextField.extend({
-      typeBinding: 'parentView.type',
-      valueBinding: 'parentView.cellContent',
-      didInsertElement: function() {
-        return this.$().focus();
-      },
-      focusOut: function(event) {
-        return this.set('parentView.isEditing', false);
-      }
-    }),
-    onRowContentDidChange: Ember.observer(function() {
-      return this.set('isEditing', false);
-    }, 'rowContent'),
-    click: function(event) {
-      this.set('isEditing', true);
-      return event.stopPropagation();
-    }
-  });
-
-  App.DatePickerTableCell = App.EditableTableCell.extend({
-    type: 'date'
-  });
-
-  App.RatingTableCell = Ember.Table.TableCell.extend({
-    classNames: 'rating-table-cell',
-    templateName: 'ember_table/editable_table/rating_table_cell',
-    onRowContentDidChange: Ember.observer(function() {
-      return this.applyRating(this.get('cellContent'));
-    }, 'cellContent'),
-    didInsertElement: function() {
-      this._super();
-      return this.onRowContentDidChange();
-    },
-    applyRating: function(rating) {
-      var span;
-      this.$('.rating span').removeClass('active');
-      span = this.$('.rating span').get(rating);
-      return $(span).addClass('active');
-    },
-    click: function(event) {
-      var rating;
-      rating = this.$('.rating span').index(event.target);
-      if (rating === -1) {
-        return;
-      }
-      this.get('column').setCellContent(this.get('row'), rating);
-      return this.applyRating(rating);
-    }
-  });
-
-}).call(this);
-
-
-})();
-(function() {
-
-(function() {
-
   App.FinancialTableCell = Ember.Table.TableCell.extend({
     templateName: 'ember_table/financial_table/financial_table_cell'
   });
@@ -17259,92 +17347,6 @@ d3 = function() {
   App.FinancialTableHeaderTreeCell = Ember.Table.HeaderCell.extend({
     templateName: 'ember_table/financial_table/financial_table_header_tree_cell',
     classNames: 'ember-table-table-header-tree-cell'
-  });
-
-}).call(this);
-
-
-})();
-(function() {
-
-(function() {
-
-  App.HorizonTableCellView = Ember.Table.TableCell.extend({
-    template: Ember.Handlebars.compile(""),
-    heightBinding: 'controller.rowHeight',
-    horizonContent: Ember.computed(function() {
-      var normal, _i, _results;
-      normal = d3.random.normal(1.5, 3);
-      return (function() {
-        _results = [];
-        for (_i = 0; _i < 100; _i++){ _results.push(_i); }
-        return _results;
-      }).apply(this).map(function(i) {
-        return [i, normal()];
-      });
-    }).property(),
-    onWidthDidChange: Ember.observer(function() {
-      this.$('svg').remove();
-      return this.renderD3View();
-    }, 'width'),
-    didInsertElement: function() {
-      return this.onWidthDidChange();
-    },
-    renderD3View: function() {
-      var chart, data, height, svg, width;
-      width = this.get('width');
-      height = this.get('height');
-      data = this.get('horizonContent');
-      chart = d3.horizon().width(width).height(height).bands(2).mode("mirror").interpolate("basis");
-      svg = d3.select('#' + this.get('elementId')).append("svg").attr("width", width).attr("height", height);
-      return svg.data([data]).call(chart);
-    }
-  });
-
-}).call(this);
-
-
-})();
-(function() {
-
-(function() {
-
-  App.SparkLineTableCellView = Ember.Table.TableCell.extend({
-    template: Ember.Handlebars.compile(""),
-    heightBinding: 'controller.rowHeight',
-    onContentOrSizeDidChange: Ember.observer(function() {
-      this.$('svg').remove();
-      return this.renderD3View();
-    }, 'row', 'width'),
-    didInsertElement: function() {
-      return this.renderD3View();
-    },
-    renderD3View: function() {
-      var data, fill, g, h, len, line, max, min, p, svg, w, xscale, yscale;
-      data = this.get('row.timeseries');
-      if (!data) {
-        return;
-      }
-      h = this.get('height');
-      w = this.get('width');
-      p = 2;
-      min = Math.min.apply(null, data);
-      max = Math.max.apply(null, data);
-      len = data.length;
-      fill = d3.scale.category10();
-      xscale = d3.scale.linear().domain([0, len]).range([p, w - p]);
-      yscale = d3.scale.linear().domain([min, max]).range([h - p, p]);
-      line = d3.svg.line().x(function(d, i) {
-        return xscale(i);
-      }).y(function(d) {
-        return yscale(d);
-      });
-      svg = d3.select("#" + (this.get('elementId'))).append('svg:svg').attr('height', h).attr('width', w);
-      g = svg.append('svg:g');
-      return g.append('svg:path').attr('d', line(data)).attr('stroke', function(d) {
-        return fill(Math.round(Math.random()) * 10);
-      }).attr('fill', 'none');
-    }
   });
 
 }).call(this);
@@ -17458,6 +17460,155 @@ d3 = function() {
 
 (function() {
 
+  App.EditableTableCell = Ember.Table.TableCell.extend({
+    className: 'editable-table-cell',
+    templateName: 'ember_table/editable_table/editable_table_cell',
+    isEditing: false,
+    type: 'text',
+    innerTextField: Ember.TextField.extend({
+      typeBinding: 'parentView.type',
+      valueBinding: 'parentView.cellContent',
+      didInsertElement: function() {
+        return this.$().focus();
+      },
+      focusOut: function(event) {
+        return this.set('parentView.isEditing', false);
+      }
+    }),
+    onRowContentDidChange: Ember.observer(function() {
+      return this.set('isEditing', false);
+    }, 'rowContent'),
+    click: function(event) {
+      this.set('isEditing', true);
+      return event.stopPropagation();
+    }
+  });
+
+  App.DatePickerTableCell = App.EditableTableCell.extend({
+    type: 'date'
+  });
+
+  App.RatingTableCell = Ember.Table.TableCell.extend({
+    classNames: 'rating-table-cell',
+    templateName: 'ember_table/editable_table/rating_table_cell',
+    onRowContentDidChange: Ember.observer(function() {
+      return this.applyRating(this.get('cellContent'));
+    }, 'cellContent'),
+    didInsertElement: function() {
+      this._super();
+      return this.onRowContentDidChange();
+    },
+    applyRating: function(rating) {
+      var span;
+      this.$('.rating span').removeClass('active');
+      span = this.$('.rating span').get(rating);
+      return $(span).addClass('active');
+    },
+    click: function(event) {
+      var rating;
+      rating = this.$('.rating span').index(event.target);
+      if (rating === -1) {
+        return;
+      }
+      this.get('column').setCellContent(this.get('row'), rating);
+      return this.applyRating(rating);
+    }
+  });
+
+}).call(this);
+
+
+})();
+(function() {
+
+(function() {
+
+  App.SparkLineTableCellView = Ember.Table.TableCell.extend({
+    template: Ember.Handlebars.compile(""),
+    heightBinding: 'controller.rowHeight',
+    onContentOrSizeDidChange: Ember.observer(function() {
+      this.$('svg').remove();
+      return this.renderD3View();
+    }, 'row', 'width'),
+    didInsertElement: function() {
+      return this.renderD3View();
+    },
+    renderD3View: function() {
+      var data, fill, g, h, len, line, max, min, p, svg, w, xscale, yscale;
+      data = this.get('row.timeseries');
+      if (!data) {
+        return;
+      }
+      h = this.get('height');
+      w = this.get('width');
+      p = 2;
+      min = Math.min.apply(null, data);
+      max = Math.max.apply(null, data);
+      len = data.length;
+      fill = d3.scale.category10();
+      xscale = d3.scale.linear().domain([0, len]).range([p, w - p]);
+      yscale = d3.scale.linear().domain([min, max]).range([h - p, p]);
+      line = d3.svg.line().x(function(d, i) {
+        return xscale(i);
+      }).y(function(d) {
+        return yscale(d);
+      });
+      svg = d3.select("#" + (this.get('elementId'))).append('svg:svg').attr('height', h).attr('width', w);
+      g = svg.append('svg:g');
+      return g.append('svg:path').attr('d', line(data)).attr('stroke', function(d) {
+        return fill(Math.round(Math.random()) * 10);
+      }).attr('fill', 'none');
+    }
+  });
+
+}).call(this);
+
+
+})();
+(function() {
+
+(function() {
+
+  App.HorizonTableCellView = Ember.Table.TableCell.extend({
+    template: Ember.Handlebars.compile(""),
+    heightBinding: 'controller.rowHeight',
+    horizonContent: Ember.computed(function() {
+      var normal, _i, _results;
+      normal = d3.random.normal(1.5, 3);
+      return (function() {
+        _results = [];
+        for (_i = 0; _i < 100; _i++){ _results.push(_i); }
+        return _results;
+      }).apply(this).map(function(i) {
+        return [i, normal()];
+      });
+    }).property(),
+    onWidthDidChange: Ember.observer(function() {
+      this.$('svg').remove();
+      return this.renderD3View();
+    }, 'width'),
+    didInsertElement: function() {
+      return this.onWidthDidChange();
+    },
+    renderD3View: function() {
+      var chart, data, height, svg, width;
+      width = this.get('width');
+      height = this.get('height');
+      data = this.get('horizonContent');
+      chart = d3.horizon().width(width).height(height).bands(2).mode("mirror").interpolate("basis");
+      svg = d3.select('#' + this.get('elementId')).append("svg").attr("width", width).attr("height", height);
+      return svg.data([data]).call(chart);
+    }
+  });
+
+}).call(this);
+
+
+})();
+(function() {
+
+(function() {
+
   App.Router.map(function() {
     this.route('license');
     return this.resource('emberTable', {
@@ -17466,15 +17617,15 @@ d3 = function() {
       this.route('overview');
       this.route('documentation');
       this.route('migration-guides');
+      this.route('simple');
       this.route('ajax');
       this.route('bars');
       this.route('dynamic-bars');
-      this.route('editable');
       this.route('financial');
-      this.route('fluid');
-      this.route('horizon');
-      this.route('simple');
+      this.route('editable');
       this.route('sparkline');
+      this.route('horizon');
+      this.route('configurable-columns');
       return this.route('community-examples');
     });
   });
@@ -17552,52 +17703,58 @@ function program7(depth0,data) {
 function program9(depth0,data) {
   
   
-  data.buffer.push("AJAX cells");
+  data.buffer.push("Hello World table");
   }
 
 function program11(depth0,data) {
   
   
-  data.buffer.push("Bar cells");
+  data.buffer.push("AJAX cells");
   }
 
 function program13(depth0,data) {
   
   
-  data.buffer.push("Dynamic bar cells");
+  data.buffer.push("Bar cells");
   }
 
 function program15(depth0,data) {
   
   
-  data.buffer.push("Tree &amp; financial table");
+  data.buffer.push("Dynamic bar cells");
   }
 
 function program17(depth0,data) {
   
   
-  data.buffer.push("Editable cells");
+  data.buffer.push("Tree &amp; financial table");
   }
 
 function program19(depth0,data) {
   
   
-  data.buffer.push("Sparkline cells");
+  data.buffer.push("Editable cells");
   }
 
 function program21(depth0,data) {
   
   
-  data.buffer.push("Horizon cells");
+  data.buffer.push("Sparkline cells");
   }
 
 function program23(depth0,data) {
   
   
-  data.buffer.push("Fluid table");
+  data.buffer.push("Horizon cells");
   }
 
 function program25(depth0,data) {
+  
+  
+  data.buffer.push("Configurable columns");
+  }
+
+function program27(depth0,data) {
   
   
   data.buffer.push("License");
@@ -17616,31 +17773,34 @@ function program25(depth0,data) {
   stack1 = (helper = helpers['link-to'] || (depth0 && depth0['link-to']),options={hash:{},hashTypes:{},hashContexts:{},inverse:self.noop,fn:self.program(7, program7, data),contexts:[depth0],types:["STRING"],data:data},helper ? helper.call(depth0, "emberTable.community-examples", options) : helperMissing.call(depth0, "link-to", "emberTable.community-examples", options));
   if(stack1 || stack1 === 0) { data.buffer.push(stack1); }
   data.buffer.push("</li>\n        </ul>\n      </div>\n      <div class=\"col-md-3\">\n        <ul class=\"list-unstyled\">\n          <li><h6>Examples</h6></li>\n          <li>");
-  stack1 = (helper = helpers['link-to'] || (depth0 && depth0['link-to']),options={hash:{},hashTypes:{},hashContexts:{},inverse:self.noop,fn:self.program(9, program9, data),contexts:[depth0],types:["STRING"],data:data},helper ? helper.call(depth0, "emberTable.ajax", options) : helperMissing.call(depth0, "link-to", "emberTable.ajax", options));
+  stack1 = (helper = helpers['link-to'] || (depth0 && depth0['link-to']),options={hash:{},hashTypes:{},hashContexts:{},inverse:self.noop,fn:self.program(9, program9, data),contexts:[depth0],types:["STRING"],data:data},helper ? helper.call(depth0, "emberTable.simple", options) : helperMissing.call(depth0, "link-to", "emberTable.simple", options));
   if(stack1 || stack1 === 0) { data.buffer.push(stack1); }
   data.buffer.push("</li>\n          <li>");
-  stack1 = (helper = helpers['link-to'] || (depth0 && depth0['link-to']),options={hash:{},hashTypes:{},hashContexts:{},inverse:self.noop,fn:self.program(11, program11, data),contexts:[depth0],types:["STRING"],data:data},helper ? helper.call(depth0, "emberTable.bars", options) : helperMissing.call(depth0, "link-to", "emberTable.bars", options));
+  stack1 = (helper = helpers['link-to'] || (depth0 && depth0['link-to']),options={hash:{},hashTypes:{},hashContexts:{},inverse:self.noop,fn:self.program(11, program11, data),contexts:[depth0],types:["STRING"],data:data},helper ? helper.call(depth0, "emberTable.ajax", options) : helperMissing.call(depth0, "link-to", "emberTable.ajax", options));
   if(stack1 || stack1 === 0) { data.buffer.push(stack1); }
   data.buffer.push("</li>\n          <li>");
-  stack1 = (helper = helpers['link-to'] || (depth0 && depth0['link-to']),options={hash:{},hashTypes:{},hashContexts:{},inverse:self.noop,fn:self.program(13, program13, data),contexts:[depth0],types:["STRING"],data:data},helper ? helper.call(depth0, "emberTable.dynamic-bars", options) : helperMissing.call(depth0, "link-to", "emberTable.dynamic-bars", options));
+  stack1 = (helper = helpers['link-to'] || (depth0 && depth0['link-to']),options={hash:{},hashTypes:{},hashContexts:{},inverse:self.noop,fn:self.program(13, program13, data),contexts:[depth0],types:["STRING"],data:data},helper ? helper.call(depth0, "emberTable.bars", options) : helperMissing.call(depth0, "link-to", "emberTable.bars", options));
   if(stack1 || stack1 === 0) { data.buffer.push(stack1); }
   data.buffer.push("</li>\n          <li>");
-  stack1 = (helper = helpers['link-to'] || (depth0 && depth0['link-to']),options={hash:{},hashTypes:{},hashContexts:{},inverse:self.noop,fn:self.program(15, program15, data),contexts:[depth0],types:["STRING"],data:data},helper ? helper.call(depth0, "emberTable.financial", options) : helperMissing.call(depth0, "link-to", "emberTable.financial", options));
+  stack1 = (helper = helpers['link-to'] || (depth0 && depth0['link-to']),options={hash:{},hashTypes:{},hashContexts:{},inverse:self.noop,fn:self.program(15, program15, data),contexts:[depth0],types:["STRING"],data:data},helper ? helper.call(depth0, "emberTable.dynamic-bars", options) : helperMissing.call(depth0, "link-to", "emberTable.dynamic-bars", options));
   if(stack1 || stack1 === 0) { data.buffer.push(stack1); }
   data.buffer.push("</li>\n          <li>");
-  stack1 = (helper = helpers['link-to'] || (depth0 && depth0['link-to']),options={hash:{},hashTypes:{},hashContexts:{},inverse:self.noop,fn:self.program(17, program17, data),contexts:[depth0],types:["STRING"],data:data},helper ? helper.call(depth0, "emberTable.editable", options) : helperMissing.call(depth0, "link-to", "emberTable.editable", options));
+  stack1 = (helper = helpers['link-to'] || (depth0 && depth0['link-to']),options={hash:{},hashTypes:{},hashContexts:{},inverse:self.noop,fn:self.program(17, program17, data),contexts:[depth0],types:["STRING"],data:data},helper ? helper.call(depth0, "emberTable.financial", options) : helperMissing.call(depth0, "link-to", "emberTable.financial", options));
   if(stack1 || stack1 === 0) { data.buffer.push(stack1); }
   data.buffer.push("</li>\n          <li>");
-  stack1 = (helper = helpers['link-to'] || (depth0 && depth0['link-to']),options={hash:{},hashTypes:{},hashContexts:{},inverse:self.noop,fn:self.program(19, program19, data),contexts:[depth0],types:["STRING"],data:data},helper ? helper.call(depth0, "emberTable.sparkline", options) : helperMissing.call(depth0, "link-to", "emberTable.sparkline", options));
+  stack1 = (helper = helpers['link-to'] || (depth0 && depth0['link-to']),options={hash:{},hashTypes:{},hashContexts:{},inverse:self.noop,fn:self.program(19, program19, data),contexts:[depth0],types:["STRING"],data:data},helper ? helper.call(depth0, "emberTable.editable", options) : helperMissing.call(depth0, "link-to", "emberTable.editable", options));
   if(stack1 || stack1 === 0) { data.buffer.push(stack1); }
   data.buffer.push("</li>\n          <li>");
-  stack1 = (helper = helpers['link-to'] || (depth0 && depth0['link-to']),options={hash:{},hashTypes:{},hashContexts:{},inverse:self.noop,fn:self.program(21, program21, data),contexts:[depth0],types:["STRING"],data:data},helper ? helper.call(depth0, "emberTable.horizon", options) : helperMissing.call(depth0, "link-to", "emberTable.horizon", options));
+  stack1 = (helper = helpers['link-to'] || (depth0 && depth0['link-to']),options={hash:{},hashTypes:{},hashContexts:{},inverse:self.noop,fn:self.program(21, program21, data),contexts:[depth0],types:["STRING"],data:data},helper ? helper.call(depth0, "emberTable.sparkline", options) : helperMissing.call(depth0, "link-to", "emberTable.sparkline", options));
   if(stack1 || stack1 === 0) { data.buffer.push(stack1); }
   data.buffer.push("</li>\n          <li>");
-  stack1 = (helper = helpers['link-to'] || (depth0 && depth0['link-to']),options={hash:{},hashTypes:{},hashContexts:{},inverse:self.noop,fn:self.program(23, program23, data),contexts:[depth0],types:["STRING"],data:data},helper ? helper.call(depth0, "emberTable.fluid", options) : helperMissing.call(depth0, "link-to", "emberTable.fluid", options));
+  stack1 = (helper = helpers['link-to'] || (depth0 && depth0['link-to']),options={hash:{},hashTypes:{},hashContexts:{},inverse:self.noop,fn:self.program(23, program23, data),contexts:[depth0],types:["STRING"],data:data},helper ? helper.call(depth0, "emberTable.horizon", options) : helperMissing.call(depth0, "link-to", "emberTable.horizon", options));
+  if(stack1 || stack1 === 0) { data.buffer.push(stack1); }
+  data.buffer.push("</li>\n          <li>");
+  stack1 = (helper = helpers['link-to'] || (depth0 && depth0['link-to']),options={hash:{},hashTypes:{},hashContexts:{},inverse:self.noop,fn:self.program(25, program25, data),contexts:[depth0],types:["STRING"],data:data},helper ? helper.call(depth0, "emberTable.configurable-columns", options) : helperMissing.call(depth0, "link-to", "emberTable.configurable-columns", options));
   if(stack1 || stack1 === 0) { data.buffer.push(stack1); }
   data.buffer.push("</li>\n        </ul>\n      </div>\n      <div class=\"col-md-3\">\n        <ul class=\"list-unstyled\">\n          <li><h6>Addepar Open Source</h6></li>\n          <li><a target=\"_BLANK\" href=\"http://addepar.github.io/\">Home</a></li>\n          <li>");
-  stack1 = (helper = helpers['link-to'] || (depth0 && depth0['link-to']),options={hash:{},hashTypes:{},hashContexts:{},inverse:self.noop,fn:self.program(25, program25, data),contexts:[depth0],types:["STRING"],data:data},helper ? helper.call(depth0, "license", options) : helperMissing.call(depth0, "link-to", "license", options));
+  stack1 = (helper = helpers['link-to'] || (depth0 && depth0['link-to']),options={hash:{},hashTypes:{},hashContexts:{},inverse:self.noop,fn:self.program(27, program27, data),contexts:[depth0],types:["STRING"],data:data},helper ? helper.call(depth0, "license", options) : helperMissing.call(depth0, "link-to", "license", options));
   if(stack1 || stack1 === 0) { data.buffer.push(stack1); }
   data.buffer.push("</li>\n        </ul>\n      </div>\n      <div class=\"col-md-3\">\n        <ul class=\"list-unstyled\">\n          <li><h6>About Addepar</h6></li>\n          <li><a target=\"_BLANK\" href=\"http://www.addepar.com\">www.addepar.com</a></li>\n          <li>\n            <address>\n              <br>\n              <a target=\"_BLANK\" href=\"http://goo.gl/maps/446ui\"><strong>Addepar HQ</strong><br>\n              1215 Terra Bella Ave<br>\n              Mountain View, CA 94043</a><br><br>\n\n              <a target=\"_BLANK\" href=\"http://goo.gl/maps/xEiCM\"><strong>Addepar NY</strong><br>\n              335 Madison Ave Suite 880<br>\n              New York, NY 10017</a><br>\n            </address>\n          </li>\n        </ul>\n      </div>\n    </div>\n    <div class=\"row\">\n      <div class=\"col-md-12 center-align\">\n        <p>&copy; 2013 Addepar, Inc.</p>\n      </div>\n    </div>\n  </div>\n</div>\n");
   return buffer;
@@ -17732,7 +17892,7 @@ function program5(depth0,data) {
 function program7(depth0,data) {
   
   
-  data.buffer.push("Hello World Table");
+  data.buffer.push("Hello World table");
   }
 
 function program9(depth0,data) {
@@ -17780,7 +17940,7 @@ function program21(depth0,data) {
 function program23(depth0,data) {
   
   
-  data.buffer.push("Fluid table");
+  data.buffer.push("Configurable columns");
   }
 
 function program25(depth0,data) {
@@ -17823,7 +17983,7 @@ function program25(depth0,data) {
   stack1 = (helper = helpers['link-to'] || (depth0 && depth0['link-to']),options={hash:{},hashTypes:{},hashContexts:{},inverse:self.noop,fn:self.program(21, program21, data),contexts:[depth0],types:["STRING"],data:data},helper ? helper.call(depth0, "emberTable.horizon", options) : helperMissing.call(depth0, "link-to", "emberTable.horizon", options));
   if(stack1 || stack1 === 0) { data.buffer.push(stack1); }
   data.buffer.push("</li>\n    <li>");
-  stack1 = (helper = helpers['link-to'] || (depth0 && depth0['link-to']),options={hash:{},hashTypes:{},hashContexts:{},inverse:self.noop,fn:self.program(23, program23, data),contexts:[depth0],types:["STRING"],data:data},helper ? helper.call(depth0, "emberTable.fluid", options) : helperMissing.call(depth0, "link-to", "emberTable.fluid", options));
+  stack1 = (helper = helpers['link-to'] || (depth0 && depth0['link-to']),options={hash:{},hashTypes:{},hashContexts:{},inverse:self.noop,fn:self.program(23, program23, data),contexts:[depth0],types:["STRING"],data:data},helper ? helper.call(depth0, "emberTable.configurable-columns", options) : helperMissing.call(depth0, "link-to", "emberTable.configurable-columns", options));
   if(stack1 || stack1 === 0) { data.buffer.push(stack1); }
   data.buffer.push("</li>\n  </ul>\n  <hr>\n  ");
   stack1 = (helper = helpers['link-to'] || (depth0 && depth0['link-to']),options={hash:{},hashTypes:{},hashContexts:{},inverse:self.noop,fn:self.program(25, program25, data),contexts:[depth0],types:["STRING"],data:data},helper ? helper.call(depth0, "emberTable.community-examples", options) : helperMissing.call(depth0, "link-to", "emberTable.community-examples", options));
@@ -17928,13 +18088,217 @@ helpers = this.merge(helpers, Ember.Handlebars.helpers); data = data || {};
   
 });
 
+Ember.TEMPLATES["ember_table/configurable-columns"] = Ember.Handlebars.template(function anonymous(Handlebars,depth0,helpers,partials,data) {
+this.compilerInfo = [4,'>= 1.0.0'];
+helpers = this.merge(helpers, Ember.Handlebars.helpers); data = data || {};
+  var buffer = '', stack1, helper, options, helperMissing=helpers.helperMissing, escapeExpression=this.escapeExpression, self=this;
+
+function program1(depth0,data) {
+  
+  var buffer = '', stack1, helper, options;
+  data.buffer.push("\n              <tr>\n                <td>");
+  stack1 = helpers._triageMustache.call(depth0, "headerCellName", {hash:{},hashTypes:{},hashContexts:{},contexts:[depth0],types:["ID"],data:data});
+  if(stack1 || stack1 === 0) { data.buffer.push(stack1); }
+  data.buffer.push("</td>\n                <td class=\"checkbox-cell\">");
+  data.buffer.push(escapeExpression((helper = helpers.input || (depth0 && depth0.input),options={hash:{
+    'class': ("checkbox-input"),
+    'type': ("checkbox"),
+    'checked': ("isSortable")
+  },hashTypes:{'class': "STRING",'type': "STRING",'checked': "ID"},hashContexts:{'class': depth0,'type': depth0,'checked': depth0},contexts:[],types:[],data:data},helper ? helper.call(depth0, options) : helperMissing.call(depth0, "input", options))));
+  data.buffer.push("</td>\n                <td class=\"checkbox-cell\">");
+  data.buffer.push(escapeExpression((helper = helpers.input || (depth0 && depth0.input),options={hash:{
+    'class': ("checkbox-input"),
+    'type': ("checkbox"),
+    'checked': ("isResizable")
+  },hashTypes:{'class': "STRING",'type': "STRING",'checked': "ID"},hashContexts:{'class': depth0,'type': depth0,'checked': depth0},contexts:[],types:[],data:data},helper ? helper.call(depth0, options) : helperMissing.call(depth0, "input", options))));
+  data.buffer.push("</td>\n                <td class=\"checkbox-cell\">");
+  data.buffer.push(escapeExpression((helper = helpers.input || (depth0 && depth0.input),options={hash:{
+    'class': ("checkbox-input"),
+    'type': ("checkbox"),
+    'checked': ("canAutoResize")
+  },hashTypes:{'class': "STRING",'type': "STRING",'checked': "ID"},hashContexts:{'class': depth0,'type': depth0,'checked': depth0},contexts:[],types:[],data:data},helper ? helper.call(depth0, options) : helperMissing.call(depth0, "input", options))));
+  data.buffer.push("</td>\n                <td ");
+  data.buffer.push(escapeExpression(helpers['bind-attr'].call(depth0, {hash:{
+    'class': ("atMinWidth:at-limit")
+  },hashTypes:{'class': "STRING"},hashContexts:{'class': depth0},contexts:[],types:[],data:data})));
+  data.buffer.push(">");
+  data.buffer.push(escapeExpression((helper = helpers.input || (depth0 && depth0.input),options={hash:{
+    'value': ("minWidthValue"),
+    'class': ("text-input"),
+    'type': ("number"),
+    'min': ("1")
+  },hashTypes:{'value': "ID",'class': "STRING",'type': "STRING",'min': "STRING"},hashContexts:{'value': depth0,'class': depth0,'type': depth0,'min': depth0},contexts:[],types:[],data:data},helper ? helper.call(depth0, options) : helperMissing.call(depth0, "input", options))));
+  data.buffer.push("</td>\n                <td ");
+  data.buffer.push(escapeExpression(helpers['bind-attr'].call(depth0, {hash:{
+    'class': ("atMaxWidth:at-limit")
+  },hashTypes:{'class': "STRING"},hashContexts:{'class': depth0},contexts:[],types:[],data:data})));
+  data.buffer.push(">");
+  data.buffer.push(escapeExpression((helper = helpers.input || (depth0 && depth0.input),options={hash:{
+    'value': ("maxWidthValue"),
+    'class': ("text-input"),
+    'type': ("number"),
+    'min': ("1")
+  },hashTypes:{'value': "ID",'class': "STRING",'type': "STRING",'min': "STRING"},hashContexts:{'value': depth0,'class': depth0,'type': depth0,'min': depth0},contexts:[],types:[],data:data},helper ? helper.call(depth0, options) : helperMissing.call(depth0, "input", options))));
+  data.buffer.push("</td>\n                <td>");
+  stack1 = helpers._triageMustache.call(depth0, "width", {hash:{},hashTypes:{},hashContexts:{},contexts:[depth0],types:["ID"],data:data});
+  if(stack1 || stack1 === 0) { data.buffer.push(stack1); }
+  data.buffer.push("</td>\n                <td>");
+  stack1 = helpers._triageMustache.call(depth0, "savedWidth", {hash:{},hashTypes:{},hashContexts:{},contexts:[depth0],types:["ID"],data:data});
+  if(stack1 || stack1 === 0) { data.buffer.push(stack1); }
+  data.buffer.push("</td>\n              </tr>\n            ");
+  return buffer;
+  }
+
+function program3(depth0,data) {
+  
+  var buffer = '', helper, options;
+  data.buffer.push("\n          <div class=\"ember-table-example-container-small\">\n            ");
+  data.buffer.push(escapeExpression((helper = helpers['configurable-table'] || (depth0 && depth0['configurable-table']),options={hash:{
+    'hasFooter': (false),
+    'columnMode': ("columnMode"),
+    'columns': ("columns"),
+    'content': ("content"),
+    'parentWidth': ("demoTableWidth")
+  },hashTypes:{'hasFooter': "BOOLEAN",'columnMode': "ID",'columns': "ID",'content': "ID",'parentWidth': "ID"},hashContexts:{'hasFooter': depth0,'columnMode': depth0,'columns': depth0,'content': depth0,'parentWidth': depth0},contexts:[],types:[],data:data},helper ? helper.call(depth0, options) : helperMissing.call(depth0, "configurable-table", options))));
+  data.buffer.push("\n          </div>\n        ");
+  return buffer;
+  }
+
+function program5(depth0,data) {
+  
+  
+  data.buffer.push("\n  columnMode='fluid'");
+  }
+
+function program7(depth0,data) {
+  
+  var buffer = '', stack1;
+  data.buffer.push("\n    ");
+  stack1 = helpers._triageMustache.call(depth0, "headerCellNameLowerCase", {hash:{},hashTypes:{},hashContexts:{},contexts:[depth0],types:["ID"],data:data});
+  if(stack1 || stack1 === 0) { data.buffer.push(stack1); }
+  data.buffer.push("Column = Ember.Table.ColumnDefinition.create");
+  stack1 = helpers.unless.call(depth0, "textAlignIsDefault", {hash:{},hashTypes:{},hashContexts:{},inverse:self.noop,fn:self.program(8, program8, data),contexts:[depth0],types:["ID"],data:data});
+  if(stack1 || stack1 === 0) { data.buffer.push(stack1); }
+  data.buffer.push("\n      headerCellName: '");
+  stack1 = helpers._triageMustache.call(depth0, "headerCellName", {hash:{},hashTypes:{},hashContexts:{},contexts:[depth0],types:["ID"],data:data});
+  if(stack1 || stack1 === 0) { data.buffer.push(stack1); }
+  data.buffer.push("'");
+  stack1 = helpers.unless.call(depth0, "minWidthIsDefault", {hash:{},hashTypes:{},hashContexts:{},inverse:self.noop,fn:self.program(10, program10, data),contexts:[depth0],types:["ID"],data:data});
+  if(stack1 || stack1 === 0) { data.buffer.push(stack1); }
+  stack1 = helpers['if'].call(depth0, "maxWidth", {hash:{},hashTypes:{},hashContexts:{},inverse:self.noop,fn:self.program(12, program12, data),contexts:[depth0],types:["ID"],data:data});
+  if(stack1 || stack1 === 0) { data.buffer.push(stack1); }
+  stack1 = helpers.unless.call(depth0, "isSortable", {hash:{},hashTypes:{},hashContexts:{},inverse:self.noop,fn:self.program(14, program14, data),contexts:[depth0],types:["ID"],data:data});
+  if(stack1 || stack1 === 0) { data.buffer.push(stack1); }
+  stack1 = helpers.unless.call(depth0, "isResizable", {hash:{},hashTypes:{},hashContexts:{},inverse:self.noop,fn:self.program(16, program16, data),contexts:[depth0],types:["ID"],data:data});
+  if(stack1 || stack1 === 0) { data.buffer.push(stack1); }
+  stack1 = helpers.unless.call(depth0, "canAutoResize", {hash:{},hashTypes:{},hashContexts:{},inverse:self.noop,fn:self.program(18, program18, data),contexts:[depth0],types:["ID"],data:data});
+  if(stack1 || stack1 === 0) { data.buffer.push(stack1); }
+  stack1 = helpers['if'].call(depth0, "isDateCell", {hash:{},hashTypes:{},hashContexts:{},inverse:self.program(22, program22, data),fn:self.program(20, program20, data),contexts:[depth0],types:["ID"],data:data});
+  if(stack1 || stack1 === 0) { data.buffer.push(stack1); }
+  return buffer;
+  }
+function program8(depth0,data) {
+  
+  var buffer = '', stack1;
+  data.buffer.push("\n      textAlign: '");
+  stack1 = helpers._triageMustache.call(depth0, "textAlign", {hash:{},hashTypes:{},hashContexts:{},contexts:[depth0],types:["ID"],data:data});
+  if(stack1 || stack1 === 0) { data.buffer.push(stack1); }
+  data.buffer.push("'");
+  return buffer;
+  }
+
+function program10(depth0,data) {
+  
+  var buffer = '', stack1;
+  data.buffer.push("\n      minWidth: ");
+  stack1 = helpers._triageMustache.call(depth0, "minWidth", {hash:{},hashTypes:{},hashContexts:{},contexts:[depth0],types:["ID"],data:data});
+  if(stack1 || stack1 === 0) { data.buffer.push(stack1); }
+  return buffer;
+  }
+
+function program12(depth0,data) {
+  
+  var buffer = '', stack1;
+  data.buffer.push("\n      maxWidth: ");
+  stack1 = helpers._triageMustache.call(depth0, "maxWidth", {hash:{},hashTypes:{},hashContexts:{},contexts:[depth0],types:["ID"],data:data});
+  if(stack1 || stack1 === 0) { data.buffer.push(stack1); }
+  return buffer;
+  }
+
+function program14(depth0,data) {
+  
+  
+  data.buffer.push("\n      isSortable: no");
+  }
+
+function program16(depth0,data) {
+  
+  
+  data.buffer.push("\n      isResizable: no");
+  }
+
+function program18(depth0,data) {
+  
+  
+  data.buffer.push("\n      canAutoResize: no");
+  }
+
+function program20(depth0,data) {
+  
+  
+  data.buffer.push("\n      getCellContent: (row) -> row.get('date').toDateString()");
+  }
+
+function program22(depth0,data) {
+  
+  var buffer = '', stack1;
+  data.buffer.push("\n      getCellContent: (row) -> row.get('");
+  stack1 = helpers._triageMustache.call(depth0, "headerCellNameLowerCase", {hash:{},hashTypes:{},hashContexts:{},contexts:[depth0],types:["ID"],data:data});
+  if(stack1 || stack1 === 0) { data.buffer.push(stack1); }
+  data.buffer.push("').toFixed(2)");
+  return buffer;
+  }
+
+  data.buffer.push("\n<div class=\"col-md-10 col-md-offset-2 left-border main-content-container\">\n  <h1>Ember Table <small>Configurable Column Demo</small></h1>\n\n  <p>Ember Table's column settings give you a lot of fine-grained control over\n  reordering and resizing behavior. Use this demo to play with the options and\n  find what works for your use!</p>\n\n  <p>You can drag the right border of the table container to see how the table\n  should respond to width changes. The refresh button is useful to see how the\n  table would be initialized given the settings you've selected.</p>\n\n  <p>When you're done configuring, check out the code below - it's updated live\n  with the settings you selected.</p>\n\n  <div class=\"row\">\n    <div class=\"col-md-12\">\n      <div class=\"configuration-container\">\n        <div class=\"title-text\">Configure Demo</div>\n        <table class=\"table table-bordered table-condensed\">\n          <tbody>\n            <tr>\n              <th>Column</th>\n              <th class=\"checkbox-column\">Reorder</th>\n              <th class=\"checkbox-column\">Resize</th>\n              <th class=\"checkbox-column\">Auto-Resize</th>\n              <th class=\"width-column\">Min Width</th>\n              <th class=\"width-column\">Max Width</th>\n              <th class=\"width-column\">Actual Width</th>\n              <th class=\"width-column\">Saved Width</th>\n            </tr>\n            ");
+  stack1 = helpers.each.call(depth0, "columns", {hash:{},hashTypes:{},hashContexts:{},inverse:self.noop,fn:self.program(1, program1, data),contexts:[depth0],types:["ID"],data:data});
+  if(stack1 || stack1 === 0) { data.buffer.push(stack1); }
+  data.buffer.push("\n          </tbody>\n        </table>\n        <div class=\"table-options-footer\">\n          <div class=\"fluid-mode-text\">Fluid Mode</div>\n          ");
+  data.buffer.push(escapeExpression((helper = helpers.input || (depth0 && depth0.input),options={hash:{
+    'class': ("checkbox-input"),
+    'type': ("checkbox"),
+    'checked': ("isFluid")
+  },hashTypes:{'class': "STRING",'type': "STRING",'checked': "ID"},hashContexts:{'class': depth0,'type': depth0,'checked': depth0},contexts:[],types:[],data:data},helper ? helper.call(depth0, options) : helperMissing.call(depth0, "input", options))));
+  data.buffer.push("\n          <button class=\"addepar-btn-primary refresh-btn\" ");
+  data.buffer.push(escapeExpression(helpers.action.call(depth0, "refreshTable", {hash:{},hashTypes:{},hashContexts:{},contexts:[depth0],types:["STRING"],data:data})));
+  data.buffer.push(">Refresh Table</button>\n        </div>\n      </div>\n    </div>\n  </div>\n\n  <div class=\"row\">\n    <div class=\"col-md-12\">\n      <div class=\"example-container js-resizable-container\">\n        ");
+  stack1 = helpers['if'].call(depth0, "showTable", {hash:{},hashTypes:{},hashContexts:{},inverse:self.noop,fn:self.program(3, program3, data),contexts:[depth0],types:["ID"],data:data});
+  if(stack1 || stack1 === 0) { data.buffer.push(stack1); }
+  data.buffer.push("\n      </div>\n    </div>\n\n    <div class=\"col-md-12 bumper-30\">\n      <h3>application.hbs</h3>\n      <div class=\"highlight\">\n<pre class=\"prettyprint lang-html\">&#123;&#123;table-component\n  hasFooter=false\n  columns=columns\n  content=content");
+  stack1 = helpers['if'].call(depth0, "isFluid", {hash:{},hashTypes:{},hashContexts:{},inverse:self.noop,fn:self.program(5, program5, data),contexts:[depth0],types:["ID"],data:data});
+  if(stack1 || stack1 === 0) { data.buffer.push(stack1); }
+  data.buffer.push("\n&#125;&#125;</pre>\n      </div>\n    </div>\n\n    <div class=\"col-md-12 bumper-30\">\n      <h3>application_controller.coffee</h3>\n      <div class=\"highlight\">\n<pre class=\"prettyprint lang-coffee\">App.ApplicationController = Ember.Controller.extend\n  numRows: 100\n\n  columns: Ember.computed -> ");
+  stack1 = helpers.each.call(depth0, "columns", {hash:{},hashTypes:{},hashContexts:{},inverse:self.noop,fn:self.program(7, program7, data),contexts:[depth0],types:["ID"],data:data});
+  if(stack1 || stack1 === 0) { data.buffer.push(stack1); }
+  data.buffer.push("\n    [dateColumn, openColumn, highColumn, lowColumn, closeColumn]\n\n  content: Ember.computed ->\n    [0...@get('numRows')].map (index) ->\n      date = new Date()\n      date.setDate(date.getDate() + index)\n      date:  date\n      open:  Math.random() * 100 - 50\n      high:  Math.random() * 100 - 50\n      low:   Math.random() * 100 - 50\n      close: Math.random() * 100 - 50\n      volume: Math.random() * 1000000\n  .property 'numRows'</pre>\n      </div>\n    </div>\n  </div>\n</div>\n");
+  return buffer;
+  
+});
+
 Ember.TEMPLATES["ember_table/documentation"] = Ember.Handlebars.template(function anonymous(Handlebars,depth0,helpers,partials,data) {
 this.compilerInfo = [4,'>= 1.0.0'];
 helpers = this.merge(helpers, Ember.Handlebars.helpers); data = data || {};
-  var buffer = '';
+  var buffer = '', stack1, helper, options, self=this, helperMissing=helpers.helperMissing;
 
+function program1(depth0,data) {
+  
+  
+  data.buffer.push("configurable column\n          demo.");
+  }
 
-  data.buffer.push("\n<div class=\"col-md-10 col-md-offset-2 left-border main-content-container\">\n  <h1>API &amp; Documentation</h1>\n  <h2>Ember.Table.TableComponent Options</h2>\n\n  <table class=\"table ember-table-options\">\n    <tr>\n      <th style=\"min-width: 200px;\">Option</th>\n      <th style=\"min-width: 150px;\">Default</th>\n      <th>Description</th>\n    </tr>\n    <tr>\n      <td>content <b>(required)</b></td>\n      <td>null</td>\n      <td>\n        <p>\n          An array of row objects. Usually a hash where the keys are column\n          names and the values are the rows's values. However, could be any\n          object, since each column can define a function to return the column\n          value given the row object. See\n          <code>Ember.Table.ColumnDefinition.getCellContent</code>.\n        </p>\n      </td>\n    </tr>\n    <tr>\n      <td>columns <b>(required)</b></td>\n      <td>null</td>\n      <td>\n        <p>\n          An array of column definitions: see\n          <code>Ember.Table.ColumnDefinition</code>.  Allows each column to\n          have its own configuration.\n        </p>\n      </td>\n    </tr>\n    <tr>\n      <td>numFixedColumns</td>\n      <td>0</td>\n      <td>\n        <p>\n          The number of fixed columns on the left side of the table. Fixed\n          columns are always visible, even when the table is scrolled\n          horizontally.\n        </p>\n      </td>\n    </tr>\n    <tr>\n      <td>numFooterRow</td>\n      <td>0</td>\n      <td>\n        <p>\n          The number of footer rows in the table. Footer rows appear at the\n          bottom of the table and are always visible.\n        </p>\n      </td>\n    </tr>\n    <tr>\n      <td>rowHeight</td>\n      <td>30</td>\n      <td>\n        <p>\n          The row height in pixels. A consistent row height is necessary to\n          calculate which rows are being shown, to enable lazy rendering.\n        </p>\n      </td>\n    </tr>\n    <tr>\n      <td>minHeaderHeight</td>\n      <td>30</td>\n      <td>\n        <p>\n          The minimum header height in pixels. Headers will grow in height if\n          given more content than they can display.\n        </p>\n      </td>\n    </tr>\n    <tr>\n      <td>footerHeight</td>\n      <td>30</td>\n      <td><p>The footer height in pixels.</p></td>\n    </tr>\n    <tr>\n      <td>hasHeader</td>\n      <td>true</td>\n      <td><p>Enables or disables the header block.</p></td>\n    </tr>\n    <tr>\n      <td>hasFooter</td>\n      <td>true</td>\n      <td><p>Enables or disables the footer block.</p></td>\n    </tr>\n    <tr>\n      <td>forceFillColumns</td>\n      <td>false</td>\n      <td>\n        <p>\n          If true, columns with <code>canAutoResize=true</code> (the default\n          setting) will attempt to fill the width of the table when possible.\n          After a column is manually resized, any other columns with\n          <code>canAutoResize=true</code> will distribute the change in width\n          between them. Once manually resized, a column will no longer\n          automatically resize.\n        </p>\n      </td>\n    </tr>\n    <tr>\n      <td>enableColumnReorder</td>\n      <td>true</td>\n      <td>\n        <p>\n          Allow the columns to be rearranged by drag-and-drop. Only columns\n          with <code>isSortable=true</code> (the default setting) will be\n          affected.\n        </p>\n      </td>\n    </tr>\n    <tr>\n      <td>enableContentSelection</td>\n      <td>false</td>\n      <td><p>Allow users to select the content of table cells.</p></td>\n    </tr>\n    <tr>\n      <td>selectionMode</td>\n      <td>'single'</td>\n      <td>\n        <p>\n          Sets which row selection behavior to follow. Possible values are\n          <code>'none'</code> (clicking on a row does nothing),\n          <code>'single'</code> (clicking on a row selects it and deselects\n          other rows), and <code>'multiple'</code> (multiple rows can be\n          selected through ctrl/cmd-click or shift-click).\n        </p>\n      </td>\n    </tr>\n    <tr>\n      <td>selection (output)</td>\n      <td>undefined</td>\n      <td>\n        <p>\n          An array of the rows currently selected. If\n          <code>selectionMode</code> is set to <code>'single'</code>, the array\n          will contain either one or zero elements.\n        </p>\n      </td>\n    </tr>\n    <tr>\n      <td>styleBindings</td>\n      <td>'height'</td>\n      <td>\n        <p>\n          Values which are bound to the table's style attr. See\n          <code>Ember.StyleBindingsMixin</code> documentation for more details.\n        <p>\n      </td>\n    </tr>\n  </table>\n\n  <h2>Ember.Table.ColumnDefinition Options</h2>\n  <table class=\"table ember-table-options\">\n    <tr>\n      <th style=\"min-width: 200px;\">Option</th>\n      <th style=\"min-width: 150px;\">Default</th>\n      <th>Description</th>\n    </tr>\n    <tr>\n      <td>headerCellName</td>\n      <td>undefined</td>\n      <td><p>Name of the column, to be displayed in the header.</p></td>\n    </tr>\n    <tr>\n      <td>contentPath</td>\n      <td>undefined</td>\n      <td>\n        <p>\n          Path of the content for this cell. If the row object is a hash of\n          keys and values to specify data for each column,\n          <code>contentPath</code> corresponds to the key. Use either this or\n          <code>getCellContent</code>.\n        </p>\n      </td>\n    </tr>\n    <tr>\n      <td>minWidth</td>\n      <td>undefined</td>\n      <td>\n        <p>\n          Minimum column width. Affects both manual resizing and automatic\n          resizing (in <code>forceFillColumns</code> mode).\n        </p>\n      </td>\n    </tr>\n    <tr>\n      <td>maxWidth</td>\n      <td>undefined</td>\n      <td>\n        <p>\n          Maximum column width. Affects both manual resizing and automatic\n          resizing (in <code>forceFillColumns</code> mode).\n        </p>\n      </td>\n    </tr>\n    <tr>\n      <td>defaultColumnWidth</td>\n      <td>150</td>\n      <td>\n        <p>\n          Default column width. Specifies the initial width of the column; if\n          the column is later resized automatically, it will be proportional to\n          this.\n        </p>\n      </td>\n    </tr>\n    <tr>\n      <td>isResizable</td>\n      <td>true</td>\n      <td><p>Whether the column can be manually resized.</p></td>\n    </tr>\n    <tr>\n      <td>isSortable</td>\n      <td>true</td>\n      <td>\n        <p>\n          Whether the column can be rearranged with other columns. Only matters\n          if the table's <code>enableColumnReorder</code> property is set to\n          true (the default).\n        </p>\n      </td>\n    </tr>\n    <tr>\n      <td>textAlign</td>\n      <td>'text-align-right'</td>\n      <td>\n        <p>\n          Alignment of the text in the cell. Possible values are\n          <code>'left'</code>, <code>'center'</code>, and <code>'right'</code>.\n        </p>\n      </td>\n    </tr>\n    <tr>\n      <td>canAutoResize</td>\n      <td>true</td>\n      <td>\n        <p>\n          Whether the column can automatically resize to fill space in the\n          table.  Only matters if the table is in <code>forceFillColumns</code>\n          mode.\n        </p>\n      </td>\n    </tr>\n    <tr>\n      <td>headerCellView</td>\n      <td>'Ember.Table.HeaderCell'</td>\n      <td>\n        <p>\n          Override to use a custom view for the header cell. Specified as a\n          string.\n        </p>\n      </td>\n    </tr>\n    <tr>\n      <td>tableCellView</td>\n      <td>'Ember.Table.TableCell'</td>\n      <td>\n        <p>\n          Override to use a custom view for table cells. Specified as a string.\n        </p>\n      </td>\n    </tr>\n    <tr>\n      <td>getCellContent</td>\n      <td>(function)</td>\n      <td>\n        <p>\n          Override to customize how the column gets data from each row object.\n          Given a row, should return a formatted cell value, e.g. $20,000,000.\n          Use either this or <code>contentPath</code>.\n        </p>\n      </td>\n    </tr>\n    <tr>\n      <td>setCellContent</td>\n      <td>Ember.K</td>\n      <td>\n        <p>\n          Override to maintain a consistent path to update cell values.\n          Recommended to make this a function which takes (row, value) and\n          updates the row value.\n        </p>\n      </td>\n    </tr>\n  </table>\n\n  <h2>Ember.Table.TableCell Options</h2>\n  <table class=\"table ember-table-options\">\n    <tr>\n      <th style=\"min-width: 200px;\">Option</th>\n      <th style=\"min-width: 150px;\">Default</th>\n      <th>Description</th>\n    </tr>\n    <tr>\n      <td>templateName</td>\n      <td>'table-cell'</td>\n      <td><p>The name of the template to be rendered into the cell.\n        Used for rendering custom templates.<p></td>\n    </tr>\n    <tr>\n      <td>classNames</td>\n      <td>['ember-table-cell']</td>\n      <td><p>The class names applied to the cell. Override to give\n        the cell custom styling (border, background color, etc).<p></td>\n    </tr>\n    <tr>\n      <td>classNameBindings</td>\n      <td>'column.textAlign'</td>\n      <td><p>A binding used to dynamically associate class names\n        with this table cell. E.g. you can bind to a column property\n        to have cell colors or styles vary across columns.<p></td>\n    </tr>\n    <tr>\n      <td>styleBindings</td>\n      <td>'width'</td>\n      <td>\n        <p>\n          Values which are bound to the cell's style attr. See\n          <code>Ember.StyleBindingsMixin</code> documentation for more details.\n        <p>\n      </td>\n    </tr>\n  </table>\n\n  <h2>Ember.Table.HeaderCell Options</h2>\n  <table class=\"table ember-table-options\">\n    <tr>\n      <th style=\"min-width: 200px;\">Option</th>\n      <th style=\"min-width: 150px;\">Default</th>\n      <th>Description</th>\n    </tr>\n    <tr>\n      <td>templateName</td>\n      <td>'header-cell'</td>\n      <td><p>See description in <code>Ember.Table.TableCell</code>.<p></td>\n    </tr>\n    <tr>\n      <td>classNames</td>\n      <td>['ember-table-cell', 'ember-table-header-cell']</td>\n      <td><p>See description in <code>Ember.Table.TableCell</code>.<p></td>\n    </tr>\n    <tr>\n      <td>classNameBindings</td>\n      <td>['column.isSortable:sortable', 'column.textAlign']</td>\n      <td><p>See description in <code>Ember.Table.TableCell</code>.<p></td>\n    </tr>\n    <tr>\n      <td>styleBindings</td>\n      <td>['width', 'height']</td>\n      <td><p>See description in <code>Ember.Table.TableCell</code>.<p></td>\n    </tr>\n  </table>\n</div>\n");
+  data.buffer.push("\n<div class=\"col-md-10 col-md-offset-2 left-border main-content-container\">\n  <h1>API &amp; Documentation</h1>\n  <h2>Ember.Table.TableComponent Options</h2>\n\n  <table class=\"table ember-table-options\">\n    <tr>\n      <th style=\"min-width: 200px;\">Option</th>\n      <th style=\"min-width: 150px;\">Default</th>\n      <th>Description</th>\n    </tr>\n    <tr>\n      <td>content <b>(required)</b></td>\n      <td>null</td>\n      <td>\n        <p>\n          An array of row objects. Usually a hash where the keys are column\n          names and the values are the rows's values. However, could be any\n          object, since each column can define a function to return the column\n          value given the row object. See\n          <code>Ember.Table.ColumnDefinition.getCellContent</code>.\n        </p>\n      </td>\n    </tr>\n    <tr>\n      <td>columns <b>(required)</b></td>\n      <td>null</td>\n      <td>\n        <p>\n          An array of column definitions: see\n          <code>Ember.Table.ColumnDefinition</code>.  Allows each column to\n          have its own configuration.\n        </p>\n      </td>\n    </tr>\n    <tr>\n      <td>numFixedColumns</td>\n      <td>0</td>\n      <td>\n        <p>\n          The number of fixed columns on the left side of the table. Fixed\n          columns are always visible, even when the table is scrolled\n          horizontally.\n        </p>\n      </td>\n    </tr>\n    <tr>\n      <td>numFooterRow</td>\n      <td>0</td>\n      <td>\n        <p>\n          The number of footer rows in the table. Footer rows appear at the\n          bottom of the table and are always visible.\n        </p>\n      </td>\n    </tr>\n    <tr>\n      <td>rowHeight</td>\n      <td>30</td>\n      <td>\n        <p>\n          The row height in pixels. A consistent row height is necessary to\n          calculate which rows are being shown, to enable lazy rendering.\n        </p>\n      </td>\n    </tr>\n    <tr>\n      <td>minHeaderHeight</td>\n      <td>30</td>\n      <td>\n        <p>\n          The minimum header height in pixels. Headers will grow in height if\n          given more content than they can display.\n        </p>\n      </td>\n    </tr>\n    <tr>\n      <td>footerHeight</td>\n      <td>30</td>\n      <td><p>The footer height in pixels.</p></td>\n    </tr>\n    <tr>\n      <td>hasHeader</td>\n      <td>true</td>\n      <td><p>Enables or disables the header block.</p></td>\n    </tr>\n    <tr>\n      <td>hasFooter</td>\n      <td>true</td>\n      <td><p>Enables or disables the footer block.</p></td>\n    </tr>\n    <tr>\n      <td>enableColumnReorder</td>\n      <td>true</td>\n      <td>\n        <p>\n          Allow the columns to be rearranged by drag-and-drop. Only columns\n          with <code>isSortable=true</code> (the default setting) will be\n          affected.\n        </p>\n      </td>\n    </tr>\n    <tr>\n      <td>enableContentSelection</td>\n      <td>false</td>\n      <td><p>Allow users to select the content of table cells.</p></td>\n    </tr>\n    <tr>\n      <td>styleBindings</td>\n      <td>'height'</td>\n      <td>\n        <p>\n          Values which are bound to the table's style attr. See\n          <code>Ember.StyleBindingsMixin</code> documentation for more details.\n        <p>\n      </td>\n    </tr>\n    <tr>\n      <td>columnMode</td>\n      <td>'standard'</td>\n      <td>\n        <p>\n          Sets which column resizing behavior to use. Possible values are\n          <code>'standard'</code> (resizing a column pushes or pulls all other\n          columns) and <code>'fluid'</code> (resizing a column steals width\n          from neighboring columns). You can experiment with this behavior in\n          the ");
+  stack1 = (helper = helpers['link-to'] || (depth0 && depth0['link-to']),options={hash:{},hashTypes:{},hashContexts:{},inverse:self.noop,fn:self.program(1, program1, data),contexts:[depth0],types:["STRING"],data:data},helper ? helper.call(depth0, "emberTable.configurable-columns", options) : helperMissing.call(depth0, "link-to", "emberTable.configurable-columns", options));
+  if(stack1 || stack1 === 0) { data.buffer.push(stack1); }
+  data.buffer.push("\n        <p>\n      </td>\n    </tr>\n    <tr>\n      <td>selectionMode</td>\n      <td>'single'</td>\n      <td>\n        <p>\n          Sets which row selection behavior to follow. Possible values are\n          <code>'none'</code> (clicking on a row does nothing),\n          <code>'single'</code> (clicking on a row selects it and deselects\n          other rows), and <code>'multiple'</code> (multiple rows can be\n          selected through ctrl/cmd-click or shift-click).\n        </p>\n      </td>\n    </tr>\n    <tr>\n      <td>selection (output)</td>\n      <td>undefined</td>\n      <td>\n        <p>\n          An array of the rows currently selected. If\n          <code>selectionMode</code> is set to <code>'single'</code>, the array\n          will contain either one or zero elements.\n        </p>\n      </td>\n    </tr>\n  </table>\n\n  <h2>Ember.Table.ColumnDefinition Options</h2>\n  <table class=\"table ember-table-options\">\n    <tr>\n      <th style=\"min-width: 200px;\">Option</th>\n      <th style=\"min-width: 150px;\">Default</th>\n      <th>Description</th>\n    </tr>\n    <tr>\n      <td>headerCellName</td>\n      <td>undefined</td>\n      <td><p>Name of the column, to be displayed in the header.</p></td>\n    </tr>\n    <tr>\n      <td>contentPath</td>\n      <td>undefined</td>\n      <td>\n        <p>\n          Path of the content for this cell. If the row object is a hash of\n          keys and values to specify data for each column,\n          <code>contentPath</code> corresponds to the key. Use either this or\n          <code>getCellContent</code>.\n        </p>\n      </td>\n    </tr>\n    <tr>\n      <td>minWidth</td>\n      <td>25</td>\n      <td>\n        <p>\n          Minimum column width in pixels. Affects both manual resizing and\n          automatic resizing.\n        </p>\n      </td>\n    </tr>\n    <tr>\n      <td>maxWidth</td>\n      <td>undefined</td>\n      <td>\n        <p>\n          Maximum column width in pixels. Affects both manual resizing and\n          automatic resizing.\n        </p>\n      </td>\n    </tr>\n    <tr>\n      <td>defaultColumnWidth</td>\n      <td>150</td>\n      <td>\n        <p>\n          Default column width. Specifies the initial width of the column; if\n          the column is later resized automatically, it will be proportional to\n          this.\n        </p>\n      </td>\n    </tr>\n    <tr>\n      <td>isResizable</td>\n      <td>true</td>\n      <td><p>Whether the column can be manually resized.</p></td>\n    </tr>\n    <tr>\n      <td>isSortable</td>\n      <td>true</td>\n      <td>\n        <p>\n          Whether the column can be rearranged with other columns. Only matters\n          if the table's <code>enableColumnReorder</code> property is set to\n          true (the default).\n        </p>\n      </td>\n    </tr>\n    <tr>\n      <td>textAlign</td>\n      <td>'text-align-right'</td>\n      <td>\n        <p>\n          Alignment of the text in the cell. Possible values are\n          <code>'left'</code>, <code>'center'</code>, and <code>'right'</code>.\n        </p>\n      </td>\n    </tr>\n    <tr>\n      <td>canAutoResize</td>\n      <td>true</td>\n      <td>\n        <p>\n          Whether the column can automatically resize to fill space in the\n          table.\n        </p>\n      </td>\n    </tr>\n    <tr>\n      <td>headerCellView</td>\n      <td>'Ember.Table.HeaderCell'</td>\n      <td>\n        <p>\n          Override to use a custom view for the header cell. Specified as a\n          string.\n        </p>\n      </td>\n    </tr>\n    <tr>\n      <td>tableCellView</td>\n      <td>'Ember.Table.TableCell'</td>\n      <td>\n        <p>\n          Override to use a custom view for table cells. Specified as a string.\n        </p>\n      </td>\n    </tr>\n    <tr>\n      <td>getCellContent</td>\n      <td>(function)</td>\n      <td>\n        <p>\n          Override to customize how the column gets data from each row object.\n          Given a row, should return a formatted cell value, e.g. $20,000,000.\n          Use either this or <code>contentPath</code>.\n        </p>\n      </td>\n    </tr>\n    <tr>\n      <td>setCellContent</td>\n      <td>Ember.K</td>\n      <td>\n        <p>\n          Override to maintain a consistent path to update cell values.\n          Recommended to make this a function which takes (row, value) and\n          updates the row value.\n        </p>\n      </td>\n    </tr>\n  </table>\n\n  <h2>Ember.Table.TableCell Options</h2>\n  <table class=\"table ember-table-options\">\n    <tr>\n      <th style=\"min-width: 200px;\">Option</th>\n      <th style=\"min-width: 150px;\">Default</th>\n      <th>Description</th>\n    </tr>\n    <tr>\n      <td>templateName</td>\n      <td>'table-cell'</td>\n      <td><p>The name of the template to be rendered into the cell.\n        Used for rendering custom templates.<p></td>\n    </tr>\n    <tr>\n      <td>classNames</td>\n      <td>['ember-table-cell']</td>\n      <td><p>The class names applied to the cell. Override to give\n        the cell custom styling (border, background color, etc).<p></td>\n    </tr>\n    <tr>\n      <td>classNameBindings</td>\n      <td>'column.textAlign'</td>\n      <td><p>A binding used to dynamically associate class names\n        with this table cell. E.g. you can bind to a column property\n        to have cell colors or styles vary across columns.<p></td>\n    </tr>\n    <tr>\n      <td>styleBindings</td>\n      <td>'width'</td>\n      <td>\n        <p>\n          Values which are bound to the cell's style attr. See\n          <code>Ember.StyleBindingsMixin</code> documentation for more details.\n        <p>\n      </td>\n    </tr>\n  </table>\n\n  <h2>Ember.Table.HeaderCell Options</h2>\n  <table class=\"table ember-table-options\">\n    <tr>\n      <th style=\"min-width: 200px;\">Option</th>\n      <th style=\"min-width: 150px;\">Default</th>\n      <th>Description</th>\n    </tr>\n    <tr>\n      <td>templateName</td>\n      <td>'header-cell'</td>\n      <td><p>See description in <code>Ember.Table.TableCell</code>.<p></td>\n    </tr>\n    <tr>\n      <td>classNames</td>\n      <td>['ember-table-cell', 'ember-table-header-cell']</td>\n      <td><p>See description in <code>Ember.Table.TableCell</code>.<p></td>\n    </tr>\n    <tr>\n      <td>classNameBindings</td>\n      <td>['column.isSortable:sortable', 'column.textAlign']</td>\n      <td><p>See description in <code>Ember.Table.TableCell</code>.<p></td>\n    </tr>\n    <tr>\n      <td>styleBindings</td>\n      <td>['width', 'height']</td>\n      <td><p>See description in <code>Ember.Table.TableCell</code>.<p></td>\n    </tr>\n  </table>\n</div>\n");
   return buffer;
   
 });
@@ -18107,26 +18471,6 @@ helpers = this.merge(helpers, Ember.Handlebars.helpers); data = data || {};
   
 });
 
-Ember.TEMPLATES["ember_table/fluid"] = Ember.Handlebars.template(function anonymous(Handlebars,depth0,helpers,partials,data) {
-this.compilerInfo = [4,'>= 1.0.0'];
-helpers = this.merge(helpers, Ember.Handlebars.helpers); data = data || {};
-  var buffer = '', escapeExpression=this.escapeExpression;
-
-
-  data.buffer.push("\n<div class=\"col-md-10 col-md-offset-2 left-border main-content-container\">\n  <h1>Ember Table <small>Fluid</small></h1>\n\n  <div class=\"row\">\n    <div class=\"col-md-12\">\n      <div class=\"example-container\">\n        <div class=\"ember-table-example-container\">\n          ");
-  data.buffer.push(escapeExpression(helpers.view.call(depth0, "App.FluidTable", {hash:{
-    'hasHeader': (true),
-    'hasFooter': (false),
-    'numFixedColumns': (0),
-    'rowHeight': (30),
-    'columnsBinding': ("columns"),
-    'contentBinding': ("content")
-  },hashTypes:{'hasHeader': "BOOLEAN",'hasFooter': "BOOLEAN",'numFixedColumns': "INTEGER",'rowHeight': "INTEGER",'columnsBinding': "STRING",'contentBinding': "STRING"},hashContexts:{'hasHeader': depth0,'hasFooter': depth0,'numFixedColumns': depth0,'rowHeight': depth0,'columnsBinding': depth0,'contentBinding': depth0},contexts:[depth0],types:["ID"],data:data})));
-  data.buffer.push("\n        </div>\n      </div>\n    </div>\n\n    <div class=\"col-md-12 bumper-30\">\n      <h3>application.hbs</h3>\n      <div class=\"highlight\">\n<pre class=\"prettyprint lang-html\">&#123;&#123;view App.FluidTable\n  hasHeader=true\n  hasFooter=false\n  numFixedColumns=0\n  rowHeight=30\n  columnsBinding=\"columns\"\n  contentBinding=\"content\"\n&#125;&#125;</pre>\n      </div>\n    </div>\n\n    <div class=\"col-md-12 bumper-30\">\n      <h3>fluid_table.coffee</h3>\n      <div class=\"highlight\">\n<pre class=\"prettyprint lang-coffee\">App.FluidTable = Ember.Table.EmberTableComponent.extend\n  # actual width of the table columns (non-frozen columns)\n  _tableColumnsWidth: \"100%\"\n\n  prepareTableColumns: (columns) ->\n    @_super(columns)\n    # Some maintenance on the columns for percent resizing\n    for col, i in columns\n      col.set(\"_nextColumn\", columns.objectAt(i + 1))\n\nApp.FluidColumnDefinition = Ember.Table.ColumnDefinition.extend\n  isResizable: Ember.computed ->\n    if @get('_nextColumn') then yes else no\n  .property '_nextColumn'\n\n  resize: (pxWidth, tableWidth)->\n    newMaxWidth = null\n    tableWidth = tableWidth || @get(\"controller._tableContainerWidth\")\n    return unless tableWidth\n\n    percent = (val)->\n      if \"string\" is typeof val\n        +(val.replace(\"%\", \"\"))\n      else\n        val * 100 / tableWidth\n\n    # either from a tabel resize or a column resize\n    oldWidth = percent(@get(\"columnWidth\"))\n    newWidth = if 'number' is typeof pxWidth then percent(pxWidth) else oldWidth\n\n    # calculate the pixel change for\n    nextCol = @get(\"_nextColumn\")\n    if nextCol\n      # calculate new and old percent width\n      diff = oldWidth - newWidth + percent(nextCol.get(\"columnWidth\"))\n      nextCol.set \"columnWidth\", diff/100*tableWidth\n      newMaxWidth = (newWidth + diff)/100*tableWidth - 100\n\n    @set \"columnWidth\", newWidth/100*tableWidth\n    @notifyPropertyChange(\"columnWidth\")\n    newMaxWidth\n\n  _convertColumnToWidth: Ember.beforeObserver ->\n    tableWidth = @get( \"controller._tableContainerWidth\" )\n    @set(\"columnWidth\", @get(\"columnWidth\")/tableWidth*100 + \"%\") if tableWidth\n  , \"controller._tableContainerWidth\"\n\n  _resizeToTable: Ember.observer ->\n    @resize()\n  , \"controller._tableContainerWidth\"\n</pre>\n      </div>\n    </div>\n\n    <div class=\"col-md-12 bumper-30\">\n      <h3>application_controller.coffee</h3>\n      <div class=\"highlight\">\n<pre class=\"prettyprint lang-coffee\">App.ApplicationController = Ember.Controller.extend\n  numRows: 100\n\n  columns: Ember.computed ->\n    dateColumn = App.FluidColumnDefinition.create\n      columnWidth: \"40\"\n      headerCellName: 'Date'\n      getCellContent: (row) -> row['date'].toDateString();\n    openColumn = App.FluidColumnDefinition.create\n      columnWidth: \"15\"\n      headerCellName: 'Open'\n      getCellContent: (row) -> row['open'].toFixed(2)\n    highColumn = App.FluidColumnDefinition.create\n      columnWidth: \"15\"\n      headerCellName: 'High'\n      getCellContent: (row) -> row['high'].toFixed(2)\n    lowColumn = App.FluidColumnDefinition.create\n      columnWidth: \"15\"\n      headerCellName: 'Low'\n      getCellContent: (row) -> row['low'].toFixed(2)\n    closeColumn = App.FluidColumnDefinition.create\n      columnWidth: \"15\"\n      headerCellName: 'Close'\n      getCellContent: (row) -> row['close'].toFixed(2)\n    [dateColumn, openColumn, highColumn, lowColumn, closeColumn]\n\n  content: Ember.computed ->\n    [0...@get('numRows')].map (index) ->\n      date = new Date()\n      date.setDate(date.getDate() + index)\n      date:  date\n      open:  Math.random() * 100 - 50\n      high:  Math.random() * 100 - 50\n      low:   Math.random() * 100 - 50\n      close: Math.random() * 100 - 50\n      volume: Math.random() * 1000000\n  .property 'numRows'</pre>\n      </div>\n    </div>\n\n  </div>\n</div>\n");
-  return buffer;
-  
-});
-
 Ember.TEMPLATES["ember_table/horizon"] = Ember.Handlebars.template(function anonymous(Handlebars,depth0,helpers,partials,data) {
 this.compilerInfo = [4,'>= 1.0.0'];
 helpers = this.merge(helpers, Ember.Handlebars.helpers); data = data || {};
@@ -18222,7 +18566,7 @@ function program15(depth0,data) {
 function program17(depth0,data) {
   
   
-  data.buffer.push("\n          <div class=\"col-md-4\">\n            <h4>Fluid table</h4>\n            <img class=\"preview-box\" src=\"img/preview_table_simple.png\" />\n          </div>\n        ");
+  data.buffer.push("\n          <div class=\"col-md-4\">\n            <h4>Configurable Column Demo</h4>\n            <img class=\"preview-box\" src=\"img/preview_table_simple.png\" />\n          </div>\n        ");
   }
 
 function program19(depth0,data) {
@@ -18260,12 +18604,12 @@ function program19(depth0,data) {
   stack1 = (helper = helpers['link-to'] || (depth0 && depth0['link-to']),options={hash:{},hashTypes:{},hashContexts:{},inverse:self.noop,fn:self.program(15, program15, data),contexts:[depth0],types:["STRING"],data:data},helper ? helper.call(depth0, "emberTable.horizon", options) : helperMissing.call(depth0, "link-to", "emberTable.horizon", options));
   if(stack1 || stack1 === 0) { data.buffer.push(stack1); }
   data.buffer.push("\n        ");
-  stack1 = (helper = helpers['link-to'] || (depth0 && depth0['link-to']),options={hash:{},hashTypes:{},hashContexts:{},inverse:self.noop,fn:self.program(17, program17, data),contexts:[depth0],types:["STRING"],data:data},helper ? helper.call(depth0, "emberTable.fluid", options) : helperMissing.call(depth0, "link-to", "emberTable.fluid", options));
+  stack1 = (helper = helpers['link-to'] || (depth0 && depth0['link-to']),options={hash:{},hashTypes:{},hashContexts:{},inverse:self.noop,fn:self.program(17, program17, data),contexts:[depth0],types:["STRING"],data:data},helper ? helper.call(depth0, "emberTable.configurable-columns", options) : helperMissing.call(depth0, "link-to", "emberTable.configurable-columns", options));
   if(stack1 || stack1 === 0) { data.buffer.push(stack1); }
   data.buffer.push("\n      </div>\n      <p>Looking for more ways to extend ember-table? Check out the ");
   stack1 = (helper = helpers['link-to'] || (depth0 && depth0['link-to']),options={hash:{},hashTypes:{},hashContexts:{},inverse:self.noop,fn:self.program(19, program19, data),contexts:[depth0],types:["STRING"],data:data},helper ? helper.call(depth0, "emberTable.community-examples", options) : helperMissing.call(depth0, "link-to", "emberTable.community-examples", options));
   if(stack1 || stack1 === 0) { data.buffer.push(stack1); }
-  data.buffer.push(".</p>\n    </div>\n  </div>\n\n  <div class=\"row\">\n    <div class=\"col-md-6\">\n      <hr>\n      <h1>Getting Started</h1>\n      <p>You will need <a target=\"_BLANK\" href=\"http://nodejs.org/\">node</a> installed as a development dependency.</p>\n      <p><a target=\"_BLANK\" href=\"https://github.com/Addepar/ember-table/\">Clone it from Github</a> or <a target=\"_BLANK\" href=\"https://github.com/Addepar/ember-table/releases\">download the ZIP repo</a></p>\n      <div class=\"highlight\">\n<pre><code>$ npm install -g grunt-cli\n$ npm install\n$ grunt\n$ node examples.js</code></pre>\n      <p>Go to your browser and navigate to <a target=\"_BLANK\" href=\"http://localhost:8000/gh_pages\">localhost:8000/gh_pages</a></p>\n      </div>\n    </div>\n    <div class=\"col-md-6\">\n      <hr>\n      <h1>Contributing</h1>\n      <p>You can contribute to this project in one of two ways:\n      <ul class=\"styled\">\n        <li>Browse the ember-table <a target=\"_BLANK\" href=\"https://github.com/Addepar/ember-table/issues?state=open\">issues</a> and report bugs</li>\n        <li>Clone the ember-table repo, make some changes according to our development guidelines and issue a pull-request with your changes.</li>\n      </ul>\n      <p>We keep the ember-table.js code to the minimum necessary, giving users as much control as possible.</p>\n    </div>\n  </div>\n\n  <div class=\"row\">\n    <div class=\"col-md-6\">\n      <hr>\n      <h1>Changelog</h1>\n      <p>The current version is 0.2.4.\n      <p>For the full list of changes, please see <a target=\"_BLANK\" href=\"https://github.com/Addepar/ember-table/blob/master/CHANGELOG.md\">CHANGELOG.md</a>.</p>\n    </div>\n    <div class=\"col-md-6\">\n      <hr>\n      <h1>Acknowledgements</h1>\n      <p><a target=\"_BLANK\" href=\"https://github.com/Addepar/ember-table/graphs/contributors\">List of Contributors on Github</a></p>\n      <p>With lots of help from the Ember.js team</p>\n      <p><a target=\"_BLANK\" href=\"https://twitter.com/ebryn\">ebryn</a>, <a target=\"_BLANK\" href=\"https://twitter.com/tomdale\">tomdale</a>, <a target=\"_BLANK\" href=\"https://twitter.com/wycats\">wycats</a></p>\n      <p>The original idea for lazy rendering was inspired by Erik Bryn.</p>\n    </div>\n  </div>\n</div>\n");
+  data.buffer.push(".</p>\n    </div>\n  </div>\n\n  <div class=\"row\">\n    <div class=\"col-md-6\">\n      <hr>\n      <h1>Getting Started</h1>\n      <p>You will need <a target=\"_BLANK\" href=\"http://nodejs.org/\">node</a> installed as a development dependency.</p>\n      <p><a target=\"_BLANK\" href=\"https://github.com/Addepar/ember-table/\">Clone it from Github</a> or <a target=\"_BLANK\" href=\"https://github.com/Addepar/ember-table/releases\">download the ZIP repo</a></p>\n      <div class=\"highlight\">\n<pre><code>$ npm install -g grunt-cli\n$ npm install\n$ grunt\n$ node examples.js</code></pre>\n      <p>Go to your browser and navigate to <a target=\"_BLANK\" href=\"http://localhost:8000/gh_pages\">localhost:8000/gh_pages</a></p>\n      </div>\n    </div>\n    <div class=\"col-md-6\">\n      <hr>\n      <h1>Contributing</h1>\n      <p>You can contribute to this project in one of two ways:\n      <ul class=\"styled\">\n        <li>Browse the ember-table <a target=\"_BLANK\" href=\"https://github.com/Addepar/ember-table/issues?state=open\">issues</a> and report bugs</li>\n        <li>Clone the ember-table repo, make some changes according to our development guidelines and issue a pull-request with your changes.</li>\n      </ul>\n      <p>We keep the ember-table.js code to the minimum necessary, giving users as much control as possible.</p>\n    </div>\n  </div>\n\n  <div class=\"row\">\n    <div class=\"col-md-6\">\n      <hr>\n      <h1>Changelog</h1>\n      <p>The current version is 0.3.0.\n      <p>For the full list of changes, please see <a target=\"_BLANK\" href=\"https://github.com/Addepar/ember-table/blob/master/CHANGELOG.md\">CHANGELOG.md</a>.</p>\n    </div>\n    <div class=\"col-md-6\">\n      <hr>\n      <h1>Acknowledgements</h1>\n      <p><a target=\"_BLANK\" href=\"https://github.com/Addepar/ember-table/graphs/contributors\">List of Contributors on Github</a></p>\n      <p>With lots of help from the Ember.js team</p>\n      <p><a target=\"_BLANK\" href=\"https://twitter.com/ebryn\">ebryn</a>, <a target=\"_BLANK\" href=\"https://twitter.com/tomdale\">tomdale</a>, <a target=\"_BLANK\" href=\"https://twitter.com/wycats\">wycats</a></p>\n      <p>The original idea for lazy rendering was inspired by Erik Bryn.</p>\n    </div>\n  </div>\n</div>\n");
   return buffer;
   
 });
