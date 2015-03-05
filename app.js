@@ -2844,7 +2844,7 @@ helpers = this.merge(helpers, Ember.Handlebars.helpers); data = data || {};
 
 Ember.Table = Ember.Namespace.create();
 
-Ember.Table.VERSION = '0.4.0';
+Ember.Table.VERSION = '0.4.1';
 
 if ((_ref = Ember.libraries) != null) {
   _ref.register('Ember Table', Ember.Table.VERSION);
@@ -3120,11 +3120,6 @@ Ember.LazyItemView = Ember.View.extend(Ember.AddeparMixins.StyleBindingsMixin, {
 })();
 (function() {
 
-/**
- * Multi Item View Collection View
- * @class
- * @alias Ember.Table.MultiItemViewCollectionView
-*/
 
 Ember.MultiItemViewCollectionView = Ember.CollectionView.extend(Ember.AddeparMixins.StyleBindingsMixin, {
   styleBindings: 'width',
@@ -3203,21 +3198,12 @@ Ember.TouchMoveHandlerMixin = Ember.Mixin.create({
       startY = newY;
     });
   },
-  willDestroy: function() {
-    var _ref;
-    if ((_ref = this.$()) != null) {
-      _ref.unbind('touchmove');
-    }
+  willDestroyElement: function() {
+    this.$().unbind('touchstart');
+    this.$().unbind('touchmove');
     return this._super();
   }
 });
-
-/**
-* Table Row Array Proxy
-* @class
-* @alias Ember.Table.RowArrayProxy
-*/
-
 
 Ember.Table.RowArrayController = Ember.ArrayController.extend({
   itemController: null,
@@ -3255,6 +3241,16 @@ Ember.Table.ShowHorizontalScrollMixin = Ember.Mixin.create({
     $tablesContainer = $(event.target).parents('.ember-table-tables-container');
     $horizontalScroll = $tablesContainer.find('.antiscroll-scrollbar-horizontal');
     return $horizontalScroll.removeClass('antiscroll-scrollbar-shown');
+  }
+});
+
+Ember.Table.RegisterTableComponentMixin = Ember.Mixin.create({
+  tableComponent: null,
+  init: function() {
+    if (!this.get('tableComponent')) {
+      this.set('tableComponent', this.nearestWithProperty('isEmberTable'));
+    }
+    return this._super();
   }
 });
 
@@ -3311,7 +3307,7 @@ Ember.Table.Row = Ember.ObjectProxy.extend({
       this.get('parentController').setSelected(this, val);
     }
     return this.get('parentController').isSelected(this);
-  }).property('parentController._selection.[]'),
+  }).property('parentController.selection.[]'),
   isShowing: true,
   isHovered: false
 });
@@ -3326,10 +3322,10 @@ Ember.Table.TableContainer = Ember.View.extend(Ember.AddeparMixins.StyleBindings
   styleBindings: ['height', 'width']
 });
 
-Ember.Table.TableBlock = Ember.CollectionView.extend(Ember.AddeparMixins.StyleBindingsMixin, {
+Ember.Table.TableBlock = Ember.CollectionView.extend(Ember.AddeparMixins.StyleBindingsMixin, Ember.Table.RegisterTableComponentMixin, {
   classNames: ['ember-table-table-block'],
   styleBindings: ['width', 'height'],
-  itemViewClass: Ember.computed.alias('controller.tableRowViewClass'),
+  itemViewClass: Ember.computed.alias('tableComponent.tableRowViewClass'),
   columns: null,
   content: null,
   scrollLeft: null,
@@ -3337,15 +3333,15 @@ Ember.Table.TableBlock = Ember.CollectionView.extend(Ember.AddeparMixins.StyleBi
     return this.$().scrollLeft(this.get('scrollLeft'));
   }, 'scrollLeft'),
   height: Ember.computed(function() {
-    return this.get('controller._headerHeight');
-  }).property('controller._headerHeight')
+    return this.get('tableComponent._headerHeight');
+  }).property('tableComponent._headerHeight')
 });
 
-Ember.Table.LazyTableBlock = Ember.LazyContainerView.extend({
+Ember.Table.LazyTableBlock = Ember.LazyContainerView.extend(Ember.Table.RegisterTableComponentMixin, {
   classNames: ['ember-table-table-block'],
   styleBindings: ['width'],
-  itemViewClass: Ember.computed.alias('controller.tableRowViewClass'),
-  rowHeight: Ember.computed.alias('controller.rowHeight'),
+  itemViewClass: Ember.computed.alias('tableComponent.tableRowViewClass'),
+  rowHeight: Ember.computed.alias('tableComponent.rowHeight'),
   columns: null,
   content: null,
   scrollLeft: null,
@@ -3355,18 +3351,18 @@ Ember.Table.LazyTableBlock = Ember.LazyContainerView.extend({
   }, 'scrollLeft')
 });
 
-Ember.Table.TableRow = Ember.LazyItemView.extend({
+Ember.Table.TableRow = Ember.LazyItemView.extend(Ember.Table.RegisterTableComponentMixin, {
   templateName: 'table-row',
   classNames: 'ember-table-table-row',
   classNameBindings: ['row.isHovered:ember-table-hover', 'row.isSelected:ember-table-selected', 'row.rowStyle', 'isLastRow:ember-table-last-row'],
   styleBindings: ['width', 'height'],
   row: Ember.computed.alias('content'),
   columns: Ember.computed.alias('parentView.columns'),
-  width: Ember.computed.alias('controller._rowWidth'),
-  height: Ember.computed.alias('controller.rowHeight'),
+  width: Ember.computed.alias('tableComponent._rowWidth'),
+  height: Ember.computed.alias('tableComponent.rowHeight'),
   isLastRow: Ember.computed(function() {
-    return this.get('row') === this.get('controller.bodyContent.lastObject');
-  }).property('controller.bodyContent.lastObject', 'row'),
+    return this.get('row') === this.get('tableComponent.bodyContent.lastObject');
+  }).property('tableComponent.bodyContent.lastObject', 'row'),
   mouseEnter: function(event) {
     var row;
     row = this.get('row');
@@ -3444,13 +3440,13 @@ Ember.Table.HeaderBlock = Ember.Table.TableBlock.extend({
   }).property('columns')
 });
 
-Ember.Table.HeaderRow = Ember.View.extend(Ember.AddeparMixins.StyleBindingsMixin, {
+Ember.Table.HeaderRow = Ember.View.extend(Ember.AddeparMixins.StyleBindingsMixin, Ember.Table.RegisterTableComponentMixin, {
   templateName: 'header-row',
   classNames: ['ember-table-table-row', 'ember-table-header-row'],
   styleBindings: ['width'],
   columns: Ember.computed.alias('content'),
-  width: Ember.computed.alias('controller._rowWidth'),
-  scrollLeft: Ember.computed.alias('controller._tableScrollLeft'),
+  width: Ember.computed.alias('tableComponent._rowWidth'),
+  scrollLeft: Ember.computed.alias('tableComponent._tableScrollLeft'),
   sortableOption: Ember.computed(function() {
     return {
       axis: 'x',
@@ -3472,34 +3468,44 @@ Ember.Table.HeaderRow = Ember.View.extend(Ember.AddeparMixins.StyleBindingsMixin
   }, 'scrollLeft'),
   didInsertElement: function() {
     this._super();
-    if (this.get('controller.enableColumnReorder')) {
+    if (this.get('tableComponent.enableColumnReorder')) {
       return this.$('> div').sortable(this.get('sortableOption'));
     }
+  },
+  willDestroyElement: function() {
+    var _ref;
+    if (this.get('tableComponent.enableColumnReorder')) {
+      if ((_ref = this.$('> div')) != null) {
+        _ref.sortable('destroy');
+      }
+    }
+    return this._super();
   },
   onScroll: function(event) {
     this.set('scrollLeft', event.target.scrollLeft);
     return event.preventDefault();
   },
   onColumnSortStop: function(event, ui) {
-    return this.set('controller._isShowingSortableIndicator', false);
+    return this.set('tableComponent._isShowingSortableIndicator', false);
   },
   onColumnSortChange: function(event, ui) {
     var left;
     left = this.$('.ui-state-highlight').offset().left - this.$().closest('.ember-table-tables-container').offset().left;
-    this.set('controller._isShowingSortableIndicator', true);
-    return this.set('controller._sortableIndicatorLeft', left);
+    this.set('tableComponent._isShowingSortableIndicator', true);
+    return this.set('tableComponent._sortableIndicatorLeft', left);
   },
   onColumnSortDone: function(event, ui) {
     var column, newIndex, view;
     newIndex = ui.item.index();
+    this.$('> div').sortable('cancel');
     view = Ember.View.views[ui.item.attr('id')];
     column = view.get('column');
-    this.get('controller').onColumnSort(column, newIndex);
-    return this.set('controller._isShowingSortableIndicator', false);
+    this.get('tableComponent').onColumnSort(column, newIndex);
+    return this.set('tableComponent._isShowingSortableIndicator', false);
   }
 });
 
-Ember.Table.HeaderCell = Ember.View.extend(Ember.AddeparMixins.StyleBindingsMixin, {
+Ember.Table.HeaderCell = Ember.View.extend(Ember.AddeparMixins.StyleBindingsMixin, Ember.Table.RegisterTableComponentMixin, {
   templateName: 'header-cell',
   classNames: ['ember-table-cell', 'ember-table-header-cell'],
   classNameBindings: ['column.isSortable:sortable', 'column.textAlign'],
@@ -3509,10 +3515,10 @@ Ember.Table.HeaderCell = Ember.View.extend(Ember.AddeparMixins.StyleBindingsMixi
   minWidth: Ember.computed.alias('column.minWidth'),
   maxWidth: Ember.computed.alias('column.maxWidth'),
   nextResizableColumn: Ember.computed.alias('column.nextResizableColumn'),
-  height: Ember.computed.alias('controller._headerHeight'),
+  height: Ember.computed.alias('tableComponent._headerHeight'),
   effectiveMinWidth: Ember.computed(function() {
     var nextColumnMaxDiff;
-    if (this.get('controller.columnMode') === 'standard') {
+    if (this.get('tableComponent.columnMode') === 'standard') {
       return this.get('minWidth');
     }
     nextColumnMaxDiff = this.get('nextResizableColumn.maxWidth') - this.get('nextResizableColumn.width');
@@ -3523,10 +3529,10 @@ Ember.Table.HeaderCell = Ember.View.extend(Ember.AddeparMixins.StyleBindingsMixi
     } else {
       return this.get('width') - nextColumnMaxDiff;
     }
-  }).property('width', 'minWidth', 'controller.columnMode', 'nextResizableColumn.{width,maxWidth}'),
+  }).property('width', 'minWidth', 'tableComponent.columnMode', 'nextResizableColumn.{width,maxWidth}'),
   effectiveMaxWidth: Ember.computed(function() {
     var nextColumnMaxDiff;
-    if (this.get('controller.columnMode') === 'standard') {
+    if (this.get('tableComponent.columnMode') === 'standard') {
       return this.get('maxWidth');
     }
     nextColumnMaxDiff = this.get('nextResizableColumn.width') - this.get('nextResizableColumn.minWidth');
@@ -3537,7 +3543,7 @@ Ember.Table.HeaderCell = Ember.View.extend(Ember.AddeparMixins.StyleBindingsMixi
     } else {
       return this.get('width') + nextColumnMaxDiff;
     }
-  }).property('width', 'minWidth', 'controller.columnMode', 'nextResizableColumn.{width,minWidth}'),
+  }).property('width', 'minWidth', 'tableComponent.columnMode', 'nextResizableColumn.{width,minWidth}'),
   resizableOption: Ember.computed(function() {
     return {
       handles: 'e',
@@ -3552,29 +3558,33 @@ Ember.Table.HeaderCell = Ember.View.extend(Ember.AddeparMixins.StyleBindingsMixi
     this.elementSizeDidChange();
     return this.recomputeResizableHandle();
   },
+  willDestroyElement: function() {
+    if (this.$().is('.ui-resizable')) {
+      this.$().resizable('destroy');
+    }
+    return this._super();
+  },
   _isResizable: Ember.computed(function() {
-    if (this.get('controller.columnMode') === 'standard') {
+    if (this.get('tableComponent.columnMode') === 'standard') {
       return this.get('column.isResizable');
     } else {
       return this.get('column.isResizable') && this.get('nextResizableColumn');
     }
-  }).property('column.isResizable', 'controller.columnMode', 'nextResizableColumn'),
-  resizableObserver: Ember.observer(function() {
-    return this.recomputeResizableHandle();
-  }, '_isResizable', 'resizableOption'),
+  }).property('column.isResizable', 'tableComponent.columnMode', 'nextResizableColumn'),
   onColumnResize: function(event, ui) {
-    var diff;
-    if (this.get('controller.columnMode') === 'standard') {
-      this.get('column').resize(ui.size.width);
-      this.set('controller.columnsFillTable', false);
+    var diff, newWidth;
+    newWidth = Math.round(ui.size.width);
+    if (this.get('tableComponent.columnMode') === 'standard') {
+      this.get('column').resize(newWidth);
+      this.set('tableComponent.columnsFillTable', false);
     } else {
-      diff = this.get('width') - ui.size.width;
-      this.get('column').resize(ui.size.width);
+      diff = this.get('width') - newWidth;
+      this.get('column').resize(newWidth);
       this.get('nextResizableColumn').resize(this.get('nextResizableColumn.width') + diff);
     }
     this.elementSizeDidChange();
     if (event.type === 'resizestop') {
-      this.get('controller').elementSizeDidChange();
+      this.get('tableComponent').elementSizeDidChange();
     }
   },
   elementSizeDidChange: function() {
@@ -3587,8 +3597,14 @@ Ember.Table.HeaderCell = Ember.View.extend(Ember.AddeparMixins.StyleBindingsMixi
         return maxHeight = thisHeight;
       }
     });
-    return this.set('controller._contentHeaderHeight', maxHeight);
+    return this.set('tableComponent._contentHeaderHeight', maxHeight);
   },
+  cellWidthDidChange: Ember.observer(function() {
+    return Ember.run.schedule('afterRender', this, this.elementSizeDidChange);
+  }, 'width'),
+  resizableObserver: Ember.observer(function() {
+    return this.recomputeResizableHandle();
+  }, 'resizableOption', 'column.isResizable', 'tableComponent.columnMode', 'nextResizableColumn'),
   recomputeResizableHandle: function() {
     if (this.get('_isResizable')) {
       return this.$().resizable(this.get('resizableOption'));
@@ -3600,28 +3616,28 @@ Ember.Table.HeaderCell = Ember.View.extend(Ember.AddeparMixins.StyleBindingsMixi
   }
 });
 
-Ember.Table.ColumnSortableIndicator = Ember.View.extend(Ember.AddeparMixins.StyleBindingsMixin, {
+Ember.Table.ColumnSortableIndicator = Ember.View.extend(Ember.AddeparMixins.StyleBindingsMixin, Ember.Table.RegisterTableComponentMixin, {
   classNames: 'ember-table-column-sortable-indicator',
-  classNameBindings: 'controller._isShowingSortableIndicator:active',
+  classNameBindings: 'tableComponent._isShowingSortableIndicator:active',
   styleBindings: ['left', 'height'],
-  left: Ember.computed.alias('controller._sortableIndicatorLeft'),
-  height: Ember.computed.alias('controller._height')
+  left: Ember.computed.alias('tableComponent._sortableIndicatorLeft'),
+  height: Ember.computed.alias('tableComponent._height')
 });
 
-Ember.Table.HeaderTableContainer = Ember.Table.TableContainer.extend(Ember.Table.ShowHorizontalScrollMixin, {
+Ember.Table.HeaderTableContainer = Ember.Table.TableContainer.extend(Ember.Table.ShowHorizontalScrollMixin, Ember.Table.RegisterTableComponentMixin, {
   templateName: 'header-container',
   classNames: ['ember-table-table-container', 'ember-table-fixed-table-container', 'ember-table-header-container'],
-  height: Ember.computed.alias('controller._headerHeight'),
-  width: Ember.computed.alias('controller._tableContainerWidth')
+  height: Ember.computed.alias('tableComponent._headerHeight'),
+  width: Ember.computed.alias('tableComponent._tableContainerWidth')
 });
 
-Ember.Table.BodyTableContainer = Ember.Table.TableContainer.extend(Ember.MouseWheelHandlerMixin, Ember.TouchMoveHandlerMixin, Ember.ScrollHandlerMixin, Ember.Table.ShowHorizontalScrollMixin, {
+Ember.Table.BodyTableContainer = Ember.Table.TableContainer.extend(Ember.MouseWheelHandlerMixin, Ember.TouchMoveHandlerMixin, Ember.ScrollHandlerMixin, Ember.Table.ShowHorizontalScrollMixin, Ember.Table.RegisterTableComponentMixin, {
   templateName: 'body-container',
   classNames: ['ember-table-table-container', 'ember-table-body-container', 'antiscroll-wrap'],
-  height: Ember.computed.alias('controller._bodyHeight'),
-  width: Ember.computed.alias('controller._width'),
-  scrollTop: Ember.computed.alias('controller._tableScrollTop'),
-  scrollLeft: Ember.computed.alias('controller._tableScrollLeft'),
+  height: Ember.computed.alias('tableComponent._bodyHeight'),
+  width: Ember.computed.alias('tableComponent._width'),
+  scrollTop: Ember.computed.alias('tableComponent._tableScrollTop'),
+  scrollLeft: Ember.computed.alias('tableComponent._tableScrollLeft'),
   scrollElementSelector: '.antiscroll-inner',
   onScroll: function(event) {
     this.set('scrollTop', event.target.scrollTop);
@@ -3647,24 +3663,24 @@ Ember.Table.BodyTableContainer = Ember.Table.TableContainer.extend(Ember.MouseWh
   }
 });
 
-Ember.Table.FooterTableContainer = Ember.Table.TableContainer.extend(Ember.MouseWheelHandlerMixin, Ember.TouchMoveHandlerMixin, Ember.Table.ShowHorizontalScrollMixin, {
+Ember.Table.FooterTableContainer = Ember.Table.TableContainer.extend(Ember.MouseWheelHandlerMixin, Ember.TouchMoveHandlerMixin, Ember.Table.ShowHorizontalScrollMixin, Ember.Table.RegisterTableComponentMixin, {
   templateName: 'footer-container',
   classNames: ['ember-table-table-container', 'ember-table-fixed-table-container', 'ember-table-footer-container'],
   styleBindings: 'top',
-  height: Ember.computed.alias('controller.footerHeight'),
-  width: Ember.computed.alias('controller._tableContainerWidth'),
-  scrollLeft: Ember.computed.alias('controller._tableScrollLeft'),
+  height: Ember.computed.alias('tableComponent.footerHeight'),
+  width: Ember.computed.alias('tableComponent._tableContainerWidth'),
+  scrollLeft: Ember.computed.alias('tableComponent._tableScrollLeft'),
   top: Ember.computed(function() {
     var bodyHeight, contentHeight, headerHeight;
-    headerHeight = this.get('controller._headerHeight');
-    contentHeight = this.get('controller._tableContentHeight') + headerHeight;
-    bodyHeight = this.get('controller._bodyHeight') + headerHeight;
+    headerHeight = this.get('tableComponent._headerHeight');
+    contentHeight = this.get('tableComponent._tableContentHeight') + headerHeight;
+    bodyHeight = this.get('tableComponent._bodyHeight') + headerHeight;
     if (contentHeight < bodyHeight) {
       return contentHeight;
     } else {
       return bodyHeight;
     }
-  }).property('controller._bodyHeight', 'controller._headerHeight', 'controller._tableContentHeight'),
+  }).property('tableComponent._bodyHeight', 'tableComponent._headerHeight', 'tableComponent._tableContentHeight'),
   onMouseWheel: function(event, delta, deltaX, deltaY) {
     var scrollLeft;
     scrollLeft = this.$('.ember-table-right-table-block').scrollLeft() + deltaX;
@@ -3679,16 +3695,16 @@ Ember.Table.FooterTableContainer = Ember.Table.TableContainer.extend(Ember.Mouse
   }
 });
 
-Ember.Table.ScrollContainer = Ember.View.extend(Ember.AddeparMixins.StyleBindingsMixin, Ember.ScrollHandlerMixin, {
+Ember.Table.ScrollContainer = Ember.View.extend(Ember.AddeparMixins.StyleBindingsMixin, Ember.ScrollHandlerMixin, Ember.Table.RegisterTableComponentMixin, {
   templateName: 'scroll-container',
   classNames: ['ember-table-scroll-container'],
   styleBindings: ['left', 'width', 'height'],
   scrollElementSelector: '.antiscroll-inner',
-  width: Ember.computed.alias('controller._scrollContainerWidth'),
+  width: Ember.computed.alias('tableComponent._scrollContainerWidth'),
   height: 10,
-  left: Ember.computed.alias('controller._fixedColumnsWidth'),
-  scrollTop: Ember.computed.alias('controller._tableScrollTop'),
-  scrollLeft: Ember.computed.alias('controller._tableScrollLeft'),
+  left: Ember.computed.alias('tableComponent._fixedColumnsWidth'),
+  scrollTop: Ember.computed.alias('tableComponent._tableScrollTop'),
+  scrollLeft: Ember.computed.alias('tableComponent._tableScrollLeft'),
   didInsertElement: function() {
     this._super();
     return this.onScrollLeftDidChange();
@@ -3704,11 +3720,11 @@ Ember.Table.ScrollContainer = Ember.View.extend(Ember.AddeparMixins.StyleBinding
   }, 'scrollLeft', 'scrollElementSelector')
 });
 
-Ember.Table.ScrollPanel = Ember.View.extend(Ember.AddeparMixins.StyleBindingsMixin, {
+Ember.Table.ScrollPanel = Ember.View.extend(Ember.AddeparMixins.StyleBindingsMixin, Ember.Table.RegisterTableComponentMixin, {
   classNames: ['ember-table-scroll-panel'],
   styleBindings: ['width', 'height'],
-  width: Ember.computed.alias('controller._tableColumnsWidth'),
-  height: Ember.computed.alias('controller._tableContentHeight')
+  width: Ember.computed.alias('tableComponent._tableColumnsWidth'),
+  height: Ember.computed.alias('tableComponent._tableContentHeight')
 });
 
 
@@ -3735,28 +3751,30 @@ Ember.Table.EmberTableComponent = Ember.Component.extend(Ember.AddeparMixins.Sty
   columnMode: 'standard',
   selectionMode: 'single',
   selection: Ember.computed(function(key, val) {
-    var content, _i, _len, _ref, _ref1;
+    var selection, selectionMode;
+    selectionMode = this.get('selectionMode');
     if (arguments.length > 1 && val) {
-      if (this.get('selectionMode') === 'single') {
-        this.get('persistedSelection').clear();
-        this.get('persistedSelection').addObject(this.findRow(val));
-      } else {
-        this.get('persistedSelection').clear();
-        for (_i = 0, _len = val.length; _i < _len; _i++) {
-          content = val[_i];
-          this.get('persistedSelection').addObject(this.findRow(content));
-        }
-      }
+      this.get('persistedSelection').clear();
       this.get('rangeSelection').clear();
+      switch (selectionMode) {
+        case 'single':
+          this.get('persistedSelection').addObject(val);
+          break;
+        case 'multiple':
+          this.get('persistedSelection').addObjects(val);
+      }
     }
-    if (this.get('selectionMode') === 'single') {
-      return (_ref = this.get('_selection')) != null ? (_ref1 = _ref[0]) != null ? _ref1.get('content') : void 0 : void 0;
-    } else {
-      return this.get('_selection').toArray().map(function(row) {
-        return row.get('content');
-      });
+    selection = this.get('persistedSelection').copy().addObjects(this.get('rangeSelection'));
+    switch (selectionMode) {
+      case 'none':
+        return null;
+      case 'single':
+        return selection[0] || null;
+      case 'multiple':
+        return selection;
     }
-  }).property('_selection.[]', 'selectionMode'),
+  }).property('persistedSelection.[]', 'rangeSelection.[]', 'selectionMode'),
+  isEmberTable: true,
   columnsFillTable: true,
   init: function() {
     this._super();
@@ -3769,6 +3787,7 @@ Ember.Table.EmberTableComponent = Ember.Component.extend(Ember.AddeparMixins.Sty
     if (!$().antiscroll) {
       throw 'Missing dependency: antiscroll.js';
     }
+    return this.prepareTableColumns();
   },
   actions: {
     addColumn: Ember.K,
@@ -3778,10 +3797,11 @@ Ember.Table.EmberTableComponent = Ember.Component.extend(Ember.AddeparMixins.Sty
   tableRowView: 'Ember.Table.TableRow',
   tableRowViewClass: Ember.computed.alias('tableRowView'),
   onColumnSort: function(column, newIndex) {
-    var columns;
-    columns = this.get('tableColumns');
+    var columns, numFixedColumns;
+    numFixedColumns = this.get('fixedColumns.length');
+    columns = this.get('columns');
     columns.removeObject(column);
-    columns.insertAt(newIndex, column);
+    columns.insertAt(numFixedColumns + newIndex, column);
     return this.prepareTableColumns();
   },
   bodyContent: Ember.computed(function() {
@@ -3807,9 +3827,7 @@ Ember.Table.EmberTableComponent = Ember.Component.extend(Ember.AddeparMixins.Sty
       return Ember.A();
     }
     numFixedColumns = this.get('numFixedColumns') || 0;
-    columns = columns.slice(0, numFixedColumns) || [];
-    this.prepareTableColumns();
-    return columns;
+    return columns.slice(0, numFixedColumns) || [];
   }).property('columns.@each', 'numFixedColumns'),
   tableColumns: Ember.computed(function() {
     var columns, numFixedColumns;
@@ -3818,11 +3836,8 @@ Ember.Table.EmberTableComponent = Ember.Component.extend(Ember.AddeparMixins.Sty
       return Ember.A();
     }
     numFixedColumns = this.get('numFixedColumns') || 0;
-    columns = columns.slice(numFixedColumns, columns.get('length')) || [];
-    this.prepareTableColumns();
-    return columns;
+    return columns.slice(numFixedColumns, columns.get('length')) || [];
   }).property('columns.@each', 'numFixedColumns'),
-  allColumns: Ember.computed.union('fixedColumns', 'tableColumns'),
   prepareTableColumns: function() {
     var col, columns, i, _i, _len, _results;
     columns = this.get('columns') || Ember.A();
@@ -3867,6 +3882,9 @@ Ember.Table.EmberTableComponent = Ember.Component.extend(Ember.AddeparMixins.Sty
   },
   tableWidthNowTooSmall: function() {
     var newTableWidth, oldTableWidth, totalColumnWidth;
+    if ((this.get('_state') || this.get('state')) !== 'inDOM') {
+      return false;
+    }
     oldTableWidth = this.get('_width');
     newTableWidth = this.$().parent().outerWidth();
     totalColumnWidth = this._getTotalWidth(this.get('tableColumns'));
@@ -3893,7 +3911,7 @@ Ember.Table.EmberTableComponent = Ember.Component.extend(Ember.AddeparMixins.Sty
   doForceFillColumns: function() {
     var allColumns, availableWidth, columnsToResize, doNextLoop, nextColumnsToResize, totalResizableWidth, unresizableColumns, _results,
       _this = this;
-    allColumns = this.get('allColumns');
+    allColumns = this.get('columns');
     columnsToResize = allColumns.filterProperty('canAutoResize');
     unresizableColumns = allColumns.filterProperty('canAutoResize', false);
     availableWidth = this.get('_width') - this._getTotalWidth(unresizableColumns);
@@ -4058,64 +4076,71 @@ Ember.Table.EmberTableComponent = Ember.Component.extend(Ember.AddeparMixins.Sty
       return total + w;
     }), 0);
   },
+  lastSelected: null,
   isSelected: function(row) {
-    return this.get('_selection').contains(row);
+    switch (this.get('selectionMode')) {
+      case 'none':
+        return false;
+      case 'single':
+        return this.get('selection') === row.get('content');
+      case 'multiple':
+        return this.get('selection').contains(row.get('content'));
+    }
   },
   setSelected: function(row, val) {
+    var item;
     this.persistSelection();
+    item = row.get('content');
     if (val) {
-      return this.get('persistedSelection').addObject(row);
+      return this.get('persistedSelection').addObject(item);
     } else {
-      return this.get('persistedSelection').removeObject(row);
+      return this.get('persistedSelection').removeObject(item);
     }
   },
   persistedSelection: Ember.computed(function() {
-    return Ember.ArrayProxy.createWithMixins(Ember.MutableArray, {
-      content: []
-    });
+    return Ember.A();
   }),
   rangeSelection: Ember.computed(function() {
-    return Ember.ArrayProxy.createWithMixins(Ember.MutableArray, {
-      content: []
-    });
+    return Ember.A();
   }),
-  _selection: Ember.computed(function() {
-    return this.get('persistedSelection').toArray().copy().addObjects(this.get('rangeSelection'));
-  }).property('persistedSelection.[]', 'rangeSelection.[]'),
   click: function(event) {
-    var curIndex, lastIndex, maxIndex, minIndex, row;
+    var curIndex, item, lastIndex, maxIndex, minIndex, row;
     row = this.getRowForEvent(event);
-    if (!row) {
+    item = row != null ? row.get('content') : void 0;
+    if (!item) {
       return;
     }
-    if (this.get('selectionMode') === 'none') {
-      return;
-    }
-    if (this.get('selectionMode') === 'single') {
-      this.get('persistedSelection').clear();
-      return this.get('persistedSelection').addObject(row);
-    } else {
-      if (event.shiftKey) {
-        this.get('rangeSelection').clear();
-        lastIndex = this.rowIndex(this.get('lastSelected'));
-        curIndex = this.rowIndex(this.getRowForEvent(event));
-        minIndex = Math.min(lastIndex, curIndex);
-        maxIndex = Math.max(lastIndex, curIndex);
-        return this.get('rangeSelection').addObjects(this.get('bodyContent').slice(minIndex, maxIndex + 1));
-      } else {
-        if (!event.ctrlKey && !event.metaKey) {
-          this.get('persistedSelection').clear();
+    switch (this.get('selectionMode')) {
+      case 'none':
+        break;
+      case 'single':
+        this.get('persistedSelection').clear();
+        return this.get('persistedSelection').addObject(item);
+      case 'multiple':
+        if (event.shiftKey) {
           this.get('rangeSelection').clear();
+          lastIndex = this.rowIndex(this.get('lastSelected'));
+          if (lastIndex === -1) {
+            lastIndex = 0;
+          }
+          curIndex = this.rowIndex(this.getRowForEvent(event));
+          minIndex = Math.min(lastIndex, curIndex);
+          maxIndex = Math.max(lastIndex, curIndex);
+          return this.get('rangeSelection').addObjects(this.get('bodyContent').slice(minIndex, maxIndex + 1).mapBy('content'));
         } else {
-          this.persistSelection();
+          if (!event.ctrlKey && !event.metaKey) {
+            this.get('persistedSelection').clear();
+            this.get('rangeSelection').clear();
+          } else {
+            this.persistSelection();
+          }
+          if (this.get('persistedSelection').contains(item)) {
+            this.get('persistedSelection').removeObject(item);
+          } else {
+            this.get('persistedSelection').addObject(item);
+          }
+          return this.set('lastSelected', row);
         }
-        if (this.get('persistedSelection').contains(row)) {
-          this.get('persistedSelection').removeObject(row);
-        } else {
-          this.get('persistedSelection').addObject(row);
-        }
-        return this.set('lastSelected', row);
-      }
     }
   },
   findRow: function(content) {
@@ -17176,12 +17201,36 @@ d3 = function() {
         return this.get('maxWidth');
       }
     }).property('maxWidth'),
-    headerCellNameLowerCase: Ember.computed(function() {
-      return this.get('headerCellName').toLowerCase();
-    }).property('headerCellName'),
-    isDateCell: Ember.computed.equal('headerCellName', 'Date'),
-    textAlignIsDefault: Ember.computed.equal('textAlign', 'text-align-right'),
-    minWidthIsDefault: Ember.computed.equal('minWidth', 25)
+    columnDefinitionDocumentation: Ember.computed(function() {
+      var docString;
+      docString = '';
+      docString += '    ' + this.get('headerCellName').toLowerCase() + 'Column = Ember.Table.ColumnDefinition.create\n';
+      if (this.get('textAlign') !== 'text-align-right') {
+        docString += "      textAlign: '" + this.get('textAlign') + "'\n";
+      }
+      docString += "      headerCellName: '" + this.get('headerCellName') + "'\n";
+      if (this.get('minWidth') !== 25) {
+        docString += '      minWidth: ' + this.get('minWidth') + '\n';
+      }
+      if (this.get('maxWidth')) {
+        docString += '      maxWidth: ' + this.get('maxWidth') + '\n';
+      }
+      if (!this.get('isSortable')) {
+        docString += '      isSortable: no\n';
+      }
+      if (!this.get('isResizable')) {
+        docString += '      isResizable: no\n';
+      }
+      if (this.get('canAutoResize')) {
+        docString += '      canAutoResize: yes\n';
+      }
+      if (this.get('headerCellName') === 'Date') {
+        docString += "      getCellContent: (row) -> row.get('date').toDateString()";
+      } else {
+        docString += "      getCellContent: (row) -> row.get('" + this.get('headerCellName').toLowerCase() + "').toFixed(2)";
+      }
+      return docString;
+    }).property('headerCellName', 'textAlign', 'minWidth', 'maxWidth', 'isSortable', 'isResizable', 'canAutoResize')
   });
 
   App.ConfigurableTableComponent = Ember.Table.EmberTableComponent.extend({
@@ -17946,7 +17995,7 @@ function program23(depth0,data) {
 function program25(depth0,data) {
   
   
-  data.buffer.push("\n    <ul class=\"list-unstyled project-navigation\">\n      <li class=\"sub-title\">Community Examples</li>\n    <ul>\n  ");
+  data.buffer.push("\n    <ul class=\"list-unstyled project-navigation\">\n      <li class=\"sub-title\">Community Examples</li>\n    </ul>\n  ");
   }
 
   data.buffer.push("\n<div class=\"col-md-2 sub-navigation-sidebar\">\n  <ul class=\"list-unstyled github-navigation\">\n    <li>\n      <a class=\"btn btn-default\" target=\"_BLANK\" href=\"https://github.com/addepar/ember-table\">\n        <i class=\"icon-github\"></i> View on GitHub\n      </a>\n    </li>\n    <li>\n      <iframe src=\"http://ghbtns.com/github-btn.html?user=addepar&amp;repo=ember-table&amp;type=watch&amp;count=true\" allowtransparency=\"true\" frameborder=\"0\" scrolling=\"0\" width=\"130\" height=\"30\"></iframe>\n    </li>\n  </ul>\n  <hr>\n  <ul class=\"list-unstyled project-navigation\">\n    <li class=\"sub-title\">Ember Table</li>\n    <li>");
@@ -18026,14 +18075,14 @@ function program1(depth0,data) {
   data.buffer.push(escapeExpression(helpers['bind-attr'].call(depth0, {hash:{
     'src': ("view.cellContent")
   },hashTypes:{'src': "STRING"},hashContexts:{'src': depth0},contexts:[],types:[],data:data})));
-  data.buffer.push("></img>\n");
+  data.buffer.push(">\n");
   return buffer;
   }
 
 function program3(depth0,data) {
   
   
-  data.buffer.push("\n  <img src=\"img/loading.gif\" style=\"padding: 8px;\"></img>\n");
+  data.buffer.push("\n  <img src=\"img/loading.gif\" style=\"padding: 8px;\">\n");
   }
 
   stack1 = helpers['if'].call(depth0, "view.row.isLoaded", {hash:{},hashTypes:{},hashContexts:{},inverse:self.program(3, program3, data),fn:self.program(1, program1, data),contexts:[depth0],types:["ID"],data:data});
@@ -18072,7 +18121,7 @@ helpers = this.merge(helpers, Ember.Handlebars.helpers); data = data || {};
     'columnsBinding': ("columns"),
     'contentBinding': ("content")
   },hashTypes:{'hasHeader': "BOOLEAN",'hasFooter': "BOOLEAN",'rowHeight': "INTEGER",'columnsBinding': "STRING",'contentBinding': "STRING"},hashContexts:{'hasHeader': depth0,'hasFooter': depth0,'rowHeight': depth0,'columnsBinding': depth0,'contentBinding': depth0},contexts:[],types:[],data:data},helper ? helper.call(depth0, options) : helperMissing.call(depth0, "table-component", options))));
-  data.buffer.push("\n        </div>\n      </div>\n    </div>\n  </div>\n\n    <div class=\"col-md-12 bumper-30\">\n      <h3>application.hbs</h3>\n      <div class=\"highlight\">\n<pre class=\"prettyprint lang-html\">&#123;&#123;table-component\n    hasHeader=true\n    hasFooter=false\n    rowHeight=30\n    columnsBinding=\"columns\"\n    contentBinding=\"content\"\n&#125;&#125;</pre>\n      </div>\n    </div>\n\n    <div class=\"col-md-12 bumper-30\">\n      <h3>bar_table_cell.hbs</h3>\n      <div class=\"highlight\">\n<pre class=\"prettyprint lang-html\">&lt;span class=&quot;bar-cell&quot; &#123;&#123;bind-attr style=&quot;view.histogramStyle&quot;&#125;&#125;&gt;&lt;/span&gt;</pre>\n      </div>\n    </div>\n\n    <div class=\"col-md-12 bumper-30\">\n      <h3>bar_table_cell_view.coffee</h3>\n      <div class=\"highlight\">\n<pre class=\"prettyprint lang-coffee\">App.BarTableCellView = Ember.Table.TableCell.extend\n  templateName:     'ember_table/bar_table/bar'\n  classNameBindings:['column.color']\n  barWidth: Ember.computed ->\n    {column, row} = @getProperties 'column', 'row'\n    return 0 unless column and row\n    Math.round(+@get('cellContent'))\n  .property 'column', 'row', 'cellContent'\n\n  histogramStyle: Ember.computed ->\n    \"width: #{@get('barWidth')}%;\"\n  .property 'barWidth'</pre>\n      </div>\n    </div>\n\n    <div class=\"col-md-12 bumper-30\">\n      <h3>application_controller.coffee</h3>\n      <div class=\"highlight\">\n<pre class=\"prettyprint lang-coffee\">App.ApplicationController = Ember.Controller.extend\n  numRows: 100\n\n  columns: Ember.computed ->\n    colors  = ['blue', 'teal', 'green', 'yellow', 'orange']\n    column1 = Ember.Table.ColumnDefinition.create\n      columnWidth:    50\n      headerCellName: 'Name'\n      contentPath: 'key'\n    columns = colors.map (color, index) ->\n      Ember.Table.ColumnDefinition.create\n        color: color\n        headerCellName: 'Bar'\n        tableCellViewClass: 'App.BarTableCell'\n        contentPath: \"value#{index + 1}\"\n    columns.unshift(column1)\n    columns\n\n  content: Ember.computed ->\n    [0...@get('numRows')].map (num, index) ->\n      key: index\n      value1: Math.random() * 80 + 10\n      value2: Math.random() * 80 + 10\n      value3: Math.random() * 80 + 10\n      value4: Math.random() * 80 + 10\n      value5: Math.random() * 80 + 10\n  .property 'numRows'\n</pre>\n      </div>\n    </div>\n  </div>\n</div>\n");
+  data.buffer.push("\n        </div>\n      </div>\n    </div>\n  </div>\n\n    <div class=\"col-md-12 bumper-30\">\n      <h3>application.hbs</h3>\n      <div class=\"highlight\">\n<pre class=\"prettyprint lang-html\">&#123;&#123;table-component\n    hasHeader=true\n    hasFooter=false\n    rowHeight=30\n    columnsBinding=\"columns\"\n    contentBinding=\"content\"\n&#125;&#125;</pre>\n      </div>\n    </div>\n\n    <div class=\"col-md-12 bumper-30\">\n      <h3>bar_table_cell.hbs</h3>\n      <div class=\"highlight\">\n<pre class=\"prettyprint lang-html\">&lt;span class=&quot;bar-cell&quot; &#123;&#123;bind-attr style=&quot;view.histogramStyle&quot;&#125;&#125;&gt;&lt;/span&gt;</pre>\n      </div>\n    </div>\n\n    <div class=\"col-md-12 bumper-30\">\n      <h3>bar_table_cell_view.coffee</h3>\n      <div class=\"highlight\">\n<pre class=\"prettyprint lang-coffee\">App.BarTableCellView = Ember.Table.TableCell.extend\n  templateName:     'ember_table/bar_table/bar'\n  classNameBindings:['column.color']\n  barWidth: Ember.computed ->\n    {column, row} = @getProperties 'column', 'row'\n    return 0 unless column and row\n    Math.round(+@get('cellContent'))\n  .property 'column', 'row', 'cellContent'\n\n  histogramStyle: Ember.computed ->\n    \"width: #{@get('barWidth')}%;\"\n  .property 'barWidth'</pre>\n      </div>\n    </div>\n\n    <div class=\"col-md-12 bumper-30\">\n      <h3>application_controller.coffee</h3>\n      <div class=\"highlight\">\n<pre class=\"prettyprint lang-coffee\">App.ApplicationController = Ember.Controller.extend\n  numRows: 100\n\n  columns: Ember.computed ->\n    colors  = ['blue', 'teal', 'green', 'yellow', 'orange']\n    column1 = Ember.Table.ColumnDefinition.create\n      columnWidth:    50\n      headerCellName: 'Name'\n      contentPath: 'key'\n    columns = colors.map (color, index) ->\n      Ember.Table.ColumnDefinition.create\n        color: color\n        headerCellName: 'Bar'\n        tableCellViewClass: 'App.BarTableCell'\n        contentPath: \"value#{index + 1}\"\n    columns.unshift(column1)\n    columns\n\n  content: Ember.computed ->\n    [0...@get('numRows')].map (num, index) ->\n      key: index\n      value1: Math.random() * 80 + 10\n      value2: Math.random() * 80 + 10\n      value3: Math.random() * 80 + 10\n      value4: Math.random() * 80 + 10\n      value5: Math.random() * 80 + 10\n  .property 'numRows'\n</pre>\n      </div>\n    </div>\n\n</div>\n");
   return buffer;
   
 });
@@ -18173,89 +18222,10 @@ function program5(depth0,data) {
 function program7(depth0,data) {
   
   var buffer = '', stack1;
+  data.buffer.push("\n");
+  stack1 = helpers._triageMustache.call(depth0, "columnDefinitionDocumentation", {hash:{},hashTypes:{},hashContexts:{},contexts:[depth0],types:["ID"],data:data});
+  if(stack1 || stack1 === 0) { data.buffer.push(stack1); }
   data.buffer.push("\n    ");
-  stack1 = helpers._triageMustache.call(depth0, "headerCellNameLowerCase", {hash:{},hashTypes:{},hashContexts:{},contexts:[depth0],types:["ID"],data:data});
-  if(stack1 || stack1 === 0) { data.buffer.push(stack1); }
-  data.buffer.push("Column = Ember.Table.ColumnDefinition.create");
-  stack1 = helpers.unless.call(depth0, "textAlignIsDefault", {hash:{},hashTypes:{},hashContexts:{},inverse:self.noop,fn:self.program(8, program8, data),contexts:[depth0],types:["ID"],data:data});
-  if(stack1 || stack1 === 0) { data.buffer.push(stack1); }
-  data.buffer.push("\n      headerCellName: '");
-  stack1 = helpers._triageMustache.call(depth0, "headerCellName", {hash:{},hashTypes:{},hashContexts:{},contexts:[depth0],types:["ID"],data:data});
-  if(stack1 || stack1 === 0) { data.buffer.push(stack1); }
-  data.buffer.push("'");
-  stack1 = helpers.unless.call(depth0, "minWidthIsDefault", {hash:{},hashTypes:{},hashContexts:{},inverse:self.noop,fn:self.program(10, program10, data),contexts:[depth0],types:["ID"],data:data});
-  if(stack1 || stack1 === 0) { data.buffer.push(stack1); }
-  stack1 = helpers['if'].call(depth0, "maxWidth", {hash:{},hashTypes:{},hashContexts:{},inverse:self.noop,fn:self.program(12, program12, data),contexts:[depth0],types:["ID"],data:data});
-  if(stack1 || stack1 === 0) { data.buffer.push(stack1); }
-  stack1 = helpers.unless.call(depth0, "isSortable", {hash:{},hashTypes:{},hashContexts:{},inverse:self.noop,fn:self.program(14, program14, data),contexts:[depth0],types:["ID"],data:data});
-  if(stack1 || stack1 === 0) { data.buffer.push(stack1); }
-  stack1 = helpers.unless.call(depth0, "isResizable", {hash:{},hashTypes:{},hashContexts:{},inverse:self.noop,fn:self.program(16, program16, data),contexts:[depth0],types:["ID"],data:data});
-  if(stack1 || stack1 === 0) { data.buffer.push(stack1); }
-  stack1 = helpers['if'].call(depth0, "canAutoResize", {hash:{},hashTypes:{},hashContexts:{},inverse:self.noop,fn:self.program(18, program18, data),contexts:[depth0],types:["ID"],data:data});
-  if(stack1 || stack1 === 0) { data.buffer.push(stack1); }
-  stack1 = helpers['if'].call(depth0, "isDateCell", {hash:{},hashTypes:{},hashContexts:{},inverse:self.program(22, program22, data),fn:self.program(20, program20, data),contexts:[depth0],types:["ID"],data:data});
-  if(stack1 || stack1 === 0) { data.buffer.push(stack1); }
-  return buffer;
-  }
-function program8(depth0,data) {
-  
-  var buffer = '', stack1;
-  data.buffer.push("\n      textAlign: '");
-  stack1 = helpers._triageMustache.call(depth0, "textAlign", {hash:{},hashTypes:{},hashContexts:{},contexts:[depth0],types:["ID"],data:data});
-  if(stack1 || stack1 === 0) { data.buffer.push(stack1); }
-  data.buffer.push("'");
-  return buffer;
-  }
-
-function program10(depth0,data) {
-  
-  var buffer = '', stack1;
-  data.buffer.push("\n      minWidth: ");
-  stack1 = helpers._triageMustache.call(depth0, "minWidth", {hash:{},hashTypes:{},hashContexts:{},contexts:[depth0],types:["ID"],data:data});
-  if(stack1 || stack1 === 0) { data.buffer.push(stack1); }
-  return buffer;
-  }
-
-function program12(depth0,data) {
-  
-  var buffer = '', stack1;
-  data.buffer.push("\n      maxWidth: ");
-  stack1 = helpers._triageMustache.call(depth0, "maxWidth", {hash:{},hashTypes:{},hashContexts:{},contexts:[depth0],types:["ID"],data:data});
-  if(stack1 || stack1 === 0) { data.buffer.push(stack1); }
-  return buffer;
-  }
-
-function program14(depth0,data) {
-  
-  
-  data.buffer.push("\n      isSortable: no");
-  }
-
-function program16(depth0,data) {
-  
-  
-  data.buffer.push("\n      isResizable: no");
-  }
-
-function program18(depth0,data) {
-  
-  
-  data.buffer.push("\n      canAutoResize: yes");
-  }
-
-function program20(depth0,data) {
-  
-  
-  data.buffer.push("\n      getCellContent: (row) -> row.get('date').toDateString()");
-  }
-
-function program22(depth0,data) {
-  
-  var buffer = '', stack1;
-  data.buffer.push("\n      getCellContent: (row) -> row.get('");
-  stack1 = helpers._triageMustache.call(depth0, "headerCellNameLowerCase", {hash:{},hashTypes:{},hashContexts:{},contexts:[depth0],types:["ID"],data:data});
-  if(stack1 || stack1 === 0) { data.buffer.push(stack1); }
-  data.buffer.push("').toFixed(2)");
   return buffer;
   }
 
@@ -18276,7 +18246,7 @@ function program22(depth0,data) {
   data.buffer.push("\n      </div>\n    </div>\n\n    <div class=\"col-md-12 bumper-30\">\n      <h3>application.hbs</h3>\n      <div class=\"highlight\">\n<pre class=\"prettyprint lang-html\">&#123;&#123;table-component\n  hasFooter=false\n  columns=columns\n  content=content");
   stack1 = helpers['if'].call(depth0, "isFluid", {hash:{},hashTypes:{},hashContexts:{},inverse:self.noop,fn:self.program(5, program5, data),contexts:[depth0],types:["ID"],data:data});
   if(stack1 || stack1 === 0) { data.buffer.push(stack1); }
-  data.buffer.push("\n&#125;&#125;</pre>\n      </div>\n    </div>\n\n    <div class=\"col-md-12 bumper-30\">\n      <h3>application_controller.coffee</h3>\n      <div class=\"highlight\">\n<pre class=\"prettyprint lang-coffee\">App.ApplicationController = Ember.Controller.extend\n  numRows: 100\n\n  columns: Ember.computed -> ");
+  data.buffer.push("\n&#125;&#125;</pre>\n      </div>\n    </div>\n\n    <div class=\"col-md-12 bumper-30\">\n      <h3>application_controller.coffee</h3>\n      <div class=\"highlight\">\n<pre>App.ApplicationController = Ember.Controller.extend\n  numRows: 100\n\n  columns: Ember.computed -> ");
   stack1 = helpers.each.call(depth0, "columns", {hash:{},hashTypes:{},hashContexts:{},inverse:self.noop,fn:self.program(7, program7, data),contexts:[depth0],types:["ID"],data:data});
   if(stack1 || stack1 === 0) { data.buffer.push(stack1); }
   data.buffer.push("\n    [dateColumn, openColumn, highColumn, lowColumn, closeColumn]\n\n  content: Ember.computed ->\n    [0...@get('numRows')].map (index) ->\n      date = new Date()\n      date.setDate(date.getDate() + index)\n      date:  date\n      open:  Math.random() * 100 - 50\n      high:  Math.random() * 100 - 50\n      low:   Math.random() * 100 - 50\n      close: Math.random() * 100 - 50\n      volume: Math.random() * 1000000\n  .property 'numRows'</pre>\n      </div>\n    </div>\n  </div>\n</div>\n");
@@ -18295,10 +18265,10 @@ function program1(depth0,data) {
   data.buffer.push("configurable column\n          demo.");
   }
 
-  data.buffer.push("\n<div class=\"col-md-10 col-md-offset-2 left-border main-content-container\">\n  <h1>API &amp; Documentation</h1>\n  <h2>Ember.Table.TableComponent Options</h2>\n\n  <table class=\"table ember-table-options\">\n    <tr>\n      <th style=\"min-width: 200px;\">Option</th>\n      <th style=\"min-width: 150px;\">Default</th>\n      <th>Description</th>\n    </tr>\n    <tr>\n      <td>content <b>(required)</b></td>\n      <td>null</td>\n      <td>\n        <p>\n          An array of row objects. Usually a hash where the keys are column\n          names and the values are the rows's values. However, could be any\n          object, since each column can define a function to return the column\n          value given the row object. See\n          <code>Ember.Table.ColumnDefinition.getCellContent</code>.\n        </p>\n      </td>\n    </tr>\n    <tr>\n      <td>columns <b>(required)</b></td>\n      <td>null</td>\n      <td>\n        <p>\n          An array of column definitions: see\n          <code>Ember.Table.ColumnDefinition</code>.  Allows each column to\n          have its own configuration.\n        </p>\n      </td>\n    </tr>\n    <tr>\n      <td>numFixedColumns</td>\n      <td>0</td>\n      <td>\n        <p>\n          The number of fixed columns on the left side of the table. Fixed\n          columns are always visible, even when the table is scrolled\n          horizontally.\n        </p>\n      </td>\n    </tr>\n    <tr>\n      <td>numFooterRow</td>\n      <td>0</td>\n      <td>\n        <p>\n          The number of footer rows in the table. Footer rows appear at the\n          bottom of the table and are always visible.\n        </p>\n      </td>\n    </tr>\n    <tr>\n      <td>rowHeight</td>\n      <td>30</td>\n      <td>\n        <p>\n          The row height in pixels. A consistent row height is necessary to\n          calculate which rows are being shown, to enable lazy rendering.\n        </p>\n      </td>\n    </tr>\n    <tr>\n      <td>minHeaderHeight</td>\n      <td>30</td>\n      <td>\n        <p>\n          The minimum header height in pixels. Headers will grow in height if\n          given more content than they can display.\n        </p>\n      </td>\n    </tr>\n    <tr>\n      <td>footerHeight</td>\n      <td>30</td>\n      <td><p>The footer height in pixels.</p></td>\n    </tr>\n    <tr>\n      <td>hasHeader</td>\n      <td>true</td>\n      <td><p>Enables or disables the header block.</p></td>\n    </tr>\n    <tr>\n      <td>hasFooter</td>\n      <td>true</td>\n      <td><p>Enables or disables the footer block.</p></td>\n    </tr>\n    <tr>\n      <td>enableColumnReorder</td>\n      <td>true</td>\n      <td>\n        <p>\n          Allow the columns to be rearranged by drag-and-drop. Only columns\n          with <code>isSortable=true</code> (the default setting) will be\n          affected.\n        </p>\n      </td>\n    </tr>\n    <tr>\n      <td>enableContentSelection</td>\n      <td>false</td>\n      <td><p>Allow users to select the content of table cells.</p></td>\n    </tr>\n    <tr>\n      <td>styleBindings</td>\n      <td>'height'</td>\n      <td>\n        <p>\n          Values which are bound to the table's style attr. See\n          <code>Ember.StyleBindingsMixin</code> documentation for more details.\n        <p>\n      </td>\n    </tr>\n    <tr>\n      <td>columnMode</td>\n      <td>'standard'</td>\n      <td>\n        <p>\n          Sets which column resizing behavior to use. Possible values are\n          <code>'standard'</code> (resizing a column pushes or pulls all other\n          columns) and <code>'fluid'</code> (resizing a column steals width\n          from neighboring columns). You can experiment with this behavior in\n          the ");
+  data.buffer.push("\n<div class=\"col-md-10 col-md-offset-2 left-border main-content-container\">\n  <h1>API &amp; Documentation</h1>\n  <h2>Ember.Table.TableComponent Options</h2>\n\n  <table class=\"table ember-table-options\">\n    <tr>\n      <th style=\"min-width: 200px;\">Option</th>\n      <th style=\"min-width: 150px;\">Default</th>\n      <th>Description</th>\n    </tr>\n    <tr>\n      <td>content <b>(required)</b></td>\n      <td>null</td>\n      <td>\n        <p>\n          An array of row objects. Usually a hash where the keys are column\n          names and the values are the rows's values. However, could be any\n          object, since each column can define a function to return the column\n          value given the row object. See\n          <code>Ember.Table.ColumnDefinition.getCellContent</code>.\n        </p>\n      </td>\n    </tr>\n    <tr>\n      <td>columns <b>(required)</b></td>\n      <td>null</td>\n      <td>\n        <p>\n          An array of column definitions: see\n          <code>Ember.Table.ColumnDefinition</code>.  Allows each column to\n          have its own configuration.\n        </p>\n      </td>\n    </tr>\n    <tr>\n      <td>numFixedColumns</td>\n      <td>0</td>\n      <td>\n        <p>\n          The number of fixed columns on the left side of the table. Fixed\n          columns are always visible, even when the table is scrolled\n          horizontally.\n        </p>\n      </td>\n    </tr>\n    <tr>\n      <td>numFooterRow</td>\n      <td>0</td>\n      <td>\n        <p>\n          The number of footer rows in the table. Footer rows appear at the\n          bottom of the table and are always visible.\n        </p>\n      </td>\n    </tr>\n    <tr>\n      <td>rowHeight</td>\n      <td>30</td>\n      <td>\n        <p>\n          The row height in pixels. A consistent row height is necessary to\n          calculate which rows are being shown, to enable lazy rendering.\n        </p>\n      </td>\n    </tr>\n    <tr>\n      <td>minHeaderHeight</td>\n      <td>30</td>\n      <td>\n        <p>\n          The minimum header height in pixels. Headers will grow in height if\n          given more content than they can display.\n        </p>\n      </td>\n    </tr>\n    <tr>\n      <td>footerHeight</td>\n      <td>30</td>\n      <td><p>The footer height in pixels.</p></td>\n    </tr>\n    <tr>\n      <td>hasHeader</td>\n      <td>true</td>\n      <td><p>Enables or disables the header block.</p></td>\n    </tr>\n    <tr>\n      <td>hasFooter</td>\n      <td>true</td>\n      <td><p>Enables or disables the footer block.</p></td>\n    </tr>\n    <tr>\n      <td>enableColumnReorder</td>\n      <td>true</td>\n      <td>\n        <p>\n          Allow the columns to be rearranged by drag-and-drop. Only columns\n          with <code>isSortable=true</code> (the default setting) will be\n          affected.\n        </p>\n      </td>\n    </tr>\n    <tr>\n      <td>enableContentSelection</td>\n      <td>false</td>\n      <td><p>Allow users to select the content of table cells.</p></td>\n    </tr>\n    <tr>\n      <td>styleBindings</td>\n      <td>'height'</td>\n      <td>\n        <p>\n          Values which are bound to the table's style attr. See\n          <code>Ember.StyleBindingsMixin</code> documentation for more details.\n        </p>\n      </td>\n    </tr>\n    <tr>\n      <td>columnMode</td>\n      <td>'standard'</td>\n      <td>\n        <p>\n          Sets which column resizing behavior to use. Possible values are\n          <code>'standard'</code> (resizing a column pushes or pulls all other\n          columns) and <code>'fluid'</code> (resizing a column steals width\n          from neighboring columns). You can experiment with this behavior in\n          the ");
   stack1 = (helper = helpers['link-to'] || (depth0 && depth0['link-to']),options={hash:{},hashTypes:{},hashContexts:{},inverse:self.noop,fn:self.program(1, program1, data),contexts:[depth0],types:["STRING"],data:data},helper ? helper.call(depth0, "emberTable.configurable-columns", options) : helperMissing.call(depth0, "link-to", "emberTable.configurable-columns", options));
   if(stack1 || stack1 === 0) { data.buffer.push(stack1); }
-  data.buffer.push("\n        <p>\n      </td>\n    </tr>\n    <tr>\n      <td>selectionMode</td>\n      <td>'single'</td>\n      <td>\n        <p>\n          Sets which row selection behavior to follow. Possible values are\n          <code>'none'</code> (clicking on a row does nothing),\n          <code>'single'</code> (clicking on a row selects it and deselects\n          other rows), and <code>'multiple'</code> (multiple rows can be\n          selected through ctrl/cmd-click or shift-click).\n        </p>\n      </td>\n    </tr>\n    <tr>\n      <td>selection (output)</td>\n      <td>undefined</td>\n      <td>\n        <p>\n          An array of the rows currently selected. If\n          <code>selectionMode</code> is set to <code>'single'</code>, the array\n          will contain either one or zero elements.\n        </p>\n      </td>\n    </tr>\n  </table>\n\n  <h2>Ember.Table.ColumnDefinition Options</h2>\n  <table class=\"table ember-table-options\">\n    <tr>\n      <th style=\"min-width: 200px;\">Option</th>\n      <th style=\"min-width: 150px;\">Default</th>\n      <th>Description</th>\n    </tr>\n    <tr>\n      <td>headerCellName</td>\n      <td>undefined</td>\n      <td><p>Name of the column, to be displayed in the header.</p></td>\n    </tr>\n    <tr>\n      <td>contentPath</td>\n      <td>undefined</td>\n      <td>\n        <p>\n          Path of the content for this cell. If the row object is a hash of\n          keys and values to specify data for each column,\n          <code>contentPath</code> corresponds to the key. Use either this or\n          <code>getCellContent</code>.\n        </p>\n      </td>\n    </tr>\n    <tr>\n      <td>minWidth</td>\n      <td>25</td>\n      <td>\n        <p>\n          Minimum column width in pixels. Affects both manual resizing and\n          automatic resizing.\n        </p>\n      </td>\n    </tr>\n    <tr>\n      <td>maxWidth</td>\n      <td>undefined</td>\n      <td>\n        <p>\n          Maximum column width in pixels. Affects both manual resizing and\n          automatic resizing.\n        </p>\n      </td>\n    </tr>\n    <tr>\n      <td>defaultColumnWidth</td>\n      <td>150</td>\n      <td>\n        <p>\n          Default column width. Specifies the initial width of the column; if\n          the column is later resized automatically, it will be proportional to\n          this.\n        </p>\n      </td>\n    </tr>\n    <tr>\n      <td>isResizable</td>\n      <td>true</td>\n      <td><p>Whether the column can be manually resized.</p></td>\n    </tr>\n    <tr>\n      <td>isSortable</td>\n      <td>true</td>\n      <td>\n        <p>\n          Whether the column can be rearranged with other columns. Only matters\n          if the table's <code>enableColumnReorder</code> property is set to\n          true (the default).\n        </p>\n      </td>\n    </tr>\n    <tr>\n      <td>textAlign</td>\n      <td>'text-align-right'</td>\n      <td>\n        <p>\n          Alignment of the text in the cell. Possible values are\n          <code>'left'</code>, <code>'center'</code>, and <code>'right'</code>.\n        </p>\n      </td>\n    </tr>\n    <tr>\n      <td>canAutoResize</td>\n      <td>false</td>\n      <td>\n        <p>\n          Whether the column can automatically resize to fill space in the\n          table.\n        </p>\n      </td>\n    </tr>\n    <tr>\n      <td>headerCellView</td>\n      <td>'Ember.Table.HeaderCell'</td>\n      <td>\n        <p>\n          Override to use a custom view for the header cell. Specified as a\n          string.\n        </p>\n      </td>\n    </tr>\n    <tr>\n      <td>tableCellView</td>\n      <td>'Ember.Table.TableCell'</td>\n      <td>\n        <p>\n          Override to use a custom view for table cells. Specified as a string.\n        </p>\n      </td>\n    </tr>\n    <tr>\n      <td>getCellContent</td>\n      <td>(function)</td>\n      <td>\n        <p>\n          Override to customize how the column gets data from each row object.\n          Given a row, should return a formatted cell value, e.g. $20,000,000.\n          Use either this or <code>contentPath</code>.\n        </p>\n      </td>\n    </tr>\n    <tr>\n      <td>setCellContent</td>\n      <td>Ember.K</td>\n      <td>\n        <p>\n          Override to maintain a consistent path to update cell values.\n          Recommended to make this a function which takes (row, value) and\n          updates the row value.\n        </p>\n      </td>\n    </tr>\n  </table>\n\n  <h2>Ember.Table.TableCell Options</h2>\n  <table class=\"table ember-table-options\">\n    <tr>\n      <th style=\"min-width: 200px;\">Option</th>\n      <th style=\"min-width: 150px;\">Default</th>\n      <th>Description</th>\n    </tr>\n    <tr>\n      <td>templateName</td>\n      <td>'table-cell'</td>\n      <td><p>The name of the template to be rendered into the cell.\n        Used for rendering custom templates.<p></td>\n    </tr>\n    <tr>\n      <td>classNames</td>\n      <td>['ember-table-cell']</td>\n      <td><p>The class names applied to the cell. Override to give\n        the cell custom styling (border, background color, etc).<p></td>\n    </tr>\n    <tr>\n      <td>classNameBindings</td>\n      <td>'column.textAlign'</td>\n      <td><p>A binding used to dynamically associate class names\n        with this table cell. E.g. you can bind to a column property\n        to have cell colors or styles vary across columns.<p></td>\n    </tr>\n    <tr>\n      <td>styleBindings</td>\n      <td>'width'</td>\n      <td>\n        <p>\n          Values which are bound to the cell's style attr. See\n          <code>Ember.StyleBindingsMixin</code> documentation for more details.\n        <p>\n      </td>\n    </tr>\n  </table>\n\n  <h2>Ember.Table.HeaderCell Options</h2>\n  <table class=\"table ember-table-options\">\n    <tr>\n      <th style=\"min-width: 200px;\">Option</th>\n      <th style=\"min-width: 150px;\">Default</th>\n      <th>Description</th>\n    </tr>\n    <tr>\n      <td>templateName</td>\n      <td>'header-cell'</td>\n      <td><p>See description in <code>Ember.Table.TableCell</code>.<p></td>\n    </tr>\n    <tr>\n      <td>classNames</td>\n      <td>['ember-table-cell', 'ember-table-header-cell']</td>\n      <td><p>See description in <code>Ember.Table.TableCell</code>.<p></td>\n    </tr>\n    <tr>\n      <td>classNameBindings</td>\n      <td>['column.isSortable:sortable', 'column.textAlign']</td>\n      <td><p>See description in <code>Ember.Table.TableCell</code>.<p></td>\n    </tr>\n    <tr>\n      <td>styleBindings</td>\n      <td>['width', 'height']</td>\n      <td><p>See description in <code>Ember.Table.TableCell</code>.<p></td>\n    </tr>\n  </table>\n</div>\n");
+  data.buffer.push("\n        </p>\n      </td>\n    </tr>\n    <tr>\n      <td>selectionMode</td>\n      <td>'single'</td>\n      <td>\n        <p>\n          Sets which row selection behavior to follow. Possible values are\n          <code>'none'</code> (clicking on a row does nothing),\n          <code>'single'</code> (clicking on a row selects it and deselects\n          other rows), and <code>'multiple'</code> (multiple rows can be\n          selected through ctrl/cmd-click or shift-click).\n        </p>\n      </td>\n    </tr>\n    <tr>\n      <td>selection (output)</td>\n      <td>undefined</td>\n      <td>\n        <p>\n          The currently selected elements. If <code>selectionMode</code> is set\n          to <code>'none'</code>, <code>selection</code> is null. If\n          <code>selectionMode</code> is set to <code>'single'</code>,\n          <code>selection</code> is the selected element. If\n          <code>selectionMode</code> is set to <code>'multiple'</code>,\n          <code>selection</code> is an array of the selected elements.\n        </p>\n      </td>\n    </tr>\n  </table>\n\n  <h2>Ember.Table.ColumnDefinition Options</h2>\n  <table class=\"table ember-table-options\">\n    <tr>\n      <th style=\"min-width: 200px;\">Option</th>\n      <th style=\"min-width: 150px;\">Default</th>\n      <th>Description</th>\n    </tr>\n    <tr>\n      <td>headerCellName</td>\n      <td>undefined</td>\n      <td><p>Name of the column, to be displayed in the header.</p></td>\n    </tr>\n    <tr>\n      <td>contentPath</td>\n      <td>undefined</td>\n      <td>\n        <p>\n          Path of the content for this cell. If the row object is a hash of\n          keys and values to specify data for each column,\n          <code>contentPath</code> corresponds to the key. Use either this or\n          <code>getCellContent</code>.\n        </p>\n      </td>\n    </tr>\n    <tr>\n      <td>minWidth</td>\n      <td>25</td>\n      <td>\n        <p>\n          Minimum column width in pixels. Affects both manual resizing and\n          automatic resizing.\n        </p>\n      </td>\n    </tr>\n    <tr>\n      <td>maxWidth</td>\n      <td>undefined</td>\n      <td>\n        <p>\n          Maximum column width in pixels. Affects both manual resizing and\n          automatic resizing.\n        </p>\n      </td>\n    </tr>\n    <tr>\n      <td>savedWidth</td>\n      <td>150</td>\n      <td>\n        <p>\n          The initial column width in pixels. Updated whenever the column (not\n          window) is resized. Can be persisted.\n        </p>\n      </td>\n    </tr>\n    <tr>\n      <td>isResizable</td>\n      <td>true</td>\n      <td><p>Whether the column can be manually resized.</p></td>\n    </tr>\n    <tr>\n      <td>isSortable</td>\n      <td>true</td>\n      <td>\n        <p>\n          Whether the column can be rearranged with other columns. Only matters\n          if the table's <code>enableColumnReorder</code> property is set to\n          true (the default).\n        </p>\n      </td>\n    </tr>\n    <tr>\n      <td>textAlign</td>\n      <td>'text-align-right'</td>\n      <td>\n        <p>\n          Alignment of the text in the cell. Possible values are\n          <code>'left'</code>, <code>'center'</code>, and <code>'right'</code>.\n        </p>\n      </td>\n    </tr>\n    <tr>\n      <td>canAutoResize</td>\n      <td>false</td>\n      <td>\n        <p>\n          Whether the column can automatically resize to fill space in the\n          table.\n        </p>\n      </td>\n    </tr>\n    <tr>\n      <td>headerCellView</td>\n      <td>'Ember.Table.HeaderCell'</td>\n      <td>\n        <p>\n          Override to use a custom view for the header cell. Specified as a\n          string.\n        </p>\n      </td>\n    </tr>\n    <tr>\n      <td>tableCellView</td>\n      <td>'Ember.Table.TableCell'</td>\n      <td>\n        <p>\n          Override to use a custom view for table cells. Specified as a string.\n        </p>\n      </td>\n    </tr>\n    <tr>\n      <td>getCellContent</td>\n      <td>(function)</td>\n      <td>\n        <p>\n          Override to customize how the column gets data from each row object.\n          Given a row, should return a formatted cell value, e.g. $20,000,000.\n          Use either this or <code>contentPath</code>.\n        </p>\n      </td>\n    </tr>\n    <tr>\n      <td>setCellContent</td>\n      <td>Ember.K</td>\n      <td>\n        <p>\n          Override to maintain a consistent path to update cell values.\n          Recommended to make this a function which takes (row, value) and\n          updates the row value.\n        </p>\n      </td>\n    </tr>\n  </table>\n\n  <h2>Ember.Table.TableCell Options</h2>\n  <table class=\"table ember-table-options\">\n    <tr>\n      <th style=\"min-width: 200px;\">Option</th>\n      <th style=\"min-width: 150px;\">Default</th>\n      <th>Description</th>\n    </tr>\n    <tr>\n      <td>templateName</td>\n      <td>'table-cell'</td>\n      <td><p>The name of the template to be rendered into the cell.\n        Used for rendering custom templates.</p></td>\n    </tr>\n    <tr>\n      <td>classNames</td>\n      <td>['ember-table-cell']</td>\n      <td><p>The class names applied to the cell. Override to give\n        the cell custom styling (border, background color, etc).</p></td>\n    </tr>\n    <tr>\n      <td>classNameBindings</td>\n      <td>'column.textAlign'</td>\n      <td><p>A binding used to dynamically associate class names\n        with this table cell. E.g. you can bind to a column property\n        to have cell colors or styles vary across columns.</p></td>\n    </tr>\n    <tr>\n      <td>styleBindings</td>\n      <td>'width'</td>\n      <td>\n        <p>\n          Values which are bound to the cell's style attr. See\n          <code>Ember.StyleBindingsMixin</code> documentation for more details.\n        </p>\n      </td>\n    </tr>\n  </table>\n\n  <h2>Ember.Table.HeaderCell Options</h2>\n  <table class=\"table ember-table-options\">\n    <tr>\n      <th style=\"min-width: 200px;\">Option</th>\n      <th style=\"min-width: 150px;\">Default</th>\n      <th>Description</th>\n    </tr>\n    <tr>\n      <td>templateName</td>\n      <td>'header-cell'</td>\n      <td><p>See description in <code>Ember.Table.TableCell</code>.</p></td>\n    </tr>\n    <tr>\n      <td>classNames</td>\n      <td>['ember-table-cell', 'ember-table-header-cell']</td>\n      <td><p>See description in <code>Ember.Table.TableCell</code>.</p></td>\n    </tr>\n    <tr>\n      <td>classNameBindings</td>\n      <td>['column.isSortable:sortable', 'column.textAlign']</td>\n      <td><p>See description in <code>Ember.Table.TableCell</code>.</p></td>\n    </tr>\n    <tr>\n      <td>styleBindings</td>\n      <td>['width', 'height']</td>\n      <td><p>See description in <code>Ember.Table.TableCell</code>.</p></td>\n    </tr>\n  </table>\n</div>\n");
   return buffer;
   
 });
@@ -18394,7 +18364,7 @@ helpers = this.merge(helpers, Ember.Handlebars.helpers); data = data || {};
   data.buffer.push(escapeExpression(helpers.view.call(depth0, "App.FinancialTableComponent", {hash:{
     'dataBinding': ("data")
   },hashTypes:{'dataBinding': "STRING"},hashContexts:{'dataBinding': depth0},contexts:[depth0],types:["ID"],data:data})));
-  data.buffer.push("\n        </div>\n      </div>\n    </div>\n  </div>\n\n    <div class=\"col-md-12 bumper-30\">\n      <h3>application.hbs</h3>\n      <div class=\"highlight\">\n<pre class=\"prettyprint lang-html\">&#123;&#123;table-component\n  hasHeader=true\n  hasFooter=false\n  numFixedColumns=0\n  rowHeight=35\n  columnsBinding=\"columns\"\n  contentBinding=\"content\"\n&#125;&#125;</pre>\n      </div>\n    </div>\n\n    <div class=\"col-md-12 bumper-30\">\n      <h3>financial_table_cell.hbs</h3>\n      <div class=\"highlight\">\n<pre class=\"prettyprint lang-html\">&lt;div class=&quot;ember-table-cell-container&quot;&gt;<br/>  &lt;span class=&quot;ember-table-content&quot;&gt;<br/>    &#123;&#123;view.cellContent&#125;&#125;<br/>  &lt;/span&gt;<br/>&lt;/div&gt;</pre>\n      </div>\n    </div>\n\n    <div class=\"col-md-12 bumper-30\">\n      <h3>financial_table_tree_cell.hbs</h3>\n      <div class=\"highlight\">\n<pre class=\"prettyprint lang-html\">&lt;div class=&quot;ember-table-cell-container&quot; &#123;&#123;bind-attr style=&quot;view.paddingStyle&quot;&#125;&#125;&gt;<br/>  &lt;span &#123;&#123;bind-attr class=&quot;:ember-table-toggle-span view.row.isLeaf::ember-table-toggle<br/>    view.row.isCollapsed:ember-table-expand:ember-table-collapse&quot;&#125;&#125;<br/>    &#123;&#123;action toggleCollapse view.row&#125;&#125;&gt;<br/>    &lt;i class=&quot;icon-caret-down ember-table-toggle-icon&quot;&gt;&lt;/i&gt;<br/>  &lt;/span&gt;<br/>  &lt;span class=&quot;ember-table-content&quot;&gt;<br/>    &#123;&#123;view.cellContent&#125;&#125;<br/>  &lt;/span&gt;<br/>&lt;/div&gt;</pre>\n      </div>\n    </div>\n\n    <div class=\"col-md-12 bumper-30\">\n      <h3>financial_table_header_cell.hbs</h3>\n      <div class=\"highlight\">\n<pre class=\"prettyprint lang-html\">&lt;div class=&quot;ember-table-cell-container&quot;&gt;<br/>  &lt;div class=&quot;ember-table-header-content-container&quot;&gt;<br/>    &lt;span class=&quot;ember-table-content&quot;&gt;<br/>      &#123;&#123;view.content.headerCellName&#125;&#125;<br/>    &lt;/span&gt;<br/>  &lt;/div&gt;<br/>&lt;/div&gt;</pre>\n      </div>\n    </div>\n\n    <div class=\"col-md-12 bumper-30\">\n      <h3>financial_table_header_tree_cell.hbs</h3>\n      <div class=\"highlight\">\n<pre class=\"prettyprint lang-html\">&lt;div class=&quot;ember-table-cell-container&quot;&gt;<br/>  &lt;span &#123;&#123;bind-attr class=&quot;:ember-table-toggle-span :ember-table-toggle<br/>      isCollapsed:ember-table-expand:ember-table-collapse&quot;&#125;&#125;<br/>      &#123;&#123;action toggleTableCollapse&#125;&#125;&gt;<br/>    &lt;i class=&quot;icon-caret-down ember-table-toggle-icon&quot;&gt;&lt;/i&gt;<br/>  &lt;/span&gt;<br/>  &lt;div class=&quot;ember-table-header-content-container&quot;&gt;<br/>    &lt;span class=&quot;ember-table-content&quot;&gt;<br/>      &#123;&#123;view.column.headerCellName&#125;&#125;<br/>    &lt;/span&gt;<br/>  &lt;/div&gt;<br/>&lt;/div&gt;</pre>\n      </div>\n    </div>\n\n    <div class=\"col-md-12 bumper-30\">\n      <h3>financial_table_cell_views.coffee</h3>\n      <div class=\"highlight\">\n<pre class=\"prettyprint lang-coffee\">App.FinancialTableCell = Ember.Table.TableCell.extend\n  templateName: 'ember_table/financial_table/financial_table_cell'\n\nApp.FinancialTableHeaderCell = Ember.Table.HeaderCell.extend\n  templateName: 'ember_table/financial_table/financial_table_header_cell'\n\nApp.FinancialTableTreeCell = Ember.Table.TableCell.extend\n  templateName: 'ember_table/financial_table/financial_table_tree_cell'\n  classNames:   'ember-table-table-tree-cell'\n  paddingStyle: Ember.computed ->\n    \"padding-left:#{@get('row.indentation')}px;\"\n  .property 'row.indentation'\n\nApp.FinancialTableHeaderTreeCell = Ember.Table.HeaderCell.extend\n  templateName: 'ember_table/financial_table/financial_table_header_tree_cell'\n  classNames:   'ember-table-table-header-tree-cell'\n</pre>\n      </div>\n    </div>\n\n    <div class=\"col-md-12 bumper-30\">\n      <h3>financial_table_row.coffee</h3>\n      <div class=\"highlight\">\n<pre class=\"prettyprint lang-coffee\">App.FinancialTableTreeTableRow = Ember.Table.Row.extend\n  content:  null\n  children: null\n  parent:   null\n  isRoot:   no\n  isLeaf:   no\n  isCollapsed: no\n  isShowing: yes\n  indentationSpacing: 20\n  groupName: null\n\n  # This may look ugly, but this is necessary. By doing the styles computation\n  # imperatively we made the initial table load 10-100x faster (certain cases)\n  computeStyles: (parent) ->\n    groupingLevel = 0\n    indentation   = 0\n    isShowing     = yes\n    if parent\n      isShowing = parent.get('isShowing') and not parent.get('isCollapsed')\n      pGroupingLevel = parent.get 'groupingLevel'\n      groupingLevel  = pGroupingLevel\n      groupingLevel  += 1 if parent.get('groupName') isnt @get('groupName')\n      indentType = if groupingLevel is pGroupingLevel then 'half' else 'full'\n      spacing    = @get 'indentationSpacing'\n      if not parent.get('isRoot')\n        indentation = parent.get('indentation')\n        indentation += (if indentType is 'half' then spacing / 2 else spacing)\n    @set 'groupingLevel', groupingLevel\n    @set 'indentation', indentation\n    @set 'isShowing', isShowing\n\n  computeRowStyle: (maxLevels) ->\n    level = @getFormattingLevel @get('groupingLevel'), maxLevels\n    @set 'rowStyle', \"ember-table-row-style-#{level}\"\n\n  recursiveCollapse: (isCollapsed) ->\n    @set 'isCollapsed', isCollapsed\n    @get('children').forEach (child) ->\n      child.recursiveCollapse isCollapsed\n\n  getFormattingLevel: (level, maxLevels) ->\n    switch maxLevels\n      when 1 then return 5\n      when 2\n        return 2 if level is 1\n        return 5\n      when 3\n        return 1 if level is 1\n        return 3 if level is 2\n        return 5\n      when 4\n        return 1 if level is 1\n        return 2 if level is 2\n        return 4 if level is 4\n        return 5\n      when 5\n        return level\n      else\n        return 5 if level is maxLevels\n        return Math.min(level, 4)</pre>\n      </div>\n    </div>\n\n\n    <div class=\"col-md-12 bumper-30\">\n      <h3>financial_table_component.coffee</h3>\n      <div class=\"highlight\">\n<pre class=\"prettyprint lang-coffee\">App.FinancialTableComponent = Ember.Table.EmberTableComponent.extend\n  # overridding default properties\n  numFixedColumns: 1\n  isCollapsed: no\n  isHeaderHeightResizable: yes\n  rowHeight: 30\n  hasHeader: yes\n  hasFooter: yes\n  headerHeight: 70\n\n  # custom properties\n  sortAscending: no\n  sortColumn: null\n\n  actions:\n    toggleTableCollapse: (event) ->\n      @toggleProperty 'isCollapsed'\n      isCollapsed = @get 'isCollapsed'\n      children = @get('root.children')\n      return unless children and children.get('length') > 0\n      children.forEach (child) -> child.recursiveCollapse isCollapsed\n      @notifyPropertyChange 'rows'\n\n    toggleCollapse: (row) ->\n      row.toggleProperty 'isCollapsed'\n      Ember.run.next this, -> @notifyPropertyChange 'rows'\n\n  ##############################################################################\n  # Data Conversions\n  ##############################################################################\n  data: null\n\n  columns: Ember.computed ->\n    data = @get 'data'\n    return unless data\n    names = @get('data.value_factors').getEach('display_name')\n    columns = names.map (name, index) ->\n      Ember.Table.ColumnDefinition.create\n        index: index\n        headerCellName: name\n        headerCellViewClass:  'App.FinancialTableHeaderCell'\n        tableCellViewClass:   'App.FinancialTableCell'\n        getCellContent: (row) ->\n          object = row.values[@get('index')]\n          return object.value.toCurrency() if object.type is 'money'\n          return object.value.toPercent()  if object.type is 'percent'\n          \"-\"\n    columns.unshiftObject @get('groupingColumn')\n    columns\n  .property 'data.valueFactors.@each', 'groupingColumn'\n\n  groupingColumn: Ember.computed ->\n    groupingFactors = @get 'data.grouping_factors'\n    name = groupingFactors.getEach('display_name').join ' ▸ '\n    Ember.Table.ColumnDefinition.create\n      headerCellName: name\n      columnWidth: 400\n      isTreeColumn: yes\n      isSortable: no\n      textAlign: 'text-align-left'\n      headerCellViewClass:  'App.FinancialTableHeaderTreeCell'\n      tableCellViewClass:   'App.FinancialTableTreeCell'\n      contentPath: 'group_value'\n  .property 'data.grouping_factors.@each'\n\n  root: Ember.computed ->\n    data = @get 'data'\n    return unless data\n    @createTree(null, data.root)\n  .property 'data', 'sortAscending', 'sortColumn'\n\n  rows: Ember.computed ->\n    root = @get 'root'\n    return Ember.A() unless root\n    rows = @flattenTree null, root, Ember.A()\n    @computeStyles null, root\n    maxGroupingLevel = Math.max.apply rows.getEach('groupingLevel')\n    rows.forEach (row) -> row.computeRowStyle(maxGroupingLevel)\n    rows\n  .property 'root'\n\n  # OPTIMIZATION HACK\n  bodyContent: Ember.computed ->\n    rows = @get('rows')\n    return Ember.A() unless rows\n    rows = rows.slice(1, rows.get('length'))\n    rows.filterProperty('isShowing')\n  .property 'rows'\n\n  footerContent: Ember.computed ->\n    rows = @get('rows')\n    return Ember.A() unless rows\n    rows.slice(0, 1)\n  .property 'rows'\n\n  orderBy: (item1, item2) ->\n    sortColumn = @get 'sortColumn'\n    sortAscending = @get 'sortAscending'\n    return 1 unless sortColumn\n    value1 = sortColumn.getCellContent item1.get('content')\n    value2 = sortColumn.getCellContent item2.get('content')\n    result = Ember.compare value1, value2\n    if sortAscending then result else -result\n\n  createTree: (parent, node) ->\n    row = App.FinancialTableTreeTableRow.create()\n    children = (node.children || []).map (child) =>\n      @createTree row, child\n    # TODO(Peter): Hack... only collapse table if it should collapseByDefault\n    # and it is not the root. Currently the total row is the root, and if it\n    # is collapse, it causes nothing to show in the table and there is no way\n    # to get expand it.\n    row.setProperties\n      isRoot:     not parent\n      isLeaf:     Ember.isEmpty(children)\n      content:    node\n      parent:     parent\n      children:   children\n      groupName:  node.group_name\n      isCollapsed:no\n    row\n\n  flattenTree: (parent, node, rows) ->\n    rows.pushObject node\n    (node.children || []).forEach (child) =>\n      @flattenTree node, child, rows\n    rows\n\n  computeStyles: (parent, node) ->\n    node.computeStyles parent\n    node.get('children').forEach (child) =>\n      @computeStyles node, child</pre>\n      </div>\n    </div>\n\n  </div>\n</div>\n");
+  data.buffer.push("\n        </div>\n      </div>\n    </div>\n  </div>\n\n    <div class=\"col-md-12 bumper-30\">\n      <h3>application.hbs</h3>\n      <div class=\"highlight\">\n<pre class=\"prettyprint lang-html\">&#123;&#123;table-component\n  hasHeader=true\n  hasFooter=false\n  numFixedColumns=0\n  rowHeight=35\n  columnsBinding=\"columns\"\n  contentBinding=\"content\"\n&#125;&#125;</pre>\n      </div>\n    </div>\n\n    <div class=\"col-md-12 bumper-30\">\n      <h3>financial_table_cell.hbs</h3>\n      <div class=\"highlight\">\n<pre class=\"prettyprint lang-html\">&lt;div class=&quot;ember-table-cell-container&quot;&gt;<br/>  &lt;span class=&quot;ember-table-content&quot;&gt;<br/>    &#123;&#123;view.cellContent&#125;&#125;<br/>  &lt;/span&gt;<br/>&lt;/div&gt;</pre>\n      </div>\n    </div>\n\n    <div class=\"col-md-12 bumper-30\">\n      <h3>financial_table_tree_cell.hbs</h3>\n      <div class=\"highlight\">\n<pre class=\"prettyprint lang-html\">&lt;div class=&quot;ember-table-cell-container&quot; &#123;&#123;bind-attr style=&quot;view.paddingStyle&quot;&#125;&#125;&gt;<br/>  &lt;span &#123;&#123;bind-attr class=&quot;:ember-table-toggle-span view.row.isLeaf::ember-table-toggle<br/>    view.row.isCollapsed:ember-table-expand:ember-table-collapse&quot;&#125;&#125;<br/>    &#123;&#123;action toggleCollapse view.row&#125;&#125;&gt;<br/>    &lt;i class=&quot;icon-caret-down ember-table-toggle-icon&quot;&gt;&lt;/i&gt;<br/>  &lt;/span&gt;<br/>  &lt;span class=&quot;ember-table-content&quot;&gt;<br/>    &#123;&#123;view.cellContent&#125;&#125;<br/>  &lt;/span&gt;<br/>&lt;/div&gt;</pre>\n      </div>\n    </div>\n\n    <div class=\"col-md-12 bumper-30\">\n      <h3>financial_table_header_cell.hbs</h3>\n      <div class=\"highlight\">\n<pre class=\"prettyprint lang-html\">&lt;div class=&quot;ember-table-cell-container&quot;&gt;<br/>  &lt;div class=&quot;ember-table-header-content-container&quot;&gt;<br/>    &lt;span class=&quot;ember-table-content&quot;&gt;<br/>      &#123;&#123;view.content.headerCellName&#125;&#125;<br/>    &lt;/span&gt;<br/>  &lt;/div&gt;<br/>&lt;/div&gt;</pre>\n      </div>\n    </div>\n\n    <div class=\"col-md-12 bumper-30\">\n      <h3>financial_table_header_tree_cell.hbs</h3>\n      <div class=\"highlight\">\n<pre class=\"prettyprint lang-html\">&lt;div class=&quot;ember-table-cell-container&quot;&gt;<br/>  &lt;span &#123;&#123;bind-attr class=&quot;:ember-table-toggle-span :ember-table-toggle<br/>      isCollapsed:ember-table-expand:ember-table-collapse&quot;&#125;&#125;<br/>      &#123;&#123;action toggleTableCollapse&#125;&#125;&gt;<br/>    &lt;i class=&quot;icon-caret-down ember-table-toggle-icon&quot;&gt;&lt;/i&gt;<br/>  &lt;/span&gt;<br/>  &lt;div class=&quot;ember-table-header-content-container&quot;&gt;<br/>    &lt;span class=&quot;ember-table-content&quot;&gt;<br/>      &#123;&#123;view.column.headerCellName&#125;&#125;<br/>    &lt;/span&gt;<br/>  &lt;/div&gt;<br/>&lt;/div&gt;</pre>\n      </div>\n    </div>\n\n    <div class=\"col-md-12 bumper-30\">\n      <h3>financial_table_cell_views.coffee</h3>\n      <div class=\"highlight\">\n<pre class=\"prettyprint lang-coffee\">App.FinancialTableCell = Ember.Table.TableCell.extend\n  templateName: 'ember_table/financial_table/financial_table_cell'\n\nApp.FinancialTableHeaderCell = Ember.Table.HeaderCell.extend\n  templateName: 'ember_table/financial_table/financial_table_header_cell'\n\nApp.FinancialTableTreeCell = Ember.Table.TableCell.extend\n  templateName: 'ember_table/financial_table/financial_table_tree_cell'\n  classNames:   'ember-table-table-tree-cell'\n  paddingStyle: Ember.computed ->\n    \"padding-left:#{@get('row.indentation')}px;\"\n  .property 'row.indentation'\n\nApp.FinancialTableHeaderTreeCell = Ember.Table.HeaderCell.extend\n  templateName: 'ember_table/financial_table/financial_table_header_tree_cell'\n  classNames:   'ember-table-table-header-tree-cell'\n</pre>\n      </div>\n    </div>\n\n    <div class=\"col-md-12 bumper-30\">\n      <h3>financial_table_row.coffee</h3>\n      <div class=\"highlight\">\n<pre class=\"prettyprint lang-coffee\">App.FinancialTableTreeTableRow = Ember.Table.Row.extend\n  content:  null\n  children: null\n  parent:   null\n  isRoot:   no\n  isLeaf:   no\n  isCollapsed: no\n  isShowing: yes\n  indentationSpacing: 20\n  groupName: null\n\n  # This may look ugly, but this is necessary. By doing the styles computation\n  # imperatively we made the initial table load 10-100x faster (certain cases)\n  computeStyles: (parent) ->\n    groupingLevel = 0\n    indentation   = 0\n    isShowing     = yes\n    if parent\n      isShowing = parent.get('isShowing') and not parent.get('isCollapsed')\n      pGroupingLevel = parent.get 'groupingLevel'\n      groupingLevel  = pGroupingLevel\n      groupingLevel  += 1 if parent.get('groupName') isnt @get('groupName')\n      indentType = if groupingLevel is pGroupingLevel then 'half' else 'full'\n      spacing    = @get 'indentationSpacing'\n      if not parent.get('isRoot')\n        indentation = parent.get('indentation')\n        indentation += (if indentType is 'half' then spacing / 2 else spacing)\n    @set 'groupingLevel', groupingLevel\n    @set 'indentation', indentation\n    @set 'isShowing', isShowing\n\n  computeRowStyle: (maxLevels) ->\n    level = @getFormattingLevel @get('groupingLevel'), maxLevels\n    @set 'rowStyle', \"ember-table-row-style-#{level}\"\n\n  recursiveCollapse: (isCollapsed) ->\n    @set 'isCollapsed', isCollapsed\n    @get('children').forEach (child) ->\n      child.recursiveCollapse isCollapsed\n\n  getFormattingLevel: (level, maxLevels) ->\n    switch maxLevels\n      when 1 then return 5\n      when 2\n        return 2 if level is 1\n        return 5\n      when 3\n        return 1 if level is 1\n        return 3 if level is 2\n        return 5\n      when 4\n        return 1 if level is 1\n        return 2 if level is 2\n        return 4 if level is 4\n        return 5\n      when 5\n        return level\n      else\n        return 5 if level is maxLevels\n        return Math.min(level, 4)</pre>\n      </div>\n    </div>\n\n\n    <div class=\"col-md-12 bumper-30\">\n      <h3>financial_table_component.coffee</h3>\n      <div class=\"highlight\">\n<pre class=\"prettyprint lang-coffee\">App.FinancialTableComponent = Ember.Table.EmberTableComponent.extend\n  # overridding default properties\n  numFixedColumns: 1\n  isCollapsed: no\n  isHeaderHeightResizable: yes\n  rowHeight: 30\n  hasHeader: yes\n  hasFooter: yes\n  headerHeight: 70\n\n  # custom properties\n  sortAscending: no\n  sortColumn: null\n\n  actions:\n    toggleTableCollapse: (event) ->\n      @toggleProperty 'isCollapsed'\n      isCollapsed = @get 'isCollapsed'\n      children = @get('root.children')\n      return unless children and children.get('length') > 0\n      children.forEach (child) -> child.recursiveCollapse isCollapsed\n      @notifyPropertyChange 'rows'\n\n    toggleCollapse: (row) ->\n      row.toggleProperty 'isCollapsed'\n      Ember.run.next this, -> @notifyPropertyChange 'rows'\n\n  ##############################################################################\n  # Data Conversions\n  ##############################################################################\n  data: null\n\n  columns: Ember.computed ->\n    data = @get 'data'\n    return unless data\n    names = @get('data.value_factors').getEach('display_name')\n    columns = names.map (name, index) ->\n      Ember.Table.ColumnDefinition.create\n        index: index\n        headerCellName: name\n        headerCellViewClass:  'App.FinancialTableHeaderCell'\n        tableCellViewClass:   'App.FinancialTableCell'\n        getCellContent: (row) ->\n          object = row.values[@get('index')]\n          return object.value.toCurrency() if object.type is 'money'\n          return object.value.toPercent()  if object.type is 'percent'\n          \"-\"\n    columns.unshiftObject @get('groupingColumn')\n    columns\n  .property 'data.valueFactors.@each', 'groupingColumn'\n\n  groupingColumn: Ember.computed ->\n    groupingFactors = @get 'data.grouping_factors'\n    name = groupingFactors.getEach('display_name').join ' ▸ '\n    Ember.Table.ColumnDefinition.create\n      headerCellName: name\n      columnWidth: 400\n      isTreeColumn: yes\n      isSortable: no\n      textAlign: 'text-align-left'\n      headerCellViewClass:  'App.FinancialTableHeaderTreeCell'\n      tableCellViewClass:   'App.FinancialTableTreeCell'\n      contentPath: 'group_value'\n  .property 'data.grouping_factors.@each'\n\n  root: Ember.computed ->\n    data = @get 'data'\n    return unless data\n    @createTree(null, data.root)\n  .property 'data', 'sortAscending', 'sortColumn'\n\n  rows: Ember.computed ->\n    root = @get 'root'\n    return Ember.A() unless root\n    rows = @flattenTree null, root, Ember.A()\n    @computeStyles null, root\n    maxGroupingLevel = Math.max.apply rows.getEach('groupingLevel')\n    rows.forEach (row) -> row.computeRowStyle(maxGroupingLevel)\n    rows\n  .property 'root'\n\n  # OPTIMIZATION HACK\n  bodyContent: Ember.computed ->\n    rows = @get('rows')\n    return Ember.A() unless rows\n    rows = rows.slice(1, rows.get('length'))\n    rows.filterProperty('isShowing')\n  .property 'rows'\n\n  footerContent: Ember.computed ->\n    rows = @get('rows')\n    return Ember.A() unless rows\n    rows.slice(0, 1)\n  .property 'rows'\n\n  orderBy: (item1, item2) ->\n    sortColumn = @get 'sortColumn'\n    sortAscending = @get 'sortAscending'\n    return 1 unless sortColumn\n    value1 = sortColumn.getCellContent item1.get('content')\n    value2 = sortColumn.getCellContent item2.get('content')\n    result = Ember.compare value1, value2\n    if sortAscending then result else -result\n\n  createTree: (parent, node) ->\n    row = App.FinancialTableTreeTableRow.create()\n    children = (node.children || []).map (child) =>\n      @createTree row, child\n    # TODO(Peter): Hack... only collapse table if it should collapseByDefault\n    # and it is not the root. Currently the total row is the root, and if it\n    # is collapse, it causes nothing to show in the table and there is no way\n    # to get expand it.\n    row.setProperties\n      isRoot:     not parent\n      isLeaf:     Ember.isEmpty(children)\n      content:    node\n      parent:     parent\n      children:   children\n      groupName:  node.group_name\n      isCollapsed:no\n    row\n\n  flattenTree: (parent, node, rows) ->\n    rows.pushObject node\n    (node.children || []).forEach (child) =>\n      @flattenTree node, child, rows\n    rows\n\n  computeStyles: (parent, node) ->\n    node.computeStyles parent\n    node.get('children').forEach (child) =>\n      @computeStyles node, child</pre>\n      </div>\n    </div>\n\n</div>\n");
   return buffer;
   
 });
@@ -18499,13 +18469,22 @@ helpers = this.merge(helpers, Ember.Handlebars.helpers); data = data || {};
 function program1(depth0,data) {
   
   
+  data.buffer.push("configurable column demo.");
+  }
+
+function program3(depth0,data) {
+  
+  
   data.buffer.push("here");
   }
 
-  data.buffer.push("\n<div class=\"col-md-10 col-md-offset-2 left-border main-content-container\">\n  <h1>Migration Guides</h1>\n  <div class=\"row\">\n    <div class=\"col-md-7\">\n      <h2>Migrating from old versions to version 0.1.0</h2>\n      <p>Version 0.1.0 of Ember Table is a bit of a restructure - we’re hoping that the new organization will make it simpler and easier to set up, but for existing users, you’ll have to make a few changes to upgrade to the new Ember Table. This guide is intended to walk you through that process.</p>\n\n      <ol class=\"styled styled-spacious\">\n        <li>Upgrade ember-table.js and ember-table.css. If you’re not on the latest version of <a target=\"_BLANK\" href=\"http://emberjs.com/\">Ember.js</a>, now might be a good time to upgrade that as well. This guide was written using Ember 1.0.0 and Ember Table 0.1.0. You can grab Ember 1.0.0 <a target=\"_BLANK\" href=\"https://github.com/emberjs/starter-kit/archive/v1.0.0.zip\">here</a>.</li>\n        <li>The major change is moving from separate table Views and Controllers to a unified table Component. You can read up on Ember Components <a target=\"_BLANK\" href=\"http://emberjs.com/guides/components/\">here</a>. So instead of having lines like this:<br/><br/>\n        <div class=\"highlight\">\n<pre class=\"prettyprint lang-coffee\">App.MyTableController = Ember.Table.TableController.extend (...)\nApp.MyTableView = EmberTable.TableContainerView.extend (...)</pre>\n        </div>\n\n        You’ll have everything in one place:\n        <div class=\"highlight\">\n<pre class=\"prettyprint lang-coffee\">App.MyTableController = Ember.Controller.extend (...)</pre>\n        </div>\n\n        For starters, just change the type of your MyTableController from the old version to the new.\n        </li>\n        <li>Update your handlebars file. Before, it might have looked like:<br/>\n          <div class=\"highlight\">\n<pre class=\"prettyprint lang-html\">&#123;&#123;view Ember.Table.TablesContainer …&#125;&#125;</pre>\n          </div>\n          After the restructure, it should look like this:<br/>\n          <div class=\"highlight\">\n<pre class=\"prettyprint lang-html\">&#123;&#123;table-component …&#125;&#125;</pre>\n          </div>\n        </li>\n        <li>While you’re modifying that handlebars file, you may want to make sure it looks like the structure of the new Ember Table examples. You can see one ");
-  stack1 = (helper = helpers['link-to'] || (depth0 && depth0['link-to']),options={hash:{},hashTypes:{},hashContexts:{},inverse:self.noop,fn:self.program(1, program1, data),contexts:[depth0],types:["STRING"],data:data},helper ? helper.call(depth0, "emberTable.simple", options) : helperMissing.call(depth0, "link-to", "emberTable.simple", options));
+  data.buffer.push("\n<div class=\"col-md-10 col-md-offset-2 left-border main-content-container\">\n  <h1>Migration Guides</h1>\n  <div class=\"row\">\n    <div class=\"col-md-9\">\n      <h2>Migrating to version 0.4.0</h2>\n      <p>\n        Version 0.4.0 contains major changes to column resizing.\n      </p>\n      <p>\n        In version 0.2, setting the table's <code>forceFillColumns</code>\n        property and configuring each column's <code>canAutoResize</code>\n        property let you configure the table to scale automatically when\n        rendered into containers of different sizes.\n      </p>\n      <p>\n        In version 0.4, the table-wide <code>forceFillColumns</code> setting\n        has been removed and each column defines its own resize behavior.  Use\n        <code>isResizable</code> to set whether the column can be resized at\n        all (manually or automatically), <code>canAutoResize</code> to set\n        whether the column will attempt to scale its width to different table\n        sizes, and <code>savedWidth</code> to set the column's initial width or\n        persist its width once resized.\n      </p>\n      <p>\n        It was previously possible to extend Ember Table so that it would\n        behave in a \"fluid\" way, meaning that resizing one column steals\n        width from its neighboring column. This is now supported in Ember Table\n        out of the box: just set <code>columnMode=\"fluid\"</code>.\n      </p>\n      <p>\n        To get a sense for the new column resizing changes, check out the\n        ");
+  stack1 = (helper = helpers['link-to'] || (depth0 && depth0['link-to']),options={hash:{},hashTypes:{},hashContexts:{},inverse:self.noop,fn:self.program(1, program1, data),contexts:[depth0],types:["STRING"],data:data},helper ? helper.call(depth0, "emberTable.configurable-columns", options) : helperMissing.call(depth0, "link-to", "emberTable.configurable-columns", options));
   if(stack1 || stack1 === 0) { data.buffer.push(stack1); }
-  data.buffer.push(". In particular, you might get errors if you don’t properly bind your columns and content of the table, using “columnsBinding=” and “contentBinding=”.<br/><br/>\n        Both of these settings refer to variables in the corresponding controller (which here should be MyTableController), such that if you set “columnsBinding=exampleVariable”, then the columns will be bound to “exampleVariable” in the controller. This gives you control over the look and content of the table.<br/><br/>\n        Before, you may have had “controllerBinding=” here. You don’t need this any more: the controller being used with this template will be used for the table too, by default.</li>\n        <li>Move any properties you had defined in your TableContainerView (if you had one) into the controller. See the examples for more information on how table properties should be set now.</li>\n      </ol>\n    </div>\n    <div class=\"col-md-5\">\n      <h2>Troubleshooting</h2>\n      <ul class=\"styled styled-spacious\">\n        <li>If you were using old Ember Table objects like the RowArrayProxy, take another look and consider whether you really need it. During my migration I was able to remove it by changing the “contentBinding=” in my handlebars file to a more appropriate variable for content.</li>\n        <li>If you are having errors with template names not being found, it may be due to a change with inferring names. For me, my old template names used hyphens, and changing them to underscores automatically connected them to the rest of my application.</li>\n      </ul>\n    </div>\n  </div>\n</div>\n");
+  data.buffer.push("\n      </p>\n      <h3>API Changes</h3>\n      <ul class=\"styled\">\n        <li>Removed: <code>EmberTableComponent.forceFillColumns</code></li>\n        <li>Removed: <code>ColumnDefinition.columnWidth</code></li>\n        <li>Removed: <code>ColumnDefinition.defaultColumnWidth</code></li>\n        <li>Added: <code>EmberTableComponent.columnMode</code></li>\n        <li>Added: <code>ColumnDefinition.savedWidth</code></li>\n      </ul>\n      <h3>Upgrade steps</h3>\n      <ol class=\"styled styled-spacious\">\n        <li>\n          Replace <code>columnWidth</code> and\n          <code>defaultColumnWidth</code> with <code>savedWidth</code>. This\n          will set the column's initial width, and will change if the column is\n          manually resized. If you want to persist changes to column sizes,\n          simply bind to and persist <code>savedWidth</code>.\n        </li>\n        <li>\n          Do not use <code>forceFillColumns</code> as it no longer has any\n          effect. Columns will fill as before if their\n          <code>canAutoResize</code> property is <code>true</code>.\n        </li>\n        <li>\n          Make sure your columns have <code>canAutoResize</code> set correctly.\n          In version 0.2 this defaulted to <code>true</code>, but only made a\n          difference if <code>forceFillColumns</code> was enabled. Now it\n          defaults to <code>false</code>, but if a column sets it to\n          <code>true</code>, the force fill behavior is implicitly triggered.\n        </li>\n      </ol>\n\n      <h2>Migrating to version 0.3.0</h2>\n      <p>\n        Version 0.3.0 includes major column resizing changes, but with\n        <code>canAutoResize</code> defaulting to <code>true</code>.  We\n        recommend skipping this version and upgrading directly to 0.4.0; see\n        the 0.4.0 migration guide.\n      </p>\n\n      <h2>Migrating to version 0.2.0</h2>\n      <p>\n        A full migration step is not available for this version, but it\n        contains only minor API changes.\n      </p>\n      <p>\n        Version 0.2 uses row objects to wrap content in the table. Because of\n        this, change any accesses to row data (e.g. in\n        <code>getCellContent</code>) from <code>row['date']</code> to\n        <code>row.get('date')</code>.\n      </p>\n\n      <h2>Migrating from old versions to version 0.1.0</h2>\n      <p>\n        Version 0.1.0 of Ember Table is a bit of a restructure - we’re hoping\n        that the new organization will make it simpler and easier to set up,\n        but for existing users, you’ll have to make a few changes to upgrade to\n        the new Ember Table.\n      </p>\n      <h3>Upgrade steps</h3>\n      <ol class=\"styled styled-spacious\">\n        <li>\n          Upgrade <code>ember-table.js</code> and <code>ember-table.css</code>.\n          If you’re not on the latest version of <a target=\"_BLANK\"\n          href=\"http://emberjs.com/\">Ember.js</a>, now might be a good time to\n          upgrade that as well. This guide was written using Ember 1.0.0 and\n          Ember Table 0.1.0.\n        </li>\n        <li>\n          The major change is moving from separate table Views and Controllers\n          to a unified table Component. You can read up on Ember Components\n          <a target=\"_BLANK\"\n          href=\"http://emberjs.com/guides/components/\">here</a>. So instead of\n          having lines like this:\n          <div class=\"highlight\">\n<pre class=\"prettyprint lang-coffee\">App.MyTableController = Ember.Table.TableController.extend (...)\nApp.MyTableView = EmberTable.TableContainerView.extend (...)</pre>\n          </div>\n          You’ll have everything in one place:\n          <div class=\"highlight\">\n<pre class=\"prettyprint lang-coffee\">App.MyTableController = Ember.Controller.extend (...)</pre>\n          </div>\n          For starters, just change the type of your MyTableController from the old version to the new.\n        </li>\n        <li>\n          Update your handlebars file. Before, it might have looked like:\n          <br/>\n          <div class=\"highlight\">\n<pre class=\"prettyprint lang-html\">&#123;&#123;view Ember.Table.TablesContainer …&#125;&#125;</pre>\n          </div>\n          After the restructure, it should look like this:<br/>\n          <div class=\"highlight\">\n<pre class=\"prettyprint lang-html\">&#123;&#123;table-component …&#125;&#125;</pre>\n          </div>\n        </li>\n        <li>\n          While you’re modifying that handlebars file, you may want to make\n          sure it looks like the structure of the new Ember Table examples. You\n          can see one ");
+  stack1 = (helper = helpers['link-to'] || (depth0 && depth0['link-to']),options={hash:{},hashTypes:{},hashContexts:{},inverse:self.noop,fn:self.program(3, program3, data),contexts:[depth0],types:["STRING"],data:data},helper ? helper.call(depth0, "emberTable.simple", options) : helperMissing.call(depth0, "link-to", "emberTable.simple", options));
+  if(stack1 || stack1 === 0) { data.buffer.push(stack1); }
+  data.buffer.push(". In\n          particular, you might get errors if you don’t properly bind your\n          columns and content of the table, using <code>columnsBinding=</code>\n          and <code>contentBinding=</code>.\n          <br/><br/>\n          Both of these settings refer to variables in the corresponding\n          controller (which here should be <code>MyTableController</code>), such that if you\n          set <code>columnsBinding=exampleVariable</code>, then the columns will be bound\n          to <code>exampleVariable</code> in the controller. This gives you control over\n          the look and content of the table.\n          <br/><br/>\n          Before, you may have had\n          <code>controllerBinding=</code> here. You don’t need this any more: the\n          controller being used with this template will be used for the table\n          too, by default.\n        </li>\n        <li>\n          Move any properties you had defined in your\n          <code>TableContainerView</code> (if\n          you had one) into the controller. See the examples for more\n          information on how table properties should be set now.\n        </li>\n      </ol>\n      <h3>Troubleshooting</h3>\n      <ul class=\"styled styled-spacious\">\n        <li>\n          If you were using old Ember Table objects like the\n          <code>RowArrayProxy</code>,\n          take another look and consider whether you really need it. During my\n          migration I was able to remove it by changing the\n          <code>contentBinding=</code>\n          in my handlebars file to a more appropriate variable for content.\n        </li>\n        <li>\n          If you are having errors with template names not being found, it\n          may be due to a change with inferring names. For me, my old template\n          names used hyphens, and changing them to underscores automatically\n          connected them to the rest of my application.\n        </li>\n      </ul>\n    </div>\n  </div>\n</div>\n");
   return buffer;
   
 });
@@ -18609,7 +18588,7 @@ function program19(depth0,data) {
   data.buffer.push("\n      </div>\n      <p>Looking for more ways to extend ember-table? Check out the ");
   stack1 = (helper = helpers['link-to'] || (depth0 && depth0['link-to']),options={hash:{},hashTypes:{},hashContexts:{},inverse:self.noop,fn:self.program(19, program19, data),contexts:[depth0],types:["STRING"],data:data},helper ? helper.call(depth0, "emberTable.community-examples", options) : helperMissing.call(depth0, "link-to", "emberTable.community-examples", options));
   if(stack1 || stack1 === 0) { data.buffer.push(stack1); }
-  data.buffer.push(".</p>\n    </div>\n  </div>\n\n  <div class=\"row\">\n    <div class=\"col-md-6\">\n      <hr>\n      <h1>Getting Started</h1>\n      <p>You will need <a target=\"_BLANK\" href=\"http://nodejs.org/\">node</a> installed as a development dependency.</p>\n      <p><a target=\"_BLANK\" href=\"https://github.com/Addepar/ember-table/\">Clone it from Github</a> or <a target=\"_BLANK\" href=\"https://github.com/Addepar/ember-table/releases\">download the ZIP repo</a></p>\n      <div class=\"highlight\">\n<pre><code>$ npm install -g grunt-cli\n$ npm install\n$ grunt\n$ node examples.js</code></pre>\n      <p>Go to your browser and navigate to <a target=\"_BLANK\" href=\"http://localhost:8000/gh_pages\">localhost:8000/gh_pages</a></p>\n      </div>\n    </div>\n    <div class=\"col-md-6\">\n      <hr>\n      <h1>Contributing</h1>\n      <p>You can contribute to this project in one of two ways:\n      <ul class=\"styled\">\n        <li>Browse the ember-table <a target=\"_BLANK\" href=\"https://github.com/Addepar/ember-table/issues?state=open\">issues</a> and report bugs</li>\n        <li>Clone the ember-table repo, make some changes according to our development guidelines and issue a pull-request with your changes.</li>\n      </ul>\n      <p>We keep the ember-table.js code to the minimum necessary, giving users as much control as possible.</p>\n    </div>\n  </div>\n\n  <div class=\"row\">\n    <div class=\"col-md-6\">\n      <hr>\n      <h1>Changelog</h1>\n      <p>The current version is 0.4.0.\n      <p>For the full list of changes, please see <a target=\"_BLANK\" href=\"https://github.com/Addepar/ember-table/blob/master/CHANGELOG.md\">CHANGELOG.md</a>.</p>\n    </div>\n    <div class=\"col-md-6\">\n      <hr>\n      <h1>Acknowledgements</h1>\n      <p><a target=\"_BLANK\" href=\"https://github.com/Addepar/ember-table/graphs/contributors\">List of Contributors on Github</a></p>\n      <p>With lots of help from the Ember.js team</p>\n      <p><a target=\"_BLANK\" href=\"https://twitter.com/ebryn\">ebryn</a>, <a target=\"_BLANK\" href=\"https://twitter.com/tomdale\">tomdale</a>, <a target=\"_BLANK\" href=\"https://twitter.com/wycats\">wycats</a></p>\n      <p>The original idea for lazy rendering was inspired by Erik Bryn.</p>\n    </div>\n  </div>\n</div>\n");
+  data.buffer.push(".</p>\n    </div>\n  </div>\n\n  <div class=\"row\">\n    <div class=\"col-md-6\">\n      <hr>\n      <h1>Getting Started</h1>\n      <p>You will need <a target=\"_BLANK\" href=\"http://nodejs.org/\">node</a> installed as a development dependency.</p>\n      <p><a target=\"_BLANK\" href=\"https://github.com/Addepar/ember-table/\">Clone it from Github</a> or <a target=\"_BLANK\" href=\"https://github.com/Addepar/ember-table/releases\">download the ZIP repo</a></p>\n      <div class=\"highlight\">\n<pre><code>$ npm install -g grunt-cli\n$ npm install\n$ grunt\n$ node examples.js</code></pre>\n      <p>Go to your browser and navigate to <a target=\"_BLANK\" href=\"http://localhost:8000/gh_pages\">localhost:8000/gh_pages</a></p>\n      </div>\n    </div>\n    <div class=\"col-md-6\">\n      <hr>\n      <h1>Contributing</h1>\n      <p>You can contribute to this project in one of two ways:</p>\n      <ul class=\"styled\">\n        <li>Browse the ember-table <a target=\"_BLANK\" href=\"https://github.com/Addepar/ember-table/issues?state=open\">issues</a> and report bugs</li>\n        <li>Clone the ember-table repo, make some changes according to our development guidelines and issue a pull-request with your changes.</li>\n      </ul>\n      <p>We keep the ember-table.js code to the minimum necessary, giving users as much control as possible.</p>\n    </div>\n  </div>\n\n  <div class=\"row\">\n    <div class=\"col-md-6\">\n      <hr/>\n      <h1>Changelog</h1>\n      <p>The current version is 0.4.1.</p>\n      <p>For the full list of changes, please see <a target=\"_BLANK\" href=\"https://github.com/Addepar/ember-table/blob/master/CHANGELOG.md\">CHANGELOG.md</a>.</p>\n    </div>\n    <div class=\"col-md-6\">\n      <hr>\n      <h1>Acknowledgements</h1>\n      <p><a target=\"_BLANK\" href=\"https://github.com/Addepar/ember-table/graphs/contributors\">List of Contributors on Github</a></p>\n      <p>With lots of help from the Ember.js team</p>\n      <p><a target=\"_BLANK\" href=\"https://twitter.com/ebryn\">ebryn</a>, <a target=\"_BLANK\" href=\"https://twitter.com/tomdale\">tomdale</a>, <a target=\"_BLANK\" href=\"https://twitter.com/wycats\">wycats</a></p>\n      <p>The original idea for lazy rendering was inspired by Erik Bryn.</p>\n    </div>\n  </div>\n</div>\n");
   return buffer;
   
 });
