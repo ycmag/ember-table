@@ -3779,1554 +3779,1110 @@ define('dummy/routes/overview', ['exports', 'ember'], function (exports, Ember) 
   });
 
 });
-define('dummy/templates/ajax-table/ajax-cell', ['exports', 'ember'], function (exports, Ember) {
+define('dummy/templates/ajax-table/ajax-cell', ['exports'], function (exports) {
 
   'use strict';
 
-  exports['default'] = Ember['default'].Handlebars.template(function anonymous(Handlebars,depth0,helpers,partials,data) {
-  this.compilerInfo = [4,'>= 1.0.0'];
-  helpers = this.merge(helpers, Ember['default'].Handlebars.helpers); data = data || {};
-    var buffer = '', stack1, escapeExpression=this.escapeExpression, self=this;
-
-  function program1(depth0,data) {
-    
-    var buffer = '';
-    data.buffer.push("\n  <img width=\"30\" ");
-    data.buffer.push(escapeExpression(helpers['bind-attr'].call(depth0, {hash:{
+  exports['default'] = Ember.Handlebars.template({"1":function(depth0,helpers,partials,data) {
+    var escapeExpression=this.escapeExpression, buffer = '';
+    data.buffer.push("  <img width=\"30\" ");
+    data.buffer.push(escapeExpression(helpers['bind-attr'].call(depth0, {"name":"bind-attr","hash":{
       'src': ("view.cellContent")
-    },hashTypes:{'src': "STRING"},hashContexts:{'src': depth0},contexts:[],types:[],data:data})));
+    },"hashTypes":{'src': "STRING"},"hashContexts":{'src': depth0},"types":[],"contexts":[],"data":data})));
     data.buffer.push("/>\n");
     return buffer;
-    }
-
-  function program3(depth0,data) {
-    
-    
-    data.buffer.push("\n  <img src=\"images/loading.gif\" style=\"padding: 8px;\"/>\n");
-    }
-
-    stack1 = helpers['if'].call(depth0, "view.row.isLoaded", {hash:{},hashTypes:{},hashContexts:{},inverse:self.program(3, program3, data),fn:self.program(1, program1, data),contexts:[depth0],types:["ID"],data:data});
-    if(stack1 || stack1 === 0) { data.buffer.push(stack1); }
-    data.buffer.push("\n");
+  },"3":function(depth0,helpers,partials,data) {
+    data.buffer.push("  <img src=\"images/loading.gif\" style=\"padding: 8px;\"/>\n");
+    },"compiler":[6,">= 2.0.0-beta.1"],"main":function(depth0,helpers,partials,data) {
+    var stack1, buffer = '';
+    stack1 = helpers['if'].call(depth0, "view.row.isLoaded", {"name":"if","hash":{},"hashTypes":{},"hashContexts":{},"fn":this.program(1, data),"inverse":this.program(3, data),"types":["ID"],"contexts":[depth0],"data":data});
+    if (stack1 != null) { data.buffer.push(stack1); }
     return buffer;
-    
-  });
+  },"useData":true});
 
 });
-define('dummy/templates/ajax-table/ajax-table', ['exports', 'ember'], function (exports, Ember) {
+define('dummy/templates/ajax-table/ajax-table', ['exports'], function (exports) {
 
   'use strict';
 
-  exports['default'] = Ember['default'].Handlebars.template(function anonymous(Handlebars,depth0,helpers,partials,data) {
-  this.compilerInfo = [4,'>= 1.0.0'];
-  helpers = this.merge(helpers, Ember['default'].Handlebars.helpers); data = data || {};
-    var buffer = '', helper, options, helperMissing=helpers.helperMissing, escapeExpression=this.escapeExpression;
-
-
-    data.buffer.push(escapeExpression((helper = helpers['ember-table'] || (depth0 && depth0['ember-table']),options={hash:{
-      'hasHeader': (true),
-      'hasFooter': (false),
-      'numFixedColumns': (0),
-      'numRows': (100),
-      'rowHeight': (35),
+  exports['default'] = Ember.Handlebars.template({"compiler":[6,">= 2.0.0-beta.1"],"main":function(depth0,helpers,partials,data) {
+    var helperMissing=helpers.helperMissing, escapeExpression=this.escapeExpression, buffer = '';
+    data.buffer.push(escapeExpression(((helpers['ember-table'] || (depth0 && depth0['ember-table']) || helperMissing).call(depth0, {"name":"ember-table","hash":{
+      'content': ("tableContent"),
       'columns': ("tableColumns"),
-      'content': ("tableContent")
-    },hashTypes:{'hasHeader': "BOOLEAN",'hasFooter': "BOOLEAN",'numFixedColumns': "INTEGER",'numRows': "INTEGER",'rowHeight': "INTEGER",'columns': "ID",'content': "ID"},hashContexts:{'hasHeader': depth0,'hasFooter': depth0,'numFixedColumns': depth0,'numRows': depth0,'rowHeight': depth0,'columns': depth0,'content': depth0},contexts:[],types:[],data:data},helper ? helper.call(depth0, options) : helperMissing.call(depth0, "ember-table", options))));
+      'rowHeight': (35),
+      'numRows': (100),
+      'numFixedColumns': (0),
+      'hasFooter': (false),
+      'hasHeader': (true)
+    },"hashTypes":{'content': "ID",'columns': "ID",'rowHeight': "NUMBER",'numRows': "NUMBER",'numFixedColumns': "NUMBER",'hasFooter': "BOOLEAN",'hasHeader': "BOOLEAN"},"hashContexts":{'content': depth0,'columns': depth0,'rowHeight': depth0,'numRows': depth0,'numFixedColumns': depth0,'hasFooter': depth0,'hasHeader': depth0},"types":[],"contexts":[],"data":data}))));
     data.buffer.push("\n");
     return buffer;
-    
-  });
+  },"useData":true});
 
 });
-define('dummy/templates/ajax', ['exports', 'ember'], function (exports, Ember) {
+define('dummy/templates/ajax', ['exports'], function (exports) {
 
   'use strict';
 
-  exports['default'] = Ember['default'].Handlebars.template(function anonymous(Handlebars,depth0,helpers,partials,data) {
-  this.compilerInfo = [4,'>= 1.0.0'];
-  helpers = this.merge(helpers, Ember['default'].Handlebars.helpers); data = data || {};
-    var buffer = '', helper, options, helperMissing=helpers.helperMissing, escapeExpression=this.escapeExpression;
-
-
+  exports['default'] = Ember.Handlebars.template({"compiler":[6,">= 2.0.0-beta.1"],"main":function(depth0,helpers,partials,data) {
+    var helperMissing=helpers.helperMissing, escapeExpression=this.escapeExpression, buffer = '';
     data.buffer.push("<div class=\"col-md-10 col-md-offset-2 left-border main-content-container\">\n  <h1>Ember Table <small>Ajax Cells</small></h1>\n\n  <div class=\"row\">\n    <div class=\"col-md-12\">\n      <div class=\"example-container\">\n        <div class=\"ember-table-example-container\">\n          ");
-    data.buffer.push(escapeExpression((helper = helpers.partial || (depth0 && depth0.partial),options={hash:{},hashTypes:{},hashContexts:{},contexts:[depth0],types:["STRING"],data:data},helper ? helper.call(depth0, "ajax-table/ajax-table", options) : helperMissing.call(depth0, "partial", "ajax-table/ajax-table", options))));
+    data.buffer.push(escapeExpression(((helpers.partial || (depth0 && depth0.partial) || helperMissing).call(depth0, "ajax-table/ajax-table", {"name":"partial","hash":{},"hashTypes":{},"hashContexts":{},"types":["STRING"],"contexts":[depth0],"data":data}))));
     data.buffer.push("\n        </div>\n      </div>\n      <div class=\"example-description\">\n        <p class=\"reduced\">Ember-Table with ajax cells.</p>\n      </div>\n    </div>\n\n    <div class=\"col-md-12 bumper-30\">\n      <h3>Template</h3>\n      <div class=\"highlight\">\n        <pre class=\"prettyprint lang-html\">{{ember-table\n  hasHeader=true\n  hasFooter=false\n  numFixedColumns=0\n  numRows=100\n  rowHeight=35\n  columns=tableColumns\n  content=tableContent\n}}\n</pre>\n      </div>\n    </div>\n\n    <div class=\"col-md-12 bumper-30\">\n      <h3>Controller</h3>\n      <div class=\"highlight\">\n        <pre class=\"prettyprint lang-js\">import Ember from &#39;ember&#39;;\nimport ColumnDefinition from &#39;ember-table&#x2F;models&#x2F;column-definition&#39;;\nimport AjaxTableLazyDataSource from\n  &#39;..&#x2F;views&#x2F;ajax-table-lazy-data-source&#39;;\n\nexport default Ember.Controller.extend({\n  tableColumns: Ember.computed(function() {\n    var avatar = ColumnDefinition.create({\n      savedWidth: 80,\n      headerCellName: &#39;avatar&#39;,\n      tableCellViewClass: &#39;ajax-image-table-cell&#39;,\n      contentPath: &#39;avatar&#39;\n    });\n    var columnNames = [&#39;login&#39;, &#39;type&#39;, &#39;createdAt&#39;];\n    var columns = columnNames.map(function(key) {\n      return ColumnDefinition.create({\n        savedWidth: 150,\n        headerCellName: key.w(),\n        contentPath: key\n      });\n    });\n    columns.unshift(avatar);\n    return columns;\n  }),\n\n  tableContent: Ember.computed(function() {\n    return AjaxTableLazyDataSource.create({\n      content: new Array(100)\n    });\n  })\n});\n</pre>\n      </div>\n    </div>\n\n    <div class=\"col-md-12 bumper-30\">\n      <h3>views/ajax-image-table-cell.js</h3>\n      <div class=\"highlight\">\n        <pre class=\"prettyprint lang-js\">import TableCell from &#39;ember-table&#x2F;views&#x2F;table-cell&#39;;\n\nexport default TableCell.extend({\n  templateName: &#39;ajax-table&#x2F;ajax-cell&#39;,\n  classNames: &#39;img-table-cell&#39;\n});\n</pre>\n      </div>\n    </div>\n\n    <div class=\"col-md-12 bumper-30\">\n      <h3>templates/ajax-table/ajax-cell.hbs</h3>\n      <div class=\"highlight\">\n        <pre class=\"prettyprint lang-html\">{{#if view.row.isLoaded}}\n  &lt;img width=&quot;30&quot; {{bind-attr src=&quot;view.cellContent&quot;}}&#x2F;&gt;\n{{else}}\n  &lt;img src=&quot;images&#x2F;loading.gif&quot; style=&quot;padding: 8px;&quot;&#x2F;&gt;\n{{&#x2F;if}}\n</pre>\n      </div>\n    </div>\n\n    <div class=\"col-md-12 bumper-30\">\n      <h3>views/ajax-table-lazy-data-source.js</h3>\n      <div class=\"highlight\">\n        <pre class=\"prettyprint lang-js\">import Ember from &#39;ember&#39;;\n\nexport default Ember.ArrayProxy.extend({\n  createGithubEvent: function(row, event) {\n    row.set(&#39;type&#39;, event.type);\n    row.set(&#39;createdAt&#39;, event.created_at);\n    row.set(&#39;login&#39;, event.actor.login);\n    row.set(&#39;avatar&#39;, event.actor.avatar_url);\n    row.set(&#39;isLoaded&#39;, true);\n    return row;\n  },\n\n  requestGithubEvent: function(page) {\n    var _this = this;\n    var content = this.get(&#39;content&#39;);\n    var start = (page - 1) * 30;\n    var end = start + 30;\n    var url = &#39;https:&#x2F;&#x2F;api.github.com&#x2F;repos&#x2F;emberjs&#x2F;ember.js&#x2F;events?page=&#39; +\n      page + &#39;&amp;per_page=30&amp;callback=?&#39;;\n    Ember.$.getJSON(url, function(json) {\n      return json.data.forEach(function(event, index) {\n        var row = content[start + index];\n        return _this.createGithubEvent(row, event);\n      });\n    });\n    for (var index = start; index &lt; end; index++) {\n      content[index] = Ember.Object.create({\n        eventId: index,\n        isLoaded: false\n      });\n    }\n  },\n\n  objectAt: function(index) {\n    var content = this.get(&#39;content&#39;);\n    var row = content[index];\n    if (row &amp;&amp; !row.get(&#39;error&#39;)) {\n      return row;\n    }\n    this.requestGithubEvent(Math.floor(index &#x2F; 30 + 1));\n    return content[index];\n  }\n});\n</pre>\n      </div>\n    </div>\n  </div>\n</div>\n");
     return buffer;
-    
-  });
+  },"useData":true});
 
 });
-define('dummy/templates/application', ['exports', 'ember'], function (exports, Ember) {
+define('dummy/templates/application', ['exports'], function (exports) {
 
   'use strict';
 
-  exports['default'] = Ember['default'].Handlebars.template(function anonymous(Handlebars,depth0,helpers,partials,data) {
-  this.compilerInfo = [4,'>= 1.0.0'];
-  helpers = this.merge(helpers, Ember['default'].Handlebars.helpers); data = data || {};
-    var buffer = '', stack1, helper, options, helperMissing=helpers.helperMissing, escapeExpression=this.escapeExpression, self=this;
-
-  function program1(depth0,data) {
-    
+  exports['default'] = Ember.Handlebars.template({"1":function(depth0,helpers,partials,data) {
     var buffer = '';
-    data.buffer.push("\n  \n  <div class=\"hero-container\">\n    <div class=\"hero table-hero\">\n      <div class=\"hero-overlay\"></div>\n    </div>\n    <div class=\"container hero-content-container\">\n      <div class=\"row\">\n        <div class=\"span12 hero-tagline center-align hidden-tablet\">\n          <h1 class=\"elevated\">Ember Table</h1>\n          <p class=\"elevated\">A fast, lazy rendered, easily extensible table built with Ember.js.<br><br><a target=\"_BLANK\" href=\"https://github.com/Addepar/ember-table/releases\" class=\"addepar-btn addepar-btn-large addepar-btn-outline addepar-btn-white\">Download Ember-Table</a></p>\n        </div>\n      </div>\n    </div>\n  </div>\n");
+    data.buffer.push("  <div class=\"hero-container\">\n    <div class=\"hero table-hero\">\n      <div class=\"hero-overlay\"></div>\n    </div>\n    <div class=\"container hero-content-container\">\n      <div class=\"row\">\n        <div class=\"span12 hero-tagline center-align hidden-tablet\">\n          <h1 class=\"elevated\">Ember Table</h1>\n          <p class=\"elevated\">A fast, lazy rendered, easily extensible table built with Ember.js.<br><br><a target=\"_BLANK\" href=\"https://github.com/Addepar/ember-table/releases\" class=\"addepar-btn addepar-btn-large addepar-btn-outline addepar-btn-white\">Download Ember-Table</a></p>\n        </div>\n      </div>\n    </div>\n  </div>\n");
     return buffer;
-    }
-
-  function program3(depth0,data) {
-    
+  },"3":function(depth0,helpers,partials,data) {
     var buffer = '';
-    data.buffer.push("\n  \n  <div class=\"hero-container small-hero-container\">\n    <div class=\"hero table-hero\">\n      <div class=\"hero-overlay\"></div>\n    </div>\n  </div>\n");
+    data.buffer.push("  <div class=\"hero-container small-hero-container\">\n    <div class=\"hero table-hero\">\n      <div class=\"hero-overlay\"></div>\n    </div>\n  </div>\n");
     return buffer;
-    }
-
-    data.buffer.push("\n");
-    data.buffer.push(escapeExpression((helper = helpers.partial || (depth0 && depth0.partial),options={hash:{},hashTypes:{},hashContexts:{},contexts:[depth0],types:["STRING"],data:data},helper ? helper.call(depth0, "navigation", options) : helperMissing.call(depth0, "partial", "navigation", options))));
+  },"compiler":[6,">= 2.0.0-beta.1"],"main":function(depth0,helpers,partials,data) {
+    var stack1, helperMissing=helpers.helperMissing, escapeExpression=this.escapeExpression, buffer = '';
+    data.buffer.push(escapeExpression(((helpers.partial || (depth0 && depth0.partial) || helperMissing).call(depth0, "navigation", {"name":"partial","hash":{},"hashTypes":{},"hashContexts":{},"types":["STRING"],"contexts":[depth0],"data":data}))));
     data.buffer.push("\n\n");
-    stack1 = helpers['if'].call(depth0, "showLargeHero", {hash:{},hashTypes:{},hashContexts:{},inverse:self.program(3, program3, data),fn:self.program(1, program1, data),contexts:[depth0],types:["ID"],data:data});
-    if(stack1 || stack1 === 0) { data.buffer.push(stack1); }
-    data.buffer.push("\n\n\n<div class=\"container\">\n  <div class=\"row\">\n\n    ");
-    data.buffer.push(escapeExpression((helper = helpers.partial || (depth0 && depth0.partial),options={hash:{},hashTypes:{},hashContexts:{},contexts:[depth0],types:["STRING"],data:data},helper ? helper.call(depth0, "sub-navigation", options) : helperMissing.call(depth0, "partial", "sub-navigation", options))));
+    stack1 = helpers['if'].call(depth0, "showLargeHero", {"name":"if","hash":{},"hashTypes":{},"hashContexts":{},"fn":this.program(1, data),"inverse":this.program(3, data),"types":["ID"],"contexts":[depth0],"data":data});
+    if (stack1 != null) { data.buffer.push(stack1); }
+    data.buffer.push("\n<div class=\"container\">\n  <div class=\"row\">\n\n    ");
+    data.buffer.push(escapeExpression(((helpers.partial || (depth0 && depth0.partial) || helperMissing).call(depth0, "sub-navigation", {"name":"partial","hash":{},"hashTypes":{},"hashContexts":{},"types":["STRING"],"contexts":[depth0],"data":data}))));
     data.buffer.push("\n\n    ");
-    stack1 = helpers._triageMustache.call(depth0, "outlet", {hash:{},hashTypes:{},hashContexts:{},contexts:[depth0],types:["ID"],data:data});
-    if(stack1 || stack1 === 0) { data.buffer.push(stack1); }
+    stack1 = helpers._triageMustache.call(depth0, "outlet", {"name":"_triageMustache","hash":{},"hashTypes":{},"hashContexts":{},"types":["ID"],"contexts":[depth0],"data":data});
+    if (stack1 != null) { data.buffer.push(stack1); }
     data.buffer.push("\n  </div>\n</div>\n\n");
-    data.buffer.push(escapeExpression((helper = helpers.partial || (depth0 && depth0.partial),options={hash:{},hashTypes:{},hashContexts:{},contexts:[depth0],types:["STRING"],data:data},helper ? helper.call(depth0, "footer", options) : helperMissing.call(depth0, "partial", "footer", options))));
+    data.buffer.push(escapeExpression(((helpers.partial || (depth0 && depth0.partial) || helperMissing).call(depth0, "footer", {"name":"partial","hash":{},"hashTypes":{},"hashContexts":{},"types":["STRING"],"contexts":[depth0],"data":data}))));
     data.buffer.push("\n");
     return buffer;
-    
-  });
+  },"useData":true});
 
 });
-define('dummy/templates/bar-table/bar-cell', ['exports', 'ember'], function (exports, Ember) {
+define('dummy/templates/bar-table/bar-cell', ['exports'], function (exports) {
 
   'use strict';
 
-  exports['default'] = Ember['default'].Handlebars.template(function anonymous(Handlebars,depth0,helpers,partials,data) {
-  this.compilerInfo = [4,'>= 1.0.0'];
-  helpers = this.merge(helpers, Ember['default'].Handlebars.helpers); data = data || {};
-    var buffer = '', escapeExpression=this.escapeExpression;
-
-
+  exports['default'] = Ember.Handlebars.template({"compiler":[6,">= 2.0.0-beta.1"],"main":function(depth0,helpers,partials,data) {
+    var escapeExpression=this.escapeExpression, buffer = '';
     data.buffer.push("<span class=\"bar-cell\" ");
-    data.buffer.push(escapeExpression(helpers['bind-attr'].call(depth0, {hash:{
+    data.buffer.push(escapeExpression(helpers['bind-attr'].call(depth0, {"name":"bind-attr","hash":{
       'style': ("view.histogramStyle")
-    },hashTypes:{'style': "STRING"},hashContexts:{'style': depth0},contexts:[],types:[],data:data})));
+    },"hashTypes":{'style': "STRING"},"hashContexts":{'style': depth0},"types":[],"contexts":[],"data":data})));
     data.buffer.push(">\n</span>\n");
     return buffer;
-    
-  });
+  },"useData":true});
 
 });
-define('dummy/templates/bar-table/bar-table', ['exports', 'ember'], function (exports, Ember) {
+define('dummy/templates/bar-table/bar-table', ['exports'], function (exports) {
 
   'use strict';
 
-  exports['default'] = Ember['default'].Handlebars.template(function anonymous(Handlebars,depth0,helpers,partials,data) {
-  this.compilerInfo = [4,'>= 1.0.0'];
-  helpers = this.merge(helpers, Ember['default'].Handlebars.helpers); data = data || {};
-    var buffer = '', helper, options, helperMissing=helpers.helperMissing, escapeExpression=this.escapeExpression;
-
-
-    data.buffer.push(escapeExpression((helper = helpers['ember-table'] || (depth0 && depth0['ember-table']),options={hash:{
-      'hasHeader': (true),
-      'hasFooter': (false),
-      'rowHeight': (30),
+  exports['default'] = Ember.Handlebars.template({"compiler":[6,">= 2.0.0-beta.1"],"main":function(depth0,helpers,partials,data) {
+    var helperMissing=helpers.helperMissing, escapeExpression=this.escapeExpression, buffer = '';
+    data.buffer.push(escapeExpression(((helpers['ember-table'] || (depth0 && depth0['ember-table']) || helperMissing).call(depth0, {"name":"ember-table","hash":{
+      'content': ("tableContent"),
       'columns': ("tableColumns"),
-      'content': ("tableContent")
-    },hashTypes:{'hasHeader': "BOOLEAN",'hasFooter': "BOOLEAN",'rowHeight': "INTEGER",'columns': "ID",'content': "ID"},hashContexts:{'hasHeader': depth0,'hasFooter': depth0,'rowHeight': depth0,'columns': depth0,'content': depth0},contexts:[],types:[],data:data},helper ? helper.call(depth0, options) : helperMissing.call(depth0, "ember-table", options))));
+      'rowHeight': (30),
+      'hasFooter': (false),
+      'hasHeader': (true)
+    },"hashTypes":{'content': "ID",'columns': "ID",'rowHeight': "NUMBER",'hasFooter': "BOOLEAN",'hasHeader': "BOOLEAN"},"hashContexts":{'content': depth0,'columns': depth0,'rowHeight': depth0,'hasFooter': depth0,'hasHeader': depth0},"types":[],"contexts":[],"data":data}))));
     data.buffer.push("\n");
     return buffer;
-    
-  });
+  },"useData":true});
 
 });
-define('dummy/templates/bars', ['exports', 'ember'], function (exports, Ember) {
+define('dummy/templates/bars', ['exports'], function (exports) {
 
   'use strict';
 
-  exports['default'] = Ember['default'].Handlebars.template(function anonymous(Handlebars,depth0,helpers,partials,data) {
-  this.compilerInfo = [4,'>= 1.0.0'];
-  helpers = this.merge(helpers, Ember['default'].Handlebars.helpers); data = data || {};
-    var buffer = '', helper, options, helperMissing=helpers.helperMissing, escapeExpression=this.escapeExpression;
-
-
+  exports['default'] = Ember.Handlebars.template({"compiler":[6,">= 2.0.0-beta.1"],"main":function(depth0,helpers,partials,data) {
+    var helperMissing=helpers.helperMissing, escapeExpression=this.escapeExpression, buffer = '';
     data.buffer.push("<div class=\"col-md-10 col-md-offset-2 left-border main-content-container\">\n  <h1>Ember Table <small>D3 Chart Table Cells</small></h1>\n\n  <div class=\"row\">\n    <div class=\"col-md-12\">\n      <div class=\"example-container\">\n        <div class=\"ember-table-example-container\">\n          ");
-    data.buffer.push(escapeExpression((helper = helpers.partial || (depth0 && depth0.partial),options={hash:{},hashTypes:{},hashContexts:{},contexts:[depth0],types:["STRING"],data:data},helper ? helper.call(depth0, "bar-table/bar-table", options) : helperMissing.call(depth0, "partial", "bar-table/bar-table", options))));
+    data.buffer.push(escapeExpression(((helpers.partial || (depth0 && depth0.partial) || helperMissing).call(depth0, "bar-table/bar-table", {"name":"partial","hash":{},"hashTypes":{},"hashContexts":{},"types":["STRING"],"contexts":[depth0],"data":data}))));
     data.buffer.push("\n        </div>\n      </div>\n    </div>\n\n    <div class=\"col-md-12 bumper-30\">\n      <h3>Template</h3>\n      <div class=\"highlight\">\n        <pre class=\"prettyprint lang-html\">{{ember-table\n  hasHeader=true\n  hasFooter=false\n  rowHeight=30\n  columns=tableColumns\n  content=tableContent\n}}\n</pre>\n      </div>\n    </div>\n\n    <div class=\"col-md-12 bumper-30\">\n      <h3>Controller</h3>\n      <div class=\"highlight\">\n        <pre class=\"prettyprint lang-js\">import Ember from &#39;ember&#39;;\nimport ColumnDefinition from &#39;ember-table&#x2F;models&#x2F;column-definition&#39;;\n\nexport default Ember.Controller.extend({\n  tableColumns: Ember.computed(function() {\n    var colors = [&#39;blue&#39;, &#39;teal&#39;, &#39;green&#39;, &#39;yellow&#39;, &#39;orange&#39;];\n    var firstColumn = ColumnDefinition.create({\n      savedWidth: 50,\n      headerCellName: &#39;Name&#39;,\n      contentPath: &#39;key&#39;\n    });\n    var columns = colors.map(function(color, index) {\n      return ColumnDefinition.create({\n        color: color,\n        headerCellName: &#39;Bar&#39;,\n        tableCellViewClass: &#39;bar-table-cell&#39;,\n        contentPath: &#39;value&#39; + (index + 1)\n      });\n    });\n    columns.unshift(firstColumn);\n    return columns;\n  }),\n\n  tableContent: Ember.computed(function() {\n    var content = [];\n    for (var i = 0; i &lt; 100; i++) {\n      content.pushObject({\n        key: i,\n        value1: Math.random() * 80 + 10,\n        value2: Math.random() * 80 + 10,\n        value3: Math.random() * 80 + 10,\n        value4: Math.random() * 80 + 10,\n        value5: Math.random() * 80 + 10\n      });\n    }\n    return content;\n  })\n});\n</pre>\n      </div>\n    </div>\n\n    <div class=\"col-md-12 bumper-30\">\n      <h3>views/bar-table-cell.js</h3>\n      <div class=\"highlight\">\n        <pre class=\"prettyprint lang-js\">import Ember from &#39;ember&#39;;\nimport TableCell from &#39;ember-table&#x2F;views&#x2F;table-cell&#39;;\n\nexport default TableCell.extend({\n  templateName: &#39;bar_table&#x2F;bar-cell&#39;,\n  classNameBindings: [&#39;column.color&#39;],\n\n  barWidth: Ember.computed(function() {\n    var properties = this.getProperties(&#39;column&#39;, &#39;row&#39;);\n    var column = properties.column;\n    var row = properties.row;\n    if (!(column &amp;&amp; row)) {\n      return 0;\n    }\n    return Math.round(+this.get(&#39;cellContent&#39;));\n  }).property(&#39;column&#39;, &#39;row&#39;, &#39;cellContent&#39;),\n\n  histogramStyle: Ember.computed(function() {\n    return &#39;width: &#39; + (this.get(&#39;barWidth&#39;)) + &#39;%;&#39;;\n  }).property(&#39;barWidth&#39;)\n});\n</pre>\n      </div>\n    </div>\n\n    <div class=\"col-md-12 bumper-30\">\n      <h3>templates/bar-table/bar-cell.hbs</h3>\n      <div class=\"highlight\">\n        <pre class=\"prettyprint lang-html\">&lt;span class=&quot;bar-cell&quot; {{bind-attr style=&quot;view.histogramStyle&quot;}}&gt;\n&lt;&#x2F;span&gt;\n</pre>\n      </div>\n    </div>\n  </div>\n</div>\n");
     return buffer;
-    
-  });
+  },"useData":true});
 
 });
-define('dummy/templates/body-table-container', ['exports', 'ember'], function (exports, Ember) {
+define('dummy/templates/body-table-container', ['exports'], function (exports) {
 
   'use strict';
 
-  exports['default'] = Ember['default'].Handlebars.template(function anonymous(Handlebars,depth0,helpers,partials,data) {
-  this.compilerInfo = [4,'>= 1.0.0'];
-  helpers = this.merge(helpers, Ember['default'].Handlebars.helpers); data = data || {};
-    var buffer = '', stack1, escapeExpression=this.escapeExpression, self=this;
-
-  function program1(depth0,data) {
-    
-    var buffer = '';
-    data.buffer.push("\n        ");
-    data.buffer.push(escapeExpression(helpers.view.call(depth0, "lazy-table-block", {hash:{
-      'classNames': ("ember-table-left-table-block"),
-      'content': ("bodyContent"),
-      'columns': ("fixedColumns"),
+  exports['default'] = Ember.Handlebars.template({"1":function(depth0,helpers,partials,data) {
+    var escapeExpression=this.escapeExpression, buffer = '';
+    data.buffer.push("        ");
+    data.buffer.push(escapeExpression(helpers.view.call(depth0, "lazy-table-block", {"name":"view","hash":{
+      'startIndex': ("_startIndex"),
+      'scrollTop': ("_scrollTop"),
+      'numItemsShowing': ("_numItemsShowing"),
       'width': ("_fixedBlockWidth"),
-      'numItemsShowing': ("_numItemsShowing"),
-      'scrollTop': ("_scrollTop"),
-      'startIndex': ("_startIndex")
-    },hashTypes:{'classNames': "STRING",'content': "ID",'columns': "ID",'width': "ID",'numItemsShowing': "ID",'scrollTop': "ID",'startIndex': "ID"},hashContexts:{'classNames': depth0,'content': depth0,'columns': depth0,'width': depth0,'numItemsShowing': depth0,'scrollTop': depth0,'startIndex': depth0},contexts:[depth0],types:["STRING"],data:data})));
-    data.buffer.push("\n      ");
-    return buffer;
-    }
-
-    data.buffer.push("<div class=\"antiscroll-box\">\n  <div class=\"antiscroll-inner\">\n    <div class=\"ember-table-table-scrollable-wrapper\">\n      ");
-    stack1 = helpers['if'].call(depth0, "numFixedColumns", {hash:{},hashTypes:{},hashContexts:{},inverse:self.noop,fn:self.program(1, program1, data),contexts:[depth0],types:["ID"],data:data});
-    if(stack1 || stack1 === 0) { data.buffer.push(stack1); }
-    data.buffer.push("\n      ");
-    data.buffer.push(escapeExpression(helpers.view.call(depth0, "lazy-table-block", {hash:{
-      'classNames': ("ember-table-right-table-block"),
+      'columns': ("fixedColumns"),
       'content': ("bodyContent"),
-      'columns': ("tableColumns"),
-      'scrollLeft': ("_tableScrollLeft"),
-      'width': ("_tableBlockWidth"),
-      'numItemsShowing': ("_numItemsShowing"),
+      'classNames': ("ember-table-left-table-block")
+    },"hashTypes":{'startIndex': "ID",'scrollTop': "ID",'numItemsShowing': "ID",'width': "ID",'columns': "ID",'content': "ID",'classNames': "STRING"},"hashContexts":{'startIndex': depth0,'scrollTop': depth0,'numItemsShowing': depth0,'width': depth0,'columns': depth0,'content': depth0,'classNames': depth0},"types":["STRING"],"contexts":[depth0],"data":data})));
+    data.buffer.push("\n");
+    return buffer;
+  },"compiler":[6,">= 2.0.0-beta.1"],"main":function(depth0,helpers,partials,data) {
+    var stack1, escapeExpression=this.escapeExpression, buffer = '';
+    data.buffer.push("<div class=\"antiscroll-box\">\n  <div class=\"antiscroll-inner\">\n    <div class=\"ember-table-table-scrollable-wrapper\">\n");
+    stack1 = helpers['if'].call(depth0, "numFixedColumns", {"name":"if","hash":{},"hashTypes":{},"hashContexts":{},"fn":this.program(1, data),"inverse":this.noop,"types":["ID"],"contexts":[depth0],"data":data});
+    if (stack1 != null) { data.buffer.push(stack1); }
+    data.buffer.push("      ");
+    data.buffer.push(escapeExpression(helpers.view.call(depth0, "lazy-table-block", {"name":"view","hash":{
+      'startIndex': ("_startIndex"),
       'scrollTop': ("_scrollTop"),
-      'startIndex': ("_startIndex")
-    },hashTypes:{'classNames': "STRING",'content': "ID",'columns': "ID",'scrollLeft': "ID",'width': "ID",'numItemsShowing': "ID",'scrollTop': "ID",'startIndex': "ID"},hashContexts:{'classNames': depth0,'content': depth0,'columns': depth0,'scrollLeft': depth0,'width': depth0,'numItemsShowing': depth0,'scrollTop': depth0,'startIndex': depth0},contexts:[depth0],types:["STRING"],data:data})));
+      'numItemsShowing': ("_numItemsShowing"),
+      'width': ("_tableBlockWidth"),
+      'scrollLeft': ("_tableScrollLeft"),
+      'columns': ("tableColumns"),
+      'content': ("bodyContent"),
+      'classNames': ("ember-table-right-table-block")
+    },"hashTypes":{'startIndex': "ID",'scrollTop': "ID",'numItemsShowing': "ID",'width': "ID",'scrollLeft': "ID",'columns': "ID",'content': "ID",'classNames': "STRING"},"hashContexts":{'startIndex': depth0,'scrollTop': depth0,'numItemsShowing': depth0,'width': depth0,'scrollLeft': depth0,'columns': depth0,'content': depth0,'classNames': depth0},"types":["STRING"],"contexts":[depth0],"data":data})));
     data.buffer.push("\n    </div>\n  </div>\n</div>\n");
     return buffer;
-    
-  });
+  },"useData":true});
 
 });
-define('dummy/templates/community-examples', ['exports', 'ember'], function (exports, Ember) {
+define('dummy/templates/community-examples', ['exports'], function (exports) {
 
   'use strict';
 
-  exports['default'] = Ember['default'].Handlebars.template(function anonymous(Handlebars,depth0,helpers,partials,data) {
-  this.compilerInfo = [4,'>= 1.0.0'];
-  helpers = this.merge(helpers, Ember['default'].Handlebars.helpers); data = data || {};
+  exports['default'] = Ember.Handlebars.template({"compiler":[6,">= 2.0.0-beta.1"],"main":function(depth0,helpers,partials,data) {
     var buffer = '';
-
-
-    data.buffer.push("\n<div class=\"col-md-10 col-md-offset-2 left-border main-content-container\">\n  <div class=\"row\">\n    <div class=\"col-md-12\">\n      <h1>Community Examples</h1>\n      <p class=\"elevated\">Many people have extended ember-table to add new features or customize the way the table works with their app. We hope this list of community-built examples helps to provide inspiration and share commonly used design patterns.<br><br>This is a new list, and we're looking for more examples to add.<br>If you're willing to share your work here, please <a target=\"_BLANK\" href=\"https://github.com/Addepar/ember-table/issues\">open a GitHub ticket!</a></p>\n      <div class=\"row ember-table-examples\">\n        <div class=\"col-md-4\">\n          <h4 class=\"byline\">Server-side Sorting</h4>\n          <p class=\"byline\">By <a target=\"_BLANK\" href=\"https://github.com/seriousben\">seriousben</a></p>\n          <a target=\"_BLANK\" href=\"http://jsbin.com/nefiwoco/15/edit\">\n            <img class=\"preview-box\" src=\"images/community_examples/preview_server_side_sorting.png\" />\n          </a>\n        </div>\n      </div>\n    </div>\n  </div>\n</div>\n");
+    data.buffer.push("<div class=\"col-md-10 col-md-offset-2 left-border main-content-container\">\n  <div class=\"row\">\n    <div class=\"col-md-12\">\n      <h1>Community Examples</h1>\n      <p class=\"elevated\">Many people have extended ember-table to add new features or customize the way the table works with their app. We hope this list of community-built examples helps to provide inspiration and share commonly used design patterns.<br><br>This is a new list, and we're looking for more examples to add.<br>If you're willing to share your work here, please <a target=\"_BLANK\" href=\"https://github.com/Addepar/ember-table/issues\">open a GitHub ticket!</a></p>\n      <div class=\"row ember-table-examples\">\n        <div class=\"col-md-4\">\n          <h4 class=\"byline\">Server-side Sorting</h4>\n          <p class=\"byline\">By <a target=\"_BLANK\" href=\"https://github.com/seriousben\">seriousben</a></p>\n          <a target=\"_BLANK\" href=\"http://jsbin.com/nefiwoco/15/edit\">\n            <img class=\"preview-box\" src=\"images/community_examples/preview_server_side_sorting.png\" />\n          </a>\n        </div>\n      </div>\n    </div>\n  </div>\n</div>\n");
     return buffer;
-    
-  });
+  },"useData":true});
 
 });
-define('dummy/templates/components/ember-table', ['exports', 'ember'], function (exports, Ember) {
+define('dummy/templates/components/ember-table', ['exports'], function (exports) {
 
   'use strict';
 
-  exports['default'] = Ember['default'].Handlebars.template(function anonymous(Handlebars,depth0,helpers,partials,data) {
-  this.compilerInfo = [4,'>= 1.0.0'];
-  helpers = this.merge(helpers, Ember['default'].Handlebars.helpers); data = data || {};
-    var buffer = '', stack1, escapeExpression=this.escapeExpression, self=this;
-
-  function program1(depth0,data) {
-    
-    var buffer = '';
-    data.buffer.push("\n  ");
-    data.buffer.push(escapeExpression(helpers.view.call(depth0, "header-table-container", {hash:{},hashTypes:{},hashContexts:{},contexts:[depth0],types:["STRING"],data:data})));
+  exports['default'] = Ember.Handlebars.template({"1":function(depth0,helpers,partials,data) {
+    var escapeExpression=this.escapeExpression, buffer = '';
+    data.buffer.push("  ");
+    data.buffer.push(escapeExpression(helpers.view.call(depth0, "header-table-container", {"name":"view","hash":{},"hashTypes":{},"hashContexts":{},"types":["STRING"],"contexts":[depth0],"data":data})));
     data.buffer.push("\n");
     return buffer;
-    }
-
-  function program3(depth0,data) {
-    
-    var buffer = '';
-    data.buffer.push("\n  ");
-    data.buffer.push(escapeExpression(helpers.view.call(depth0, "footer-table-container", {hash:{},hashTypes:{},hashContexts:{},contexts:[depth0],types:["STRING"],data:data})));
+  },"3":function(depth0,helpers,partials,data) {
+    var escapeExpression=this.escapeExpression, buffer = '';
+    data.buffer.push("  ");
+    data.buffer.push(escapeExpression(helpers.view.call(depth0, "footer-table-container", {"name":"view","hash":{},"hashTypes":{},"hashContexts":{},"types":["STRING"],"contexts":[depth0],"data":data})));
     data.buffer.push("\n");
     return buffer;
-    }
-
-    stack1 = helpers['if'].call(depth0, "hasHeader", {hash:{},hashTypes:{},hashContexts:{},inverse:self.noop,fn:self.program(1, program1, data),contexts:[depth0],types:["ID"],data:data});
-    if(stack1 || stack1 === 0) { data.buffer.push(stack1); }
+  },"compiler":[6,">= 2.0.0-beta.1"],"main":function(depth0,helpers,partials,data) {
+    var stack1, escapeExpression=this.escapeExpression, buffer = '';
+    stack1 = helpers['if'].call(depth0, "hasHeader", {"name":"if","hash":{},"hashTypes":{},"hashContexts":{},"fn":this.program(1, data),"inverse":this.noop,"types":["ID"],"contexts":[depth0],"data":data});
+    if (stack1 != null) { data.buffer.push(stack1); }
+    data.buffer.push(escapeExpression(helpers.view.call(depth0, "body-table-container", {"name":"view","hash":{},"hashTypes":{},"hashContexts":{},"types":["STRING"],"contexts":[depth0],"data":data})));
     data.buffer.push("\n");
-    data.buffer.push(escapeExpression(helpers.view.call(depth0, "body-table-container", {hash:{},hashTypes:{},hashContexts:{},contexts:[depth0],types:["STRING"],data:data})));
+    stack1 = helpers['if'].call(depth0, "hasFooter", {"name":"if","hash":{},"hashTypes":{},"hashContexts":{},"fn":this.program(3, data),"inverse":this.noop,"types":["ID"],"contexts":[depth0],"data":data});
+    if (stack1 != null) { data.buffer.push(stack1); }
+    data.buffer.push(escapeExpression(helpers.view.call(depth0, "scroll-container", {"name":"view","hash":{},"hashTypes":{},"hashContexts":{},"types":["STRING"],"contexts":[depth0],"data":data})));
     data.buffer.push("\n");
-    stack1 = helpers['if'].call(depth0, "hasFooter", {hash:{},hashTypes:{},hashContexts:{},inverse:self.noop,fn:self.program(3, program3, data),contexts:[depth0],types:["ID"],data:data});
-    if(stack1 || stack1 === 0) { data.buffer.push(stack1); }
-    data.buffer.push("\n");
-    data.buffer.push(escapeExpression(helpers.view.call(depth0, "scroll-container", {hash:{},hashTypes:{},hashContexts:{},contexts:[depth0],types:["STRING"],data:data})));
-    data.buffer.push("\n");
-    data.buffer.push(escapeExpression(helpers.view.call(depth0, "column-sortable-indicator", {hash:{},hashTypes:{},hashContexts:{},contexts:[depth0],types:["STRING"],data:data})));
+    data.buffer.push(escapeExpression(helpers.view.call(depth0, "column-sortable-indicator", {"name":"view","hash":{},"hashTypes":{},"hashContexts":{},"types":["STRING"],"contexts":[depth0],"data":data})));
     data.buffer.push("\n");
     return buffer;
-    
-  });
+  },"useData":true});
 
 });
-define('dummy/templates/configurable-columns', ['exports', 'ember'], function (exports, Ember) {
+define('dummy/templates/configurable-columns', ['exports'], function (exports) {
 
   'use strict';
 
-  exports['default'] = Ember['default'].Handlebars.template(function anonymous(Handlebars,depth0,helpers,partials,data) {
-  this.compilerInfo = [4,'>= 1.0.0'];
-  helpers = this.merge(helpers, Ember['default'].Handlebars.helpers); data = data || {};
-    var buffer = '', stack1, helper, options, helperMissing=helpers.helperMissing, escapeExpression=this.escapeExpression, self=this;
-
-  function program1(depth0,data) {
-    
-    var buffer = '', stack1, helper, options;
-    data.buffer.push("\n              <tr>\n                <td>");
-    stack1 = helpers._triageMustache.call(depth0, "headerCellName", {hash:{},hashTypes:{},hashContexts:{},contexts:[depth0],types:["ID"],data:data});
-    if(stack1 || stack1 === 0) { data.buffer.push(stack1); }
+  exports['default'] = Ember.Handlebars.template({"1":function(depth0,helpers,partials,data) {
+    var stack1, helperMissing=helpers.helperMissing, escapeExpression=this.escapeExpression, buffer = '';
+    data.buffer.push("              <tr>\n                <td>");
+    stack1 = helpers._triageMustache.call(depth0, "headerCellName", {"name":"_triageMustache","hash":{},"hashTypes":{},"hashContexts":{},"types":["ID"],"contexts":[depth0],"data":data});
+    if (stack1 != null) { data.buffer.push(stack1); }
     data.buffer.push("</td>\n                <td class=\"checkbox-cell\">");
-    data.buffer.push(escapeExpression((helper = helpers.input || (depth0 && depth0.input),options={hash:{
-      'class': ("checkbox-input"),
+    data.buffer.push(escapeExpression(((helpers.input || (depth0 && depth0.input) || helperMissing).call(depth0, {"name":"input","hash":{
+      'checked': ("isSortable"),
       'type': ("checkbox"),
-      'checked': ("isSortable")
-    },hashTypes:{'class': "STRING",'type': "STRING",'checked': "ID"},hashContexts:{'class': depth0,'type': depth0,'checked': depth0},contexts:[],types:[],data:data},helper ? helper.call(depth0, options) : helperMissing.call(depth0, "input", options))));
+      'class': ("checkbox-input")
+    },"hashTypes":{'checked': "ID",'type': "STRING",'class': "STRING"},"hashContexts":{'checked': depth0,'type': depth0,'class': depth0},"types":[],"contexts":[],"data":data}))));
     data.buffer.push("</td>\n                <td class=\"checkbox-cell\">");
-    data.buffer.push(escapeExpression((helper = helpers.input || (depth0 && depth0.input),options={hash:{
-      'class': ("checkbox-input"),
+    data.buffer.push(escapeExpression(((helpers.input || (depth0 && depth0.input) || helperMissing).call(depth0, {"name":"input","hash":{
+      'checked': ("isResizable"),
       'type': ("checkbox"),
-      'checked': ("isResizable")
-    },hashTypes:{'class': "STRING",'type': "STRING",'checked': "ID"},hashContexts:{'class': depth0,'type': depth0,'checked': depth0},contexts:[],types:[],data:data},helper ? helper.call(depth0, options) : helperMissing.call(depth0, "input", options))));
+      'class': ("checkbox-input")
+    },"hashTypes":{'checked': "ID",'type': "STRING",'class': "STRING"},"hashContexts":{'checked': depth0,'type': depth0,'class': depth0},"types":[],"contexts":[],"data":data}))));
     data.buffer.push("</td>\n                <td class=\"checkbox-cell\">");
-    data.buffer.push(escapeExpression((helper = helpers.input || (depth0 && depth0.input),options={hash:{
-      'class': ("checkbox-input"),
+    data.buffer.push(escapeExpression(((helpers.input || (depth0 && depth0.input) || helperMissing).call(depth0, {"name":"input","hash":{
+      'checked': ("canAutoResize"),
       'type': ("checkbox"),
-      'checked': ("canAutoResize")
-    },hashTypes:{'class': "STRING",'type': "STRING",'checked': "ID"},hashContexts:{'class': depth0,'type': depth0,'checked': depth0},contexts:[],types:[],data:data},helper ? helper.call(depth0, options) : helperMissing.call(depth0, "input", options))));
+      'class': ("checkbox-input")
+    },"hashTypes":{'checked': "ID",'type': "STRING",'class': "STRING"},"hashContexts":{'checked': depth0,'type': depth0,'class': depth0},"types":[],"contexts":[],"data":data}))));
     data.buffer.push("</td>\n                <td ");
-    data.buffer.push(escapeExpression(helpers['bind-attr'].call(depth0, {hash:{
+    data.buffer.push(escapeExpression(helpers['bind-attr'].call(depth0, {"name":"bind-attr","hash":{
       'class': ("atMinWidth:at-limit")
-    },hashTypes:{'class': "STRING"},hashContexts:{'class': depth0},contexts:[],types:[],data:data})));
+    },"hashTypes":{'class': "STRING"},"hashContexts":{'class': depth0},"types":[],"contexts":[],"data":data})));
     data.buffer.push(">");
-    data.buffer.push(escapeExpression((helper = helpers.input || (depth0 && depth0.input),options={hash:{
-      'value': ("minWidthValue"),
-      'class': ("text-input"),
+    data.buffer.push(escapeExpression(((helpers.input || (depth0 && depth0.input) || helperMissing).call(depth0, {"name":"input","hash":{
+      'min': ("1"),
       'type': ("number"),
-      'min': ("1")
-    },hashTypes:{'value': "ID",'class': "STRING",'type': "STRING",'min': "STRING"},hashContexts:{'value': depth0,'class': depth0,'type': depth0,'min': depth0},contexts:[],types:[],data:data},helper ? helper.call(depth0, options) : helperMissing.call(depth0, "input", options))));
+      'class': ("text-input"),
+      'value': ("minWidthValue")
+    },"hashTypes":{'min': "STRING",'type': "STRING",'class': "STRING",'value': "ID"},"hashContexts":{'min': depth0,'type': depth0,'class': depth0,'value': depth0},"types":[],"contexts":[],"data":data}))));
     data.buffer.push("</td>\n                <td ");
-    data.buffer.push(escapeExpression(helpers['bind-attr'].call(depth0, {hash:{
+    data.buffer.push(escapeExpression(helpers['bind-attr'].call(depth0, {"name":"bind-attr","hash":{
       'class': ("atMaxWidth:at-limit")
-    },hashTypes:{'class': "STRING"},hashContexts:{'class': depth0},contexts:[],types:[],data:data})));
+    },"hashTypes":{'class': "STRING"},"hashContexts":{'class': depth0},"types":[],"contexts":[],"data":data})));
     data.buffer.push(">");
-    data.buffer.push(escapeExpression((helper = helpers.input || (depth0 && depth0.input),options={hash:{
-      'value': ("maxWidthValue"),
-      'class': ("text-input"),
+    data.buffer.push(escapeExpression(((helpers.input || (depth0 && depth0.input) || helperMissing).call(depth0, {"name":"input","hash":{
+      'min': ("1"),
       'type': ("number"),
-      'min': ("1")
-    },hashTypes:{'value': "ID",'class': "STRING",'type': "STRING",'min': "STRING"},hashContexts:{'value': depth0,'class': depth0,'type': depth0,'min': depth0},contexts:[],types:[],data:data},helper ? helper.call(depth0, options) : helperMissing.call(depth0, "input", options))));
+      'class': ("text-input"),
+      'value': ("maxWidthValue")
+    },"hashTypes":{'min': "STRING",'type': "STRING",'class': "STRING",'value': "ID"},"hashContexts":{'min': depth0,'type': depth0,'class': depth0,'value': depth0},"types":[],"contexts":[],"data":data}))));
     data.buffer.push("</td>\n                <td>");
-    stack1 = helpers._triageMustache.call(depth0, "width", {hash:{},hashTypes:{},hashContexts:{},contexts:[depth0],types:["ID"],data:data});
-    if(stack1 || stack1 === 0) { data.buffer.push(stack1); }
+    stack1 = helpers._triageMustache.call(depth0, "width", {"name":"_triageMustache","hash":{},"hashTypes":{},"hashContexts":{},"types":["ID"],"contexts":[depth0],"data":data});
+    if (stack1 != null) { data.buffer.push(stack1); }
     data.buffer.push("</td>\n                <td>");
-    stack1 = helpers._triageMustache.call(depth0, "savedWidth", {hash:{},hashTypes:{},hashContexts:{},contexts:[depth0],types:["ID"],data:data});
-    if(stack1 || stack1 === 0) { data.buffer.push(stack1); }
-    data.buffer.push("</td>\n              </tr>\n            ");
+    stack1 = helpers._triageMustache.call(depth0, "savedWidth", {"name":"_triageMustache","hash":{},"hashTypes":{},"hashContexts":{},"types":["ID"],"contexts":[depth0],"data":data});
+    if (stack1 != null) { data.buffer.push(stack1); }
+    data.buffer.push("</td>\n              </tr>\n");
     return buffer;
-    }
-
-  function program3(depth0,data) {
-    
-    var buffer = '', helper, options;
-    data.buffer.push("\n          <div class=\"ember-table-example-container-small\">\n            ");
-    data.buffer.push(escapeExpression((helper = helpers['configurable-table'] || (depth0 && depth0['configurable-table']),options={hash:{
-      'hasFooter': (false),
-      'columnMode': ("columnMode"),
-      'columns': ("columns"),
+  },"3":function(depth0,helpers,partials,data) {
+    var helperMissing=helpers.helperMissing, escapeExpression=this.escapeExpression, buffer = '';
+    data.buffer.push("          <div class=\"ember-table-example-container-small\">\n            ");
+    data.buffer.push(escapeExpression(((helpers['configurable-table'] || (depth0 && depth0['configurable-table']) || helperMissing).call(depth0, {"name":"configurable-table","hash":{
+      'parentWidth': ("demoTableWidth"),
       'content': ("content"),
-      'parentWidth': ("demoTableWidth")
-    },hashTypes:{'hasFooter': "BOOLEAN",'columnMode': "ID",'columns': "ID",'content': "ID",'parentWidth': "ID"},hashContexts:{'hasFooter': depth0,'columnMode': depth0,'columns': depth0,'content': depth0,'parentWidth': depth0},contexts:[],types:[],data:data},helper ? helper.call(depth0, options) : helperMissing.call(depth0, "configurable-table", options))));
-    data.buffer.push("\n          </div>\n        ");
+      'columns': ("columns"),
+      'columnMode': ("columnMode"),
+      'hasFooter': (false)
+    },"hashTypes":{'parentWidth': "ID",'content': "ID",'columns': "ID",'columnMode': "ID",'hasFooter': "BOOLEAN"},"hashContexts":{'parentWidth': depth0,'content': depth0,'columns': depth0,'columnMode': depth0,'hasFooter': depth0},"types":[],"contexts":[],"data":data}))));
+    data.buffer.push("\n          </div>\n");
     return buffer;
-    }
-
-  function program5(depth0,data) {
-    
-    
+  },"5":function(depth0,helpers,partials,data) {
     data.buffer.push("\n  columnMode=\"fluid\"");
-    }
-
-  function program7(depth0,data) {
-    
-    var buffer = '', stack1;
+    },"7":function(depth0,helpers,partials,data) {
+    var stack1, buffer = '';
     data.buffer.push("\n");
-    stack1 = helpers._triageMustache.call(depth0, "columnDefinitionDocumentation", {hash:{},hashTypes:{},hashContexts:{},contexts:[depth0],types:["ID"],data:data});
-    if(stack1 || stack1 === 0) { data.buffer.push(stack1); }
+    stack1 = helpers._triageMustache.call(depth0, "columnDefinitionDocumentation", {"name":"_triageMustache","hash":{},"hashTypes":{},"hashContexts":{},"types":["ID"],"contexts":[depth0],"data":data});
+    if (stack1 != null) { data.buffer.push(stack1); }
     return buffer;
-    }
-
-    data.buffer.push("<div class=\"col-md-10 col-md-offset-2 left-border main-content-container\">\n  <h1>Ember Table <small>Configurable Column Demo</small></h1>\n\n  <p>Ember Table's column settings give you a lot of fine-grained control over\n  reordering and resizing behavior. Use this demo to play with the options and\n  find what works for your use!</p>\n\n  <p>You can drag the right border of the table container to see how the table\n  should respond to width changes. The refresh button is useful to see how the\n  table would be initialized given the settings you've selected.</p>\n\n  <p>When you're done configuring, check out the code below - it's updated live\n  with the settings you selected.</p>\n\n  <div class=\"row\">\n    <div class=\"col-md-12\">\n      <div class=\"configuration-container\">\n        <div class=\"title-text\">Configure Demo</div>\n        <table class=\"table table-bordered table-condensed\">\n          <tbody>\n            <tr>\n              <th>Column</th>\n              <th class=\"checkbox-column\">Reorder</th>\n              <th class=\"checkbox-column\">Resize</th>\n              <th class=\"checkbox-column\">Auto-Resize</th>\n              <th class=\"width-column\">Min Width</th>\n              <th class=\"width-column\">Max Width</th>\n              <th class=\"width-column\">Actual Width</th>\n              <th class=\"width-column\">Saved Width</th>\n            </tr>\n            ");
-    stack1 = helpers.each.call(depth0, "columns", {hash:{},hashTypes:{},hashContexts:{},inverse:self.noop,fn:self.program(1, program1, data),contexts:[depth0],types:["ID"],data:data});
-    if(stack1 || stack1 === 0) { data.buffer.push(stack1); }
-    data.buffer.push("\n          </tbody>\n        </table>\n        <div class=\"table-options-footer\">\n          <div class=\"fluid-mode-text\">Fluid Mode</div>\n          ");
-    data.buffer.push(escapeExpression((helper = helpers.input || (depth0 && depth0.input),options={hash:{
-      'class': ("checkbox-input"),
+  },"compiler":[6,">= 2.0.0-beta.1"],"main":function(depth0,helpers,partials,data) {
+    var stack1, helperMissing=helpers.helperMissing, escapeExpression=this.escapeExpression, buffer = '';
+    data.buffer.push("<div class=\"col-md-10 col-md-offset-2 left-border main-content-container\">\n  <h1>Ember Table <small>Configurable Column Demo</small></h1>\n\n  <p>Ember Table's column settings give you a lot of fine-grained control over\n  reordering and resizing behavior. Use this demo to play with the options and\n  find what works for your use!</p>\n\n  <p>You can drag the right border of the table container to see how the table\n  should respond to width changes. The refresh button is useful to see how the\n  table would be initialized given the settings you've selected.</p>\n\n  <p>When you're done configuring, check out the code below - it's updated live\n  with the settings you selected.</p>\n\n  <div class=\"row\">\n    <div class=\"col-md-12\">\n      <div class=\"configuration-container\">\n        <div class=\"title-text\">Configure Demo</div>\n        <table class=\"table table-bordered table-condensed\">\n          <tbody>\n            <tr>\n              <th>Column</th>\n              <th class=\"checkbox-column\">Reorder</th>\n              <th class=\"checkbox-column\">Resize</th>\n              <th class=\"checkbox-column\">Auto-Resize</th>\n              <th class=\"width-column\">Min Width</th>\n              <th class=\"width-column\">Max Width</th>\n              <th class=\"width-column\">Actual Width</th>\n              <th class=\"width-column\">Saved Width</th>\n            </tr>\n");
+    stack1 = helpers.each.call(depth0, "columns", {"name":"each","hash":{},"hashTypes":{},"hashContexts":{},"fn":this.program(1, data),"inverse":this.noop,"types":["ID"],"contexts":[depth0],"data":data});
+    if (stack1 != null) { data.buffer.push(stack1); }
+    data.buffer.push("          </tbody>\n        </table>\n        <div class=\"table-options-footer\">\n          <div class=\"fluid-mode-text\">Fluid Mode</div>\n          ");
+    data.buffer.push(escapeExpression(((helpers.input || (depth0 && depth0.input) || helperMissing).call(depth0, {"name":"input","hash":{
+      'checked': ("isFluid"),
       'type': ("checkbox"),
-      'checked': ("isFluid")
-    },hashTypes:{'class': "STRING",'type': "STRING",'checked': "ID"},hashContexts:{'class': depth0,'type': depth0,'checked': depth0},contexts:[],types:[],data:data},helper ? helper.call(depth0, options) : helperMissing.call(depth0, "input", options))));
+      'class': ("checkbox-input")
+    },"hashTypes":{'checked': "ID",'type': "STRING",'class': "STRING"},"hashContexts":{'checked': depth0,'type': depth0,'class': depth0},"types":[],"contexts":[],"data":data}))));
     data.buffer.push("\n          <button class=\"addepar-btn-primary refresh-btn\" ");
-    data.buffer.push(escapeExpression(helpers.action.call(depth0, "refreshTable", {hash:{},hashTypes:{},hashContexts:{},contexts:[depth0],types:["STRING"],data:data})));
-    data.buffer.push(">Refresh Table</button>\n        </div>\n      </div>\n    </div>\n  </div>\n\n  <div class=\"row\">\n    <div class=\"col-md-12\">\n      <div class=\"example-container js-resizable-container\">\n        ");
-    stack1 = helpers['if'].call(depth0, "showTable", {hash:{},hashTypes:{},hashContexts:{},inverse:self.noop,fn:self.program(3, program3, data),contexts:[depth0],types:["ID"],data:data});
-    if(stack1 || stack1 === 0) { data.buffer.push(stack1); }
-    data.buffer.push("\n      </div>\n    </div>\n\n    <div class=\"col-md-12 bumper-30\">\n      <h3>Template</h3>\n      <div class=\"highlight\">\n<pre class=\"prettyprint lang-html\">&#123;&#123;table-component\n  hasFooter=false\n  columns=tableColumns\n  content=tableContent");
-    stack1 = helpers['if'].call(depth0, "isFluid", {hash:{},hashTypes:{},hashContexts:{},inverse:self.noop,fn:self.program(5, program5, data),contexts:[depth0],types:["ID"],data:data});
-    if(stack1 || stack1 === 0) { data.buffer.push(stack1); }
+    data.buffer.push(escapeExpression(helpers.action.call(depth0, "refreshTable", {"name":"action","hash":{},"hashTypes":{},"hashContexts":{},"types":["STRING"],"contexts":[depth0],"data":data})));
+    data.buffer.push(">Refresh Table</button>\n        </div>\n      </div>\n    </div>\n  </div>\n\n  <div class=\"row\">\n    <div class=\"col-md-12\">\n      <div class=\"example-container js-resizable-container\">\n");
+    stack1 = helpers['if'].call(depth0, "showTable", {"name":"if","hash":{},"hashTypes":{},"hashContexts":{},"fn":this.program(3, data),"inverse":this.noop,"types":["ID"],"contexts":[depth0],"data":data});
+    if (stack1 != null) { data.buffer.push(stack1); }
+    data.buffer.push("      </div>\n    </div>\n\n    <div class=\"col-md-12 bumper-30\">\n      <h3>Template</h3>\n      <div class=\"highlight\">\n<pre class=\"prettyprint lang-html\">&#123;&#123;table-component\n  hasFooter=false\n  columns=tableColumns\n  content=tableContent");
+    stack1 = helpers['if'].call(depth0, "isFluid", {"name":"if","hash":{},"hashTypes":{},"hashContexts":{},"fn":this.program(5, data),"inverse":this.noop,"types":["ID"],"contexts":[depth0],"data":data});
+    if (stack1 != null) { data.buffer.push(stack1); }
     data.buffer.push("\n&#125;&#125;</pre>\n      </div>\n    </div>\n\n    <div class=\"col-md-12 bumper-30\">\n      <h3>Controller</h3>\n      <div class=\"highlight\">\n<pre class=\"lang-js\">\nimport Ember from 'ember';\nimport ColumnDefinition from 'ember-table/models/column-definition';\n\nexport default Ember.Controller.extend({\n  tableColumns: Ember.computed(function() { ");
-    stack1 = helpers.each.call(depth0, "columns", {hash:{},hashTypes:{},hashContexts:{},inverse:self.noop,fn:self.program(7, program7, data),contexts:[depth0],types:["ID"],data:data});
-    if(stack1 || stack1 === 0) { data.buffer.push(stack1); }
+    stack1 = helpers.each.call(depth0, "columns", {"name":"each","hash":{},"hashTypes":{},"hashContexts":{},"fn":this.program(7, data),"inverse":this.noop,"types":["ID"],"contexts":[depth0],"data":data});
+    if (stack1 != null) { data.buffer.push(stack1); }
     data.buffer.push("\n    return [dateColumn, openColumn, highColumn, lowColumn, closeColumn];\n  }),\n\n  tableContent: Ember.computed(function() {\n    var content = [];\n    var date;\n    for (var i = 0; i < 100; i++) {\n      date = new Date();\n      date.setDate(date.getDate() + i);\n      content.pushObject({\n        date: date,\n        open: Math.random() * 100 - 50,\n        high: Math.random() * 100 - 50,\n        low: Math.random() * 100 - 50,\n        close: Math.random() * 100 - 50,\n        volume: Math.random() * 1000000\n      });\n    }\n    return content;\n  })\n});</pre>\n      </div>\n    </div>\n  </div>\n</div>\n");
     return buffer;
-    
-  });
+  },"useData":true});
 
 });
-define('dummy/templates/documentation', ['exports', 'ember'], function (exports, Ember) {
+define('dummy/templates/documentation', ['exports'], function (exports) {
 
   'use strict';
 
-  exports['default'] = Ember['default'].Handlebars.template(function anonymous(Handlebars,depth0,helpers,partials,data) {
-  this.compilerInfo = [4,'>= 1.0.0'];
-  helpers = this.merge(helpers, Ember['default'].Handlebars.helpers); data = data || {};
-    var buffer = '', stack1, helper, options, self=this, helperMissing=helpers.helperMissing;
-
-  function program1(depth0,data) {
-    
-    
+  exports['default'] = Ember.Handlebars.template({"1":function(depth0,helpers,partials,data) {
     data.buffer.push("configurable column\n          demo.");
-    }
-
-    data.buffer.push("\n<div class=\"col-md-10 col-md-offset-2 left-border main-content-container\">\n  <h1>API &amp; Documentation</h1>\n  <h2>Ember.Table.TableComponent Options</h2>\n\n  <table class=\"table ember-table-options\">\n    <tr>\n      <th style=\"min-width: 200px;\">Option</th>\n      <th style=\"min-width: 150px;\">Default</th>\n      <th>Description</th>\n    </tr>\n    <tr>\n      <td>content <b>(required)</b></td>\n      <td>[]</td>\n      <td>\n        <p>\n          An array of row objects, or a promise that resolves to an array \n          of row objects (so compatible with ember-data). \n          Usually each row is a hash where the keys are column\n          names and the values are the rows's values. However, could be any\n          object, since each column can define a function to return the column\n          value given the row object. See\n          <code>Ember.Table.ColumnDefinition.getCellContent</code>.\n        </p>\n      </td>\n    </tr>\n    <tr>\n      <td>columns <b>(required)</b></td>\n      <td>null</td>\n      <td>\n        <p>\n          An array of column definitions: see\n          <code>Ember.Table.ColumnDefinition</code>.  Allows each column to\n          have its own configuration.\n        </p>\n      </td>\n    </tr>\n    <tr>\n      <td>numFixedColumns</td>\n      <td>0</td>\n      <td>\n        <p>\n          The number of fixed columns on the left side of the table. Fixed\n          columns are always visible, even when the table is scrolled\n          horizontally.\n        </p>\n      </td>\n    </tr>\n    <tr>\n      <td>numFooterRow</td>\n      <td>0</td>\n      <td>\n        <p>\n          The number of footer rows in the table. Footer rows appear at the\n          bottom of the table and are always visible.\n        </p>\n      </td>\n    </tr>\n    <tr>\n      <td>rowHeight</td>\n      <td>30</td>\n      <td>\n        <p>\n          The row height in pixels. A consistent row height is necessary to\n          calculate which rows are being shown, to enable lazy rendering.\n        </p>\n      </td>\n    </tr>\n    <tr>\n      <td>minHeaderHeight</td>\n      <td>30</td>\n      <td>\n        <p>\n          The minimum header height in pixels. Headers will grow in height if\n          given more content than they can display.\n        </p>\n      </td>\n    </tr>\n    <tr>\n      <td>footerHeight</td>\n      <td>30</td>\n      <td><p>The footer height in pixels.</p></td>\n    </tr>\n    <tr>\n      <td>hasHeader</td>\n      <td>true</td>\n      <td><p>Enables or disables the header block.</p></td>\n    </tr>\n    <tr>\n      <td>hasFooter</td>\n      <td>true</td>\n      <td><p>Enables or disables the footer block.</p></td>\n    </tr>\n    <tr>\n      <td>enableColumnReorder</td>\n      <td>true</td>\n      <td>\n        <p>\n          Allow the columns to be rearranged by drag-and-drop. Only columns\n          with <code>isSortable=true</code> (the default setting) will be\n          affected.\n        </p>\n      </td>\n    </tr>\n    <tr>\n      <td>enableContentSelection</td>\n      <td>false</td>\n      <td><p>Allow users to select the content of table cells.</p></td>\n    </tr>\n    <tr>\n      <td>styleBindings</td>\n      <td>'height'</td>\n      <td>\n        <p>\n          Values which are bound to the table's style attr. See\n          <code>Ember.StyleBindingsMixin</code> documentation for more details.\n        </p>\n      </td>\n    </tr>\n    <tr>\n      <td>columnMode</td>\n      <td>'standard'</td>\n      <td>\n        <p>\n          Sets which column resizing behavior to use. Possible values are\n          <code>'standard'</code> (resizing a column pushes or pulls all other\n          columns) and <code>'fluid'</code> (resizing a column steals width\n          from neighboring columns). You can experiment with this behavior in\n          the ");
-    stack1 = (helper = helpers['link-to'] || (depth0 && depth0['link-to']),options={hash:{},hashTypes:{},hashContexts:{},inverse:self.noop,fn:self.program(1, program1, data),contexts:[depth0],types:["STRING"],data:data},helper ? helper.call(depth0, "configurable-columns", options) : helperMissing.call(depth0, "link-to", "configurable-columns", options));
-    if(stack1 || stack1 === 0) { data.buffer.push(stack1); }
+    },"compiler":[6,">= 2.0.0-beta.1"],"main":function(depth0,helpers,partials,data) {
+    var stack1, helperMissing=helpers.helperMissing, buffer = '';
+    data.buffer.push("<div class=\"col-md-10 col-md-offset-2 left-border main-content-container\">\n  <h1>API &amp; Documentation</h1>\n  <h2>Ember.Table.TableComponent Options</h2>\n\n  <table class=\"table ember-table-options\">\n    <tr>\n      <th style=\"min-width: 200px;\">Option</th>\n      <th style=\"min-width: 150px;\">Default</th>\n      <th>Description</th>\n    </tr>\n    <tr>\n      <td>content <b>(required)</b></td>\n      <td>[]</td>\n      <td>\n        <p>\n          An array of row objects, or a promise that resolves to an array \n          of row objects (so compatible with ember-data). \n          Usually each row is a hash where the keys are column\n          names and the values are the rows's values. However, could be any\n          object, since each column can define a function to return the column\n          value given the row object. See\n          <code>Ember.Table.ColumnDefinition.getCellContent</code>.\n        </p>\n      </td>\n    </tr>\n    <tr>\n      <td>columns <b>(required)</b></td>\n      <td>null</td>\n      <td>\n        <p>\n          An array of column definitions: see\n          <code>Ember.Table.ColumnDefinition</code>.  Allows each column to\n          have its own configuration.\n        </p>\n      </td>\n    </tr>\n    <tr>\n      <td>numFixedColumns</td>\n      <td>0</td>\n      <td>\n        <p>\n          The number of fixed columns on the left side of the table. Fixed\n          columns are always visible, even when the table is scrolled\n          horizontally.\n        </p>\n      </td>\n    </tr>\n    <tr>\n      <td>numFooterRow</td>\n      <td>0</td>\n      <td>\n        <p>\n          The number of footer rows in the table. Footer rows appear at the\n          bottom of the table and are always visible.\n        </p>\n      </td>\n    </tr>\n    <tr>\n      <td>rowHeight</td>\n      <td>30</td>\n      <td>\n        <p>\n          The row height in pixels. A consistent row height is necessary to\n          calculate which rows are being shown, to enable lazy rendering.\n        </p>\n      </td>\n    </tr>\n    <tr>\n      <td>minHeaderHeight</td>\n      <td>30</td>\n      <td>\n        <p>\n          The minimum header height in pixels. Headers will grow in height if\n          given more content than they can display.\n        </p>\n      </td>\n    </tr>\n    <tr>\n      <td>footerHeight</td>\n      <td>30</td>\n      <td><p>The footer height in pixels.</p></td>\n    </tr>\n    <tr>\n      <td>hasHeader</td>\n      <td>true</td>\n      <td><p>Enables or disables the header block.</p></td>\n    </tr>\n    <tr>\n      <td>hasFooter</td>\n      <td>true</td>\n      <td><p>Enables or disables the footer block.</p></td>\n    </tr>\n    <tr>\n      <td>enableColumnReorder</td>\n      <td>true</td>\n      <td>\n        <p>\n          Allow the columns to be rearranged by drag-and-drop. Only columns\n          with <code>isSortable=true</code> (the default setting) will be\n          affected.\n        </p>\n      </td>\n    </tr>\n    <tr>\n      <td>enableContentSelection</td>\n      <td>false</td>\n      <td><p>Allow users to select the content of table cells.</p></td>\n    </tr>\n    <tr>\n      <td>styleBindings</td>\n      <td>'height'</td>\n      <td>\n        <p>\n          Values which are bound to the table's style attr. See\n          <code>Ember.StyleBindingsMixin</code> documentation for more details.\n        </p>\n      </td>\n    </tr>\n    <tr>\n      <td>columnMode</td>\n      <td>'standard'</td>\n      <td>\n        <p>\n          Sets which column resizing behavior to use. Possible values are\n          <code>'standard'</code> (resizing a column pushes or pulls all other\n          columns) and <code>'fluid'</code> (resizing a column steals width\n          from neighboring columns). You can experiment with this behavior in\n          the ");
+    stack1 = ((helpers['link-to'] || (depth0 && depth0['link-to']) || helperMissing).call(depth0, "configurable-columns", {"name":"link-to","hash":{},"hashTypes":{},"hashContexts":{},"fn":this.program(1, data),"inverse":this.noop,"types":["STRING"],"contexts":[depth0],"data":data}));
+    if (stack1 != null) { data.buffer.push(stack1); }
     data.buffer.push("\n        </p>\n      </td>\n    </tr>\n    <tr>\n      <td>selectionMode</td>\n      <td>'single'</td>\n      <td>\n        <p>\n          Sets which row selection behavior to follow. Possible values are\n          <code>'none'</code> (clicking on a row does nothing),\n          <code>'single'</code> (clicking on a row selects it and deselects\n          other rows), and <code>'multiple'</code> (multiple rows can be\n          selected through ctrl/cmd-click or shift-click).\n        </p>\n      </td>\n    </tr>\n    <tr>\n      <td>selection (output)</td>\n      <td>undefined</td>\n      <td>\n        <p>\n          An array of the rows currently selected. If\n          <code>selectionMode</code> is set to <code>'single'</code>, the array\n          will contain either one or zero elements.\n        </p>\n      </td>\n    </tr>\n  </table>\n\n  <h2>Ember.Table.ColumnDefinition Options</h2>\n  <table class=\"table ember-table-options\">\n    <tr>\n      <th style=\"min-width: 200px;\">Option</th>\n      <th style=\"min-width: 150px;\">Default</th>\n      <th>Description</th>\n    </tr>\n    <tr>\n      <td>headerCellName</td>\n      <td>undefined</td>\n      <td><p>Name of the column, to be displayed in the header.</p></td>\n    </tr>\n    <tr>\n      <td>contentPath</td>\n      <td>undefined</td>\n      <td>\n        <p>\n          Path of the content for this cell. If the row object is a hash of\n          keys and values to specify data for each column,\n          <code>contentPath</code> corresponds to the key. Use either this or\n          <code>getCellContent</code>.\n        </p>\n      </td>\n    </tr>\n    <tr>\n      <td>minWidth</td>\n      <td>25</td>\n      <td>\n        <p>\n          Minimum column width in pixels. Affects both manual resizing and\n          automatic resizing.\n        </p>\n      </td>\n    </tr>\n    <tr>\n      <td>maxWidth</td>\n      <td>undefined</td>\n      <td>\n        <p>\n          Maximum column width in pixels. Affects both manual resizing and\n          automatic resizing.\n        </p>\n      </td>\n    </tr>\n    <tr>\n      <td>savedWidth</td>\n      <td>150</td>\n      <td>\n        <p>\n          The initial column width in pixels. Updated whenever the column (not\n          window) is resized. Can be persisted.\n        </p>\n      </td>\n    </tr>\n    <tr>\n      <td>isResizable</td>\n      <td>true</td>\n      <td><p>Whether the column can be manually resized.</p></td>\n    </tr>\n    <tr>\n      <td>isSortable</td>\n      <td>true</td>\n      <td>\n        <p>\n          Whether the column can be rearranged with other columns. Only matters\n          if the table's <code>enableColumnReorder</code> property is set to\n          true (the default).\n        </p>\n      </td>\n    </tr>\n    <tr>\n      <td>textAlign</td>\n      <td>'text-align-right'</td>\n      <td>\n        <p>\n          Alignment of the text in the cell. Possible values are\n          <code>'left'</code>, <code>'center'</code>, and <code>'right'</code>.\n        </p>\n      </td>\n    </tr>\n    <tr>\n      <td>canAutoResize</td>\n      <td>false</td>\n      <td>\n        <p>\n          Whether the column can automatically resize to fill space in the\n          table.\n        </p>\n      </td>\n    </tr>\n    <tr>\n      <td>headerCellView</td>\n      <td>'Ember.Table.HeaderCell'</td>\n      <td>\n        <p>\n          Override to use a custom view for the header cell. Specified as a\n          string.\n        </p>\n      </td>\n    </tr>\n    <tr>\n      <td>tableCellView</td>\n      <td>'Ember.Table.TableCell'</td>\n      <td>\n        <p>\n          Override to use a custom view for table cells. Specified as a string.\n        </p>\n      </td>\n    </tr>\n    <tr>\n      <td>getCellContent</td>\n      <td>(function)</td>\n      <td>\n        <p>\n          Override to customize how the column gets data from each row object.\n          Given a row, should return a formatted cell value, e.g. $20,000,000.\n          Use either this or <code>contentPath</code>.\n        </p>\n      </td>\n    </tr>\n    <tr>\n      <td>setCellContent</td>\n      <td>Ember.K</td>\n      <td>\n        <p>\n          Override to maintain a consistent path to update cell values.\n          Recommended to make this a function which takes (row, value) and\n          updates the row value.\n        </p>\n      </td>\n    </tr>\n  </table>\n\n  <h2>Ember.Table.TableCell Options</h2>\n  <table class=\"table ember-table-options\">\n    <tr>\n      <th style=\"min-width: 200px;\">Option</th>\n      <th style=\"min-width: 150px;\">Default</th>\n      <th>Description</th>\n    </tr>\n    <tr>\n      <td>templateName</td>\n      <td>'table-cell'</td>\n      <td>\n        <p>The name of the template to be rendered into the cell.\n        Used for rendering custom templates.\n        </p>\n      </td>\n    </tr>\n    <tr>\n      <td>classNames</td>\n      <td>['ember-table-cell']</td>\n      <td><p>The class names applied to the cell. Override to give\n        the cell custom styling (border, background color, etc).</p></td>\n    </tr>\n    <tr>\n      <td>classNameBindings</td>\n      <td>'column.textAlign'</td>\n      <td><p>A binding used to dynamically associate class names\n        with this table cell. E.g. you can bind to a column property\n        to have cell colors or styles vary across columns.</p></td>\n    </tr>\n    <tr>\n      <td>styleBindings</td>\n      <td>'width'</td>\n      <td>\n        <p>\n          Values which are bound to the cell's style attr. See\n          <code>Ember.StyleBindingsMixin</code> documentation for more details.\n        </p>\n      </td>\n    </tr>\n  </table>\n\n  <h2>Ember.Table.HeaderCell Options</h2>\n  <table class=\"table ember-table-options\">\n    <tr>\n      <th style=\"min-width: 200px;\">Option</th>\n      <th style=\"min-width: 150px;\">Default</th>\n      <th>Description</th>\n    </tr>\n    <tr>\n      <td>templateName</td>\n      <td>'header-cell'</td>\n      <td><p>See description in <code>Ember.Table.TableCell</code>.</p></td>\n    </tr>\n    <tr>\n      <td>classNames</td>\n      <td>['ember-table-cell', 'ember-table-header-cell']</td>\n      <td><p>See description in <code>Ember.Table.TableCell</code>.</p></td>\n    </tr>\n    <tr>\n      <td>classNameBindings</td>\n      <td>['column.isSortable:sortable', 'column.textAlign']</td>\n      <td><p>See description in <code>Ember.Table.TableCell</code>.</p></td>\n    </tr>\n    <tr>\n      <td>styleBindings</td>\n      <td>['width', 'height']</td>\n      <td><p>See description in <code>Ember.Table.TableCell</code>.</p></td>\n    </tr>\n  </table>\n</div>\n");
     return buffer;
-    
-  });
+  },"useData":true});
 
 });
-define('dummy/templates/dynamic-bar-table/dynamic-bar-table', ['exports', 'ember'], function (exports, Ember) {
+define('dummy/templates/dynamic-bar-table/dynamic-bar-table', ['exports'], function (exports) {
 
   'use strict';
 
-  exports['default'] = Ember['default'].Handlebars.template(function anonymous(Handlebars,depth0,helpers,partials,data) {
-  this.compilerInfo = [4,'>= 1.0.0'];
-  helpers = this.merge(helpers, Ember['default'].Handlebars.helpers); data = data || {};
-    var buffer = '', helper, options, helperMissing=helpers.helperMissing, escapeExpression=this.escapeExpression;
-
-
-    data.buffer.push(escapeExpression((helper = helpers['ember-table'] || (depth0 && depth0['ember-table']),options={hash:{
-      'hasHeader': (true),
-      'hasFooter': (false),
-      'rowHeight': (30),
+  exports['default'] = Ember.Handlebars.template({"compiler":[6,">= 2.0.0-beta.1"],"main":function(depth0,helpers,partials,data) {
+    var helperMissing=helpers.helperMissing, escapeExpression=this.escapeExpression, buffer = '';
+    data.buffer.push(escapeExpression(((helpers['ember-table'] || (depth0 && depth0['ember-table']) || helperMissing).call(depth0, {"name":"ember-table","hash":{
+      'content': ("tableContent"),
       'columns': ("tableColumns"),
-      'content': ("tableContent")
-    },hashTypes:{'hasHeader': "BOOLEAN",'hasFooter': "BOOLEAN",'rowHeight': "INTEGER",'columns': "ID",'content': "ID"},hashContexts:{'hasHeader': depth0,'hasFooter': depth0,'rowHeight': depth0,'columns': depth0,'content': depth0},contexts:[],types:[],data:data},helper ? helper.call(depth0, options) : helperMissing.call(depth0, "ember-table", options))));
+      'rowHeight': (30),
+      'hasFooter': (false),
+      'hasHeader': (true)
+    },"hashTypes":{'content': "ID",'columns': "ID",'rowHeight': "NUMBER",'hasFooter': "BOOLEAN",'hasHeader': "BOOLEAN"},"hashContexts":{'content': depth0,'columns': depth0,'rowHeight': depth0,'hasFooter': depth0,'hasHeader': depth0},"types":[],"contexts":[],"data":data}))));
     data.buffer.push("\n");
     return buffer;
-    
-  });
+  },"useData":true});
 
 });
-define('dummy/templates/dynamic-bars', ['exports', 'ember'], function (exports, Ember) {
+define('dummy/templates/dynamic-bars', ['exports'], function (exports) {
 
   'use strict';
 
-  exports['default'] = Ember['default'].Handlebars.template(function anonymous(Handlebars,depth0,helpers,partials,data) {
-  this.compilerInfo = [4,'>= 1.0.0'];
-  helpers = this.merge(helpers, Ember['default'].Handlebars.helpers); data = data || {};
-    var buffer = '', helper, options, helperMissing=helpers.helperMissing, escapeExpression=this.escapeExpression;
-
-
+  exports['default'] = Ember.Handlebars.template({"compiler":[6,">= 2.0.0-beta.1"],"main":function(depth0,helpers,partials,data) {
+    var helperMissing=helpers.helperMissing, escapeExpression=this.escapeExpression, buffer = '';
     data.buffer.push("<div class=\"col-md-10 col-md-offset-2 left-border main-content-container\">\n  <h1>Ember Table <small>Dynamic Bar</small></h1>\n\n  <div class=\"row\">\n    <div class=\"col-md-12\">\n      <div class=\"example-container\">\n        <div class=\"ember-table-example-container\">\n          ");
-    data.buffer.push(escapeExpression((helper = helpers.partial || (depth0 && depth0.partial),options={hash:{},hashTypes:{},hashContexts:{},contexts:[depth0],types:["STRING"],data:data},helper ? helper.call(depth0, "dynamic-bar-table/dynamic-bar-table", options) : helperMissing.call(depth0, "partial", "dynamic-bar-table/dynamic-bar-table", options))));
+    data.buffer.push(escapeExpression(((helpers.partial || (depth0 && depth0.partial) || helperMissing).call(depth0, "dynamic-bar-table/dynamic-bar-table", {"name":"partial","hash":{},"hashTypes":{},"hashContexts":{},"types":["STRING"],"contexts":[depth0],"data":data}))));
     data.buffer.push("\n        </div>\n      </div>\n    </div>\n\n    <div class=\"col-md-12 bumper-30\">\n      <h3>Template</h3>\n      <div class=\"highlight\">\n        <pre class=\"prettyprint lang-html\">{{ember-table\n  hasHeader=true\n  hasFooter=false\n  rowHeight=30\n  columns=tableColumns\n  content=tableContent\n}}\n</pre>\n      </div>\n    </div>\n\n    <div class=\"col-md-12 bumper-30\">\n      <h3>Controller</h3>\n      <div class=\"highlight\">\n        <pre class=\"prettyprint lang-js\">import Ember from &#39;ember&#39;;\nimport ColumnDefinition from &#39;ember-table&#x2F;models&#x2F;column-definition&#39;;\n\nexport default Ember.Controller.extend({\n  &#x2F;&#x2F; TODO(azirbel): Don&#39;t use setInterval in an Ember application\n  init: function() {\n    &#x2F;&#x2F; TODO(azirbel): Call this._super()\n    var _this = this;\n    setInterval(function() {\n      _this.get(&#39;tableContent&#39;).forEach(function(item) {\n        item.set(&#39;value1&#39;, _this.getNextValue(item.get(&#39;value1&#39;)));\n        item.set(&#39;value2&#39;, _this.getNextValue(item.get(&#39;value2&#39;)));\n        item.set(&#39;value3&#39;, _this.getNextValue(item.get(&#39;value3&#39;)));\n        item.set(&#39;value4&#39;, _this.getNextValue(item.get(&#39;value4&#39;)));\n        item.set(&#39;value5&#39;, _this.getNextValue(item.get(&#39;value5&#39;)));\n      });\n    }, 1500);\n  },\n\n  getNextValue: function(current) {\n    current = current + (Math.random() * 10 - 5);\n    current = Math.min(100, current);\n    current = Math.max(0, current);\n    return current;\n  },\n\n  tableColumns: Ember.computed(function() {\n    var colors = [&#39;blue&#39;, &#39;teal&#39;, &#39;green&#39;, &#39;yellow&#39;, &#39;orange&#39;];\n    var firstColumn = ColumnDefinition.create({\n      savedWidth: 50,\n      headerCellName: &#39;Name&#39;,\n      contentPath: &#39;key&#39;\n    });\n    var columns = colors.map(function(color, index) {\n      return ColumnDefinition.create({\n        color: color,\n        headerCellName: &#39;Bar&#39;,\n        tableCellViewClass: &#39;bar-table-cell&#39;,\n        contentPath: &#39;value&#39; + (index + 1)\n      });\n    });\n    columns.unshift(firstColumn);\n    return columns;\n  }),\n\n  tableContent: Ember.computed(function() {\n    var content = [];\n    for (var i = 0; i &lt; 100; i++) {\n      content.pushObject(Ember.Object.create({\n        key: i,\n        value1: Math.random() * 80 + 10,\n        value2: Math.random() * 80 + 10,\n        value3: Math.random() * 80 + 10,\n        value4: Math.random() * 80 + 10,\n        value5: Math.random() * 80 + 10\n      }));\n    }\n    return content;\n  })\n});\n</pre>\n      </div>\n    </div>\n\n    <div class=\"col-md-12 bumper-30\">\n      <h3>views/bar-table-cell.js</h3>\n      <div class=\"highlight\">\n        <pre class=\"prettyprint lang-js\">import Ember from &#39;ember&#39;;\nimport TableCell from &#39;ember-table&#x2F;views&#x2F;table-cell&#39;;\n\nexport default TableCell.extend({\n  templateName: &#39;bar_table&#x2F;bar-cell&#39;,\n  classNameBindings: [&#39;column.color&#39;],\n\n  barWidth: Ember.computed(function() {\n    var properties = this.getProperties(&#39;column&#39;, &#39;row&#39;);\n    var column = properties.column;\n    var row = properties.row;\n    if (!(column &amp;&amp; row)) {\n      return 0;\n    }\n    return Math.round(+this.get(&#39;cellContent&#39;));\n  }).property(&#39;column&#39;, &#39;row&#39;, &#39;cellContent&#39;),\n\n  histogramStyle: Ember.computed(function() {\n    return &#39;width: &#39; + (this.get(&#39;barWidth&#39;)) + &#39;%;&#39;;\n  }).property(&#39;barWidth&#39;)\n});\n</pre>\n      </div>\n    </div>\n\n    <div class=\"col-md-12 bumper-30\">\n      <h3>templates/bar-table/bar-cell.hbs</h3>\n      <div class=\"highlight\">\n        <pre class=\"prettyprint lang-html\">&lt;span class=&quot;bar-cell&quot; {{bind-attr style=&quot;view.histogramStyle&quot;}}&gt;\n&lt;&#x2F;span&gt;\n</pre>\n      </div>\n    </div>\n  </div>\n</div>\n");
     return buffer;
-    
-  });
+  },"useData":true});
 
 });
-define('dummy/templates/editable-table/editable-table-cell', ['exports', 'ember'], function (exports, Ember) {
+define('dummy/templates/editable-table/editable-table-cell', ['exports'], function (exports) {
 
   'use strict';
 
-  exports['default'] = Ember['default'].Handlebars.template(function anonymous(Handlebars,depth0,helpers,partials,data) {
-  this.compilerInfo = [4,'>= 1.0.0'];
-  helpers = this.merge(helpers, Ember['default'].Handlebars.helpers); data = data || {};
-    var buffer = '', stack1, escapeExpression=this.escapeExpression, self=this;
-
-  function program1(depth0,data) {
-    
-    var buffer = '';
-    data.buffer.push("\n    ");
-    data.buffer.push(escapeExpression(helpers.view.call(depth0, "view.innerTextField", {hash:{},hashTypes:{},hashContexts:{},contexts:[depth0],types:["ID"],data:data})));
-    data.buffer.push("\n  ");
-    return buffer;
-    }
-
-  function program3(depth0,data) {
-    
-    var buffer = '', stack1;
-    data.buffer.push("\n    <span class='content'>");
-    stack1 = helpers._triageMustache.call(depth0, "view.cellContent", {hash:{},hashTypes:{},hashContexts:{},contexts:[depth0],types:["ID"],data:data});
-    if(stack1 || stack1 === 0) { data.buffer.push(stack1); }
-    data.buffer.push("</span>\n  ");
-    return buffer;
-    }
-
-    data.buffer.push("<span class=\"ember-table-content\">\n  ");
-    stack1 = helpers['if'].call(depth0, "view.isEditing", {hash:{},hashTypes:{},hashContexts:{},inverse:self.program(3, program3, data),fn:self.program(1, program1, data),contexts:[depth0],types:["ID"],data:data});
-    if(stack1 || stack1 === 0) { data.buffer.push(stack1); }
-    data.buffer.push("\n</span>");
-    return buffer;
-    
-  });
-
-});
-define('dummy/templates/editable-table/editable-table', ['exports', 'ember'], function (exports, Ember) {
-
-  'use strict';
-
-  exports['default'] = Ember['default'].Handlebars.template(function anonymous(Handlebars,depth0,helpers,partials,data) {
-  this.compilerInfo = [4,'>= 1.0.0'];
-  helpers = this.merge(helpers, Ember['default'].Handlebars.helpers); data = data || {};
-    var buffer = '', helper, options, helperMissing=helpers.helperMissing, escapeExpression=this.escapeExpression;
-
-
-    data.buffer.push(escapeExpression((helper = helpers['ember-table'] || (depth0 && depth0['ember-table']),options={hash:{
-      'hasHeader': (true),
-      'hasFooter': (false),
-      'numFixedColumns': (0),
-      'rowHeight': (30),
-      'columns': ("tableColumns"),
-      'content': ("tableContent")
-    },hashTypes:{'hasHeader': "BOOLEAN",'hasFooter': "BOOLEAN",'numFixedColumns': "INTEGER",'rowHeight': "INTEGER",'columns': "ID",'content': "ID"},hashContexts:{'hasHeader': depth0,'hasFooter': depth0,'numFixedColumns': depth0,'rowHeight': depth0,'columns': depth0,'content': depth0},contexts:[],types:[],data:data},helper ? helper.call(depth0, options) : helperMissing.call(depth0, "ember-table", options))));
+  exports['default'] = Ember.Handlebars.template({"1":function(depth0,helpers,partials,data) {
+    var escapeExpression=this.escapeExpression, buffer = '';
+    data.buffer.push("    ");
+    data.buffer.push(escapeExpression(helpers.view.call(depth0, "view.innerTextField", {"name":"view","hash":{},"hashTypes":{},"hashContexts":{},"types":["ID"],"contexts":[depth0],"data":data})));
     data.buffer.push("\n");
     return buffer;
-    
-  });
+  },"3":function(depth0,helpers,partials,data) {
+    var stack1, buffer = '';
+    data.buffer.push("    <span class='content'>");
+    stack1 = helpers._triageMustache.call(depth0, "view.cellContent", {"name":"_triageMustache","hash":{},"hashTypes":{},"hashContexts":{},"types":["ID"],"contexts":[depth0],"data":data});
+    if (stack1 != null) { data.buffer.push(stack1); }
+    data.buffer.push("</span>\n");
+    return buffer;
+  },"compiler":[6,">= 2.0.0-beta.1"],"main":function(depth0,helpers,partials,data) {
+    var stack1, buffer = '';
+    data.buffer.push("<span class=\"ember-table-content\">\n");
+    stack1 = helpers['if'].call(depth0, "view.isEditing", {"name":"if","hash":{},"hashTypes":{},"hashContexts":{},"fn":this.program(1, data),"inverse":this.program(3, data),"types":["ID"],"contexts":[depth0],"data":data});
+    if (stack1 != null) { data.buffer.push(stack1); }
+    data.buffer.push("</span>");
+    return buffer;
+  },"useData":true});
 
 });
-define('dummy/templates/editable-table/rating-table-cell', ['exports', 'ember'], function (exports, Ember) {
+define('dummy/templates/editable-table/editable-table', ['exports'], function (exports) {
 
   'use strict';
 
-  exports['default'] = Ember['default'].Handlebars.template(function anonymous(Handlebars,depth0,helpers,partials,data) {
-  this.compilerInfo = [4,'>= 1.0.0'];
-  helpers = this.merge(helpers, Ember['default'].Handlebars.helpers); data = data || {};
-    
+  exports['default'] = Ember.Handlebars.template({"compiler":[6,">= 2.0.0-beta.1"],"main":function(depth0,helpers,partials,data) {
+    var helperMissing=helpers.helperMissing, escapeExpression=this.escapeExpression, buffer = '';
+    data.buffer.push(escapeExpression(((helpers['ember-table'] || (depth0 && depth0['ember-table']) || helperMissing).call(depth0, {"name":"ember-table","hash":{
+      'content': ("tableContent"),
+      'columns': ("tableColumns"),
+      'rowHeight': (30),
+      'numFixedColumns': (0),
+      'hasFooter': (false),
+      'hasHeader': (true)
+    },"hashTypes":{'content': "ID",'columns': "ID",'rowHeight': "NUMBER",'numFixedColumns': "NUMBER",'hasFooter': "BOOLEAN",'hasHeader': "BOOLEAN"},"hashContexts":{'content': depth0,'columns': depth0,'rowHeight': depth0,'numFixedColumns': depth0,'hasFooter': depth0,'hasHeader': depth0},"types":[],"contexts":[],"data":data}))));
+    data.buffer.push("\n");
+    return buffer;
+  },"useData":true});
 
+});
+define('dummy/templates/editable-table/rating-table-cell', ['exports'], function (exports) {
 
+  'use strict';
+
+  exports['default'] = Ember.Handlebars.template({"compiler":[6,">= 2.0.0-beta.1"],"main":function(depth0,helpers,partials,data) {
     data.buffer.push("<div class=\"rating\">\n  <span></span><span></span><span></span><span></span><span></span>\n</div>");
-    
-  });
+    },"useData":true});
 
 });
-define('dummy/templates/editable', ['exports', 'ember'], function (exports, Ember) {
+define('dummy/templates/editable', ['exports'], function (exports) {
 
   'use strict';
 
-  exports['default'] = Ember['default'].Handlebars.template(function anonymous(Handlebars,depth0,helpers,partials,data) {
-  this.compilerInfo = [4,'>= 1.0.0'];
-  helpers = this.merge(helpers, Ember['default'].Handlebars.helpers); data = data || {};
-    var buffer = '', helper, options, helperMissing=helpers.helperMissing, escapeExpression=this.escapeExpression;
-
-
+  exports['default'] = Ember.Handlebars.template({"compiler":[6,">= 2.0.0-beta.1"],"main":function(depth0,helpers,partials,data) {
+    var helperMissing=helpers.helperMissing, escapeExpression=this.escapeExpression, buffer = '';
     data.buffer.push("<div class=\"col-md-10 col-md-offset-2 left-border main-content-container\">\n  <h1>Ember Table <small>Editable</small></h1>\n\n  <div class=\"row\">\n    <div class=\"col-md-12\">\n      <div class=\"example-container\">\n        <div class=\"ember-table-example-container\">\n          ");
-    data.buffer.push(escapeExpression((helper = helpers.partial || (depth0 && depth0.partial),options={hash:{},hashTypes:{},hashContexts:{},contexts:[depth0],types:["STRING"],data:data},helper ? helper.call(depth0, "editable-table/editable-table", options) : helperMissing.call(depth0, "partial", "editable-table/editable-table", options))));
+    data.buffer.push(escapeExpression(((helpers.partial || (depth0 && depth0.partial) || helperMissing).call(depth0, "editable-table/editable-table", {"name":"partial","hash":{},"hashTypes":{},"hashContexts":{},"types":["STRING"],"contexts":[depth0],"data":data}))));
     data.buffer.push("\n        </div>\n      </div>\n    </div>\n\n    <div class=\"col-md-12 bumper-30\">\n      <h3>Template</h3>\n      <div class=\"highlight\">\n        <pre class=\"prettyprint lang-html\">{{ember-table\n  hasHeader=true\n  hasFooter=false\n  numFixedColumns=0\n  rowHeight=30\n  columns=tableColumns\n  content=tableContent\n}}\n</pre>\n      </div>\n    </div>\n\n    <div class=\"col-md-12 bumper-30\">\n      <h3>Controller</h3>\n      <div class=\"highlight\">\n        <pre class=\"prettyprint lang-js\">import Ember from &#39;ember&#39;;\nimport ColumnDefinition from &#39;ember-table&#x2F;models&#x2F;column-definition&#39;;\n\nexport default Ember.Controller.extend({\n  tableColumns: Ember.computed(function() {\n    var columnNames = [&#39;open&#39;, &#39;close&#39;];\n    var dateColumn = ColumnDefinition.create({\n      savedWidth: 100,\n      headerCellName: &#39;Date&#39;,\n      tableCellViewClass: &#39;date-picker-table-cell&#39;,\n      getCellContent: function(row) {\n        return row.get(&#39;date&#39;).toString(&#39;yyyy-MM-dd&#39;);\n      },\n      setCellContent: function(row, value) {\n        return row.set(&#39;date&#39;, value);\n      }\n    });\n    var ratingColumn = ColumnDefinition.create({\n      savedWidth: 150,\n      headerCellName: &#39;Analyst Rating&#39;,\n      tableCellViewClass: &#39;rating-table-cell&#39;,\n      contentPath: &#39;rating&#39;,\n      setCellContent: function(row, value) {\n        return row.set(&#39;rating&#39;, value);\n      }\n    });\n    var columns = columnNames.map(function(key) {\n      var name;\n      name = key.charAt(0).toUpperCase() + key.slice(1);\n      return ColumnDefinition.create({\n        savedWidth: 100,\n        headerCellName: name,\n        tableCellViewClass: &#39;editable-table-cell&#39;,\n        getCellContent: function(row) {\n          return row.get(key).toFixed(2);\n        },\n        setCellContent: function(row, value) {\n          return row.set(key, +value);\n        }\n      });\n    });\n    columns.unshift(ratingColumn);\n    columns.unshift(dateColumn);\n    return columns;\n  }),\n\n  tableContent: Ember.computed(function() {\n    var content = [];\n    var date;\n    for (var i = 0; i &lt; 100; i++) {\n      date = new Date();\n      date.setDate(date.getDate() + i);\n      content.pushObject({\n        index: i,\n        date: date,\n        open: Math.random() * 100 - 50,\n        close: Math.random() * 100 - 50,\n        rating: Math.round(Math.random() * 4)\n      });\n    }\n    return content;\n  })\n});\n</pre>\n      </div>\n    </div>\n\n    <div class=\"col-md-12 bumper-30\">\n      <h3>views/editable_table_cell.js</h3>\n      <div class=\"highlight\">\n        <pre class=\"prettyprint lang-js\">import Ember from &#39;ember&#39;;\nimport TableCell from &#39;ember-table&#x2F;views&#x2F;table-cell&#39;;\n\nexport default TableCell.extend({\n  className: &#39;editable-table-cell&#39;,\n  templateName: &#39;editable-table&#x2F;editable-table-cell&#39;,\n  isEditing: false,\n  type: &#39;text&#39;,\n\n  innerTextField: Ember.TextField.extend({\n    typeBinding: &#39;parentView.type&#39;,\n    valueBinding: &#39;parentView.cellContent&#39;,\n    didInsertElement: function() {\n      this.$().focus();\n      &#x2F;&#x2F; TODO(azirbel): Call this._super()\n    },\n    focusOut: function() {\n      this.set(&#39;parentView.isEditing&#39;, false);\n    }\n  }),\n\n  onRowContentDidChange: Ember.observer(function() {\n    this.set(&#39;isEditing&#39;, false);\n  }, &#39;row.content&#39;),\n\n  click: function(event) {\n    this.set(&#39;isEditing&#39;, true);\n    event.stopPropagation();\n  }\n});\n</pre>\n      </div>\n    </div>\n\n    <div class=\"col-md-12 bumper-30\">\n      <h3>templates/editable-table/editable_table_cell.hbs</h3>\n      <div class=\"highlight\">\n        <pre class=\"prettyprint lang-html\">&lt;span class=&quot;ember-table-content&quot;&gt;\n  {{#if view.isEditing}}\n    {{view view.innerTextField}}\n  {{else}}\n    &lt;span class=&#39;content&#39;&gt;{{view.cellContent}}&lt;&#x2F;span&gt;\n  {{&#x2F;if}}\n&lt;&#x2F;span&gt;</pre>\n      </div>\n    </div>\n\n    <div class=\"col-md-12 bumper-30\">\n      <h3>templates/editable-table/rating_table_cell.hbs</h3>\n      <div class=\"highlight\">\n        <pre class=\"prettyprint lang-html\">&lt;div class=&quot;rating&quot;&gt;\n  &lt;span&gt;&lt;&#x2F;span&gt;&lt;span&gt;&lt;&#x2F;span&gt;&lt;span&gt;&lt;&#x2F;span&gt;&lt;span&gt;&lt;&#x2F;span&gt;&lt;span&gt;&lt;&#x2F;span&gt;\n&lt;&#x2F;div&gt;</pre>\n      </div>\n    </div>\n  </div>\n</div>\n");
     return buffer;
-    
-  });
+  },"useData":true});
 
 });
-define('dummy/templates/empty-cell', ['exports', 'ember'], function (exports, Ember) {
+define('dummy/templates/empty-cell', ['exports'], function (exports) {
 
   'use strict';
 
-  exports['default'] = Ember['default'].Handlebars.template(function anonymous(Handlebars,depth0,helpers,partials,data) {
-  this.compilerInfo = [4,'>= 1.0.0'];
-  helpers = this.merge(helpers, Ember['default'].Handlebars.helpers); data = data || {};
-    var buffer = '';
-
-
-    return buffer;
-    
-  });
+  exports['default'] = Ember.Handlebars.template({"compiler":[6,">= 2.0.0-beta.1"],"main":function(depth0,helpers,partials,data) {
+    return "";
+  },"useData":true});
 
 });
-define('dummy/templates/financial-table/financial-table-cell', ['exports', 'ember'], function (exports, Ember) {
+define('dummy/templates/financial-table/financial-table-cell', ['exports'], function (exports) {
 
   'use strict';
 
-  exports['default'] = Ember['default'].Handlebars.template(function anonymous(Handlebars,depth0,helpers,partials,data) {
-  this.compilerInfo = [4,'>= 1.0.0'];
-  helpers = this.merge(helpers, Ember['default'].Handlebars.helpers); data = data || {};
-    var buffer = '', stack1;
-
-
+  exports['default'] = Ember.Handlebars.template({"compiler":[6,">= 2.0.0-beta.1"],"main":function(depth0,helpers,partials,data) {
+    var stack1, buffer = '';
     data.buffer.push("<div class=\"ember-table-cell-container\">\n  <span class=\"ember-table-content\">\n    ");
-    stack1 = helpers._triageMustache.call(depth0, "view.cellContent", {hash:{},hashTypes:{},hashContexts:{},contexts:[depth0],types:["ID"],data:data});
-    if(stack1 || stack1 === 0) { data.buffer.push(stack1); }
+    stack1 = helpers._triageMustache.call(depth0, "view.cellContent", {"name":"_triageMustache","hash":{},"hashTypes":{},"hashContexts":{},"types":["ID"],"contexts":[depth0],"data":data});
+    if (stack1 != null) { data.buffer.push(stack1); }
     data.buffer.push("\n  </span>\n</div>");
     return buffer;
-    
-  });
+  },"useData":true});
 
 });
-define('dummy/templates/financial-table/financial-table-header-cell', ['exports', 'ember'], function (exports, Ember) {
+define('dummy/templates/financial-table/financial-table-header-cell', ['exports'], function (exports) {
 
   'use strict';
 
-  exports['default'] = Ember['default'].Handlebars.template(function anonymous(Handlebars,depth0,helpers,partials,data) {
-  this.compilerInfo = [4,'>= 1.0.0'];
-  helpers = this.merge(helpers, Ember['default'].Handlebars.helpers); data = data || {};
-    var buffer = '', stack1;
-
-
+  exports['default'] = Ember.Handlebars.template({"compiler":[6,">= 2.0.0-beta.1"],"main":function(depth0,helpers,partials,data) {
+    var stack1, buffer = '';
     data.buffer.push("<div class=\"ember-table-cell-container\">\n  <div class=\"ember-table-header-content-container\">\n    <span class=\"ember-table-content\">\n      ");
-    stack1 = helpers._triageMustache.call(depth0, "view.content.headerCellName", {hash:{},hashTypes:{},hashContexts:{},contexts:[depth0],types:["ID"],data:data});
-    if(stack1 || stack1 === 0) { data.buffer.push(stack1); }
+    stack1 = helpers._triageMustache.call(depth0, "view.content.headerCellName", {"name":"_triageMustache","hash":{},"hashTypes":{},"hashContexts":{},"types":["ID"],"contexts":[depth0],"data":data});
+    if (stack1 != null) { data.buffer.push(stack1); }
     data.buffer.push("\n    </span>\n  </div>\n</div>");
     return buffer;
-    
-  });
+  },"useData":true});
 
 });
-define('dummy/templates/financial-table/financial-table-header-tree-cell', ['exports', 'ember'], function (exports, Ember) {
+define('dummy/templates/financial-table/financial-table-header-tree-cell', ['exports'], function (exports) {
 
   'use strict';
 
-  exports['default'] = Ember['default'].Handlebars.template(function anonymous(Handlebars,depth0,helpers,partials,data) {
-  this.compilerInfo = [4,'>= 1.0.0'];
-  helpers = this.merge(helpers, Ember['default'].Handlebars.helpers); data = data || {};
-    var buffer = '', stack1, helper, options, escapeExpression=this.escapeExpression, helperMissing=helpers.helperMissing;
-
-
+  exports['default'] = Ember.Handlebars.template({"compiler":[6,">= 2.0.0-beta.1"],"main":function(depth0,helpers,partials,data) {
+    var stack1, escapeExpression=this.escapeExpression, helperMissing=helpers.helperMissing, buffer = '';
     data.buffer.push("<div class=\"ember-table-cell-container\">\n  <span ");
-    data.buffer.push(escapeExpression(helpers['bind-attr'].call(depth0, {hash:{
+    data.buffer.push(escapeExpression(helpers['bind-attr'].call(depth0, {"name":"bind-attr","hash":{
       'class': (":ember-table-toggle-span :ember-table-toggle\n      isCollapsed:ember-table-expand:ember-table-collapse")
-    },hashTypes:{'class': "STRING"},hashContexts:{'class': depth0},contexts:[],types:[],data:data})));
+    },"hashTypes":{'class': "STRING"},"hashContexts":{'class': depth0},"types":[],"contexts":[],"data":data})));
     data.buffer.push("\n      ");
-    data.buffer.push(escapeExpression(helpers.action.call(depth0, "toggleTableCollapse", {hash:{},hashTypes:{},hashContexts:{},contexts:[depth0],types:["STRING"],data:data})));
+    data.buffer.push(escapeExpression(helpers.action.call(depth0, "toggleTableCollapse", {"name":"action","hash":{},"hashTypes":{},"hashContexts":{},"types":["STRING"],"contexts":[depth0],"data":data})));
     data.buffer.push(">\n    ");
-    data.buffer.push(escapeExpression((helper = helpers['fa-icon'] || (depth0 && depth0['fa-icon']),options={hash:{
+    data.buffer.push(escapeExpression(((helpers['fa-icon'] || (depth0 && depth0['fa-icon']) || helperMissing).call(depth0, "caret-down", {"name":"fa-icon","hash":{
       'classNames': ("ember-table-toggle-icon")
-    },hashTypes:{'classNames': "STRING"},hashContexts:{'classNames': depth0},contexts:[depth0],types:["STRING"],data:data},helper ? helper.call(depth0, "caret-down", options) : helperMissing.call(depth0, "fa-icon", "caret-down", options))));
+    },"hashTypes":{'classNames': "STRING"},"hashContexts":{'classNames': depth0},"types":["STRING"],"contexts":[depth0],"data":data}))));
     data.buffer.push("\n  </span>\n  <div class=\"ember-table-header-content-container\">\n    <span class=\"ember-table-content\">\n      ");
-    stack1 = helpers._triageMustache.call(depth0, "view.column.headerCellName", {hash:{},hashTypes:{},hashContexts:{},contexts:[depth0],types:["ID"],data:data});
-    if(stack1 || stack1 === 0) { data.buffer.push(stack1); }
+    stack1 = helpers._triageMustache.call(depth0, "view.column.headerCellName", {"name":"_triageMustache","hash":{},"hashTypes":{},"hashContexts":{},"types":["ID"],"contexts":[depth0],"data":data});
+    if (stack1 != null) { data.buffer.push(stack1); }
     data.buffer.push("\n    </span>\n  </div>\n</div>\n");
     return buffer;
-    
-  });
+  },"useData":true});
 
 });
-define('dummy/templates/financial-table/financial-table-tree-cell', ['exports', 'ember'], function (exports, Ember) {
+define('dummy/templates/financial-table/financial-table-tree-cell', ['exports'], function (exports) {
 
   'use strict';
 
-  exports['default'] = Ember['default'].Handlebars.template(function anonymous(Handlebars,depth0,helpers,partials,data) {
-  this.compilerInfo = [4,'>= 1.0.0'];
-  helpers = this.merge(helpers, Ember['default'].Handlebars.helpers); data = data || {};
-    var buffer = '', stack1, helper, options, escapeExpression=this.escapeExpression, helperMissing=helpers.helperMissing;
-
-
+  exports['default'] = Ember.Handlebars.template({"compiler":[6,">= 2.0.0-beta.1"],"main":function(depth0,helpers,partials,data) {
+    var stack1, escapeExpression=this.escapeExpression, helperMissing=helpers.helperMissing, buffer = '';
     data.buffer.push("<div class=\"ember-table-cell-container\" ");
-    data.buffer.push(escapeExpression(helpers['bind-attr'].call(depth0, {hash:{
+    data.buffer.push(escapeExpression(helpers['bind-attr'].call(depth0, {"name":"bind-attr","hash":{
       'style': ("view.paddingStyle")
-    },hashTypes:{'style': "STRING"},hashContexts:{'style': depth0},contexts:[],types:[],data:data})));
+    },"hashTypes":{'style': "STRING"},"hashContexts":{'style': depth0},"types":[],"contexts":[],"data":data})));
     data.buffer.push(">\n  <span ");
-    data.buffer.push(escapeExpression(helpers['bind-attr'].call(depth0, {hash:{
+    data.buffer.push(escapeExpression(helpers['bind-attr'].call(depth0, {"name":"bind-attr","hash":{
       'class': (":ember-table-toggle-span view.row.isLeaf::ember-table-toggle\n    view.row.isCollapsed:ember-table-expand:ember-table-collapse")
-    },hashTypes:{'class': "STRING"},hashContexts:{'class': depth0},contexts:[],types:[],data:data})));
+    },"hashTypes":{'class': "STRING"},"hashContexts":{'class': depth0},"types":[],"contexts":[],"data":data})));
     data.buffer.push("\n    ");
-    data.buffer.push(escapeExpression(helpers.action.call(depth0, "toggleCollapse", "view.row", {hash:{},hashTypes:{},hashContexts:{},contexts:[depth0,depth0],types:["STRING","ID"],data:data})));
+    data.buffer.push(escapeExpression(helpers.action.call(depth0, "toggleCollapse", "view.row", {"name":"action","hash":{},"hashTypes":{},"hashContexts":{},"types":["STRING","ID"],"contexts":[depth0,depth0],"data":data})));
     data.buffer.push(">\n    ");
-    data.buffer.push(escapeExpression((helper = helpers['fa-icon'] || (depth0 && depth0['fa-icon']),options={hash:{
+    data.buffer.push(escapeExpression(((helpers['fa-icon'] || (depth0 && depth0['fa-icon']) || helperMissing).call(depth0, "caret-down", {"name":"fa-icon","hash":{
       'classNames': ("ember-table-toggle-icon")
-    },hashTypes:{'classNames': "STRING"},hashContexts:{'classNames': depth0},contexts:[depth0],types:["STRING"],data:data},helper ? helper.call(depth0, "caret-down", options) : helperMissing.call(depth0, "fa-icon", "caret-down", options))));
+    },"hashTypes":{'classNames': "STRING"},"hashContexts":{'classNames': depth0},"types":["STRING"],"contexts":[depth0],"data":data}))));
     data.buffer.push("\n  </span>\n  <span class=\"ember-table-content\">\n    ");
-    stack1 = helpers._triageMustache.call(depth0, "view.cellContent", {hash:{},hashTypes:{},hashContexts:{},contexts:[depth0],types:["ID"],data:data});
-    if(stack1 || stack1 === 0) { data.buffer.push(stack1); }
+    stack1 = helpers._triageMustache.call(depth0, "view.cellContent", {"name":"_triageMustache","hash":{},"hashTypes":{},"hashContexts":{},"types":["ID"],"contexts":[depth0],"data":data});
+    if (stack1 != null) { data.buffer.push(stack1); }
     data.buffer.push("\n  </span>\n</div>\n");
     return buffer;
-    
-  });
+  },"useData":true});
 
 });
-define('dummy/templates/financial-table/financial-table', ['exports', 'ember'], function (exports, Ember) {
+define('dummy/templates/financial-table/financial-table', ['exports'], function (exports) {
 
   'use strict';
 
-  exports['default'] = Ember['default'].Handlebars.template(function anonymous(Handlebars,depth0,helpers,partials,data) {
-  this.compilerInfo = [4,'>= 1.0.0'];
-  helpers = this.merge(helpers, Ember['default'].Handlebars.helpers); data = data || {};
-    var buffer = '', helper, options, helperMissing=helpers.helperMissing, escapeExpression=this.escapeExpression;
-
-
-    data.buffer.push(escapeExpression((helper = helpers['financial-table'] || (depth0 && depth0['financial-table']),options={hash:{
+  exports['default'] = Ember.Handlebars.template({"compiler":[6,">= 2.0.0-beta.1"],"main":function(depth0,helpers,partials,data) {
+    var helperMissing=helpers.helperMissing, escapeExpression=this.escapeExpression, buffer = '';
+    data.buffer.push(escapeExpression(((helpers['financial-table'] || (depth0 && depth0['financial-table']) || helperMissing).call(depth0, {"name":"financial-table","hash":{
       'data': ("data")
-    },hashTypes:{'data': "ID"},hashContexts:{'data': depth0},contexts:[],types:[],data:data},helper ? helper.call(depth0, options) : helperMissing.call(depth0, "financial-table", options))));
+    },"hashTypes":{'data': "ID"},"hashContexts":{'data': depth0},"types":[],"contexts":[],"data":data}))));
     data.buffer.push("\n");
     return buffer;
-    
-  });
+  },"useData":true});
 
 });
-define('dummy/templates/financial', ['exports', 'ember'], function (exports, Ember) {
+define('dummy/templates/financial', ['exports'], function (exports) {
 
   'use strict';
 
-  exports['default'] = Ember['default'].Handlebars.template(function anonymous(Handlebars,depth0,helpers,partials,data) {
-  this.compilerInfo = [4,'>= 1.0.0'];
-  helpers = this.merge(helpers, Ember['default'].Handlebars.helpers); data = data || {};
-    var buffer = '', helper, options, helperMissing=helpers.helperMissing, escapeExpression=this.escapeExpression;
-
-
+  exports['default'] = Ember.Handlebars.template({"compiler":[6,">= 2.0.0-beta.1"],"main":function(depth0,helpers,partials,data) {
+    var helperMissing=helpers.helperMissing, escapeExpression=this.escapeExpression, buffer = '';
     data.buffer.push("<div class=\"col-md-10 col-md-offset-2 left-border main-content-container\">\n  <h1>Ember Table <small>Financial Table</small></h1>\n\n  <div class=\"row\">\n    <div class=\"col-md-12\">\n      <div class=\"example-container\">\n        <div class=\"ember-table-example-container ember-table-financial\">\n          ");
-    data.buffer.push(escapeExpression((helper = helpers.partial || (depth0 && depth0.partial),options={hash:{},hashTypes:{},hashContexts:{},contexts:[depth0],types:["STRING"],data:data},helper ? helper.call(depth0, "financial-table/financial-table", options) : helperMissing.call(depth0, "partial", "financial-table/financial-table", options))));
+    data.buffer.push(escapeExpression(((helpers.partial || (depth0 && depth0.partial) || helperMissing).call(depth0, "financial-table/financial-table", {"name":"partial","hash":{},"hashTypes":{},"hashContexts":{},"types":["STRING"],"contexts":[depth0],"data":data}))));
     data.buffer.push("\n        </div>\n      </div>\n    </div>\n\n    <div class=\"col-md-12 bumper-30\">\n      <h3>Template</h3>\n      <div class=\"highlight\">\n        <pre class=\"prettyprint lang-html\">{{financial-table\n  data=data\n}}\n</pre>\n      </div>\n    </div>\n\n    <div class=\"col-md-12 bumper-30\">\n      <h3>Controller</h3>\n      <div class=\"highlight\">\n        <pre class=\"prettyprint lang-js\">import Ember from &#39;ember&#39;;\nimport Treedata from &#39;..&#x2F;models&#x2F;treedata&#39;;\n\nexport default Ember.Controller.extend({\n  data: Ember.computed(function() {\n    return Treedata;\n  })\n});\n</pre>\n      </div>\n    </div>\n\n    <div class=\"col-md-12 bumper-30\">\n      <h3>components/financial-table.js</h3>\n      <div class=\"highlight\">\n        <pre class=\"prettyprint lang-js\">import Ember from &#39;ember&#39;;\nimport TableComponent from &#39;ember-table&#x2F;components&#x2F;ember-table&#39;;\nimport ColumnDefinition from &#39;ember-table&#x2F;models&#x2F;column-definition&#39;;\nimport FinancialTableTreeRow from &#39;..&#x2F;views&#x2F;financial-table-tree-row&#39;;\nimport NumberFormatHelpers from &#39;..&#x2F;utils&#x2F;number-format&#39;;\n\nexport default TableComponent.extend({\n  &#x2F;&#x2F; Overriding default properties\n  layoutName: &#39;components&#x2F;ember-table&#39;,\n  numFixedColumns: 1,\n  isCollapsed: false,\n  isHeaderHeightResizable: true,\n  rowHeight: 30,\n  hasHeader: true,\n  hasFooter: true,\n  headerHeight: 70,\n\n  &#x2F;&#x2F; Custom properties\n  sortAscending: false,\n  sortColumn: null,\n\n  &#x2F;&#x2F;&#x2F;&#x2F;&#x2F;&#x2F;&#x2F;&#x2F;&#x2F;&#x2F;&#x2F;&#x2F;&#x2F;&#x2F;&#x2F;&#x2F;&#x2F;&#x2F;&#x2F;&#x2F;&#x2F;&#x2F;&#x2F;&#x2F;&#x2F;&#x2F;&#x2F;&#x2F;&#x2F;&#x2F;&#x2F;&#x2F;&#x2F;&#x2F;&#x2F;&#x2F;&#x2F;&#x2F;&#x2F;&#x2F;&#x2F;&#x2F;&#x2F;&#x2F;&#x2F;&#x2F;&#x2F;&#x2F;&#x2F;&#x2F;&#x2F;&#x2F;&#x2F;&#x2F;&#x2F;&#x2F;&#x2F;&#x2F;&#x2F;&#x2F;&#x2F;&#x2F;&#x2F;&#x2F;&#x2F;&#x2F;&#x2F;&#x2F;&#x2F;&#x2F;&#x2F;&#x2F;&#x2F;&#x2F;&#x2F;&#x2F;&#x2F;\n  &#x2F;&#x2F; Data conversions\n  &#x2F;&#x2F;&#x2F;&#x2F;&#x2F;&#x2F;&#x2F;&#x2F;&#x2F;&#x2F;&#x2F;&#x2F;&#x2F;&#x2F;&#x2F;&#x2F;&#x2F;&#x2F;&#x2F;&#x2F;&#x2F;&#x2F;&#x2F;&#x2F;&#x2F;&#x2F;&#x2F;&#x2F;&#x2F;&#x2F;&#x2F;&#x2F;&#x2F;&#x2F;&#x2F;&#x2F;&#x2F;&#x2F;&#x2F;&#x2F;&#x2F;&#x2F;&#x2F;&#x2F;&#x2F;&#x2F;&#x2F;&#x2F;&#x2F;&#x2F;&#x2F;&#x2F;&#x2F;&#x2F;&#x2F;&#x2F;&#x2F;&#x2F;&#x2F;&#x2F;&#x2F;&#x2F;&#x2F;&#x2F;&#x2F;&#x2F;&#x2F;&#x2F;&#x2F;&#x2F;&#x2F;&#x2F;&#x2F;&#x2F;&#x2F;&#x2F;&#x2F;\n\n  data: null,\n\n  columns: Ember.computed(function() {\n    var data = this.get(&#39;data&#39;);\n    if (!data) {\n      return;\n    }\n    var names = this.get(&#39;data.value_factors&#39;).getEach(&#39;display_name&#39;);\n    var columns = names.map(function(name, index) {\n      return ColumnDefinition.create({\n        index: index,\n        headerCellName: name,\n        headerCellView: &#39;financial-table-header-cell&#39;,\n        tableCellView: &#39;financial-table-cell&#39;,\n        getCellContent: function(row) {\n          var object = row.get(&#39;values&#39;)[this.get(&#39;index&#39;)];\n          if (object.type === &#39;money&#39;) {\n            return NumberFormatHelpers.toCurrency(object.value);\n          }\n          if (object.type === &#39;percent&#39;) {\n            return NumberFormatHelpers.toPercent(object.value);\n          }\n          return &#39;-&#39;;\n        }\n      });\n    });\n    columns.unshiftObject(this.get(&#39;groupingColumn&#39;));\n    return columns;\n  }).property(&#39;data.valueFactors.@each&#39;, &#39;groupingColumn&#39;),\n\n  groupingColumn: Ember.computed(function() {\n    var groupingFactors = this.get(&#39;data.grouping_factors&#39;);\n    var name = groupingFactors.getEach(&#39;display_name&#39;).join(&#39; ▸ &#39;);\n    return ColumnDefinition.create({\n      headerCellName: name,\n      savedWidth: 400,\n      isTreeColumn: true,\n      isSortable: false,\n      textAlign: &#39;text-align-left&#39;,\n      headerCellView: &#39;financial-table-header-tree-cell&#39;,\n      tableCellView: &#39;financial-table-tree-cell&#39;,\n      contentPath: &#39;group_value&#39;\n    });\n  }).property(&#39;data.grouping_factors.@each&#39;),\n\n  root: Ember.computed(function() {\n    var data = this.get(&#39;data&#39;);\n    if (!data) {\n      return;\n    }\n    return this.createTree(null, data.root);\n  }).property(&#39;data&#39;, &#39;sortAscending&#39;, &#39;sortColumn&#39;),\n\n  rows: Ember.computed(function() {\n    var root = this.get(&#39;root&#39;);\n    if (!root) {\n      return Ember.A();\n    }\n    var rows = this.flattenTree(null, root, Ember.A());\n    this.computeStyles(null, root);\n    var maxGroupingLevel = Math.max.apply(rows.getEach(&#39;groupingLevel&#39;));\n    rows.forEach(function(row) {\n      return row.computeRowStyle(maxGroupingLevel);\n    });\n    return rows;\n  }).property(&#39;root&#39;),\n\n  &#x2F;&#x2F; OPTIMIZATION HACK\n  bodyContent: Ember.computed(function() {\n    var rows = this.get(&#39;rows&#39;);\n    if (!rows) {\n      return Ember.A();\n    }\n    rows = rows.slice(1, rows.get(&#39;length&#39;));\n    return rows.filterProperty(&#39;isShowing&#39;);\n  }).property(&#39;rows&#39;),\n\n  footerContent: Ember.computed(function() {\n    var rows = this.get(&#39;rows&#39;);\n    if (!rows) {\n      return Ember.A();\n    }\n    return rows.slice(0, 1);\n  }).property(&#39;rows&#39;),\n\n  orderBy: function(item1, item2) {\n    var sortColumn = this.get(&#39;sortColumn&#39;);\n    var sortAscending = this.get(&#39;sortAscending&#39;);\n    if (!sortColumn) {\n      return 1;\n    }\n    var value1 = sortColumn.getCellContent(item1.get(&#39;content&#39;));\n    var value2 = sortColumn.getCellContent(item2.get(&#39;content&#39;));\n    var result = Ember.compare(value1, value2);\n    if (sortAscending) {\n      return result;\n    } else {\n      return -result;\n    }\n  },\n\n  createTree: function(parent, node) {\n    var row = FinancialTableTreeRow.create({ parentController: this });\n    &#x2F;&#x2F; TODO(azirbel): better map function and _this use\n    var children = (node.children || []).map((function(_this) {\n      return function(child) {\n        return _this.createTree(row, child);\n      };\n    })(this));\n    &#x2F;&#x2F; TODO(Peter): Hack... only collapse table if it should collapseByDefault\n    &#x2F;&#x2F; and it is not the root. Currently the total row is the root, and if it\n    &#x2F;&#x2F; is collapse, it causes nothing to show in the table and there is no way\n    &#x2F;&#x2F; to get expand it.\n    row.setProperties({\n      isRoot: !parent,\n      isLeaf: Ember.isEmpty(children),\n      content: node,\n      parent: parent,\n      children: children,\n      groupName: node.group_name,\n      isCollapsed: false\n    });\n    return row;\n  },\n\n  &#x2F;&#x2F; TODO(azirbel): Don&#39;t use the word &#39;parent&#39;\n  flattenTree: function(parent, node, rows) {\n    rows.pushObject(node);\n    (node.children || []).forEach((function(_this) {\n      return function(child) {\n        return _this.flattenTree(node, child, rows);\n      };\n    })(this));\n    return rows;\n  },\n\n  computeStyles: function(parent, node) {\n    node.computeStyles(parent);\n    node.get(&#39;children&#39;).forEach((function(_this) {\n      return function(child) {\n        _this.computeStyles(node, child);\n      };\n    })(this));\n  },\n\n  actions: {\n    toggleTableCollapse: function() {\n      var isCollapsed = this.toggleProperty(&#39;isCollapsed&#39;);\n      var children = this.get(&#39;root.children&#39;);\n      if (!(children &amp;&amp; children.get(&#39;length&#39;) &gt; 0)) {\n        return;\n      }\n      children.forEach(function(child) {\n        return child.recursiveCollapse(isCollapsed);\n      });\n      return this.notifyPropertyChange(&#39;rows&#39;);\n    },\n\n    toggleCollapse: function(row) {\n      row.toggleProperty(&#39;isCollapsed&#39;);\n      Ember.run.next(this, function() {\n        this.notifyPropertyChange(&#39;rows&#39;);\n      });\n    }\n  },\n});\n</pre>\n      </div>\n    </div>\n\n    <div class=\"col-md-12 bumper-30\">\n      <h3>views/financial-table-cell.js</h3>\n      <div class=\"highlight\">\n        <pre class=\"prettyprint lang-js\">import TableCell from &#39;ember-table&#x2F;views&#x2F;table-cell&#39;;\n\nexport default TableCell.extend({\n  templateName: &#39;financial-table&#x2F;financial-table-cell&#39;\n});\n</pre>\n      </div>\n    </div>\n    \n    <div class=\"col-md-12 bumper-30\">\n      <h3>templates/financial-table/financial-table-cell.hbs</h3>\n      <div class=\"highlight\">\n        <pre class=\"prettyprint lang-html\">&lt;div class=&quot;ember-table-cell-container&quot;&gt;\n  &lt;span class=&quot;ember-table-content&quot;&gt;\n    {{view.cellContent}}\n  &lt;&#x2F;span&gt;\n&lt;&#x2F;div&gt;</pre>\n      </div>\n    </div>\n\n    <div class=\"col-md-12 bumper-30\">\n      <h3>views/financial-table-header-cell.js</h3>\n      <div class=\"highlight\">\n        <pre class=\"prettyprint lang-js\">import HeaderCell from &#39;ember-table&#x2F;views&#x2F;header-cell&#39;;\n\nexport default HeaderCell.extend({\n  templateName: &#39;financial-table&#x2F;financial-table-header-cell&#39;\n});\n</pre>\n      </div>\n    </div>\n\n    <div class=\"col-md-12 bumper-30\">\n      <h3>templates/financial-table/financial-table-tree-cell.hbs</h3>\n      <div class=\"highlight\">\n        <pre class=\"prettyprint lang-html\">&lt;div class=&quot;ember-table-cell-container&quot; {{bind-attr style=&quot;view.paddingStyle&quot;}}&gt;\n  &lt;span {{bind-attr class=&quot;:ember-table-toggle-span view.row.isLeaf::ember-table-toggle\n    view.row.isCollapsed:ember-table-expand:ember-table-collapse&quot;}}\n    {{action &#39;toggleCollapse&#39; view.row}}&gt;\n    {{fa-icon &quot;caret-down&quot; classNames=&quot;ember-table-toggle-icon&quot;}}\n  &lt;&#x2F;span&gt;\n  &lt;span class=&quot;ember-table-content&quot;&gt;\n    {{view.cellContent}}\n  &lt;&#x2F;span&gt;\n&lt;&#x2F;div&gt;\n</pre>\n      </div>\n    </div>\n\n    <div class=\"col-md-12 bumper-30\">\n      <h3>views/financial-table-header-tree-cell.js</h3>\n      <div class=\"highlight\">\n        <pre class=\"prettyprint lang-js\">import HeaderCell from &#39;ember-table&#x2F;views&#x2F;header-cell&#39;;\n\nexport default HeaderCell.extend({\n  templateName: &#39;financial-table&#x2F;financial-table-header-tree-cell&#39;,\n  classNames:   &#39;ember-table-table-header-tree-cell&#39;\n});\n</pre>\n      </div>\n    </div>\n\n    <div class=\"col-md-12 bumper-30\">\n      <h3>templates/financial-table/financial-table-header-cell.hbs</h3>\n      <div class=\"highlight\">\n        <pre class=\"prettyprint lang-html\">&lt;div class=&quot;ember-table-cell-container&quot;&gt;\n  &lt;div class=&quot;ember-table-header-content-container&quot;&gt;\n    &lt;span class=&quot;ember-table-content&quot;&gt;\n      {{view.content.headerCellName}}\n    &lt;&#x2F;span&gt;\n  &lt;&#x2F;div&gt;\n&lt;&#x2F;div&gt;</pre>\n      </div>\n    </div>\n\n    <div class=\"col-md-12 bumper-30\">\n      <h3>views/financial-table-tree-cell.js</h3>\n      <div class=\"highlight\">\n        <pre class=\"prettyprint lang-js\">import Ember from &#39;ember&#39;;\nimport TableCell from &#39;ember-table&#x2F;views&#x2F;table-cell&#39;;\n\nexport default TableCell.extend({\n  templateName: &#39;financial-table&#x2F;financial-table-tree-cell&#39;,\n  classNames: &#39;ember-table-table-tree-cell&#39;,\n\n  paddingStyle: Ember.computed(function() {\n    return &#39;padding-left:&#39; + (this.get(&#39;row.indentation&#39;)) + &#39;px;&#39;;\n  }).property(&#39;row.indentation&#39;)\n});\n</pre>\n      </div>\n    </div>\n\n    <div class=\"col-md-12 bumper-30\">\n      <h3>templates/financial-table/financial-table-header-tree-cell.hbs</h3>\n      <div class=\"highlight\">\n        <pre class=\"prettyprint lang-html\">&lt;div class=&quot;ember-table-cell-container&quot;&gt;\n  &lt;span {{bind-attr class=&quot;:ember-table-toggle-span :ember-table-toggle\n      isCollapsed:ember-table-expand:ember-table-collapse&quot;}}\n      {{action &#39;toggleTableCollapse&#39;}}&gt;\n    {{fa-icon &quot;caret-down&quot; classNames=&quot;ember-table-toggle-icon&quot;}}\n  &lt;&#x2F;span&gt;\n  &lt;div class=&quot;ember-table-header-content-container&quot;&gt;\n    &lt;span class=&quot;ember-table-content&quot;&gt;\n      {{view.column.headerCellName}}\n    &lt;&#x2F;span&gt;\n  &lt;&#x2F;div&gt;\n&lt;&#x2F;div&gt;\n</pre>\n      </div>\n    </div>\n\n    <div class=\"col-md-12 bumper-30\">\n      <h3>views/financial-table-tree-row.js</h3>\n      <div class=\"highlight\">\n        <pre class=\"prettyprint lang-js\">import Row from &#39;ember-table&#x2F;controllers&#x2F;row&#39;;\n\nexport default Row.extend({\n  content: null,\n  children: null,\n  parent: null,\n  isRoot: false,\n  isLeaf: false,\n  isCollapsed: false,\n  isShowing: true,\n  indentationSpacing: 20,\n  groupName: null,\n\n  computeStyles: function(parent) {\n    var groupingLevel, indentType, indentation, isShowing, pGroupingLevel, spacing;\n    groupingLevel = 0;\n    indentation = 0;\n    isShowing = true;\n    if (parent) {\n      isShowing = parent.get(&#39;isShowing&#39;) &amp;&amp; !parent.get(&#39;isCollapsed&#39;);\n      pGroupingLevel = parent.get(&#39;groupingLevel&#39;);\n      groupingLevel = pGroupingLevel;\n      if (parent.get(&#39;groupName&#39;) !== this.get(&#39;groupName&#39;)) {\n        groupingLevel += 1;\n      }\n      indentType = groupingLevel === pGroupingLevel ? &#39;half&#39; : &#39;full&#39;;\n      spacing = this.get(&#39;indentationSpacing&#39;);\n      if (!parent.get(&#39;isRoot&#39;)) {\n        indentation = parent.get(&#39;indentation&#39;);\n        indentation += (indentType === &#39;half&#39; ? spacing &#x2F; 2 : spacing);\n      }\n    }\n    this.set(&#39;groupingLevel&#39;, groupingLevel);\n    this.set(&#39;indentation&#39;, indentation);\n    this.set(&#39;isShowing&#39;, isShowing);\n  },\n\n  computeRowStyle: function(maxLevels) {\n    var level;\n    level = this.getFormattingLevel(this.get(&#39;groupingLevel&#39;), maxLevels);\n    this.set(&#39;rowStyle&#39;, &#39;ember-table-row-style-&#39; + level);\n  },\n\n  recursiveCollapse: function(isCollapsed) {\n    this.set(&#39;isCollapsed&#39;, isCollapsed);\n    this.get(&#39;children&#39;).forEach(function(child) {\n      child.recursiveCollapse(isCollapsed);\n    });\n  },\n\n  getFormattingLevel: function(level, maxLevels) {\n    switch (maxLevels) {\n      case 1:\n        return 5;\n      case 2:\n        if (level === 1) {\n          return 2;\n        }\n        return 5;\n      case 3:\n        if (level === 1) {\n          return 1;\n        }\n        if (level === 2) {\n          return 3;\n        }\n        return 5;\n      case 4:\n        if (level === 1) {\n          return 1;\n        }\n        if (level === 2) {\n          return 2;\n        }\n        if (level === 4) {\n          return 4;\n        }\n        return 5;\n      case 5:\n        return level;\n      default:\n        if (level === maxLevels) {\n          return 5;\n        }\n        return Math.min(level, 4);\n    }\n  }\n});\n</pre>\n      </div>\n    </div>\n  </div>\n</div>\n");
     return buffer;
-    
-  });
+  },"useData":true});
 
 });
-define('dummy/templates/footer-table-container', ['exports', 'ember'], function (exports, Ember) {
+define('dummy/templates/footer-table-container', ['exports'], function (exports) {
 
   'use strict';
 
-  exports['default'] = Ember['default'].Handlebars.template(function anonymous(Handlebars,depth0,helpers,partials,data) {
-  this.compilerInfo = [4,'>= 1.0.0'];
-  helpers = this.merge(helpers, Ember['default'].Handlebars.helpers); data = data || {};
-    var buffer = '', stack1, escapeExpression=this.escapeExpression, self=this;
-
-  function program1(depth0,data) {
-    
-    var buffer = '';
-    data.buffer.push("\n    ");
-    data.buffer.push(escapeExpression(helpers.view.call(depth0, "table-block", {hash:{
-      'classNames': ("ember-table-left-table-block"),
-      'content': ("footerContent"),
-      'columns': ("fixedColumns"),
+  exports['default'] = Ember.Handlebars.template({"1":function(depth0,helpers,partials,data) {
+    var escapeExpression=this.escapeExpression, buffer = '';
+    data.buffer.push("    ");
+    data.buffer.push(escapeExpression(helpers.view.call(depth0, "table-block", {"name":"view","hash":{
+      'height': ("footerHeight"),
       'width': ("_fixedBlockWidth"),
-      'height': ("footerHeight")
-    },hashTypes:{'classNames': "STRING",'content': "ID",'columns': "ID",'width': "ID",'height': "ID"},hashContexts:{'classNames': depth0,'content': depth0,'columns': depth0,'width': depth0,'height': depth0},contexts:[depth0],types:["STRING"],data:data})));
-    data.buffer.push("\n  ");
-    return buffer;
-    }
-
-    data.buffer.push("<div class=\"ember-table-table-fixed-wrapper\">\n  ");
-    stack1 = helpers['if'].call(depth0, "numFixedColumns", {hash:{},hashTypes:{},hashContexts:{},inverse:self.noop,fn:self.program(1, program1, data),contexts:[depth0],types:["ID"],data:data});
-    if(stack1 || stack1 === 0) { data.buffer.push(stack1); }
-    data.buffer.push("\n  ");
-    data.buffer.push(escapeExpression(helpers.view.call(depth0, "table-block", {hash:{
-      'classNames': ("ember-table-right-table-block"),
+      'columns': ("fixedColumns"),
       'content': ("footerContent"),
-      'columns': ("tableColumns"),
-      'scrollLeft': ("_tableScrollLeft"),
+      'classNames': ("ember-table-left-table-block")
+    },"hashTypes":{'height': "ID",'width': "ID",'columns': "ID",'content': "ID",'classNames': "STRING"},"hashContexts":{'height': depth0,'width': depth0,'columns': depth0,'content': depth0,'classNames': depth0},"types":["STRING"],"contexts":[depth0],"data":data})));
+    data.buffer.push("\n");
+    return buffer;
+  },"compiler":[6,">= 2.0.0-beta.1"],"main":function(depth0,helpers,partials,data) {
+    var stack1, escapeExpression=this.escapeExpression, buffer = '';
+    data.buffer.push("<div class=\"ember-table-table-fixed-wrapper\">\n");
+    stack1 = helpers['if'].call(depth0, "numFixedColumns", {"name":"if","hash":{},"hashTypes":{},"hashContexts":{},"fn":this.program(1, data),"inverse":this.noop,"types":["ID"],"contexts":[depth0],"data":data});
+    if (stack1 != null) { data.buffer.push(stack1); }
+    data.buffer.push("  ");
+    data.buffer.push(escapeExpression(helpers.view.call(depth0, "table-block", {"name":"view","hash":{
+      'height': ("footerHeight"),
       'width': ("_tableBlockWidth"),
-      'height': ("footerHeight")
-    },hashTypes:{'classNames': "STRING",'content': "ID",'columns': "ID",'scrollLeft': "ID",'width': "ID",'height': "ID"},hashContexts:{'classNames': depth0,'content': depth0,'columns': depth0,'scrollLeft': depth0,'width': depth0,'height': depth0},contexts:[depth0],types:["STRING"],data:data})));
+      'scrollLeft': ("_tableScrollLeft"),
+      'columns': ("tableColumns"),
+      'content': ("footerContent"),
+      'classNames': ("ember-table-right-table-block")
+    },"hashTypes":{'height': "ID",'width': "ID",'scrollLeft': "ID",'columns': "ID",'content': "ID",'classNames': "STRING"},"hashContexts":{'height': depth0,'width': depth0,'scrollLeft': depth0,'columns': depth0,'content': depth0,'classNames': depth0},"types":["STRING"],"contexts":[depth0],"data":data})));
     data.buffer.push("\n</div>\n");
     return buffer;
-    
-  });
+  },"useData":true});
 
 });
-define('dummy/templates/footer', ['exports', 'ember'], function (exports, Ember) {
+define('dummy/templates/footer', ['exports'], function (exports) {
 
   'use strict';
 
-  exports['default'] = Ember['default'].Handlebars.template(function anonymous(Handlebars,depth0,helpers,partials,data) {
-  this.compilerInfo = [4,'>= 1.0.0'];
-  helpers = this.merge(helpers, Ember['default'].Handlebars.helpers); data = data || {};
-    var buffer = '', stack1, helper, options, self=this, helperMissing=helpers.helperMissing;
-
-  function program1(depth0,data) {
-    
-    
+  exports['default'] = Ember.Handlebars.template({"1":function(depth0,helpers,partials,data) {
     data.buffer.push("Overview &amp; Getting Started");
-    }
-
-  function program3(depth0,data) {
-    
-    
+    },"3":function(depth0,helpers,partials,data) {
     data.buffer.push("API &amp; Documentation");
-    }
-
-  function program5(depth0,data) {
-    
-    
+    },"5":function(depth0,helpers,partials,data) {
     data.buffer.push("Migration Guides");
-    }
-
-  function program7(depth0,data) {
-    
-    
+    },"7":function(depth0,helpers,partials,data) {
     data.buffer.push("Community Examples");
-    }
-
-  function program9(depth0,data) {
-    
-    
+    },"9":function(depth0,helpers,partials,data) {
     data.buffer.push("Hello World table");
-    }
-
-  function program11(depth0,data) {
-    
-    
+    },"11":function(depth0,helpers,partials,data) {
     data.buffer.push("AJAX cells");
-    }
-
-  function program13(depth0,data) {
-    
-    
+    },"13":function(depth0,helpers,partials,data) {
     data.buffer.push("Bar cells");
-    }
-
-  function program15(depth0,data) {
-    
-    
+    },"15":function(depth0,helpers,partials,data) {
     data.buffer.push("Dynamic bar cells");
-    }
-
-  function program17(depth0,data) {
-    
-    
+    },"17":function(depth0,helpers,partials,data) {
     data.buffer.push("Tree &amp; financial table");
-    }
-
-  function program19(depth0,data) {
-    
-    
+    },"19":function(depth0,helpers,partials,data) {
     data.buffer.push("Editable cells");
-    }
-
-  function program21(depth0,data) {
-    
-    
+    },"21":function(depth0,helpers,partials,data) {
     data.buffer.push("Sparkline cells");
-    }
-
-  function program23(depth0,data) {
-    
-    
+    },"23":function(depth0,helpers,partials,data) {
     data.buffer.push("Horizon cells");
-    }
-
-  function program25(depth0,data) {
-    
-    
+    },"25":function(depth0,helpers,partials,data) {
     data.buffer.push("Configurable columns");
-    }
-
-  function program27(depth0,data) {
-    
-    
+    },"27":function(depth0,helpers,partials,data) {
     data.buffer.push("License");
-    }
-
-    data.buffer.push("\n<div class=\"footer\">\n  <div class=\"container\">\n    <div class=\"row\">\n      <div class=\"col-md-3\">\n        <ul class=\"list-unstyled\">\n          <li><h6>Ember Table</h6></li>\n          <li>");
-    stack1 = (helper = helpers['link-to'] || (depth0 && depth0['link-to']),options={hash:{},hashTypes:{},hashContexts:{},inverse:self.noop,fn:self.program(1, program1, data),contexts:[depth0],types:["STRING"],data:data},helper ? helper.call(depth0, "overview", options) : helperMissing.call(depth0, "link-to", "overview", options));
-    if(stack1 || stack1 === 0) { data.buffer.push(stack1); }
+    },"compiler":[6,">= 2.0.0-beta.1"],"main":function(depth0,helpers,partials,data) {
+    var stack1, helperMissing=helpers.helperMissing, buffer = '';
+    data.buffer.push("<div class=\"footer\">\n  <div class=\"container\">\n    <div class=\"row\">\n      <div class=\"col-md-3\">\n        <ul class=\"list-unstyled\">\n          <li><h6>Ember Table</h6></li>\n          <li>");
+    stack1 = ((helpers['link-to'] || (depth0 && depth0['link-to']) || helperMissing).call(depth0, "overview", {"name":"link-to","hash":{},"hashTypes":{},"hashContexts":{},"fn":this.program(1, data),"inverse":this.noop,"types":["STRING"],"contexts":[depth0],"data":data}));
+    if (stack1 != null) { data.buffer.push(stack1); }
     data.buffer.push("</li>\n          <li>");
-    stack1 = (helper = helpers['link-to'] || (depth0 && depth0['link-to']),options={hash:{},hashTypes:{},hashContexts:{},inverse:self.noop,fn:self.program(3, program3, data),contexts:[depth0],types:["STRING"],data:data},helper ? helper.call(depth0, "documentation", options) : helperMissing.call(depth0, "link-to", "documentation", options));
-    if(stack1 || stack1 === 0) { data.buffer.push(stack1); }
+    stack1 = ((helpers['link-to'] || (depth0 && depth0['link-to']) || helperMissing).call(depth0, "documentation", {"name":"link-to","hash":{},"hashTypes":{},"hashContexts":{},"fn":this.program(3, data),"inverse":this.noop,"types":["STRING"],"contexts":[depth0],"data":data}));
+    if (stack1 != null) { data.buffer.push(stack1); }
     data.buffer.push("</li>\n          <li>");
-    stack1 = (helper = helpers['link-to'] || (depth0 && depth0['link-to']),options={hash:{},hashTypes:{},hashContexts:{},inverse:self.noop,fn:self.program(5, program5, data),contexts:[depth0],types:["STRING"],data:data},helper ? helper.call(depth0, "migration-guides", options) : helperMissing.call(depth0, "link-to", "migration-guides", options));
-    if(stack1 || stack1 === 0) { data.buffer.push(stack1); }
+    stack1 = ((helpers['link-to'] || (depth0 && depth0['link-to']) || helperMissing).call(depth0, "migration-guides", {"name":"link-to","hash":{},"hashTypes":{},"hashContexts":{},"fn":this.program(5, data),"inverse":this.noop,"types":["STRING"],"contexts":[depth0],"data":data}));
+    if (stack1 != null) { data.buffer.push(stack1); }
     data.buffer.push("</li>\n          <li>");
-    stack1 = (helper = helpers['link-to'] || (depth0 && depth0['link-to']),options={hash:{},hashTypes:{},hashContexts:{},inverse:self.noop,fn:self.program(7, program7, data),contexts:[depth0],types:["STRING"],data:data},helper ? helper.call(depth0, "community-examples", options) : helperMissing.call(depth0, "link-to", "community-examples", options));
-    if(stack1 || stack1 === 0) { data.buffer.push(stack1); }
+    stack1 = ((helpers['link-to'] || (depth0 && depth0['link-to']) || helperMissing).call(depth0, "community-examples", {"name":"link-to","hash":{},"hashTypes":{},"hashContexts":{},"fn":this.program(7, data),"inverse":this.noop,"types":["STRING"],"contexts":[depth0],"data":data}));
+    if (stack1 != null) { data.buffer.push(stack1); }
     data.buffer.push("</li>\n        </ul>\n      </div>\n      <div class=\"col-md-3\">\n        <ul class=\"list-unstyled\">\n          <li><h6>Examples</h6></li>\n          <li>");
-    stack1 = (helper = helpers['link-to'] || (depth0 && depth0['link-to']),options={hash:{},hashTypes:{},hashContexts:{},inverse:self.noop,fn:self.program(9, program9, data),contexts:[depth0],types:["STRING"],data:data},helper ? helper.call(depth0, "simple", options) : helperMissing.call(depth0, "link-to", "simple", options));
-    if(stack1 || stack1 === 0) { data.buffer.push(stack1); }
+    stack1 = ((helpers['link-to'] || (depth0 && depth0['link-to']) || helperMissing).call(depth0, "simple", {"name":"link-to","hash":{},"hashTypes":{},"hashContexts":{},"fn":this.program(9, data),"inverse":this.noop,"types":["STRING"],"contexts":[depth0],"data":data}));
+    if (stack1 != null) { data.buffer.push(stack1); }
     data.buffer.push("</li>\n          <li>");
-    stack1 = (helper = helpers['link-to'] || (depth0 && depth0['link-to']),options={hash:{},hashTypes:{},hashContexts:{},inverse:self.noop,fn:self.program(11, program11, data),contexts:[depth0],types:["STRING"],data:data},helper ? helper.call(depth0, "ajax", options) : helperMissing.call(depth0, "link-to", "ajax", options));
-    if(stack1 || stack1 === 0) { data.buffer.push(stack1); }
+    stack1 = ((helpers['link-to'] || (depth0 && depth0['link-to']) || helperMissing).call(depth0, "ajax", {"name":"link-to","hash":{},"hashTypes":{},"hashContexts":{},"fn":this.program(11, data),"inverse":this.noop,"types":["STRING"],"contexts":[depth0],"data":data}));
+    if (stack1 != null) { data.buffer.push(stack1); }
     data.buffer.push("</li>\n          <li>");
-    stack1 = (helper = helpers['link-to'] || (depth0 && depth0['link-to']),options={hash:{},hashTypes:{},hashContexts:{},inverse:self.noop,fn:self.program(13, program13, data),contexts:[depth0],types:["STRING"],data:data},helper ? helper.call(depth0, "bars", options) : helperMissing.call(depth0, "link-to", "bars", options));
-    if(stack1 || stack1 === 0) { data.buffer.push(stack1); }
+    stack1 = ((helpers['link-to'] || (depth0 && depth0['link-to']) || helperMissing).call(depth0, "bars", {"name":"link-to","hash":{},"hashTypes":{},"hashContexts":{},"fn":this.program(13, data),"inverse":this.noop,"types":["STRING"],"contexts":[depth0],"data":data}));
+    if (stack1 != null) { data.buffer.push(stack1); }
     data.buffer.push("</li>\n          <li>");
-    stack1 = (helper = helpers['link-to'] || (depth0 && depth0['link-to']),options={hash:{},hashTypes:{},hashContexts:{},inverse:self.noop,fn:self.program(15, program15, data),contexts:[depth0],types:["STRING"],data:data},helper ? helper.call(depth0, "dynamic-bars", options) : helperMissing.call(depth0, "link-to", "dynamic-bars", options));
-    if(stack1 || stack1 === 0) { data.buffer.push(stack1); }
+    stack1 = ((helpers['link-to'] || (depth0 && depth0['link-to']) || helperMissing).call(depth0, "dynamic-bars", {"name":"link-to","hash":{},"hashTypes":{},"hashContexts":{},"fn":this.program(15, data),"inverse":this.noop,"types":["STRING"],"contexts":[depth0],"data":data}));
+    if (stack1 != null) { data.buffer.push(stack1); }
     data.buffer.push("</li>\n          <li>");
-    stack1 = (helper = helpers['link-to'] || (depth0 && depth0['link-to']),options={hash:{},hashTypes:{},hashContexts:{},inverse:self.noop,fn:self.program(17, program17, data),contexts:[depth0],types:["STRING"],data:data},helper ? helper.call(depth0, "financial", options) : helperMissing.call(depth0, "link-to", "financial", options));
-    if(stack1 || stack1 === 0) { data.buffer.push(stack1); }
+    stack1 = ((helpers['link-to'] || (depth0 && depth0['link-to']) || helperMissing).call(depth0, "financial", {"name":"link-to","hash":{},"hashTypes":{},"hashContexts":{},"fn":this.program(17, data),"inverse":this.noop,"types":["STRING"],"contexts":[depth0],"data":data}));
+    if (stack1 != null) { data.buffer.push(stack1); }
     data.buffer.push("</li>\n          <li>");
-    stack1 = (helper = helpers['link-to'] || (depth0 && depth0['link-to']),options={hash:{},hashTypes:{},hashContexts:{},inverse:self.noop,fn:self.program(19, program19, data),contexts:[depth0],types:["STRING"],data:data},helper ? helper.call(depth0, "editable", options) : helperMissing.call(depth0, "link-to", "editable", options));
-    if(stack1 || stack1 === 0) { data.buffer.push(stack1); }
+    stack1 = ((helpers['link-to'] || (depth0 && depth0['link-to']) || helperMissing).call(depth0, "editable", {"name":"link-to","hash":{},"hashTypes":{},"hashContexts":{},"fn":this.program(19, data),"inverse":this.noop,"types":["STRING"],"contexts":[depth0],"data":data}));
+    if (stack1 != null) { data.buffer.push(stack1); }
     data.buffer.push("</li>\n          <li>");
-    stack1 = (helper = helpers['link-to'] || (depth0 && depth0['link-to']),options={hash:{},hashTypes:{},hashContexts:{},inverse:self.noop,fn:self.program(21, program21, data),contexts:[depth0],types:["STRING"],data:data},helper ? helper.call(depth0, "sparkline", options) : helperMissing.call(depth0, "link-to", "sparkline", options));
-    if(stack1 || stack1 === 0) { data.buffer.push(stack1); }
+    stack1 = ((helpers['link-to'] || (depth0 && depth0['link-to']) || helperMissing).call(depth0, "sparkline", {"name":"link-to","hash":{},"hashTypes":{},"hashContexts":{},"fn":this.program(21, data),"inverse":this.noop,"types":["STRING"],"contexts":[depth0],"data":data}));
+    if (stack1 != null) { data.buffer.push(stack1); }
     data.buffer.push("</li>\n          <li>");
-    stack1 = (helper = helpers['link-to'] || (depth0 && depth0['link-to']),options={hash:{},hashTypes:{},hashContexts:{},inverse:self.noop,fn:self.program(23, program23, data),contexts:[depth0],types:["STRING"],data:data},helper ? helper.call(depth0, "horizon", options) : helperMissing.call(depth0, "link-to", "horizon", options));
-    if(stack1 || stack1 === 0) { data.buffer.push(stack1); }
+    stack1 = ((helpers['link-to'] || (depth0 && depth0['link-to']) || helperMissing).call(depth0, "horizon", {"name":"link-to","hash":{},"hashTypes":{},"hashContexts":{},"fn":this.program(23, data),"inverse":this.noop,"types":["STRING"],"contexts":[depth0],"data":data}));
+    if (stack1 != null) { data.buffer.push(stack1); }
     data.buffer.push("</li>\n          <li>");
-    stack1 = (helper = helpers['link-to'] || (depth0 && depth0['link-to']),options={hash:{},hashTypes:{},hashContexts:{},inverse:self.noop,fn:self.program(25, program25, data),contexts:[depth0],types:["STRING"],data:data},helper ? helper.call(depth0, "configurable-columns", options) : helperMissing.call(depth0, "link-to", "configurable-columns", options));
-    if(stack1 || stack1 === 0) { data.buffer.push(stack1); }
+    stack1 = ((helpers['link-to'] || (depth0 && depth0['link-to']) || helperMissing).call(depth0, "configurable-columns", {"name":"link-to","hash":{},"hashTypes":{},"hashContexts":{},"fn":this.program(25, data),"inverse":this.noop,"types":["STRING"],"contexts":[depth0],"data":data}));
+    if (stack1 != null) { data.buffer.push(stack1); }
     data.buffer.push("</li>\n        </ul>\n      </div>\n      <div class=\"col-md-3\">\n        <ul class=\"list-unstyled\">\n          <li><h6>Addepar Open Source</h6></li>\n          <li><a target=\"_BLANK\" href=\"http://addepar.github.io/\">Home</a></li>\n          <li>");
-    stack1 = (helper = helpers['link-to'] || (depth0 && depth0['link-to']),options={hash:{},hashTypes:{},hashContexts:{},inverse:self.noop,fn:self.program(27, program27, data),contexts:[depth0],types:["STRING"],data:data},helper ? helper.call(depth0, "license", options) : helperMissing.call(depth0, "link-to", "license", options));
-    if(stack1 || stack1 === 0) { data.buffer.push(stack1); }
+    stack1 = ((helpers['link-to'] || (depth0 && depth0['link-to']) || helperMissing).call(depth0, "license", {"name":"link-to","hash":{},"hashTypes":{},"hashContexts":{},"fn":this.program(27, data),"inverse":this.noop,"types":["STRING"],"contexts":[depth0],"data":data}));
+    if (stack1 != null) { data.buffer.push(stack1); }
     data.buffer.push("</li>\n        </ul>\n      </div>\n      <div class=\"col-md-3\">\n        <ul class=\"list-unstyled\">\n          <li><h6>About Addepar</h6></li>\n          <li><a target=\"_BLANK\" href=\"http://www.addepar.com\">www.addepar.com</a></li>\n          <li>\n            <address>\n              <br>\n              <a target=\"_BLANK\" href=\"http://goo.gl/maps/446ui\"><strong>Addepar HQ</strong><br>\n              1215 Terra Bella Ave<br>\n              Mountain View, CA 94043</a><br><br>\n\n              <a target=\"_BLANK\" href=\"http://goo.gl/maps/xEiCM\"><strong>Addepar NY</strong><br>\n              335 Madison Ave Suite 880<br>\n              New York, NY 10017</a><br>\n            </address>\n          </li>\n        </ul>\n      </div>\n    </div>\n    <div class=\"row\">\n      <div class=\"col-md-12 center-align\">\n        <p>&copy; 2013 Addepar, Inc.</p>\n      </div>\n    </div>\n  </div>\n</div>\n");
     return buffer;
-    
-  });
+  },"useData":true});
 
 });
-define('dummy/templates/header-cell', ['exports', 'ember'], function (exports, Ember) {
+define('dummy/templates/header-cell', ['exports'], function (exports) {
 
   'use strict';
 
-  exports['default'] = Ember['default'].Handlebars.template(function anonymous(Handlebars,depth0,helpers,partials,data) {
-  this.compilerInfo = [4,'>= 1.0.0'];
-  helpers = this.merge(helpers, Ember['default'].Handlebars.helpers); data = data || {};
-    var buffer = '', stack1, escapeExpression=this.escapeExpression;
-
-
+  exports['default'] = Ember.Handlebars.template({"compiler":[6,">= 2.0.0-beta.1"],"main":function(depth0,helpers,partials,data) {
+    var stack1, escapeExpression=this.escapeExpression, buffer = '';
     data.buffer.push("<div class=\"ember-table-content-container\" ");
-    data.buffer.push(escapeExpression(helpers.action.call(depth0, "sortByColumn", "view.content", {hash:{},hashTypes:{},hashContexts:{},contexts:[depth0,depth0],types:["STRING","ID"],data:data})));
+    data.buffer.push(escapeExpression(helpers.action.call(depth0, "sortByColumn", "view.content", {"name":"action","hash":{},"hashTypes":{},"hashContexts":{},"types":["STRING","ID"],"contexts":[depth0,depth0],"data":data})));
     data.buffer.push(">\n  <span class=\"ember-table-content\">\n    ");
-    stack1 = helpers._triageMustache.call(depth0, "view.content.headerCellName", {hash:{},hashTypes:{},hashContexts:{},contexts:[depth0],types:["ID"],data:data});
-    if(stack1 || stack1 === 0) { data.buffer.push(stack1); }
+    stack1 = helpers._triageMustache.call(depth0, "view.content.headerCellName", {"name":"_triageMustache","hash":{},"hashTypes":{},"hashContexts":{},"types":["ID"],"contexts":[depth0],"data":data});
+    if (stack1 != null) { data.buffer.push(stack1); }
     data.buffer.push("\n  </span>\n</div>");
     return buffer;
-    
-  });
+  },"useData":true});
 
 });
-define('dummy/templates/header-row', ['exports', 'ember'], function (exports, Ember) {
+define('dummy/templates/header-row', ['exports'], function (exports) {
 
   'use strict';
 
-  exports['default'] = Ember['default'].Handlebars.template(function anonymous(Handlebars,depth0,helpers,partials,data) {
-  this.compilerInfo = [4,'>= 1.0.0'];
-  helpers = this.merge(helpers, Ember['default'].Handlebars.helpers); data = data || {};
-    var buffer = '', escapeExpression=this.escapeExpression;
-
-
-    data.buffer.push(escapeExpression(helpers.view.call(depth0, "multi-item-collection", {hash:{
-      'content': ("view.content"),
+  exports['default'] = Ember.Handlebars.template({"compiler":[6,">= 2.0.0-beta.1"],"main":function(depth0,helpers,partials,data) {
+    var escapeExpression=this.escapeExpression, buffer = '';
+    data.buffer.push(escapeExpression(helpers.view.call(depth0, "multi-item-collection", {"name":"view","hash":{
+      'width': ("controller._tableColumnsWidth"),
       'itemViewClassField': ("headerCellViewClass"),
-      'width': ("controller._tableColumnsWidth")
-    },hashTypes:{'content': "ID",'itemViewClassField': "STRING",'width': "ID"},hashContexts:{'content': depth0,'itemViewClassField': depth0,'width': depth0},contexts:[depth0],types:["STRING"],data:data})));
+      'content': ("view.content")
+    },"hashTypes":{'width': "ID",'itemViewClassField': "STRING",'content': "ID"},"hashContexts":{'width': depth0,'itemViewClassField': depth0,'content': depth0},"types":["STRING"],"contexts":[depth0],"data":data})));
     data.buffer.push("\n");
     return buffer;
-    
-  });
+  },"useData":true});
 
 });
-define('dummy/templates/header-table-container', ['exports', 'ember'], function (exports, Ember) {
+define('dummy/templates/header-table-container', ['exports'], function (exports) {
 
   'use strict';
 
-  exports['default'] = Ember['default'].Handlebars.template(function anonymous(Handlebars,depth0,helpers,partials,data) {
-  this.compilerInfo = [4,'>= 1.0.0'];
-  helpers = this.merge(helpers, Ember['default'].Handlebars.helpers); data = data || {};
-    var buffer = '', stack1, escapeExpression=this.escapeExpression, self=this;
-
-  function program1(depth0,data) {
-    
-    var buffer = '';
-    data.buffer.push("\n    ");
-    data.buffer.push(escapeExpression(helpers.view.call(depth0, "header-block", {hash:{
-      'classNames': ("ember-table-left-table-block"),
-      'columns': ("fixedColumns"),
+  exports['default'] = Ember.Handlebars.template({"1":function(depth0,helpers,partials,data) {
+    var escapeExpression=this.escapeExpression, buffer = '';
+    data.buffer.push("    ");
+    data.buffer.push(escapeExpression(helpers.view.call(depth0, "header-block", {"name":"view","hash":{
+      'height': ("headerHeight"),
       'width': ("_fixedBlockWidth"),
-      'height': ("headerHeight")
-    },hashTypes:{'classNames': "STRING",'columns': "ID",'width': "ID",'height': "ID"},hashContexts:{'classNames': depth0,'columns': depth0,'width': depth0,'height': depth0},contexts:[depth0],types:["STRING"],data:data})));
-    data.buffer.push("\n  ");
+      'columns': ("fixedColumns"),
+      'classNames': ("ember-table-left-table-block")
+    },"hashTypes":{'height': "ID",'width': "ID",'columns': "ID",'classNames': "STRING"},"hashContexts":{'height': depth0,'width': depth0,'columns': depth0,'classNames': depth0},"types":["STRING"],"contexts":[depth0],"data":data})));
+    data.buffer.push("\n");
     return buffer;
-    }
-
-    data.buffer.push("<div class=\"ember-table-table-fixed-wrapper\">\n  ");
-    stack1 = helpers['if'].call(depth0, "controller.numFixedColumns", {hash:{},hashTypes:{},hashContexts:{},inverse:self.noop,fn:self.program(1, program1, data),contexts:[depth0],types:["ID"],data:data});
-    if(stack1 || stack1 === 0) { data.buffer.push(stack1); }
-    data.buffer.push("\n  ");
-    data.buffer.push(escapeExpression(helpers.view.call(depth0, "header-block", {hash:{
-      'classNames': ("ember-table-right-table-block"),
-      'columns': ("tableColumns"),
-      'scrollLeft': ("_tableScrollLeft"),
+  },"compiler":[6,">= 2.0.0-beta.1"],"main":function(depth0,helpers,partials,data) {
+    var stack1, escapeExpression=this.escapeExpression, buffer = '';
+    data.buffer.push("<div class=\"ember-table-table-fixed-wrapper\">\n");
+    stack1 = helpers['if'].call(depth0, "controller.numFixedColumns", {"name":"if","hash":{},"hashTypes":{},"hashContexts":{},"fn":this.program(1, data),"inverse":this.noop,"types":["ID"],"contexts":[depth0],"data":data});
+    if (stack1 != null) { data.buffer.push(stack1); }
+    data.buffer.push("  ");
+    data.buffer.push(escapeExpression(helpers.view.call(depth0, "header-block", {"name":"view","hash":{
+      'height': ("headerHeight"),
       'width': ("_tableBlockWidth"),
-      'height': ("headerHeight")
-    },hashTypes:{'classNames': "STRING",'columns': "ID",'scrollLeft': "ID",'width': "ID",'height': "ID"},hashContexts:{'classNames': depth0,'columns': depth0,'scrollLeft': depth0,'width': depth0,'height': depth0},contexts:[depth0],types:["STRING"],data:data})));
+      'scrollLeft': ("_tableScrollLeft"),
+      'columns': ("tableColumns"),
+      'classNames': ("ember-table-right-table-block")
+    },"hashTypes":{'height': "ID",'width': "ID",'scrollLeft': "ID",'columns': "ID",'classNames': "STRING"},"hashContexts":{'height': depth0,'width': depth0,'scrollLeft': depth0,'columns': depth0,'classNames': depth0},"types":["STRING"],"contexts":[depth0],"data":data})));
     data.buffer.push("\n</div>\n");
     return buffer;
-    
-  });
+  },"useData":true});
 
 });
-define('dummy/templates/horizon-table/horizon-table', ['exports', 'ember'], function (exports, Ember) {
+define('dummy/templates/horizon-table/horizon-table', ['exports'], function (exports) {
 
   'use strict';
 
-  exports['default'] = Ember['default'].Handlebars.template(function anonymous(Handlebars,depth0,helpers,partials,data) {
-  this.compilerInfo = [4,'>= 1.0.0'];
-  helpers = this.merge(helpers, Ember['default'].Handlebars.helpers); data = data || {};
-    var buffer = '', helper, options, helperMissing=helpers.helperMissing, escapeExpression=this.escapeExpression;
-
-
-    data.buffer.push(escapeExpression((helper = helpers['ember-table'] || (depth0 && depth0['ember-table']),options={hash:{
-      'hasHeader': (true),
-      'hasFooter': (false),
-      'numFixedColumns': (0),
-      'rowHeight': (30),
+  exports['default'] = Ember.Handlebars.template({"compiler":[6,">= 2.0.0-beta.1"],"main":function(depth0,helpers,partials,data) {
+    var helperMissing=helpers.helperMissing, escapeExpression=this.escapeExpression, buffer = '';
+    data.buffer.push(escapeExpression(((helpers['ember-table'] || (depth0 && depth0['ember-table']) || helperMissing).call(depth0, {"name":"ember-table","hash":{
+      'content': ("tableContent"),
       'columns': ("tableColumns"),
-      'content': ("tableContent")
-    },hashTypes:{'hasHeader': "BOOLEAN",'hasFooter': "BOOLEAN",'numFixedColumns': "INTEGER",'rowHeight': "INTEGER",'columns': "ID",'content': "ID"},hashContexts:{'hasHeader': depth0,'hasFooter': depth0,'numFixedColumns': depth0,'rowHeight': depth0,'columns': depth0,'content': depth0},contexts:[],types:[],data:data},helper ? helper.call(depth0, options) : helperMissing.call(depth0, "ember-table", options))));
+      'rowHeight': (30),
+      'numFixedColumns': (0),
+      'hasFooter': (false),
+      'hasHeader': (true)
+    },"hashTypes":{'content': "ID",'columns': "ID",'rowHeight': "NUMBER",'numFixedColumns': "NUMBER",'hasFooter': "BOOLEAN",'hasHeader': "BOOLEAN"},"hashContexts":{'content': depth0,'columns': depth0,'rowHeight': depth0,'numFixedColumns': depth0,'hasFooter': depth0,'hasHeader': depth0},"types":[],"contexts":[],"data":data}))));
     data.buffer.push("\n");
     return buffer;
-    
-  });
+  },"useData":true});
 
 });
-define('dummy/templates/horizon', ['exports', 'ember'], function (exports, Ember) {
+define('dummy/templates/horizon', ['exports'], function (exports) {
 
   'use strict';
 
-  exports['default'] = Ember['default'].Handlebars.template(function anonymous(Handlebars,depth0,helpers,partials,data) {
-  this.compilerInfo = [4,'>= 1.0.0'];
-  helpers = this.merge(helpers, Ember['default'].Handlebars.helpers); data = data || {};
-    var buffer = '', helper, options, helperMissing=helpers.helperMissing, escapeExpression=this.escapeExpression;
-
-
+  exports['default'] = Ember.Handlebars.template({"compiler":[6,">= 2.0.0-beta.1"],"main":function(depth0,helpers,partials,data) {
+    var helperMissing=helpers.helperMissing, escapeExpression=this.escapeExpression, buffer = '';
     data.buffer.push("<div class=\"col-md-10 col-md-offset-2 left-border main-content-container\">\n  <h1>Ember Table <small>Horizon</small></h1>\n\n  <div class=\"row\">\n    <div class=\"col-md-12\">\n      <div class=\"example-container\">\n        <div class=\"ember-table-example-container\">\n          ");
-    data.buffer.push(escapeExpression((helper = helpers.partial || (depth0 && depth0.partial),options={hash:{},hashTypes:{},hashContexts:{},contexts:[depth0],types:["STRING"],data:data},helper ? helper.call(depth0, "horizon-table/horizon-table", options) : helperMissing.call(depth0, "partial", "horizon-table/horizon-table", options))));
+    data.buffer.push(escapeExpression(((helpers.partial || (depth0 && depth0.partial) || helperMissing).call(depth0, "horizon-table/horizon-table", {"name":"partial","hash":{},"hashTypes":{},"hashContexts":{},"types":["STRING"],"contexts":[depth0],"data":data}))));
     data.buffer.push("\n        </div>\n      </div>\n    </div>\n\n    <div class=\"col-md-12 bumper-30\">\n      <h3>Template</h3>\n      <div class=\"highlight\">\n        <pre class=\"prettyprint lang-html\">{{ember-table\n  hasHeader=true\n  hasFooter=false\n  numFixedColumns=0\n  rowHeight=30\n  columns=tableColumns\n  content=tableContent\n}}\n</pre>\n      </div>\n    </div>\n\n    <div class=\"col-md-12 bumper-30\">\n      <h3>Controller</h3>\n      <div class=\"highlight\">\n        <pre class=\"prettyprint lang-js\">import Ember from &#39;ember&#39;;\nimport ColumnDefinition from &#39;ember-table&#x2F;models&#x2F;column-definition&#39;;\n\nexport default Ember.Controller.extend({\n  tableColumns: Ember.computed(function() {\n    var name = ColumnDefinition.create({\n      savedWidth: 100,\n      headerCellName: &#39;Name&#39;,\n      getCellContent: function(row) {\n        return &#39;Horizon &#39; + row.get(&#39;name&#39;);\n      }\n    });\n    var horizon = ColumnDefinition.create({\n      savedWidth: 600,\n      headerCellName: &#39;Horizon&#39;,\n      tableCellViewClass: &#39;horizon-table-cell&#39;,\n      getCellContent: Ember.K\n    });\n    return [name, horizon];\n  }),\n\n  tableContent: Ember.computed(function() {\n    var normal = d3.random.normal(1.5, 3);\n    var data;\n    var content = [];\n    for (var i = 0; i &lt; 100; i++) {\n      data = [];\n      for (var j = 0; j &lt; 100; j++) {\n        data.push([j, normal()]);\n      }\n      content.pushObject({\n        name: i,\n        data: data\n      });\n    }\n    return content;\n  })\n});\n</pre>\n      </div>\n    </div>\n\n    <div class=\"col-md-12 bumper-30\">\n      <h3>views/horizon-table-cell.js</h3>\n      <div class=\"highlight\">\n        <pre class=\"prettyprint lang-js\">import Ember from &#39;ember&#39;;\nimport TableCell from &#39;ember-table&#x2F;views&#x2F;table-cell&#39;;\nimport d3HorizonUtils from &#39;..&#x2F;utils&#x2F;horizon&#39;;\n\nexport default TableCell.extend({\n  templateName: &#39;empty-cell&#39;,\n  heightBinding: &#39;controller.rowHeight&#39;,\n\n  horizonContent: Ember.computed(function() {\n    var normal = d3.random.normal(1.5, 3);\n    var content = [];\n    for (var i = 0; i &lt; 100; i++) {\n      content.pushObject([i, normal()]);\n    }\n    return content;\n  }).property(),\n\n  onWidthDidChange: Ember.observer(function() {\n    this.$(&#39;svg&#39;).remove();\n    this.renderD3View();\n  }, &#39;width&#39;),\n\n  didInsertElement: function() {\n    this.onWidthDidChange();\n    &#x2F;&#x2F; TODO(azirbel): Add _this.super()\n  },\n\n  renderD3View: function() {\n    var chart, data, height, svg, width;\n    width = this.get(&#39;width&#39;);\n    height = this.get(&#39;height&#39;);\n    data = this.get(&#39;horizonContent&#39;);\n    chart = d3HorizonUtils.d3Horizon().width(width).height(height).bands(2).mode(&#39;mirror&#39;).interpolate(&#39;basis&#39;);\n    svg = d3.select(&#39;#&#39; + this.get(&#39;elementId&#39;)).append(&#39;svg&#39;).attr(&#39;width&#39;, width).attr(&#39;height&#39;, height);\n    svg.data([data]).call(chart);\n  }\n});\n\n</pre>\n      </div>\n    </div>\n\n  </div>\n</div>\n");
     return buffer;
-    
-  });
+  },"useData":true});
 
 });
-define('dummy/templates/license', ['exports', 'ember'], function (exports, Ember) {
+define('dummy/templates/license', ['exports'], function (exports) {
 
   'use strict';
 
-  exports['default'] = Ember['default'].Handlebars.template(function anonymous(Handlebars,depth0,helpers,partials,data) {
-  this.compilerInfo = [4,'>= 1.0.0'];
-  helpers = this.merge(helpers, Ember['default'].Handlebars.helpers); data = data || {};
-    
-
-
+  exports['default'] = Ember.Handlebars.template({"compiler":[6,">= 2.0.0-beta.1"],"main":function(depth0,helpers,partials,data) {
     data.buffer.push("<div class=\"section\">\n  <div class=\"container main-content-container\">\n    <div class=\"row\">\n      <div class=\"col-md-6 col-md-offset-3 section-title\">\n        <h1>Code &amp; Documentation Licensing</h1>\n      </div>\n      <div class=\"col-md-6 col-md-offset-3\">\n        <p>The majority of open source software exclusively developed by Addepar is licensed under the liberal terms of the Apache License, Version 2.0. The documentation is generally available under the Creative Commons Attribution 3.0 Unported License. In the end, you are free to use, modify and distribute any documentation, source code or examples within our open source projects as long as you adhere to the licensing conditions present within the projects.</p>\n        <p>Also note that our engineers like to hack on their own open source projects in their free time. For code provided by our engineers outside of our official repositories on GitHub, Addepar does not grant any type of license, whether express or implied, to such code.</p>\n     </div>\n    </div>\n  </div>\n</div>\n");
-    
-  });
+    },"useData":true});
 
 });
-define('dummy/templates/migration-guides', ['exports', 'ember'], function (exports, Ember) {
+define('dummy/templates/migration-guides', ['exports'], function (exports) {
 
   'use strict';
 
-  exports['default'] = Ember['default'].Handlebars.template(function anonymous(Handlebars,depth0,helpers,partials,data) {
-  this.compilerInfo = [4,'>= 1.0.0'];
-  helpers = this.merge(helpers, Ember['default'].Handlebars.helpers); data = data || {};
-    var buffer = '', stack1, helper, options, self=this, helperMissing=helpers.helperMissing;
-
-  function program1(depth0,data) {
-    
-    
+  exports['default'] = Ember.Handlebars.template({"1":function(depth0,helpers,partials,data) {
     data.buffer.push("configurable column demo.");
-    }
-
-  function program3(depth0,data) {
-    
-    
+    },"3":function(depth0,helpers,partials,data) {
     data.buffer.push("here");
-    }
-
-    data.buffer.push("\n<div class=\"col-md-10 col-md-offset-2 left-border main-content-container\">\n  <h1>Migration Guides</h1>\n  <div class=\"row\">\n    <div class=\"col-md-9\">\n      <h2>Migrating to version 0.4.0</h2>\n      <p>\n        Version 0.4.0 contains major changes to column resizing.\n      </p>\n      <p>\n        In version 0.2, setting the table's <code>forceFillColumns</code>\n        property and configuring each column's <code>canAutoResize</code>\n        property let you configure the table to scale automatically when\n        rendered into containers of different sizes.\n      </p>\n      <p>\n        In version 0.4, the table-wide <code>forceFillColumns</code> setting\n        has been removed and each column defines its own resize behavior.  Use\n        <code>isResizable</code> to set whether the column can be resized at\n        all (manually or automatically), <code>canAutoResize</code> to set\n        whether the column will attempt to scale its width to different table\n        sizes, and <code>savedWidth</code> to set the column's initial width or\n        persist its width once resized.\n      </p>\n      <p>\n        It was previously possible to extend Ember Table so that it would\n        behave in a \"fluid\" way, meaning that resizing one column steals\n        width from its neighboring column. This is now supported in Ember Table\n        out of the box: just set <code>columnMode=\"fluid\"</code>.\n      </p>\n      <p>\n        To get a sense for the new column resizing changes, check out the\n        ");
-    stack1 = (helper = helpers['link-to'] || (depth0 && depth0['link-to']),options={hash:{},hashTypes:{},hashContexts:{},inverse:self.noop,fn:self.program(1, program1, data),contexts:[depth0],types:["STRING"],data:data},helper ? helper.call(depth0, "configurable-columns", options) : helperMissing.call(depth0, "link-to", "configurable-columns", options));
-    if(stack1 || stack1 === 0) { data.buffer.push(stack1); }
+    },"compiler":[6,">= 2.0.0-beta.1"],"main":function(depth0,helpers,partials,data) {
+    var stack1, helperMissing=helpers.helperMissing, buffer = '';
+    data.buffer.push("<div class=\"col-md-10 col-md-offset-2 left-border main-content-container\">\n  <h1>Migration Guides</h1>\n  <div class=\"row\">\n    <div class=\"col-md-9\">\n      <h2>Migrating to version 0.4.0</h2>\n      <p>\n        Version 0.4.0 contains major changes to column resizing.\n      </p>\n      <p>\n        In version 0.2, setting the table's <code>forceFillColumns</code>\n        property and configuring each column's <code>canAutoResize</code>\n        property let you configure the table to scale automatically when\n        rendered into containers of different sizes.\n      </p>\n      <p>\n        In version 0.4, the table-wide <code>forceFillColumns</code> setting\n        has been removed and each column defines its own resize behavior.  Use\n        <code>isResizable</code> to set whether the column can be resized at\n        all (manually or automatically), <code>canAutoResize</code> to set\n        whether the column will attempt to scale its width to different table\n        sizes, and <code>savedWidth</code> to set the column's initial width or\n        persist its width once resized.\n      </p>\n      <p>\n        It was previously possible to extend Ember Table so that it would\n        behave in a \"fluid\" way, meaning that resizing one column steals\n        width from its neighboring column. This is now supported in Ember Table\n        out of the box: just set <code>columnMode=\"fluid\"</code>.\n      </p>\n      <p>\n        To get a sense for the new column resizing changes, check out the\n        ");
+    stack1 = ((helpers['link-to'] || (depth0 && depth0['link-to']) || helperMissing).call(depth0, "configurable-columns", {"name":"link-to","hash":{},"hashTypes":{},"hashContexts":{},"fn":this.program(1, data),"inverse":this.noop,"types":["STRING"],"contexts":[depth0],"data":data}));
+    if (stack1 != null) { data.buffer.push(stack1); }
     data.buffer.push("\n      </p>\n      <h3>API Changes</h3>\n      <ul class=\"styled\">\n        <li>Removed: <code>EmberTableComponent.forceFillColumns</code></li>\n        <li>Removed: <code>ColumnDefinition.columnWidth</code></li>\n        <li>Removed: <code>ColumnDefinition.defaultColumnWidth</code></li>\n        <li>Added: <code>EmberTableComponent.columnMode</code></li>\n        <li>Added: <code>ColumnDefinition.savedWidth</code></li>\n      </ul>\n      <h3>Upgrade steps</h3>\n      <ol class=\"styled styled-spacious\">\n        <li>\n          Replace <code>columnWidth</code> and\n          <code>defaultColumnWidth</code> with <code>savedWidth</code>. This\n          will set the column's initial width, and will change if the column is\n          manually resized. If you want to persist changes to column sizes,\n          simply bind to and persist <code>savedWidth</code>.\n        </li>\n        <li>\n          Do not use <code>forceFillColumns</code> as it no longer has any\n          effect. Columns will fill as before if their\n          <code>canAutoResize</code> property is <code>true</code>.\n        </li>\n        <li>\n          Make sure your columns have <code>canAutoResize</code> set correctly.\n          In version 0.2 this defaulted to <code>true</code>, but only made a\n          difference if <code>forceFillColumns</code> was enabled. Now it\n          defaults to <code>false</code>, but if a column sets it to\n          <code>true</code>, the force fill behavior is implicitly triggered.\n        </li>\n      </ol>\n\n      <h2>Migrating to version 0.3.0</h2>\n      <p>\n        Version 0.3.0 includes major column resizing changes, but with\n        <code>canAutoResize</code> defaulting to <code>true</code>.  We\n        recommend skipping this version and upgrading directly to 0.4.0; see\n        the 0.4.0 migration guide.\n      </p>\n\n      <h2>Migrating to version 0.2.0</h2>\n      <p>\n        A full migration step is not available for this version, but it\n        contains only minor API changes.\n      </p>\n      <p>\n        Version 0.2 uses row objects to wrap content in the table. Because of\n        this, change any accesses to row data (e.g. in\n        <code>getCellContent</code>) from <code>row['date']</code> to\n        <code>row.get('date')</code>.\n      </p>\n\n      <h2>Migrating from old versions to version 0.1.0</h2>\n      <p>\n        Version 0.1.0 of Ember Table is a bit of a restructure - we’re hoping\n        that the new organization will make it simpler and easier to set up,\n        but for existing users, you’ll have to make a few changes to upgrade to\n        the new Ember Table.\n      </p>\n      <h3>Upgrade steps</h3>\n      <ol class=\"styled styled-spacious\">\n        <li>\n          Upgrade <code>ember-table.js</code> and <code>ember-table.css</code>.\n          If you’re not on the latest version of <a target=\"_BLANK\"\n          href=\"http://emberjs.com/\">Ember.js</a>, now might be a good time to\n          upgrade that as well. This guide was written using Ember 1.0.0 and\n          Ember Table 0.1.0.\n        </li>\n        <li>\n          The major change is moving from separate table Views and Controllers\n          to a unified table Component. You can read up on Ember Components\n          <a target=\"_BLANK\"\n          href=\"http://emberjs.com/guides/components/\">here</a>. So instead of\n          having lines like this:\n          <div class=\"highlight\">\n<pre class=\"prettyprint lang-js\">App.MyTableController = Ember.Table.TableController.extend (...)\nApp.MyTableView = EmberTable.TableContainerView.extend (...)</pre>\n          </div>\n          You’ll have everything in one place:\n          <div class=\"highlight\">\n<pre class=\"prettyprint lang-js\">App.MyTableController = Ember.Controller.extend (...)</pre>\n          </div>\n          For starters, just change the type of your MyTableController from the old version to the new.\n        </li>\n        <li>\n          Update your handlebars file. Before, it might have looked like:\n          <br/>\n          <div class=\"highlight\">\n<pre class=\"prettyprint lang-html\">&#123;&#123;view Ember.Table.TablesContainer …&#125;&#125;</pre>\n          </div>\n          After the restructure, it should look like this:<br/>\n          <div class=\"highlight\">\n<pre class=\"prettyprint lang-html\">&#123;&#123;table-component …&#125;&#125;</pre>\n          </div>\n        </li>\n        <li>\n          While you’re modifying that handlebars file, you may want to make\n          sure it looks like the structure of the new Ember Table examples. You\n          can see one ");
-    stack1 = (helper = helpers['link-to'] || (depth0 && depth0['link-to']),options={hash:{},hashTypes:{},hashContexts:{},inverse:self.noop,fn:self.program(3, program3, data),contexts:[depth0],types:["STRING"],data:data},helper ? helper.call(depth0, "simple", options) : helperMissing.call(depth0, "link-to", "simple", options));
-    if(stack1 || stack1 === 0) { data.buffer.push(stack1); }
+    stack1 = ((helpers['link-to'] || (depth0 && depth0['link-to']) || helperMissing).call(depth0, "simple", {"name":"link-to","hash":{},"hashTypes":{},"hashContexts":{},"fn":this.program(3, data),"inverse":this.noop,"types":["STRING"],"contexts":[depth0],"data":data}));
+    if (stack1 != null) { data.buffer.push(stack1); }
     data.buffer.push(". In\n          particular, you might get errors if you don’t properly bind your\n          columns and content of the table, using <code>columns=</code>\n          and <code>content=</code>.\n          <br/><br/>\n          Both of these settings refer to variables in the corresponding\n          controller (which here should be <code>MyTableController</code>), such that if you\n          set <code>columns=exampleVariable</code>, then the columns will be bound\n          to <code>exampleVariable</code> in the controller. This gives you control over\n          the look and content of the table.\n          <br/><br/>\n          Before, you may have had\n          <code>controller=</code> here. You don’t need this any more: the\n          controller being used with this template will be used for the table\n          too, by default.\n        </li>\n        <li>\n          Move any properties you had defined in your\n          <code>TableContainerView</code> (if\n          you had one) into the controller. See the examples for more\n          information on how table properties should be set now.\n        </li>\n      </ol>\n      <h3>Troubleshooting</h3>\n      <ul class=\"styled styled-spacious\">\n        <li>\n          If you were using old Ember Table objects like the\n          <code>RowArrayProxy</code>,\n          take another look and consider whether you really need it. During my\n          migration I was able to remove it by changing the\n          <code>contentBinding=</code>\n          in my handlebars file to a more appropriate variable for content.\n        </li>\n        <li>\n          If you are having errors with template names not being found, it\n          may be due to a change with inferring names. For me, my old template\n          names used hyphens, and changing them to underscores automatically\n          connected them to the rest of my application.\n        </li>\n      </ul>\n    </div>\n  </div>\n</div>\n");
     return buffer;
-    
-  });
+  },"useData":true});
 
 });
-define('dummy/templates/navigation', ['exports', 'ember'], function (exports, Ember) {
+define('dummy/templates/navigation', ['exports'], function (exports) {
 
   'use strict';
 
-  exports['default'] = Ember['default'].Handlebars.template(function anonymous(Handlebars,depth0,helpers,partials,data) {
-  this.compilerInfo = [4,'>= 1.0.0'];
-  helpers = this.merge(helpers, Ember['default'].Handlebars.helpers); data = data || {};
+  exports['default'] = Ember.Handlebars.template({"compiler":[6,">= 2.0.0-beta.1"],"main":function(depth0,helpers,partials,data) {
     var buffer = '';
-
-
-    data.buffer.push("\n<nav class=\"navbar navbar-transparent addepar-navbar\" role=\"navigation\">\n  <div class=\"navbar-header\">\n    <button type=\"button\" class=\"navbar-toggle\" data-toggle=\"collapse\" data-target=\".navbar-ex1-collapse\">\n      <span class=\"sr-only\">Toggle navigation</span>\n      <span class=\"icon-bar\"></span>\n      <span class=\"icon-bar\"></span>\n      <span class=\"icon-bar\"></span>\n    </button>\n    <a class=\"navbar-brand\" href=\"http://addepar.github.io/\">\n      <img id=\"logo_dark\" class=\"logo\" src=\"images/addepar_logo_light.png\" /><span class=\"navbar-title\">Open Source</span>\n    </a>\n  </div>\n\n  <div class=\"collapse navbar-collapse navbar-ex1-collapse\">\n    <ul class=\"nav navbar-nav navbar-right\">\n      <li><a href=\"#\">Ember Table</a></li>\n      <li><a href=\"http://addepar.github.io/ember-charts\">Ember Charts</a></li>\n      <li><a href=\"http://addepar.github.io/ember-widgets\">Ember Widgets</a></li>\n    </ul>\n  </div><!-- /.navbar-collapse -->\n</nav>\n");
+    data.buffer.push("<nav class=\"navbar navbar-transparent addepar-navbar\" role=\"navigation\">\n  <div class=\"navbar-header\">\n    <button type=\"button\" class=\"navbar-toggle\" data-toggle=\"collapse\" data-target=\".navbar-ex1-collapse\">\n      <span class=\"sr-only\">Toggle navigation</span>\n      <span class=\"icon-bar\"></span>\n      <span class=\"icon-bar\"></span>\n      <span class=\"icon-bar\"></span>\n    </button>\n    <a class=\"navbar-brand\" href=\"http://addepar.github.io/\">\n      <img id=\"logo_dark\" class=\"logo\" src=\"images/addepar_logo_light.png\" /><span class=\"navbar-title\">Open Source</span>\n    </a>\n  </div>\n\n  <div class=\"collapse navbar-collapse navbar-ex1-collapse\">\n    <ul class=\"nav navbar-nav navbar-right\">\n      <li><a href=\"#\">Ember Table</a></li>\n      <li><a href=\"http://addepar.github.io/ember-charts\">Ember Charts</a></li>\n      <li><a href=\"http://addepar.github.io/ember-widgets\">Ember Widgets</a></li>\n    </ul>\n  </div><!-- /.navbar-collapse -->\n</nav>\n");
     return buffer;
-    
-  });
+  },"useData":true});
 
 });
-define('dummy/templates/overview', ['exports', 'ember'], function (exports, Ember) {
+define('dummy/templates/overview', ['exports'], function (exports) {
 
   'use strict';
 
-  exports['default'] = Ember['default'].Handlebars.template(function anonymous(Handlebars,depth0,helpers,partials,data) {
-  this.compilerInfo = [4,'>= 1.0.0'];
-  helpers = this.merge(helpers, Ember['default'].Handlebars.helpers); data = data || {};
-    var buffer = '', stack1, helper, options, helperMissing=helpers.helperMissing, escapeExpression=this.escapeExpression, self=this;
-
-  function program1(depth0,data) {
-    
-    
-    data.buffer.push("\n          <div class=\"col-md-4\">\n            <h4>Hello World Table</h4>\n            <img class=\"preview-box\" src=\"images/preview_table_simple.png\" />\n          </div>\n        ");
-    }
-
-  function program3(depth0,data) {
-    
-    
-    data.buffer.push("\n          <div class=\"col-md-4\">\n            <h4>AJAX cells</h4>\n            <img class=\"preview-box\" src=\"images/preview_table_ajax.png\" />\n          </div>\n        ");
-    }
-
-  function program5(depth0,data) {
-    
-    
-    data.buffer.push("\n          <div class=\"col-md-4\">\n            <h4>Bar cells</h4>\n            <img class=\"preview-box\" src=\"images/preview_table_bars.png\" />\n          </div>\n        ");
-    }
-
-  function program7(depth0,data) {
-    
-    
-    data.buffer.push("\n          <div class=\"col-md-4\">\n            <h4>Dynamic bar cells</h4>\n            <img class=\"preview-box\" src=\"images/preview_table_dynamic_bars.png\" />\n          </div>\n        ");
-    }
-
-  function program9(depth0,data) {
-    
-    
-    data.buffer.push("\n          <div class=\"col-md-4\">\n            <h4>Tree & financial table</h4>\n            <img class=\"preview-box\" src=\"images/preview_table_financial.png\" />\n          </div>\n        ");
-    }
-
-  function program11(depth0,data) {
-    
-    
-    data.buffer.push("\n          <div class=\"col-md-4\">\n            <h4>Editable cell</h4>\n            <img class=\"preview-box\" src=\"images/preview_table_editable.png\" />\n          </div>\n        ");
-    }
-
-  function program13(depth0,data) {
-    
-    
-    data.buffer.push("\n          <div class=\"col-md-4\">\n            <h4>Sparkline cell using D3.js</h4>\n            <img class=\"preview-box\" src=\"images/preview_table_sparkline.png\" />\n          </div>\n        ");
-    }
-
-  function program15(depth0,data) {
-    
-    
-    data.buffer.push("\n          <div class=\"col-md-4\">\n            <h4>Horizon cell using D3.js</h4>\n            <img class=\"preview-box\" src=\"images/preview_table_horizon.png\" />\n          </div>\n        ");
-    }
-
-  function program17(depth0,data) {
-    
-    
-    data.buffer.push("\n          <div class=\"col-md-4\">\n            <h4>Configurable Column Demo</h4>\n            <img class=\"preview-box\" src=\"images/preview_table_simple.png\" />\n          </div>\n        ");
-    }
-
-  function program19(depth0,data) {
-    
-    
+  exports['default'] = Ember.Handlebars.template({"1":function(depth0,helpers,partials,data) {
+    data.buffer.push("          <div class=\"col-md-4\">\n            <h4>Hello World Table</h4>\n            <img class=\"preview-box\" src=\"images/preview_table_simple.png\" />\n          </div>\n");
+    },"3":function(depth0,helpers,partials,data) {
+    data.buffer.push("          <div class=\"col-md-4\">\n            <h4>AJAX cells</h4>\n            <img class=\"preview-box\" src=\"images/preview_table_ajax.png\" />\n          </div>\n");
+    },"5":function(depth0,helpers,partials,data) {
+    data.buffer.push("          <div class=\"col-md-4\">\n            <h4>Bar cells</h4>\n            <img class=\"preview-box\" src=\"images/preview_table_bars.png\" />\n          </div>\n");
+    },"7":function(depth0,helpers,partials,data) {
+    data.buffer.push("          <div class=\"col-md-4\">\n            <h4>Dynamic bar cells</h4>\n            <img class=\"preview-box\" src=\"images/preview_table_dynamic_bars.png\" />\n          </div>\n");
+    },"9":function(depth0,helpers,partials,data) {
+    data.buffer.push("          <div class=\"col-md-4\">\n            <h4>Tree & financial table</h4>\n            <img class=\"preview-box\" src=\"images/preview_table_financial.png\" />\n          </div>\n");
+    },"11":function(depth0,helpers,partials,data) {
+    data.buffer.push("          <div class=\"col-md-4\">\n            <h4>Editable cell</h4>\n            <img class=\"preview-box\" src=\"images/preview_table_editable.png\" />\n          </div>\n");
+    },"13":function(depth0,helpers,partials,data) {
+    data.buffer.push("          <div class=\"col-md-4\">\n            <h4>Sparkline cell using D3.js</h4>\n            <img class=\"preview-box\" src=\"images/preview_table_sparkline.png\" />\n          </div>\n");
+    },"15":function(depth0,helpers,partials,data) {
+    data.buffer.push("          <div class=\"col-md-4\">\n            <h4>Horizon cell using D3.js</h4>\n            <img class=\"preview-box\" src=\"images/preview_table_horizon.png\" />\n          </div>\n");
+    },"17":function(depth0,helpers,partials,data) {
+    data.buffer.push("          <div class=\"col-md-4\">\n            <h4>Configurable Column Demo</h4>\n            <img class=\"preview-box\" src=\"images/preview_table_simple.png\" />\n          </div>\n");
+    },"19":function(depth0,helpers,partials,data) {
     data.buffer.push("Community Examples");
-    }
-
-    data.buffer.push("\n<div class=\"col-md-10 col-md-offset-2 left-border main-content-container\">\n  <div class=\"row\">\n    <div class=\"col-md-12\">\n      <h1>Ember Table</h1>\n      <p class=\"elevated\">Ember table allows you to render very\n      large data sets by only rendering the rows that are being\n      displayed.<br />It is written as an ember component with an API that is\n      easy to understand and extend.</p>\n\n      <div class=\"example-container\">\n        <div class=\"ember-table-example-container ember-table-financial\">\n          ");
-    data.buffer.push(escapeExpression((helper = helpers['financial-table'] || (depth0 && depth0['financial-table']),options={hash:{
+    },"compiler":[6,">= 2.0.0-beta.1"],"main":function(depth0,helpers,partials,data) {
+    var stack1, helperMissing=helpers.helperMissing, escapeExpression=this.escapeExpression, buffer = '';
+    data.buffer.push("<div class=\"col-md-10 col-md-offset-2 left-border main-content-container\">\n  <div class=\"row\">\n    <div class=\"col-md-12\">\n      <h1>Ember Table</h1>\n      <p class=\"elevated\">Ember table allows you to render very\n      large data sets by only rendering the rows that are being\n      displayed.<br />It is written as an ember component with an API that is\n      easy to understand and extend.</p>\n\n      <div class=\"example-container\">\n        <div class=\"ember-table-example-container ember-table-financial\">\n          ");
+    data.buffer.push(escapeExpression(((helpers['financial-table'] || (depth0 && depth0['financial-table']) || helperMissing).call(depth0, {"name":"financial-table","hash":{
       'data': ("data")
-    },hashTypes:{'data': "ID"},hashContexts:{'data': depth0},contexts:[],types:[],data:data},helper ? helper.call(depth0, options) : helperMissing.call(depth0, "financial-table", options))));
-    data.buffer.push("\n        </div>\n      </div>\n    </div>\n  </div>\n\n  <div class=\"row\">\n    <div class=\"col-md-6\">\n      <h3>Features</h3>\n      <ul class=\"styled\">\n        <li>Lazy rendering and support for millions of rows</li>\n        <li>Support for column resizing and reordering</li>\n        <li>Configurable, customizable, and extendable</li>\n      </ul>\n    </div>\n    <div class=\"col-md-6\">\n      <h3>Dependencies</h3>\n      <ul class=\"styled\">\n        <li><a target=\"_BLANK\" href=\"http://emberjs.com/\">ember</a></li>\n        <li><a target=\"_BLANK\" href=\"http://jqueryui.com/download/#!components=1110001010000000000000000000000000\">\n          jquery-ui</a>\n          <br>\n          <small>(only core, widget, mouse, resizable, and sortable modules required)</small>\n        </li>\n        <li><a target=\"_BLANK\" href=\"https://github.com/brandonaaron/jquery-mousewheel\">jquery.mousewheel</a></li>\n        <li><a target=\"_BLANK\" href=\"https://github.com/azirbel/antiscroll\">antiscroll</a></li>\n      </ul>\n    </div>\n  </div>\n\n  <div class=\"row\">\n    <div class=\"col-md-12\">\n      <hr>\n      <h1>Examples</h1>\n      <p class=\"elevated\">The examples below demonstrate how you can extend and customize the table.</p>\n      <div class=\"row ember-table-examples\">\n        ");
-    stack1 = (helper = helpers['link-to'] || (depth0 && depth0['link-to']),options={hash:{},hashTypes:{},hashContexts:{},inverse:self.noop,fn:self.program(1, program1, data),contexts:[depth0],types:["STRING"],data:data},helper ? helper.call(depth0, "simple", options) : helperMissing.call(depth0, "link-to", "simple", options));
-    if(stack1 || stack1 === 0) { data.buffer.push(stack1); }
-    data.buffer.push("\n        ");
-    stack1 = (helper = helpers['link-to'] || (depth0 && depth0['link-to']),options={hash:{},hashTypes:{},hashContexts:{},inverse:self.noop,fn:self.program(3, program3, data),contexts:[depth0],types:["STRING"],data:data},helper ? helper.call(depth0, "ajax", options) : helperMissing.call(depth0, "link-to", "ajax", options));
-    if(stack1 || stack1 === 0) { data.buffer.push(stack1); }
-    data.buffer.push("\n        ");
-    stack1 = (helper = helpers['link-to'] || (depth0 && depth0['link-to']),options={hash:{},hashTypes:{},hashContexts:{},inverse:self.noop,fn:self.program(5, program5, data),contexts:[depth0],types:["STRING"],data:data},helper ? helper.call(depth0, "bars", options) : helperMissing.call(depth0, "link-to", "bars", options));
-    if(stack1 || stack1 === 0) { data.buffer.push(stack1); }
-    data.buffer.push("\n        ");
-    stack1 = (helper = helpers['link-to'] || (depth0 && depth0['link-to']),options={hash:{},hashTypes:{},hashContexts:{},inverse:self.noop,fn:self.program(7, program7, data),contexts:[depth0],types:["STRING"],data:data},helper ? helper.call(depth0, "dynamic-bars", options) : helperMissing.call(depth0, "link-to", "dynamic-bars", options));
-    if(stack1 || stack1 === 0) { data.buffer.push(stack1); }
-    data.buffer.push("\n        ");
-    stack1 = (helper = helpers['link-to'] || (depth0 && depth0['link-to']),options={hash:{},hashTypes:{},hashContexts:{},inverse:self.noop,fn:self.program(9, program9, data),contexts:[depth0],types:["STRING"],data:data},helper ? helper.call(depth0, "financial", options) : helperMissing.call(depth0, "link-to", "financial", options));
-    if(stack1 || stack1 === 0) { data.buffer.push(stack1); }
-    data.buffer.push("\n        ");
-    stack1 = (helper = helpers['link-to'] || (depth0 && depth0['link-to']),options={hash:{},hashTypes:{},hashContexts:{},inverse:self.noop,fn:self.program(11, program11, data),contexts:[depth0],types:["STRING"],data:data},helper ? helper.call(depth0, "editable", options) : helperMissing.call(depth0, "link-to", "editable", options));
-    if(stack1 || stack1 === 0) { data.buffer.push(stack1); }
-    data.buffer.push("\n        ");
-    stack1 = (helper = helpers['link-to'] || (depth0 && depth0['link-to']),options={hash:{},hashTypes:{},hashContexts:{},inverse:self.noop,fn:self.program(13, program13, data),contexts:[depth0],types:["STRING"],data:data},helper ? helper.call(depth0, "sparkline", options) : helperMissing.call(depth0, "link-to", "sparkline", options));
-    if(stack1 || stack1 === 0) { data.buffer.push(stack1); }
-    data.buffer.push("\n        ");
-    stack1 = (helper = helpers['link-to'] || (depth0 && depth0['link-to']),options={hash:{},hashTypes:{},hashContexts:{},inverse:self.noop,fn:self.program(15, program15, data),contexts:[depth0],types:["STRING"],data:data},helper ? helper.call(depth0, "horizon", options) : helperMissing.call(depth0, "link-to", "horizon", options));
-    if(stack1 || stack1 === 0) { data.buffer.push(stack1); }
-    data.buffer.push("\n        ");
-    stack1 = (helper = helpers['link-to'] || (depth0 && depth0['link-to']),options={hash:{},hashTypes:{},hashContexts:{},inverse:self.noop,fn:self.program(17, program17, data),contexts:[depth0],types:["STRING"],data:data},helper ? helper.call(depth0, "configurable-columns", options) : helperMissing.call(depth0, "link-to", "configurable-columns", options));
-    if(stack1 || stack1 === 0) { data.buffer.push(stack1); }
-    data.buffer.push("\n      </div>\n      <p>Looking for more ways to extend ember-table? Check out the ");
-    stack1 = (helper = helpers['link-to'] || (depth0 && depth0['link-to']),options={hash:{},hashTypes:{},hashContexts:{},inverse:self.noop,fn:self.program(19, program19, data),contexts:[depth0],types:["STRING"],data:data},helper ? helper.call(depth0, "community-examples", options) : helperMissing.call(depth0, "link-to", "community-examples", options));
-    if(stack1 || stack1 === 0) { data.buffer.push(stack1); }
-    data.buffer.push(".</p>\n    </div>\n  </div>\n\n  <div class=\"row\">\n    <div class=\"col-md-6\">\n      <hr>\n      <h1>Getting Started</h1>\n      <p>You will need <a target=\"_BLANK\" href=\"http://nodejs.org/\">node</a> installed as a development dependency.</p>\n      <p><a target=\"_BLANK\" href=\"https://github.com/Addepar/ember-table/\">Clone it from Github</a> or <a target=\"_BLANK\" href=\"https://github.com/Addepar/ember-table/releases\">download the ZIP repo</a></p>\n      <div class=\"highlight\">\n<pre><code>$ npm install -g grunt-cli\n$ npm install\n$ bower install\n$ ember serve</code></pre>\n      <p>Go to your browser and navigate to <a target=\"_BLANK\" href=\"http://localhost:4200\">localhost:4200</a></p>\n      </div>\n    </div>\n    <div class=\"col-md-6\">\n      <hr>\n      <h1>Contributing</h1>\n      <p>You can contribute to this project in one of two ways:</p>\n      <ul class=\"styled\">\n        <li>Browse the ember-table <a target=\"_BLANK\" href=\"https://github.com/Addepar/ember-table/issues?state=open\">issues</a> and report bugs</li>\n        <li>Clone the ember-table repo, make some changes according to our development guidelines and issue a pull-request with your changes.</li>\n      </ul>\n      <p>We keep the ember-table.js code to the minimum necessary, giving users as much control as possible.</p>\n    </div>\n  </div>\n\n  <div class=\"row\">\n    <div class=\"col-md-6\">\n      <hr>\n      <h1>Changelog</h1>\n      <p>The current version is 0.5.1.</p>\n      <p>For the full list of changes, please see <a target=\"_BLANK\" href=\"https://github.com/Addepar/ember-table/blob/master/CHANGELOG.md\">CHANGELOG.md</a>.</p>\n    </div>\n    <div class=\"col-md-6\">\n      <hr>\n      <h1>Acknowledgements</h1>\n      <p><a target=\"_BLANK\" href=\"https://github.com/Addepar/ember-table/graphs/contributors\">List of Contributors on Github</a></p>\n      <p>With lots of help from the Ember.js team</p>\n      <p><a target=\"_BLANK\" href=\"https://twitter.com/ebryn\">ebryn</a>, <a target=\"_BLANK\" href=\"https://twitter.com/tomdale\">tomdale</a>, <a target=\"_BLANK\" href=\"https://twitter.com/wycats\">wycats</a></p>\n      <p>The original idea for lazy rendering was inspired by Erik Bryn.</p>\n    </div>\n  </div>\n</div>\n");
+    },"hashTypes":{'data': "ID"},"hashContexts":{'data': depth0},"types":[],"contexts":[],"data":data}))));
+    data.buffer.push("\n        </div>\n      </div>\n    </div>\n  </div>\n\n  <div class=\"row\">\n    <div class=\"col-md-6\">\n      <h3>Features</h3>\n      <ul class=\"styled\">\n        <li>Lazy rendering and support for millions of rows</li>\n        <li>Support for column resizing and reordering</li>\n        <li>Configurable, customizable, and extendable</li>\n      </ul>\n    </div>\n    <div class=\"col-md-6\">\n      <h3>Dependencies</h3>\n      <ul class=\"styled\">\n        <li><a target=\"_BLANK\" href=\"http://emberjs.com/\">ember</a></li>\n        <li><a target=\"_BLANK\" href=\"http://jqueryui.com/download/#!components=1110001010000000000000000000000000\">\n          jquery-ui</a>\n          <br>\n          <small>(only core, widget, mouse, resizable, and sortable modules required)</small>\n        </li>\n        <li><a target=\"_BLANK\" href=\"https://github.com/brandonaaron/jquery-mousewheel\">jquery.mousewheel</a></li>\n        <li><a target=\"_BLANK\" href=\"https://github.com/azirbel/antiscroll\">antiscroll</a></li>\n      </ul>\n    </div>\n  </div>\n\n  <div class=\"row\">\n    <div class=\"col-md-12\">\n      <hr>\n      <h1>Examples</h1>\n      <p class=\"elevated\">The examples below demonstrate how you can extend and customize the table.</p>\n      <div class=\"row ember-table-examples\">\n");
+    stack1 = ((helpers['link-to'] || (depth0 && depth0['link-to']) || helperMissing).call(depth0, "simple", {"name":"link-to","hash":{},"hashTypes":{},"hashContexts":{},"fn":this.program(1, data),"inverse":this.noop,"types":["STRING"],"contexts":[depth0],"data":data}));
+    if (stack1 != null) { data.buffer.push(stack1); }
+    stack1 = ((helpers['link-to'] || (depth0 && depth0['link-to']) || helperMissing).call(depth0, "ajax", {"name":"link-to","hash":{},"hashTypes":{},"hashContexts":{},"fn":this.program(3, data),"inverse":this.noop,"types":["STRING"],"contexts":[depth0],"data":data}));
+    if (stack1 != null) { data.buffer.push(stack1); }
+    stack1 = ((helpers['link-to'] || (depth0 && depth0['link-to']) || helperMissing).call(depth0, "bars", {"name":"link-to","hash":{},"hashTypes":{},"hashContexts":{},"fn":this.program(5, data),"inverse":this.noop,"types":["STRING"],"contexts":[depth0],"data":data}));
+    if (stack1 != null) { data.buffer.push(stack1); }
+    stack1 = ((helpers['link-to'] || (depth0 && depth0['link-to']) || helperMissing).call(depth0, "dynamic-bars", {"name":"link-to","hash":{},"hashTypes":{},"hashContexts":{},"fn":this.program(7, data),"inverse":this.noop,"types":["STRING"],"contexts":[depth0],"data":data}));
+    if (stack1 != null) { data.buffer.push(stack1); }
+    stack1 = ((helpers['link-to'] || (depth0 && depth0['link-to']) || helperMissing).call(depth0, "financial", {"name":"link-to","hash":{},"hashTypes":{},"hashContexts":{},"fn":this.program(9, data),"inverse":this.noop,"types":["STRING"],"contexts":[depth0],"data":data}));
+    if (stack1 != null) { data.buffer.push(stack1); }
+    stack1 = ((helpers['link-to'] || (depth0 && depth0['link-to']) || helperMissing).call(depth0, "editable", {"name":"link-to","hash":{},"hashTypes":{},"hashContexts":{},"fn":this.program(11, data),"inverse":this.noop,"types":["STRING"],"contexts":[depth0],"data":data}));
+    if (stack1 != null) { data.buffer.push(stack1); }
+    stack1 = ((helpers['link-to'] || (depth0 && depth0['link-to']) || helperMissing).call(depth0, "sparkline", {"name":"link-to","hash":{},"hashTypes":{},"hashContexts":{},"fn":this.program(13, data),"inverse":this.noop,"types":["STRING"],"contexts":[depth0],"data":data}));
+    if (stack1 != null) { data.buffer.push(stack1); }
+    stack1 = ((helpers['link-to'] || (depth0 && depth0['link-to']) || helperMissing).call(depth0, "horizon", {"name":"link-to","hash":{},"hashTypes":{},"hashContexts":{},"fn":this.program(15, data),"inverse":this.noop,"types":["STRING"],"contexts":[depth0],"data":data}));
+    if (stack1 != null) { data.buffer.push(stack1); }
+    stack1 = ((helpers['link-to'] || (depth0 && depth0['link-to']) || helperMissing).call(depth0, "configurable-columns", {"name":"link-to","hash":{},"hashTypes":{},"hashContexts":{},"fn":this.program(17, data),"inverse":this.noop,"types":["STRING"],"contexts":[depth0],"data":data}));
+    if (stack1 != null) { data.buffer.push(stack1); }
+    data.buffer.push("      </div>\n      <p>Looking for more ways to extend ember-table? Check out the ");
+    stack1 = ((helpers['link-to'] || (depth0 && depth0['link-to']) || helperMissing).call(depth0, "community-examples", {"name":"link-to","hash":{},"hashTypes":{},"hashContexts":{},"fn":this.program(19, data),"inverse":this.noop,"types":["STRING"],"contexts":[depth0],"data":data}));
+    if (stack1 != null) { data.buffer.push(stack1); }
+    data.buffer.push(".</p>\n    </div>\n  </div>\n\n  <div class=\"row\">\n    <div class=\"col-md-6\">\n      <hr>\n      <h1>Getting Started</h1>\n      <p>You will need <a target=\"_BLANK\" href=\"http://nodejs.org/\">node</a> installed as a development dependency.</p>\n      <p><a target=\"_BLANK\" href=\"https://github.com/Addepar/ember-table/\">Clone it from Github</a> or <a target=\"_BLANK\" href=\"https://github.com/Addepar/ember-table/releases\">download the ZIP repo</a></p>\n      <div class=\"highlight\">\n<pre><code>$ npm install -g grunt-cli\n$ npm install\n$ bower install\n$ ember serve</code></pre>\n      <p>Go to your browser and navigate to <a target=\"_BLANK\" href=\"http://localhost:4200\">localhost:4200</a></p>\n      </div>\n    </div>\n    <div class=\"col-md-6\">\n      <hr>\n      <h1>Contributing</h1>\n      <p>You can contribute to this project in one of two ways:</p>\n      <ul class=\"styled\">\n        <li>Browse the ember-table <a target=\"_BLANK\" href=\"https://github.com/Addepar/ember-table/issues?state=open\">issues</a> and report bugs</li>\n        <li>Clone the ember-table repo, make some changes according to our development guidelines and issue a pull-request with your changes.</li>\n      </ul>\n      <p>We keep the ember-table.js code to the minimum necessary, giving users as much control as possible.</p>\n    </div>\n  </div>\n\n  <div class=\"row\">\n    <div class=\"col-md-6\">\n      <hr>\n      <h1>Changelog</h1>\n      <p>The current version is 0.6.0.</p>\n      <p>For the full list of changes, please see <a target=\"_BLANK\" href=\"https://github.com/Addepar/ember-table/blob/master/CHANGELOG.md\">CHANGELOG.md</a>.</p>\n    </div>\n    <div class=\"col-md-6\">\n      <hr>\n      <h1>Acknowledgements</h1>\n      <p><a target=\"_BLANK\" href=\"https://github.com/Addepar/ember-table/graphs/contributors\">List of Contributors on Github</a></p>\n      <p>With lots of help from the Ember.js team</p>\n      <p><a target=\"_BLANK\" href=\"https://twitter.com/ebryn\">ebryn</a>, <a target=\"_BLANK\" href=\"https://twitter.com/tomdale\">tomdale</a>, <a target=\"_BLANK\" href=\"https://twitter.com/wycats\">wycats</a></p>\n      <p>The original idea for lazy rendering was inspired by Erik Bryn.</p>\n    </div>\n  </div>\n</div>\n");
     return buffer;
-    
-  });
+  },"useData":true});
 
 });
-define('dummy/templates/scroll-container', ['exports', 'ember'], function (exports, Ember) {
+define('dummy/templates/scroll-container', ['exports'], function (exports) {
 
   'use strict';
 
-  exports['default'] = Ember['default'].Handlebars.template(function anonymous(Handlebars,depth0,helpers,partials,data) {
-  this.compilerInfo = [4,'>= 1.0.0'];
-  helpers = this.merge(helpers, Ember['default'].Handlebars.helpers); data = data || {};
-    var buffer = '', escapeExpression=this.escapeExpression;
-
-
+  exports['default'] = Ember.Handlebars.template({"compiler":[6,">= 2.0.0-beta.1"],"main":function(depth0,helpers,partials,data) {
+    var escapeExpression=this.escapeExpression, buffer = '';
     data.buffer.push("<div class=\"antiscroll-wrap\">\n  <div class=\"antiscroll-inner\">\n    ");
-    data.buffer.push(escapeExpression(helpers.view.call(depth0, "scroll-panel", {hash:{},hashTypes:{},hashContexts:{},contexts:[depth0],types:["STRING"],data:data})));
+    data.buffer.push(escapeExpression(helpers.view.call(depth0, "scroll-panel", {"name":"view","hash":{},"hashTypes":{},"hashContexts":{},"types":["STRING"],"contexts":[depth0],"data":data})));
     data.buffer.push("\n  </div>\n</div>\n");
     return buffer;
-    
-  });
+  },"useData":true});
 
 });
-define('dummy/templates/simple-table/simple-table', ['exports', 'ember'], function (exports, Ember) {
+define('dummy/templates/simple-table/simple-table', ['exports'], function (exports) {
 
   'use strict';
 
-  exports['default'] = Ember['default'].Handlebars.template(function anonymous(Handlebars,depth0,helpers,partials,data) {
-  this.compilerInfo = [4,'>= 1.0.0'];
-  helpers = this.merge(helpers, Ember['default'].Handlebars.helpers); data = data || {};
-    var buffer = '', helper, options, helperMissing=helpers.helperMissing, escapeExpression=this.escapeExpression;
-
-
-    data.buffer.push(escapeExpression((helper = helpers['ember-table'] || (depth0 && depth0['ember-table']),options={hash:{
-      'hasFooter': (false),
+  exports['default'] = Ember.Handlebars.template({"compiler":[6,">= 2.0.0-beta.1"],"main":function(depth0,helpers,partials,data) {
+    var helperMissing=helpers.helperMissing, escapeExpression=this.escapeExpression, buffer = '';
+    data.buffer.push(escapeExpression(((helpers['ember-table'] || (depth0 && depth0['ember-table']) || helperMissing).call(depth0, {"name":"ember-table","hash":{
+      'content': ("tableContent"),
       'columns': ("tableColumns"),
-      'content': ("tableContent")
-    },hashTypes:{'hasFooter': "BOOLEAN",'columns': "ID",'content': "ID"},hashContexts:{'hasFooter': depth0,'columns': depth0,'content': depth0},contexts:[],types:[],data:data},helper ? helper.call(depth0, options) : helperMissing.call(depth0, "ember-table", options))));
+      'hasFooter': (false)
+    },"hashTypes":{'content': "ID",'columns': "ID",'hasFooter': "BOOLEAN"},"hashContexts":{'content': depth0,'columns': depth0,'hasFooter': depth0},"types":[],"contexts":[],"data":data}))));
     data.buffer.push("\n");
     return buffer;
-    
-  });
+  },"useData":true});
 
 });
-define('dummy/templates/simple', ['exports', 'ember'], function (exports, Ember) {
+define('dummy/templates/simple', ['exports'], function (exports) {
 
   'use strict';
 
-  exports['default'] = Ember['default'].Handlebars.template(function anonymous(Handlebars,depth0,helpers,partials,data) {
-  this.compilerInfo = [4,'>= 1.0.0'];
-  helpers = this.merge(helpers, Ember['default'].Handlebars.helpers); data = data || {};
-    var buffer = '', helper, options, helperMissing=helpers.helperMissing, escapeExpression=this.escapeExpression;
-
-
+  exports['default'] = Ember.Handlebars.template({"compiler":[6,">= 2.0.0-beta.1"],"main":function(depth0,helpers,partials,data) {
+    var helperMissing=helpers.helperMissing, escapeExpression=this.escapeExpression, buffer = '';
     data.buffer.push("<div class=\"col-md-10 col-md-offset-2 left-border main-content-container\">\n  <h1>Ember Table <small>Simple</small></h1>\n\n  <div class=\"row\">\n    <div class=\"col-md-12\">\n      <div class=\"example-container\">\n        <div class=\"ember-table-example-container\">\n          ");
-    data.buffer.push(escapeExpression((helper = helpers.partial || (depth0 && depth0.partial),options={hash:{},hashTypes:{},hashContexts:{},contexts:[depth0],types:["STRING"],data:data},helper ? helper.call(depth0, "simple-table/simple-table", options) : helperMissing.call(depth0, "partial", "simple-table/simple-table", options))));
-    data.buffer.push("\n        </div>\n      </div>\n    </div>\n\n    \n    <div class=\"col-md-12 bumper-30\">\n      <h3>Template</h3>\n      <div class=\"highlight\">\n        <pre class=\"prettyprint lang-html\">{{ember-table\n  hasFooter=false\n  columns=tableColumns\n  content=tableContent\n}}\n</pre>\n      </div>\n    </div>\n\n    <div class=\"col-md-12 bumper-30\">\n      <h3>Controller</h3>\n      <div class=\"highlight\">\n        <pre class=\"prettyprint lang-js\">import Ember from &#39;ember&#39;;\nimport ColumnDefinition from &#39;ember-table&#x2F;models&#x2F;column-definition&#39;;\n\nexport default Ember.Controller.extend({\n  tableColumns: Ember.computed(function() {\n    var dateColumn = ColumnDefinition.create({\n      savedWidth: 150,\n      textAlign: &#39;text-align-left&#39;,\n      headerCellName: &#39;Date&#39;,\n      getCellContent: function(row) {\n        return row.get(&#39;date&#39;).toDateString();\n      }\n    });\n    var openColumn = ColumnDefinition.create({\n      savedWidth: 100,\n      headerCellName: &#39;Open&#39;,\n      getCellContent: function(row) {\n        return row.get(&#39;open&#39;).toFixed(2);\n      }\n    });\n    var highColumn = ColumnDefinition.create({\n      savedWidth: 100,\n      headerCellName: &#39;High&#39;,\n      getCellContent: function(row) {\n        return row.get(&#39;high&#39;).toFixed(2);\n      }\n    });\n    var lowColumn = ColumnDefinition.create({\n      savedWidth: 100,\n      headerCellName: &#39;Low&#39;,\n      getCellContent: function(row) {\n        return row.get(&#39;low&#39;).toFixed(2);\n      }\n    });\n    var closeColumn = ColumnDefinition.create({\n      savedWidth: 100,\n      headerCellName: &#39;Close&#39;,\n      getCellContent: function(row) {\n        return row.get(&#39;close&#39;).toFixed(2);\n      }\n    });\n    return [dateColumn, openColumn, highColumn, lowColumn, closeColumn];\n  }),\n\n  tableContent: Ember.computed(function() {\n    var content = [];\n    var date;\n    for (var i = 0; i &lt; 100; i++) {\n      date = new Date();\n      date.setDate(date.getDate() + i);\n      content.pushObject({\n        date: date,\n        open: Math.random() * 100 - 50,\n        high: Math.random() * 100 - 50,\n        low: Math.random() * 100 - 50,\n        close: Math.random() * 100 - 50,\n        volume: Math.random() * 1000000\n      });\n    }\n    return content;\n  })\n});\n</pre>\n      </div>\n    </div>\n  </div>\n</div>\n");
+    data.buffer.push(escapeExpression(((helpers.partial || (depth0 && depth0.partial) || helperMissing).call(depth0, "simple-table/simple-table", {"name":"partial","hash":{},"hashTypes":{},"hashContexts":{},"types":["STRING"],"contexts":[depth0],"data":data}))));
+    data.buffer.push("\n        </div>\n      </div>\n    </div>\n\n    <div class=\"col-md-12 bumper-30\">\n      <h3>Template</h3>\n      <div class=\"highlight\">\n        <pre class=\"prettyprint lang-html\">{{ember-table\n  hasFooter=false\n  columns=tableColumns\n  content=tableContent\n}}\n</pre>\n      </div>\n    </div>\n\n    <div class=\"col-md-12 bumper-30\">\n      <h3>Controller</h3>\n      <div class=\"highlight\">\n        <pre class=\"prettyprint lang-js\">import Ember from &#39;ember&#39;;\nimport ColumnDefinition from &#39;ember-table&#x2F;models&#x2F;column-definition&#39;;\n\nexport default Ember.Controller.extend({\n  tableColumns: Ember.computed(function() {\n    var dateColumn = ColumnDefinition.create({\n      savedWidth: 150,\n      textAlign: &#39;text-align-left&#39;,\n      headerCellName: &#39;Date&#39;,\n      getCellContent: function(row) {\n        return row.get(&#39;date&#39;).toDateString();\n      }\n    });\n    var openColumn = ColumnDefinition.create({\n      savedWidth: 100,\n      headerCellName: &#39;Open&#39;,\n      getCellContent: function(row) {\n        return row.get(&#39;open&#39;).toFixed(2);\n      }\n    });\n    var highColumn = ColumnDefinition.create({\n      savedWidth: 100,\n      headerCellName: &#39;High&#39;,\n      getCellContent: function(row) {\n        return row.get(&#39;high&#39;).toFixed(2);\n      }\n    });\n    var lowColumn = ColumnDefinition.create({\n      savedWidth: 100,\n      headerCellName: &#39;Low&#39;,\n      getCellContent: function(row) {\n        return row.get(&#39;low&#39;).toFixed(2);\n      }\n    });\n    var closeColumn = ColumnDefinition.create({\n      savedWidth: 100,\n      headerCellName: &#39;Close&#39;,\n      getCellContent: function(row) {\n        return row.get(&#39;close&#39;).toFixed(2);\n      }\n    });\n    return [dateColumn, openColumn, highColumn, lowColumn, closeColumn];\n  }),\n\n  tableContent: Ember.computed(function() {\n    var content = [];\n    var date;\n    for (var i = 0; i &lt; 100; i++) {\n      date = new Date();\n      date.setDate(date.getDate() + i);\n      content.pushObject({\n        date: date,\n        open: Math.random() * 100 - 50,\n        high: Math.random() * 100 - 50,\n        low: Math.random() * 100 - 50,\n        close: Math.random() * 100 - 50,\n        volume: Math.random() * 1000000\n      });\n    }\n    return content;\n  })\n});\n</pre>\n      </div>\n    </div>\n  </div>\n</div>\n");
     return buffer;
-    
-  });
+  },"useData":true});
 
 });
-define('dummy/templates/sparkline-table/sparkline-table', ['exports', 'ember'], function (exports, Ember) {
+define('dummy/templates/sparkline-table/sparkline-table', ['exports'], function (exports) {
 
   'use strict';
 
-  exports['default'] = Ember['default'].Handlebars.template(function anonymous(Handlebars,depth0,helpers,partials,data) {
-  this.compilerInfo = [4,'>= 1.0.0'];
-  helpers = this.merge(helpers, Ember['default'].Handlebars.helpers); data = data || {};
-    var buffer = '', helper, options, helperMissing=helpers.helperMissing, escapeExpression=this.escapeExpression;
-
-
-    data.buffer.push(escapeExpression((helper = helpers['ember-table'] || (depth0 && depth0['ember-table']),options={hash:{
-      'hasHeader': (true),
-      'hasFooter': (false),
-      'numFixedColumns': (1),
-      'rowHeight': (30),
+  exports['default'] = Ember.Handlebars.template({"compiler":[6,">= 2.0.0-beta.1"],"main":function(depth0,helpers,partials,data) {
+    var helperMissing=helpers.helperMissing, escapeExpression=this.escapeExpression, buffer = '';
+    data.buffer.push(escapeExpression(((helpers['ember-table'] || (depth0 && depth0['ember-table']) || helperMissing).call(depth0, {"name":"ember-table","hash":{
+      'content': ("tableContent"),
       'columns': ("tableColumns"),
-      'content': ("tableContent")
-    },hashTypes:{'hasHeader': "BOOLEAN",'hasFooter': "BOOLEAN",'numFixedColumns': "INTEGER",'rowHeight': "INTEGER",'columns': "ID",'content': "ID"},hashContexts:{'hasHeader': depth0,'hasFooter': depth0,'numFixedColumns': depth0,'rowHeight': depth0,'columns': depth0,'content': depth0},contexts:[],types:[],data:data},helper ? helper.call(depth0, options) : helperMissing.call(depth0, "ember-table", options))));
+      'rowHeight': (30),
+      'numFixedColumns': (1),
+      'hasFooter': (false),
+      'hasHeader': (true)
+    },"hashTypes":{'content': "ID",'columns': "ID",'rowHeight': "NUMBER",'numFixedColumns': "NUMBER",'hasFooter': "BOOLEAN",'hasHeader': "BOOLEAN"},"hashContexts":{'content': depth0,'columns': depth0,'rowHeight': depth0,'numFixedColumns': depth0,'hasFooter': depth0,'hasHeader': depth0},"types":[],"contexts":[],"data":data}))));
     data.buffer.push("\n");
     return buffer;
-    
-  });
+  },"useData":true});
 
 });
-define('dummy/templates/sparkline', ['exports', 'ember'], function (exports, Ember) {
+define('dummy/templates/sparkline', ['exports'], function (exports) {
 
   'use strict';
 
-  exports['default'] = Ember['default'].Handlebars.template(function anonymous(Handlebars,depth0,helpers,partials,data) {
-  this.compilerInfo = [4,'>= 1.0.0'];
-  helpers = this.merge(helpers, Ember['default'].Handlebars.helpers); data = data || {};
-    var buffer = '', helper, options, helperMissing=helpers.helperMissing, escapeExpression=this.escapeExpression;
-
-
+  exports['default'] = Ember.Handlebars.template({"compiler":[6,">= 2.0.0-beta.1"],"main":function(depth0,helpers,partials,data) {
+    var helperMissing=helpers.helperMissing, escapeExpression=this.escapeExpression, buffer = '';
     data.buffer.push("<div class=\"col-md-10 col-md-offset-2 left-border main-content-container\">\n  <h1>Ember Table <small>Sparkline</small></h1>\n\n  <div class=\"row\">\n    <div class=\"col-md-12\">\n      <div class=\"example-container\">\n        <div class=\"ember-table-example-container\">\n          ");
-    data.buffer.push(escapeExpression((helper = helpers.partial || (depth0 && depth0.partial),options={hash:{},hashTypes:{},hashContexts:{},contexts:[depth0],types:["STRING"],data:data},helper ? helper.call(depth0, "sparkline-table/sparkline-table", options) : helperMissing.call(depth0, "partial", "sparkline-table/sparkline-table", options))));
+    data.buffer.push(escapeExpression(((helpers.partial || (depth0 && depth0.partial) || helperMissing).call(depth0, "sparkline-table/sparkline-table", {"name":"partial","hash":{},"hashTypes":{},"hashContexts":{},"types":["STRING"],"contexts":[depth0],"data":data}))));
     data.buffer.push("\n        </div>\n      </div>\n    </div>\n\n    <div class=\"col-md-12 bumper-30\">\n      <h3>Template</h3>\n      <div class=\"highlight\">\n        <pre class=\"prettyprint lang-html\">{{ember-table\n  hasHeader=true\n  hasFooter=false\n  numFixedColumns=1\n  rowHeight=30\n  columns=tableColumns\n  content=tableContent\n}}\n</pre>\n      </div>\n    </div>\n\n    <div class=\"col-md-12 bumper-30\">\n      <h3>Controller</h3>\n      <div class=\"highlight\">\n        <pre class=\"prettyprint lang-js\">import Ember from &#39;ember&#39;;\nimport ColumnDefinition from &#39;ember-table&#x2F;models&#x2F;column-definition&#39;;\n\nexport default Ember.Controller.extend({\n  tableColumns: Ember.computed(function() {\n    var name = ColumnDefinition.create({\n      savedWidth: 100,\n      headerCellName: &#39;Name&#39;,\n      getCellContent: function(row) {\n        return &#39;Asset &#39; + row.get(&#39;name&#39;);\n      }\n    });\n    var open = ColumnDefinition.create({\n      savedWidth: 100,\n      headerCellName: &#39;Open&#39;,\n      getCellContent: function(row) {\n        return row.get(&#39;open&#39;).toFixed(2);\n      }\n    });\n    var spark = ColumnDefinition.create({\n      savedWidth: 200,\n      headerCellName: &#39;Sparkline&#39;,\n      tableCellViewClass: &#39;sparkline-table-cell&#39;,\n      contentPath: &#39;timeseries&#39;\n    });\n    var close = ColumnDefinition.create({\n      savedWidth: 100,\n      headerCellName: &#39;Close&#39;,\n      getCellContent: function(row) {\n        return row.get(&#39;close&#39;).toFixed(2);\n      }\n    });\n    var low = ColumnDefinition.create({\n      savedWidth: 100,\n      headerCellName: &#39;Low&#39;,\n      getCellContent: function(row) {\n        return row.get(&#39;low&#39;).toFixed(2);\n      }\n    });\n    var high = ColumnDefinition.create({\n      savedWidth: 100,\n      headerCellName: &#39;High&#39;,\n      getCellContent: function(row) {\n        return row.get(&#39;high&#39;).toFixed(2);\n      }\n    });\n    return [name, open, spark, close, low, high];\n  }),\n\n  tableContent: Ember.computed(function() {\n    var randomWalk = function(numSteps) {\n      var lastValue = 0;\n      var walk = [];\n      for (var i = 0; i &lt; numSteps; i++) {\n        lastValue = lastValue + d3.random.normal()();\n        walk.push(lastValue);\n      }\n      return walk;\n    };\n    var content = [];\n    var data;\n    for (var i = 0; i &lt; 100; i++) {\n      data = randomWalk(100);\n      content.pushObject({\n        name: i,\n        timeseries: data,\n        open: data[0],\n        close: data[99],\n        low: Math.min.apply(null, data),\n        high: Math.max.apply(null, data)\n      });\n    }\n    return content;\n  })\n});\n</pre>\n      </div>\n    </div>\n\n    <div class=\"col-md-12 bumper-30\">\n      <h3>views/sparkline_table_cell.js</h3>\n      <div class=\"highlight\">\n        <pre class=\"prettyprint lang-js\">import Ember from &#39;ember&#39;;\nimport TableCell from &#39;ember-table&#x2F;views&#x2F;table-cell&#39;;\n\nexport default TableCell.extend({\n  templateName: &#39;empty-cell&#39;,\n  heightBinding: &#39;controller.rowHeight&#39;,\n\n  onContentOrSizeDidChange: Ember.observer(function() {\n    this.$(&#39;svg&#39;).remove();\n    this.renderD3View();\n  }, &#39;row&#39;, &#39;width&#39;),\n\n  didInsertElement: function() {\n    this.renderD3View();\n    &#x2F;&#x2F; TODO(azirbel): Add _this.super()\n  },\n\n  renderD3View: function() {\n    var data = this.get(&#39;row.timeseries&#39;);\n    if (!data) {\n      return;\n    }\n    var h = this.get(&#39;height&#39;);\n    var w = this.get(&#39;width&#39;);\n    var p = 2;\n    var min = Math.min.apply(null, data);\n    var max = Math.max.apply(null, data);\n    var len = data.length;\n    var fill = d3.scale.category10();\n    var xscale = d3.scale.linear().domain([0, len]).range([p, w - p]);\n    var yscale = d3.scale.linear().domain([min, max]).range([h - p, p]);\n    var line = d3.svg.line().x(function(d, i) {\n      return xscale(i);\n    }).y(function(d) {\n      return yscale(d);\n    });\n    var svg = d3.select(&#39;#&#39; + (this.get(&#39;elementId&#39;))).append(&#39;svg:svg&#39;).attr(&#39;height&#39;, h).attr(&#39;width&#39;, w);\n    var g = svg.append(&#39;svg:g&#39;);\n    g.append(&#39;svg:path&#39;).attr(&#39;d&#39;, line(data)).attr(&#39;stroke&#39;, function() {\n      return fill(Math.round(Math.random()) * 10);\n    }).attr(&#39;fill&#39;, &#39;none&#39;);\n  }\n});\n</pre>\n      </div>\n    </div>\n  </div>\n</div>\n");
     return buffer;
-    
-  });
+  },"useData":true});
 
 });
-define('dummy/templates/sub-navigation', ['exports', 'ember'], function (exports, Ember) {
+define('dummy/templates/sub-navigation', ['exports'], function (exports) {
 
   'use strict';
 
-  exports['default'] = Ember['default'].Handlebars.template(function anonymous(Handlebars,depth0,helpers,partials,data) {
-  this.compilerInfo = [4,'>= 1.0.0'];
-  helpers = this.merge(helpers, Ember['default'].Handlebars.helpers); data = data || {};
-    var buffer = '', stack1, helper, options, self=this, helperMissing=helpers.helperMissing;
-
-  function program1(depth0,data) {
-    
-    
+  exports['default'] = Ember.Handlebars.template({"1":function(depth0,helpers,partials,data) {
     data.buffer.push("Overview &amp; Getting Started");
-    }
-
-  function program3(depth0,data) {
-    
-    
+    },"3":function(depth0,helpers,partials,data) {
     data.buffer.push("API &amp; Documentation");
-    }
-
-  function program5(depth0,data) {
-    
-    
+    },"5":function(depth0,helpers,partials,data) {
     data.buffer.push("Migration Guides");
-    }
-
-  function program7(depth0,data) {
-    
-    
+    },"7":function(depth0,helpers,partials,data) {
     data.buffer.push("Hello World table");
-    }
-
-  function program9(depth0,data) {
-    
-    
+    },"9":function(depth0,helpers,partials,data) {
     data.buffer.push("AJAX cells");
-    }
-
-  function program11(depth0,data) {
-    
-    
+    },"11":function(depth0,helpers,partials,data) {
     data.buffer.push("Bar cells");
-    }
-
-  function program13(depth0,data) {
-    
-    
+    },"13":function(depth0,helpers,partials,data) {
     data.buffer.push("Dynamic bar cells");
-    }
-
-  function program15(depth0,data) {
-    
-    
+    },"15":function(depth0,helpers,partials,data) {
     data.buffer.push("Tree &amp; financial table");
-    }
-
-  function program17(depth0,data) {
-    
-    
+    },"17":function(depth0,helpers,partials,data) {
     data.buffer.push("Editable cells");
-    }
-
-  function program19(depth0,data) {
-    
-    
+    },"19":function(depth0,helpers,partials,data) {
     data.buffer.push("Sparkline cells");
-    }
-
-  function program21(depth0,data) {
-    
-    
+    },"21":function(depth0,helpers,partials,data) {
     data.buffer.push("Horizon cells");
-    }
-
-  function program23(depth0,data) {
-    
-    
+    },"23":function(depth0,helpers,partials,data) {
     data.buffer.push("Configurable columns");
-    }
-
-  function program25(depth0,data) {
-    
-    
-    data.buffer.push("\n    <ul class=\"list-unstyled project-navigation\">\n      <li class=\"sub-title\">Community Examples</li>\n    </ul>\n  ");
-    }
-
-    data.buffer.push("\n<div class=\"col-md-2 sub-navigation-sidebar\">\n  <ul class=\"list-unstyled github-navigation\">\n    <li>\n      <a class=\"btn btn-default\" target=\"_BLANK\" href=\"https://github.com/addepar/ember-table\">\n        <i class=\"icon-github\"></i> View on GitHub\n      </a>\n    </li>\n    <li>\n      <iframe src=\"http://ghbtns.com/github-btn.html?user=addepar&amp;repo=ember-table&amp;type=watch&amp;count=true\" allowtransparency=\"true\" frameborder=\"0\" scrolling=\"0\" width=\"130\" height=\"30\"></iframe>\n    </li>\n  </ul>\n  <hr>\n  <ul class=\"list-unstyled project-navigation\">\n    <li class=\"sub-title\">Ember Table</li>\n    <li>");
-    stack1 = (helper = helpers['link-to'] || (depth0 && depth0['link-to']),options={hash:{},hashTypes:{},hashContexts:{},inverse:self.noop,fn:self.program(1, program1, data),contexts:[depth0],types:["STRING"],data:data},helper ? helper.call(depth0, "overview", options) : helperMissing.call(depth0, "link-to", "overview", options));
-    if(stack1 || stack1 === 0) { data.buffer.push(stack1); }
+    },"25":function(depth0,helpers,partials,data) {
+    data.buffer.push("    <ul class=\"list-unstyled project-navigation\">\n      <li class=\"sub-title\">Community Examples</li>\n    </ul>\n");
+    },"compiler":[6,">= 2.0.0-beta.1"],"main":function(depth0,helpers,partials,data) {
+    var stack1, helperMissing=helpers.helperMissing, buffer = '';
+    data.buffer.push("<div class=\"col-md-2 sub-navigation-sidebar\">\n  <ul class=\"list-unstyled github-navigation\">\n    <li>\n      <a class=\"btn btn-default\" target=\"_BLANK\" href=\"https://github.com/addepar/ember-table\">\n        <i class=\"icon-github\"></i> View on GitHub\n      </a>\n    </li>\n    <li>\n      <iframe src=\"http://ghbtns.com/github-btn.html?user=addepar&amp;repo=ember-table&amp;type=watch&amp;count=true\" allowtransparency=\"true\" frameborder=\"0\" scrolling=\"0\" width=\"130\" height=\"30\"></iframe>\n    </li>\n  </ul>\n  <hr>\n  <ul class=\"list-unstyled project-navigation\">\n    <li class=\"sub-title\">Ember Table</li>\n    <li>");
+    stack1 = ((helpers['link-to'] || (depth0 && depth0['link-to']) || helperMissing).call(depth0, "overview", {"name":"link-to","hash":{},"hashTypes":{},"hashContexts":{},"fn":this.program(1, data),"inverse":this.noop,"types":["STRING"],"contexts":[depth0],"data":data}));
+    if (stack1 != null) { data.buffer.push(stack1); }
     data.buffer.push("</li>\n    <li>");
-    stack1 = (helper = helpers['link-to'] || (depth0 && depth0['link-to']),options={hash:{},hashTypes:{},hashContexts:{},inverse:self.noop,fn:self.program(3, program3, data),contexts:[depth0],types:["STRING"],data:data},helper ? helper.call(depth0, "documentation", options) : helperMissing.call(depth0, "link-to", "documentation", options));
-    if(stack1 || stack1 === 0) { data.buffer.push(stack1); }
+    stack1 = ((helpers['link-to'] || (depth0 && depth0['link-to']) || helperMissing).call(depth0, "documentation", {"name":"link-to","hash":{},"hashTypes":{},"hashContexts":{},"fn":this.program(3, data),"inverse":this.noop,"types":["STRING"],"contexts":[depth0],"data":data}));
+    if (stack1 != null) { data.buffer.push(stack1); }
     data.buffer.push("</li>\n    <li>");
-    stack1 = (helper = helpers['link-to'] || (depth0 && depth0['link-to']),options={hash:{},hashTypes:{},hashContexts:{},inverse:self.noop,fn:self.program(5, program5, data),contexts:[depth0],types:["STRING"],data:data},helper ? helper.call(depth0, "migration-guides", options) : helperMissing.call(depth0, "link-to", "migration-guides", options));
-    if(stack1 || stack1 === 0) { data.buffer.push(stack1); }
+    stack1 = ((helpers['link-to'] || (depth0 && depth0['link-to']) || helperMissing).call(depth0, "migration-guides", {"name":"link-to","hash":{},"hashTypes":{},"hashContexts":{},"fn":this.program(5, data),"inverse":this.noop,"types":["STRING"],"contexts":[depth0],"data":data}));
+    if (stack1 != null) { data.buffer.push(stack1); }
     data.buffer.push("</li>\n  </ul>\n  <hr>\n  <ul class=\"list-unstyled project-navigation\">\n    <li class=\"sub-title\">Examples</li>\n    <li>");
-    stack1 = (helper = helpers['link-to'] || (depth0 && depth0['link-to']),options={hash:{},hashTypes:{},hashContexts:{},inverse:self.noop,fn:self.program(7, program7, data),contexts:[depth0],types:["STRING"],data:data},helper ? helper.call(depth0, "simple", options) : helperMissing.call(depth0, "link-to", "simple", options));
-    if(stack1 || stack1 === 0) { data.buffer.push(stack1); }
+    stack1 = ((helpers['link-to'] || (depth0 && depth0['link-to']) || helperMissing).call(depth0, "simple", {"name":"link-to","hash":{},"hashTypes":{},"hashContexts":{},"fn":this.program(7, data),"inverse":this.noop,"types":["STRING"],"contexts":[depth0],"data":data}));
+    if (stack1 != null) { data.buffer.push(stack1); }
     data.buffer.push("</li>\n    <li>");
-    stack1 = (helper = helpers['link-to'] || (depth0 && depth0['link-to']),options={hash:{},hashTypes:{},hashContexts:{},inverse:self.noop,fn:self.program(9, program9, data),contexts:[depth0],types:["STRING"],data:data},helper ? helper.call(depth0, "ajax", options) : helperMissing.call(depth0, "link-to", "ajax", options));
-    if(stack1 || stack1 === 0) { data.buffer.push(stack1); }
+    stack1 = ((helpers['link-to'] || (depth0 && depth0['link-to']) || helperMissing).call(depth0, "ajax", {"name":"link-to","hash":{},"hashTypes":{},"hashContexts":{},"fn":this.program(9, data),"inverse":this.noop,"types":["STRING"],"contexts":[depth0],"data":data}));
+    if (stack1 != null) { data.buffer.push(stack1); }
     data.buffer.push("</li>\n    <li>");
-    stack1 = (helper = helpers['link-to'] || (depth0 && depth0['link-to']),options={hash:{},hashTypes:{},hashContexts:{},inverse:self.noop,fn:self.program(11, program11, data),contexts:[depth0],types:["STRING"],data:data},helper ? helper.call(depth0, "bars", options) : helperMissing.call(depth0, "link-to", "bars", options));
-    if(stack1 || stack1 === 0) { data.buffer.push(stack1); }
+    stack1 = ((helpers['link-to'] || (depth0 && depth0['link-to']) || helperMissing).call(depth0, "bars", {"name":"link-to","hash":{},"hashTypes":{},"hashContexts":{},"fn":this.program(11, data),"inverse":this.noop,"types":["STRING"],"contexts":[depth0],"data":data}));
+    if (stack1 != null) { data.buffer.push(stack1); }
     data.buffer.push("</li>\n    <li>");
-    stack1 = (helper = helpers['link-to'] || (depth0 && depth0['link-to']),options={hash:{},hashTypes:{},hashContexts:{},inverse:self.noop,fn:self.program(13, program13, data),contexts:[depth0],types:["STRING"],data:data},helper ? helper.call(depth0, "dynamic-bars", options) : helperMissing.call(depth0, "link-to", "dynamic-bars", options));
-    if(stack1 || stack1 === 0) { data.buffer.push(stack1); }
+    stack1 = ((helpers['link-to'] || (depth0 && depth0['link-to']) || helperMissing).call(depth0, "dynamic-bars", {"name":"link-to","hash":{},"hashTypes":{},"hashContexts":{},"fn":this.program(13, data),"inverse":this.noop,"types":["STRING"],"contexts":[depth0],"data":data}));
+    if (stack1 != null) { data.buffer.push(stack1); }
     data.buffer.push("</li>\n    <li>");
-    stack1 = (helper = helpers['link-to'] || (depth0 && depth0['link-to']),options={hash:{},hashTypes:{},hashContexts:{},inverse:self.noop,fn:self.program(15, program15, data),contexts:[depth0],types:["STRING"],data:data},helper ? helper.call(depth0, "financial", options) : helperMissing.call(depth0, "link-to", "financial", options));
-    if(stack1 || stack1 === 0) { data.buffer.push(stack1); }
+    stack1 = ((helpers['link-to'] || (depth0 && depth0['link-to']) || helperMissing).call(depth0, "financial", {"name":"link-to","hash":{},"hashTypes":{},"hashContexts":{},"fn":this.program(15, data),"inverse":this.noop,"types":["STRING"],"contexts":[depth0],"data":data}));
+    if (stack1 != null) { data.buffer.push(stack1); }
     data.buffer.push("</li>\n    <li>");
-    stack1 = (helper = helpers['link-to'] || (depth0 && depth0['link-to']),options={hash:{},hashTypes:{},hashContexts:{},inverse:self.noop,fn:self.program(17, program17, data),contexts:[depth0],types:["STRING"],data:data},helper ? helper.call(depth0, "editable", options) : helperMissing.call(depth0, "link-to", "editable", options));
-    if(stack1 || stack1 === 0) { data.buffer.push(stack1); }
+    stack1 = ((helpers['link-to'] || (depth0 && depth0['link-to']) || helperMissing).call(depth0, "editable", {"name":"link-to","hash":{},"hashTypes":{},"hashContexts":{},"fn":this.program(17, data),"inverse":this.noop,"types":["STRING"],"contexts":[depth0],"data":data}));
+    if (stack1 != null) { data.buffer.push(stack1); }
     data.buffer.push("</li>\n    <li>");
-    stack1 = (helper = helpers['link-to'] || (depth0 && depth0['link-to']),options={hash:{},hashTypes:{},hashContexts:{},inverse:self.noop,fn:self.program(19, program19, data),contexts:[depth0],types:["STRING"],data:data},helper ? helper.call(depth0, "sparkline", options) : helperMissing.call(depth0, "link-to", "sparkline", options));
-    if(stack1 || stack1 === 0) { data.buffer.push(stack1); }
+    stack1 = ((helpers['link-to'] || (depth0 && depth0['link-to']) || helperMissing).call(depth0, "sparkline", {"name":"link-to","hash":{},"hashTypes":{},"hashContexts":{},"fn":this.program(19, data),"inverse":this.noop,"types":["STRING"],"contexts":[depth0],"data":data}));
+    if (stack1 != null) { data.buffer.push(stack1); }
     data.buffer.push("</li>\n    <li>");
-    stack1 = (helper = helpers['link-to'] || (depth0 && depth0['link-to']),options={hash:{},hashTypes:{},hashContexts:{},inverse:self.noop,fn:self.program(21, program21, data),contexts:[depth0],types:["STRING"],data:data},helper ? helper.call(depth0, "horizon", options) : helperMissing.call(depth0, "link-to", "horizon", options));
-    if(stack1 || stack1 === 0) { data.buffer.push(stack1); }
+    stack1 = ((helpers['link-to'] || (depth0 && depth0['link-to']) || helperMissing).call(depth0, "horizon", {"name":"link-to","hash":{},"hashTypes":{},"hashContexts":{},"fn":this.program(21, data),"inverse":this.noop,"types":["STRING"],"contexts":[depth0],"data":data}));
+    if (stack1 != null) { data.buffer.push(stack1); }
     data.buffer.push("</li>\n    <li>");
-    stack1 = (helper = helpers['link-to'] || (depth0 && depth0['link-to']),options={hash:{},hashTypes:{},hashContexts:{},inverse:self.noop,fn:self.program(23, program23, data),contexts:[depth0],types:["STRING"],data:data},helper ? helper.call(depth0, "configurable-columns", options) : helperMissing.call(depth0, "link-to", "configurable-columns", options));
-    if(stack1 || stack1 === 0) { data.buffer.push(stack1); }
-    data.buffer.push("</li>\n  </ul>\n  <hr>\n  ");
-    stack1 = (helper = helpers['link-to'] || (depth0 && depth0['link-to']),options={hash:{},hashTypes:{},hashContexts:{},inverse:self.noop,fn:self.program(25, program25, data),contexts:[depth0],types:["STRING"],data:data},helper ? helper.call(depth0, "community-examples", options) : helperMissing.call(depth0, "link-to", "community-examples", options));
-    if(stack1 || stack1 === 0) { data.buffer.push(stack1); }
-    data.buffer.push("\n</div>\n");
+    stack1 = ((helpers['link-to'] || (depth0 && depth0['link-to']) || helperMissing).call(depth0, "configurable-columns", {"name":"link-to","hash":{},"hashTypes":{},"hashContexts":{},"fn":this.program(23, data),"inverse":this.noop,"types":["STRING"],"contexts":[depth0],"data":data}));
+    if (stack1 != null) { data.buffer.push(stack1); }
+    data.buffer.push("</li>\n  </ul>\n  <hr>\n");
+    stack1 = ((helpers['link-to'] || (depth0 && depth0['link-to']) || helperMissing).call(depth0, "community-examples", {"name":"link-to","hash":{},"hashTypes":{},"hashContexts":{},"fn":this.program(25, data),"inverse":this.noop,"types":["STRING"],"contexts":[depth0],"data":data}));
+    if (stack1 != null) { data.buffer.push(stack1); }
+    data.buffer.push("</div>\n");
     return buffer;
-    
-  });
+  },"useData":true});
 
 });
-define('dummy/templates/table-cell', ['exports', 'ember'], function (exports, Ember) {
+define('dummy/templates/table-cell', ['exports'], function (exports) {
 
   'use strict';
 
-  exports['default'] = Ember['default'].Handlebars.template(function anonymous(Handlebars,depth0,helpers,partials,data) {
-  this.compilerInfo = [4,'>= 1.0.0'];
-  helpers = this.merge(helpers, Ember['default'].Handlebars.helpers); data = data || {};
-    var buffer = '', stack1;
-
-
+  exports['default'] = Ember.Handlebars.template({"compiler":[6,">= 2.0.0-beta.1"],"main":function(depth0,helpers,partials,data) {
+    var stack1, buffer = '';
     data.buffer.push("<span class=\"ember-table-content\">\n  ");
-    stack1 = helpers._triageMustache.call(depth0, "view.cellContent", {hash:{},hashTypes:{},hashContexts:{},contexts:[depth0],types:["ID"],data:data});
-    if(stack1 || stack1 === 0) { data.buffer.push(stack1); }
+    stack1 = helpers._triageMustache.call(depth0, "view.cellContent", {"name":"_triageMustache","hash":{},"hashTypes":{},"hashContexts":{},"types":["ID"],"contexts":[depth0],"data":data});
+    if (stack1 != null) { data.buffer.push(stack1); }
     data.buffer.push("\n</span>");
     return buffer;
-    
-  });
+  },"useData":true});
 
 });
-define('dummy/templates/table-row', ['exports', 'ember'], function (exports, Ember) {
+define('dummy/templates/table-row', ['exports'], function (exports) {
 
   'use strict';
 
-  exports['default'] = Ember['default'].Handlebars.template(function anonymous(Handlebars,depth0,helpers,partials,data) {
-  this.compilerInfo = [4,'>= 1.0.0'];
-  helpers = this.merge(helpers, Ember['default'].Handlebars.helpers); data = data || {};
-    var buffer = '', escapeExpression=this.escapeExpression;
-
-
-    data.buffer.push(escapeExpression(helpers.view.call(depth0, "multi-item-collection", {hash:{
-      'row': ("view.row"),
-      'content': ("view.columns"),
+  exports['default'] = Ember.Handlebars.template({"compiler":[6,">= 2.0.0-beta.1"],"main":function(depth0,helpers,partials,data) {
+    var escapeExpression=this.escapeExpression, buffer = '';
+    data.buffer.push(escapeExpression(helpers.view.call(depth0, "multi-item-collection", {"name":"view","hash":{
+      'width': ("controller._tableColumnsWidth"),
       'itemViewClassField': ("tableCellViewClass"),
-      'width': ("controller._tableColumnsWidth")
-    },hashTypes:{'row': "ID",'content': "ID",'itemViewClassField': "STRING",'width': "ID"},hashContexts:{'row': depth0,'content': depth0,'itemViewClassField': depth0,'width': depth0},contexts:[depth0],types:["STRING"],data:data})));
+      'content': ("view.columns"),
+      'row': ("view.row")
+    },"hashTypes":{'width': "ID",'itemViewClassField': "STRING",'content': "ID",'row': "ID"},"hashContexts":{'width': depth0,'itemViewClassField': depth0,'content': depth0,'row': depth0},"types":["STRING"],"contexts":[depth0],"data":data})));
     data.buffer.push("\n");
     return buffer;
-    
-  });
+  },"useData":true});
 
 });
-define('dummy/templates/tree_table/table_header_cell', ['exports', 'ember'], function (exports, Ember) {
+define('dummy/templates/tree_table/table_header_cell', ['exports'], function (exports) {
 
   'use strict';
 
-  exports['default'] = Ember['default'].Handlebars.template(function anonymous(Handlebars,depth0,helpers,partials,data) {
-  this.compilerInfo = [4,'>= 1.0.0'];
-  helpers = this.merge(helpers, Ember['default'].Handlebars.helpers); data = data || {};
-    var buffer = '', stack1, escapeExpression=this.escapeExpression;
-
-
+  exports['default'] = Ember.Handlebars.template({"compiler":[6,">= 2.0.0-beta.1"],"main":function(depth0,helpers,partials,data) {
+    var stack1, escapeExpression=this.escapeExpression, buffer = '';
     data.buffer.push("<div class=\"ember-table-content-container\" ");
-    data.buffer.push(escapeExpression(helpers.action.call(depth0, "sortByColumn", "view.content", {hash:{},hashTypes:{},hashContexts:{},contexts:[depth0,depth0],types:["STRING","ID"],data:data})));
+    data.buffer.push(escapeExpression(helpers.action.call(depth0, "sortByColumn", "view.content", {"name":"action","hash":{},"hashTypes":{},"hashContexts":{},"types":["STRING","ID"],"contexts":[depth0,depth0],"data":data})));
     data.buffer.push(">\n  <span class=\"ember-table-content\">\n    ");
-    stack1 = helpers._triageMustache.call(depth0, "view.content.headerCellName", {hash:{},hashTypes:{},hashContexts:{},contexts:[depth0],types:["ID"],data:data});
-    if(stack1 || stack1 === 0) { data.buffer.push(stack1); }
+    stack1 = helpers._triageMustache.call(depth0, "view.content.headerCellName", {"name":"_triageMustache","hash":{},"hashTypes":{},"hashContexts":{},"types":["ID"],"contexts":[depth0],"data":data});
+    if (stack1 != null) { data.buffer.push(stack1); }
     data.buffer.push("\n  </span>\n</div>\n");
     return buffer;
-    
-  });
+  },"useData":true});
 
 });
-define('dummy/templates/tree_table/table_header_tree_cell', ['exports', 'ember'], function (exports, Ember) {
+define('dummy/templates/tree_table/table_header_tree_cell', ['exports'], function (exports) {
 
   'use strict';
 
-  exports['default'] = Ember['default'].Handlebars.template(function anonymous(Handlebars,depth0,helpers,partials,data) {
-  this.compilerInfo = [4,'>= 1.0.0'];
-  helpers = this.merge(helpers, Ember['default'].Handlebars.helpers); data = data || {};
-    var buffer = '', stack1, helper, options, escapeExpression=this.escapeExpression, helperMissing=helpers.helperMissing;
-
-
+  exports['default'] = Ember.Handlebars.template({"compiler":[6,">= 2.0.0-beta.1"],"main":function(depth0,helpers,partials,data) {
+    var stack1, escapeExpression=this.escapeExpression, helperMissing=helpers.helperMissing, buffer = '';
     data.buffer.push("<span ");
-    data.buffer.push(escapeExpression(helpers['bind-attr'].call(depth0, {hash:{
+    data.buffer.push(escapeExpression(helpers['bind-attr'].call(depth0, {"name":"bind-attr","hash":{
       'class': (":ember-table-toggle-span view.row.isLeaf::ember-table-toggle\n    view.row.isCollapsed:ember-table-expand:ember-table-collapse")
-    },hashTypes:{'class': "STRING"},hashContexts:{'class': depth0},contexts:[],types:[],data:data})));
+    },"hashTypes":{'class': "STRING"},"hashContexts":{'class': depth0},"types":[],"contexts":[],"data":data})));
     data.buffer.push("\n    ");
-    data.buffer.push(escapeExpression(helpers.action.call(depth0, "toggleCollapse", "view.row", {hash:{},hashTypes:{},hashContexts:{},contexts:[depth0,depth0],types:["STRING","ID"],data:data})));
+    data.buffer.push(escapeExpression(helpers.action.call(depth0, "toggleCollapse", "view.row", {"name":"action","hash":{},"hashTypes":{},"hashContexts":{},"types":["STRING","ID"],"contexts":[depth0,depth0],"data":data})));
     data.buffer.push(">\n  ");
-    data.buffer.push(escapeExpression((helper = helpers['fa-icon'] || (depth0 && depth0['fa-icon']),options={hash:{
+    data.buffer.push(escapeExpression(((helpers['fa-icon'] || (depth0 && depth0['fa-icon']) || helperMissing).call(depth0, "caret-down", {"name":"fa-icon","hash":{
       'classNames': ("ember-table-toggle-icon")
-    },hashTypes:{'classNames': "STRING"},hashContexts:{'classNames': depth0},contexts:[depth0],types:["STRING"],data:data},helper ? helper.call(depth0, "caret-down", options) : helperMissing.call(depth0, "fa-icon", "caret-down", options))));
+    },"hashTypes":{'classNames': "STRING"},"hashContexts":{'classNames': depth0},"types":["STRING"],"contexts":[depth0],"data":data}))));
     data.buffer.push("\n</span>\n<div class=\"ember-table-content-container\" ");
-    data.buffer.push(escapeExpression(helpers.action.call(depth0, "sortByColumn", "view.column", {hash:{},hashTypes:{},hashContexts:{},contexts:[depth0,depth0],types:["STRING","ID"],data:data})));
+    data.buffer.push(escapeExpression(helpers.action.call(depth0, "sortByColumn", "view.column", {"name":"action","hash":{},"hashTypes":{},"hashContexts":{},"types":["STRING","ID"],"contexts":[depth0,depth0],"data":data})));
     data.buffer.push(">\n  <span class=\"ember-table-content\">\n    ");
-    stack1 = helpers._triageMustache.call(depth0, "view.column.headerCellName", {hash:{},hashTypes:{},hashContexts:{},contexts:[depth0],types:["ID"],data:data});
-    if(stack1 || stack1 === 0) { data.buffer.push(stack1); }
+    stack1 = helpers._triageMustache.call(depth0, "view.column.headerCellName", {"name":"_triageMustache","hash":{},"hashTypes":{},"hashContexts":{},"types":["ID"],"contexts":[depth0],"data":data});
+    if (stack1 != null) { data.buffer.push(stack1); }
     data.buffer.push("\n  </span>\n</div>\n");
     return buffer;
-    
-  });
+  },"useData":true});
 
 });
-define('dummy/templates/tree_table/table_tree_cell', ['exports', 'ember'], function (exports, Ember) {
+define('dummy/templates/tree_table/table_tree_cell', ['exports'], function (exports) {
 
   'use strict';
 
-  exports['default'] = Ember['default'].Handlebars.template(function anonymous(Handlebars,depth0,helpers,partials,data) {
-  this.compilerInfo = [4,'>= 1.0.0'];
-  helpers = this.merge(helpers, Ember['default'].Handlebars.helpers); data = data || {};
-    var buffer = '', stack1, helper, options, escapeExpression=this.escapeExpression, helperMissing=helpers.helperMissing;
-
-
+  exports['default'] = Ember.Handlebars.template({"compiler":[6,">= 2.0.0-beta.1"],"main":function(depth0,helpers,partials,data) {
+    var stack1, escapeExpression=this.escapeExpression, helperMissing=helpers.helperMissing, buffer = '';
     data.buffer.push("<span ");
-    data.buffer.push(escapeExpression(helpers['bind-attr'].call(depth0, {hash:{
+    data.buffer.push(escapeExpression(helpers['bind-attr'].call(depth0, {"name":"bind-attr","hash":{
       'class': (":ember-table-toggle-span view.row.isLeaf::ember-table-toggle\n    view.row.isCollapsed:ember-table-expand:ember-table-collapse")
-    },hashTypes:{'class': "STRING"},hashContexts:{'class': depth0},contexts:[],types:[],data:data})));
+    },"hashTypes":{'class': "STRING"},"hashContexts":{'class': depth0},"types":[],"contexts":[],"data":data})));
     data.buffer.push("\n    ");
-    data.buffer.push(escapeExpression(helpers.action.call(depth0, "toggleCollapse", "view.row", {hash:{},hashTypes:{},hashContexts:{},contexts:[depth0,depth0],types:["STRING","ID"],data:data})));
+    data.buffer.push(escapeExpression(helpers.action.call(depth0, "toggleCollapse", "view.row", {"name":"action","hash":{},"hashTypes":{},"hashContexts":{},"types":["STRING","ID"],"contexts":[depth0,depth0],"data":data})));
     data.buffer.push(">\n  ");
-    data.buffer.push(escapeExpression((helper = helpers['fa-icon'] || (depth0 && depth0['fa-icon']),options={hash:{
+    data.buffer.push(escapeExpression(((helpers['fa-icon'] || (depth0 && depth0['fa-icon']) || helperMissing).call(depth0, "caret-down", {"name":"fa-icon","hash":{
       'classNames': ("ember-table-toggle-icon")
-    },hashTypes:{'classNames': "STRING"},hashContexts:{'classNames': depth0},contexts:[depth0],types:["STRING"],data:data},helper ? helper.call(depth0, "caret-down", options) : helperMissing.call(depth0, "fa-icon", "caret-down", options))));
+    },"hashTypes":{'classNames': "STRING"},"hashContexts":{'classNames': depth0},"types":["STRING"],"contexts":[depth0],"data":data}))));
     data.buffer.push("\n</span>\n<span class=\"ember-table-content\">\n  ");
-    stack1 = helpers._triageMustache.call(depth0, "view.cellContent", {hash:{},hashTypes:{},hashContexts:{},contexts:[depth0],types:["ID"],data:data});
-    if(stack1 || stack1 === 0) { data.buffer.push(stack1); }
+    stack1 = helpers._triageMustache.call(depth0, "view.cellContent", {"name":"_triageMustache","hash":{},"hashTypes":{},"hashContexts":{},"types":["ID"],"contexts":[depth0],"data":data});
+    if (stack1 != null) { data.buffer.push(stack1); }
     data.buffer.push("\n</span>\n");
     return buffer;
-    
-  });
+  },"useData":true});
 
 });
 define('dummy/tests/app.jshint', function () {
@@ -6553,7 +6109,7 @@ catch(err) {
 if (runningTests) {
   require("dummy/tests/test-helper");
 } else {
-  require("dummy/app")["default"].create({"name":"ember-table","version":"0.5.1.0f6a4158"});
+  require("dummy/app")["default"].create({"name":"ember-table","version":"0.6.0.88f3921a"});
 }
 
 /* jshint ignore:end */
