@@ -3787,6 +3787,7 @@ define('dummy/templates/ajax-table/ajax-cell', ['exports'], function (exports) {
     var child0 = (function() {
       return {
         isHTMLBars: true,
+        revision: "Ember@1.11.3",
         blockParams: 0,
         cachedFragment: null,
         hasRendered: false,
@@ -3830,6 +3831,7 @@ define('dummy/templates/ajax-table/ajax-cell', ['exports'], function (exports) {
     var child1 = (function() {
       return {
         isHTMLBars: true,
+        revision: "Ember@1.11.3",
         blockParams: 0,
         cachedFragment: null,
         hasRendered: false,
@@ -3870,14 +3872,13 @@ define('dummy/templates/ajax-table/ajax-cell', ['exports'], function (exports) {
     }());
     return {
       isHTMLBars: true,
+      revision: "Ember@1.11.3",
       blockParams: 0,
       cachedFragment: null,
       hasRendered: false,
       build: function build(dom) {
         var el0 = dom.createDocumentFragment();
-        var el1 = dom.createTextNode("");
-        dom.appendChild(el0, el1);
-        var el1 = dom.createTextNode("");
+        var el1 = dom.createComment("");
         dom.appendChild(el0, el1);
         return el0;
       },
@@ -3901,8 +3902,9 @@ define('dummy/templates/ajax-table/ajax-cell', ['exports'], function (exports) {
         } else {
           fragment = this.build(dom);
         }
-        if (this.cachedFragment) { dom.repairClonedNode(fragment,[0,1]); }
-        var morph0 = dom.createMorphAt(fragment,0,1,contextualElement);
+        var morph0 = dom.createMorphAt(fragment,0,0,contextualElement);
+        dom.insertBoundary(fragment, null);
+        dom.insertBoundary(fragment, 0);
         block(env, morph0, context, "if", [get(env, context, "view.row.isLoaded")], {}, child0, child1);
         return fragment;
       }
@@ -3917,12 +3919,13 @@ define('dummy/templates/ajax-table/ajax-table', ['exports'], function (exports) 
   exports['default'] = Ember.HTMLBars.template((function() {
     return {
       isHTMLBars: true,
+      revision: "Ember@1.11.3",
       blockParams: 0,
       cachedFragment: null,
       hasRendered: false,
       build: function build(dom) {
         var el0 = dom.createDocumentFragment();
-        var el1 = dom.createTextNode("");
+        var el1 = dom.createComment("");
         dom.appendChild(el0, el1);
         var el1 = dom.createTextNode("\n");
         dom.appendChild(el0, el1);
@@ -3948,8 +3951,8 @@ define('dummy/templates/ajax-table/ajax-table', ['exports'], function (exports) 
         } else {
           fragment = this.build(dom);
         }
-        if (this.cachedFragment) { dom.repairClonedNode(fragment,[0]); }
-        var morph0 = dom.createMorphAt(fragment,0,1,contextualElement);
+        var morph0 = dom.createMorphAt(fragment,0,0,contextualElement);
+        dom.insertBoundary(fragment, 0);
         inline(env, morph0, context, "ember-table", [], {"hasHeader": true, "hasFooter": false, "numFixedColumns": 0, "numRows": 100, "rowHeight": 35, "columns": get(env, context, "tableColumns"), "content": get(env, context, "tableContent")});
         return fragment;
       }
@@ -3964,6 +3967,7 @@ define('dummy/templates/ajax', ['exports'], function (exports) {
   exports['default'] = Ember.HTMLBars.template((function() {
     return {
       isHTMLBars: true,
+      revision: "Ember@1.11.3",
       blockParams: 0,
       cachedFragment: null,
       hasRendered: false,
@@ -3998,6 +4002,8 @@ define('dummy/templates/ajax', ['exports'], function (exports) {
         var el5 = dom.createElement("div");
         dom.setAttribute(el5,"class","ember-table-example-container");
         var el6 = dom.createTextNode("\n          ");
+        dom.appendChild(el5, el6);
+        var el6 = dom.createComment("");
         dom.appendChild(el5, el6);
         var el6 = dom.createTextNode("\n        ");
         dom.appendChild(el5, el6);
@@ -4187,7 +4193,7 @@ define('dummy/templates/ajax', ['exports'], function (exports) {
         } else {
           fragment = this.build(dom);
         }
-        var morph0 = dom.createMorphAt(dom.childAt(fragment, [0, 3, 1, 1, 1]),0,1);
+        var morph0 = dom.createMorphAt(dom.childAt(fragment, [0, 3, 1, 1, 1]),1,1);
         inline(env, morph0, context, "partial", ["ajax-table/ajax-table"], {});
         return fragment;
       }
@@ -4203,6 +4209,7 @@ define('dummy/templates/application', ['exports'], function (exports) {
     var child0 = (function() {
       return {
         isHTMLBars: true,
+        revision: "Ember@1.11.3",
         blockParams: 0,
         cachedFragment: null,
         hasRendered: false,
@@ -4303,6 +4310,7 @@ define('dummy/templates/application', ['exports'], function (exports) {
     var child1 = (function() {
       return {
         isHTMLBars: true,
+        revision: "Ember@1.11.3",
         blockParams: 0,
         cachedFragment: null,
         hasRendered: false,
@@ -4356,14 +4364,17 @@ define('dummy/templates/application', ['exports'], function (exports) {
     }());
     return {
       isHTMLBars: true,
+      revision: "Ember@1.11.3",
       blockParams: 0,
       cachedFragment: null,
       hasRendered: false,
       build: function build(dom) {
         var el0 = dom.createDocumentFragment();
-        var el1 = dom.createTextNode("");
+        var el1 = dom.createComment("");
         dom.appendChild(el0, el1);
         var el1 = dom.createTextNode("\n\n");
+        dom.appendChild(el0, el1);
+        var el1 = dom.createComment("");
         dom.appendChild(el0, el1);
         var el1 = dom.createTextNode("\n");
         dom.appendChild(el0, el1);
@@ -4375,7 +4386,11 @@ define('dummy/templates/application', ['exports'], function (exports) {
         dom.setAttribute(el2,"class","row");
         var el3 = dom.createTextNode("\n\n    ");
         dom.appendChild(el2, el3);
+        var el3 = dom.createComment("");
+        dom.appendChild(el2, el3);
         var el3 = dom.createTextNode("\n\n    ");
+        dom.appendChild(el2, el3);
+        var el3 = dom.createComment("");
         dom.appendChild(el2, el3);
         var el3 = dom.createTextNode("\n  ");
         dom.appendChild(el2, el3);
@@ -4384,6 +4399,8 @@ define('dummy/templates/application', ['exports'], function (exports) {
         dom.appendChild(el1, el2);
         dom.appendChild(el0, el1);
         var el1 = dom.createTextNode("\n\n");
+        dom.appendChild(el0, el1);
+        var el1 = dom.createComment("");
         dom.appendChild(el0, el1);
         var el1 = dom.createTextNode("\n");
         dom.appendChild(el0, el1);
@@ -4409,13 +4426,13 @@ define('dummy/templates/application', ['exports'], function (exports) {
         } else {
           fragment = this.build(dom);
         }
-        if (this.cachedFragment) { dom.repairClonedNode(fragment,[0]); }
-        var element0 = dom.childAt(fragment, [3, 1]);
-        var morph0 = dom.createMorphAt(fragment,0,1,contextualElement);
-        var morph1 = dom.createMorphAt(fragment,1,2,contextualElement);
-        var morph2 = dom.createMorphAt(element0,0,1);
-        var morph3 = dom.createMorphAt(element0,1,2);
-        var morph4 = dom.createMorphAt(fragment,4,5,contextualElement);
+        var element0 = dom.childAt(fragment, [4, 1]);
+        var morph0 = dom.createMorphAt(fragment,0,0,contextualElement);
+        var morph1 = dom.createMorphAt(fragment,2,2,contextualElement);
+        var morph2 = dom.createMorphAt(element0,1,1);
+        var morph3 = dom.createMorphAt(element0,3,3);
+        var morph4 = dom.createMorphAt(fragment,6,6,contextualElement);
+        dom.insertBoundary(fragment, 0);
         inline(env, morph0, context, "partial", ["navigation"], {});
         block(env, morph1, context, "if", [get(env, context, "showLargeHero")], {}, child0, child1);
         inline(env, morph2, context, "partial", ["sub-navigation"], {});
@@ -4434,6 +4451,7 @@ define('dummy/templates/bar-table/bar-cell', ['exports'], function (exports) {
   exports['default'] = Ember.HTMLBars.template((function() {
     return {
       isHTMLBars: true,
+      revision: "Ember@1.11.3",
       blockParams: 0,
       cachedFragment: null,
       hasRendered: false,
@@ -4483,12 +4501,13 @@ define('dummy/templates/bar-table/bar-table', ['exports'], function (exports) {
   exports['default'] = Ember.HTMLBars.template((function() {
     return {
       isHTMLBars: true,
+      revision: "Ember@1.11.3",
       blockParams: 0,
       cachedFragment: null,
       hasRendered: false,
       build: function build(dom) {
         var el0 = dom.createDocumentFragment();
-        var el1 = dom.createTextNode("");
+        var el1 = dom.createComment("");
         dom.appendChild(el0, el1);
         var el1 = dom.createTextNode("\n");
         dom.appendChild(el0, el1);
@@ -4514,8 +4533,8 @@ define('dummy/templates/bar-table/bar-table', ['exports'], function (exports) {
         } else {
           fragment = this.build(dom);
         }
-        if (this.cachedFragment) { dom.repairClonedNode(fragment,[0]); }
-        var morph0 = dom.createMorphAt(fragment,0,1,contextualElement);
+        var morph0 = dom.createMorphAt(fragment,0,0,contextualElement);
+        dom.insertBoundary(fragment, 0);
         inline(env, morph0, context, "ember-table", [], {"hasHeader": true, "hasFooter": false, "rowHeight": 30, "columns": get(env, context, "tableColumns"), "content": get(env, context, "tableContent")});
         return fragment;
       }
@@ -4530,6 +4549,7 @@ define('dummy/templates/bars', ['exports'], function (exports) {
   exports['default'] = Ember.HTMLBars.template((function() {
     return {
       isHTMLBars: true,
+      revision: "Ember@1.11.3",
       blockParams: 0,
       cachedFragment: null,
       hasRendered: false,
@@ -4564,6 +4584,8 @@ define('dummy/templates/bars', ['exports'], function (exports) {
         var el5 = dom.createElement("div");
         dom.setAttribute(el5,"class","ember-table-example-container");
         var el6 = dom.createTextNode("\n          ");
+        dom.appendChild(el5, el6);
+        var el6 = dom.createComment("");
         dom.appendChild(el5, el6);
         var el6 = dom.createTextNode("\n        ");
         dom.appendChild(el5, el6);
@@ -4712,7 +4734,7 @@ define('dummy/templates/bars', ['exports'], function (exports) {
         } else {
           fragment = this.build(dom);
         }
-        var morph0 = dom.createMorphAt(dom.childAt(fragment, [0, 3, 1, 1, 1]),0,1);
+        var morph0 = dom.createMorphAt(dom.childAt(fragment, [0, 3, 1, 1, 1]),1,1);
         inline(env, morph0, context, "partial", ["bar-table/bar-table"], {});
         return fragment;
       }
@@ -4728,12 +4750,15 @@ define('dummy/templates/body-table-container', ['exports'], function (exports) {
     var child0 = (function() {
       return {
         isHTMLBars: true,
+        revision: "Ember@1.11.3",
         blockParams: 0,
         cachedFragment: null,
         hasRendered: false,
         build: function build(dom) {
           var el0 = dom.createDocumentFragment();
           var el1 = dom.createTextNode("        ");
+          dom.appendChild(el0, el1);
+          var el1 = dom.createComment("");
           dom.appendChild(el0, el1);
           var el1 = dom.createTextNode("\n");
           dom.appendChild(el0, el1);
@@ -4759,7 +4784,7 @@ define('dummy/templates/body-table-container', ['exports'], function (exports) {
           } else {
             fragment = this.build(dom);
           }
-          var morph0 = dom.createMorphAt(fragment,0,1,contextualElement);
+          var morph0 = dom.createMorphAt(fragment,1,1,contextualElement);
           inline(env, morph0, context, "view", ["lazy-table-block"], {"classNames": "ember-table-left-table-block", "content": get(env, context, "bodyContent"), "columns": get(env, context, "fixedColumns"), "width": get(env, context, "_fixedBlockWidth"), "numItemsShowing": get(env, context, "_numItemsShowing"), "scrollTop": get(env, context, "_scrollTop"), "startIndex": get(env, context, "_startIndex")});
           return fragment;
         }
@@ -4767,6 +4792,7 @@ define('dummy/templates/body-table-container', ['exports'], function (exports) {
     }());
     return {
       isHTMLBars: true,
+      revision: "Ember@1.11.3",
       blockParams: 0,
       cachedFragment: null,
       hasRendered: false,
@@ -4784,7 +4810,11 @@ define('dummy/templates/body-table-container', ['exports'], function (exports) {
         dom.setAttribute(el3,"class","ember-table-table-scrollable-wrapper");
         var el4 = dom.createTextNode("\n");
         dom.appendChild(el3, el4);
+        var el4 = dom.createComment("");
+        dom.appendChild(el3, el4);
         var el4 = dom.createTextNode("      ");
+        dom.appendChild(el3, el4);
+        var el4 = dom.createComment("");
         dom.appendChild(el3, el4);
         var el4 = dom.createTextNode("\n    ");
         dom.appendChild(el3, el4);
@@ -4820,8 +4850,8 @@ define('dummy/templates/body-table-container', ['exports'], function (exports) {
           fragment = this.build(dom);
         }
         var element0 = dom.childAt(fragment, [0, 1, 1]);
-        var morph0 = dom.createMorphAt(element0,0,1);
-        var morph1 = dom.createMorphAt(element0,1,2);
+        var morph0 = dom.createMorphAt(element0,1,1);
+        var morph1 = dom.createMorphAt(element0,3,3);
         block(env, morph0, context, "if", [get(env, context, "numFixedColumns")], {}, child0, null);
         inline(env, morph1, context, "view", ["lazy-table-block"], {"classNames": "ember-table-right-table-block", "content": get(env, context, "bodyContent"), "columns": get(env, context, "tableColumns"), "scrollLeft": get(env, context, "_tableScrollLeft"), "width": get(env, context, "_tableBlockWidth"), "numItemsShowing": get(env, context, "_numItemsShowing"), "scrollTop": get(env, context, "_scrollTop"), "startIndex": get(env, context, "_startIndex")});
         return fragment;
@@ -4837,6 +4867,7 @@ define('dummy/templates/community-examples', ['exports'], function (exports) {
   exports['default'] = Ember.HTMLBars.template((function() {
     return {
       isHTMLBars: true,
+      revision: "Ember@1.11.3",
       blockParams: 0,
       cachedFragment: null,
       hasRendered: false,
@@ -4975,12 +5006,15 @@ define('dummy/templates/components/ember-table', ['exports'], function (exports)
     var child0 = (function() {
       return {
         isHTMLBars: true,
+        revision: "Ember@1.11.3",
         blockParams: 0,
         cachedFragment: null,
         hasRendered: false,
         build: function build(dom) {
           var el0 = dom.createDocumentFragment();
           var el1 = dom.createTextNode("  ");
+          dom.appendChild(el0, el1);
+          var el1 = dom.createComment("");
           dom.appendChild(el0, el1);
           var el1 = dom.createTextNode("\n");
           dom.appendChild(el0, el1);
@@ -5006,7 +5040,7 @@ define('dummy/templates/components/ember-table', ['exports'], function (exports)
           } else {
             fragment = this.build(dom);
           }
-          var morph0 = dom.createMorphAt(fragment,0,1,contextualElement);
+          var morph0 = dom.createMorphAt(fragment,1,1,contextualElement);
           inline(env, morph0, context, "view", ["header-table-container"], {});
           return fragment;
         }
@@ -5015,12 +5049,15 @@ define('dummy/templates/components/ember-table', ['exports'], function (exports)
     var child1 = (function() {
       return {
         isHTMLBars: true,
+        revision: "Ember@1.11.3",
         blockParams: 0,
         cachedFragment: null,
         hasRendered: false,
         build: function build(dom) {
           var el0 = dom.createDocumentFragment();
           var el1 = dom.createTextNode("  ");
+          dom.appendChild(el0, el1);
+          var el1 = dom.createComment("");
           dom.appendChild(el0, el1);
           var el1 = dom.createTextNode("\n");
           dom.appendChild(el0, el1);
@@ -5046,7 +5083,7 @@ define('dummy/templates/components/ember-table', ['exports'], function (exports)
           } else {
             fragment = this.build(dom);
           }
-          var morph0 = dom.createMorphAt(fragment,0,1,contextualElement);
+          var morph0 = dom.createMorphAt(fragment,1,1,contextualElement);
           inline(env, morph0, context, "view", ["footer-table-container"], {});
           return fragment;
         }
@@ -5054,20 +5091,25 @@ define('dummy/templates/components/ember-table', ['exports'], function (exports)
     }());
     return {
       isHTMLBars: true,
+      revision: "Ember@1.11.3",
       blockParams: 0,
       cachedFragment: null,
       hasRendered: false,
       build: function build(dom) {
         var el0 = dom.createDocumentFragment();
-        var el1 = dom.createTextNode("");
+        var el1 = dom.createComment("");
         dom.appendChild(el0, el1);
-        var el1 = dom.createTextNode("");
+        var el1 = dom.createComment("");
+        dom.appendChild(el0, el1);
+        var el1 = dom.createTextNode("\n");
+        dom.appendChild(el0, el1);
+        var el1 = dom.createComment("");
+        dom.appendChild(el0, el1);
+        var el1 = dom.createComment("");
         dom.appendChild(el0, el1);
         var el1 = dom.createTextNode("\n");
         dom.appendChild(el0, el1);
-        var el1 = dom.createTextNode("");
-        dom.appendChild(el0, el1);
-        var el1 = dom.createTextNode("\n");
+        var el1 = dom.createComment("");
         dom.appendChild(el0, el1);
         var el1 = dom.createTextNode("\n");
         dom.appendChild(el0, el1);
@@ -5093,12 +5135,12 @@ define('dummy/templates/components/ember-table', ['exports'], function (exports)
         } else {
           fragment = this.build(dom);
         }
-        if (this.cachedFragment) { dom.repairClonedNode(fragment,[0,1,3]); }
-        var morph0 = dom.createMorphAt(fragment,0,1,contextualElement);
-        var morph1 = dom.createMorphAt(fragment,1,2,contextualElement);
-        var morph2 = dom.createMorphAt(fragment,2,3,contextualElement);
-        var morph3 = dom.createMorphAt(fragment,3,4,contextualElement);
-        var morph4 = dom.createMorphAt(fragment,4,5,contextualElement);
+        var morph0 = dom.createMorphAt(fragment,0,0,contextualElement);
+        var morph1 = dom.createMorphAt(fragment,1,1,contextualElement);
+        var morph2 = dom.createMorphAt(fragment,3,3,contextualElement);
+        var morph3 = dom.createMorphAt(fragment,4,4,contextualElement);
+        var morph4 = dom.createMorphAt(fragment,6,6,contextualElement);
+        dom.insertBoundary(fragment, 0);
         block(env, morph0, context, "if", [get(env, context, "hasHeader")], {}, child0, null);
         inline(env, morph1, context, "view", ["body-table-container"], {});
         block(env, morph2, context, "if", [get(env, context, "hasFooter")], {}, child1, null);
@@ -5118,6 +5160,7 @@ define('dummy/templates/configurable-columns', ['exports'], function (exports) {
     var child0 = (function() {
       return {
         isHTMLBars: true,
+        revision: "Ember@1.11.3",
         blockParams: 0,
         cachedFragment: null,
         hasRendered: false,
@@ -5129,37 +5172,53 @@ define('dummy/templates/configurable-columns', ['exports'], function (exports) {
           var el2 = dom.createTextNode("\n                ");
           dom.appendChild(el1, el2);
           var el2 = dom.createElement("td");
+          var el3 = dom.createComment("");
+          dom.appendChild(el2, el3);
           dom.appendChild(el1, el2);
           var el2 = dom.createTextNode("\n                ");
           dom.appendChild(el1, el2);
           var el2 = dom.createElement("td");
           dom.setAttribute(el2,"class","checkbox-cell");
+          var el3 = dom.createComment("");
+          dom.appendChild(el2, el3);
           dom.appendChild(el1, el2);
           var el2 = dom.createTextNode("\n                ");
           dom.appendChild(el1, el2);
           var el2 = dom.createElement("td");
           dom.setAttribute(el2,"class","checkbox-cell");
+          var el3 = dom.createComment("");
+          dom.appendChild(el2, el3);
           dom.appendChild(el1, el2);
           var el2 = dom.createTextNode("\n                ");
           dom.appendChild(el1, el2);
           var el2 = dom.createElement("td");
           dom.setAttribute(el2,"class","checkbox-cell");
+          var el3 = dom.createComment("");
+          dom.appendChild(el2, el3);
           dom.appendChild(el1, el2);
           var el2 = dom.createTextNode("\n                ");
           dom.appendChild(el1, el2);
           var el2 = dom.createElement("td");
+          var el3 = dom.createComment("");
+          dom.appendChild(el2, el3);
           dom.appendChild(el1, el2);
           var el2 = dom.createTextNode("\n                ");
           dom.appendChild(el1, el2);
           var el2 = dom.createElement("td");
+          var el3 = dom.createComment("");
+          dom.appendChild(el2, el3);
           dom.appendChild(el1, el2);
           var el2 = dom.createTextNode("\n                ");
           dom.appendChild(el1, el2);
           var el2 = dom.createElement("td");
+          var el3 = dom.createComment("");
+          dom.appendChild(el2, el3);
           dom.appendChild(el1, el2);
           var el2 = dom.createTextNode("\n                ");
           dom.appendChild(el1, el2);
           var el2 = dom.createElement("td");
+          var el3 = dom.createComment("");
+          dom.appendChild(el2, el3);
           dom.appendChild(el1, el2);
           var el2 = dom.createTextNode("\n              ");
           dom.appendChild(el1, el2);
@@ -5191,14 +5250,14 @@ define('dummy/templates/configurable-columns', ['exports'], function (exports) {
           var element0 = dom.childAt(fragment, [1]);
           var element1 = dom.childAt(element0, [9]);
           var element2 = dom.childAt(element0, [11]);
-          var morph0 = dom.createMorphAt(dom.childAt(element0, [1]),-1,-1);
-          var morph1 = dom.createMorphAt(dom.childAt(element0, [3]),-1,-1);
-          var morph2 = dom.createMorphAt(dom.childAt(element0, [5]),-1,-1);
-          var morph3 = dom.createMorphAt(dom.childAt(element0, [7]),-1,-1);
-          var morph4 = dom.createMorphAt(element1,-1,-1);
-          var morph5 = dom.createMorphAt(element2,-1,-1);
-          var morph6 = dom.createMorphAt(dom.childAt(element0, [13]),-1,-1);
-          var morph7 = dom.createMorphAt(dom.childAt(element0, [15]),-1,-1);
+          var morph0 = dom.createMorphAt(dom.childAt(element0, [1]),0,0);
+          var morph1 = dom.createMorphAt(dom.childAt(element0, [3]),0,0);
+          var morph2 = dom.createMorphAt(dom.childAt(element0, [5]),0,0);
+          var morph3 = dom.createMorphAt(dom.childAt(element0, [7]),0,0);
+          var morph4 = dom.createMorphAt(element1,0,0);
+          var morph5 = dom.createMorphAt(element2,0,0);
+          var morph6 = dom.createMorphAt(dom.childAt(element0, [13]),0,0);
+          var morph7 = dom.createMorphAt(dom.childAt(element0, [15]),0,0);
           content(env, morph0, context, "headerCellName");
           inline(env, morph1, context, "input", [], {"class": "checkbox-input", "type": "checkbox", "checked": get(env, context, "isSortable")});
           inline(env, morph2, context, "input", [], {"class": "checkbox-input", "type": "checkbox", "checked": get(env, context, "isResizable")});
@@ -5216,6 +5275,7 @@ define('dummy/templates/configurable-columns', ['exports'], function (exports) {
     var child1 = (function() {
       return {
         isHTMLBars: true,
+        revision: "Ember@1.11.3",
         blockParams: 0,
         cachedFragment: null,
         hasRendered: false,
@@ -5226,6 +5286,8 @@ define('dummy/templates/configurable-columns', ['exports'], function (exports) {
           var el1 = dom.createElement("div");
           dom.setAttribute(el1,"class","ember-table-example-container-small");
           var el2 = dom.createTextNode("\n            ");
+          dom.appendChild(el1, el2);
+          var el2 = dom.createComment("");
           dom.appendChild(el1, el2);
           var el2 = dom.createTextNode("\n          ");
           dom.appendChild(el1, el2);
@@ -5254,7 +5316,7 @@ define('dummy/templates/configurable-columns', ['exports'], function (exports) {
           } else {
             fragment = this.build(dom);
           }
-          var morph0 = dom.createMorphAt(dom.childAt(fragment, [1]),0,1);
+          var morph0 = dom.createMorphAt(dom.childAt(fragment, [1]),1,1);
           inline(env, morph0, context, "configurable-table", [], {"hasFooter": false, "columnMode": get(env, context, "columnMode"), "columns": get(env, context, "columns"), "content": get(env, context, "content"), "parentWidth": get(env, context, "demoTableWidth")});
           return fragment;
         }
@@ -5263,11 +5325,14 @@ define('dummy/templates/configurable-columns', ['exports'], function (exports) {
     var child2 = (function() {
       return {
         isHTMLBars: true,
+        revision: "Ember@1.11.3",
         blockParams: 0,
         cachedFragment: null,
         hasRendered: false,
         build: function build(dom) {
-          var el0 = dom.createTextNode("\n  columnMode=\"fluid\"");
+          var el0 = dom.createDocumentFragment();
+          var el1 = dom.createTextNode("\n  columnMode=\"fluid\"");
+          dom.appendChild(el0, el1);
           return el0;
         },
         render: function render(context, env, contextualElement) {
@@ -5296,6 +5361,7 @@ define('dummy/templates/configurable-columns', ['exports'], function (exports) {
     var child3 = (function() {
       return {
         isHTMLBars: true,
+        revision: "Ember@1.11.3",
         blockParams: 0,
         cachedFragment: null,
         hasRendered: false,
@@ -5303,7 +5369,7 @@ define('dummy/templates/configurable-columns', ['exports'], function (exports) {
           var el0 = dom.createDocumentFragment();
           var el1 = dom.createTextNode("\n");
           dom.appendChild(el0, el1);
-          var el1 = dom.createTextNode("");
+          var el1 = dom.createComment("");
           dom.appendChild(el0, el1);
           return el0;
         },
@@ -5327,8 +5393,8 @@ define('dummy/templates/configurable-columns', ['exports'], function (exports) {
           } else {
             fragment = this.build(dom);
           }
-          if (this.cachedFragment) { dom.repairClonedNode(fragment,[1]); }
-          var morph0 = dom.createMorphAt(fragment,0,1,contextualElement);
+          var morph0 = dom.createMorphAt(fragment,1,1,contextualElement);
+          dom.insertBoundary(fragment, null);
           content(env, morph0, context, "columnDefinitionDocumentation");
           return fragment;
         }
@@ -5336,6 +5402,7 @@ define('dummy/templates/configurable-columns', ['exports'], function (exports) {
     }());
     return {
       isHTMLBars: true,
+      revision: "Ember@1.11.3",
       blockParams: 0,
       cachedFragment: null,
       hasRendered: false,
@@ -5460,6 +5527,8 @@ define('dummy/templates/configurable-columns', ['exports'], function (exports) {
         dom.appendChild(el6, el7);
         var el7 = dom.createTextNode("\n");
         dom.appendChild(el6, el7);
+        var el7 = dom.createComment("");
+        dom.appendChild(el6, el7);
         var el7 = dom.createTextNode("          ");
         dom.appendChild(el6, el7);
         dom.appendChild(el5, el6);
@@ -5478,6 +5547,8 @@ define('dummy/templates/configurable-columns', ['exports'], function (exports) {
         dom.appendChild(el6, el7);
         dom.appendChild(el5, el6);
         var el6 = dom.createTextNode("\n          ");
+        dom.appendChild(el5, el6);
+        var el6 = dom.createComment("");
         dom.appendChild(el5, el6);
         var el6 = dom.createTextNode("\n          ");
         dom.appendChild(el5, el6);
@@ -5512,6 +5583,8 @@ define('dummy/templates/configurable-columns', ['exports'], function (exports) {
         dom.setAttribute(el4,"class","example-container js-resizable-container");
         var el5 = dom.createTextNode("\n");
         dom.appendChild(el4, el5);
+        var el5 = dom.createComment("");
+        dom.appendChild(el4, el5);
         var el5 = dom.createTextNode("      ");
         dom.appendChild(el4, el5);
         dom.appendChild(el3, el4);
@@ -5537,6 +5610,8 @@ define('dummy/templates/configurable-columns', ['exports'], function (exports) {
         var el5 = dom.createElement("pre");
         dom.setAttribute(el5,"class","prettyprint lang-html");
         var el6 = dom.createTextNode("{{table-component\n  hasFooter=false\n  columns=tableColumns\n  content=tableContent");
+        dom.appendChild(el5, el6);
+        var el6 = dom.createComment("");
         dom.appendChild(el5, el6);
         var el6 = dom.createTextNode("\n}}");
         dom.appendChild(el5, el6);
@@ -5566,6 +5641,8 @@ define('dummy/templates/configurable-columns', ['exports'], function (exports) {
         var el5 = dom.createElement("pre");
         dom.setAttribute(el5,"class","lang-js");
         var el6 = dom.createTextNode("\nimport Ember from 'ember';\nimport ColumnDefinition from 'ember-table/models/column-definition';\n\nexport default Ember.Controller.extend({\n  tableColumns: Ember.computed(function() { ");
+        dom.appendChild(el5, el6);
+        var el6 = dom.createComment("");
         dom.appendChild(el5, el6);
         var el6 = dom.createTextNode("\n    return [dateColumn, openColumn, highColumn, lowColumn, closeColumn];\n  }),\n\n  tableContent: Ember.computed(function() {\n    var content = [];\n    var date;\n    for (var i = 0; i < 100; i++) {\n      date = new Date();\n      date.setDate(date.getDate() + i);\n      content.pushObject({\n        date: date,\n        open: Math.random() * 100 - 50,\n        high: Math.random() * 100 - 50,\n        low: Math.random() * 100 - 50,\n        close: Math.random() * 100 - 50,\n        volume: Math.random() * 1000000\n      });\n    }\n    return content;\n  })\n});");
         dom.appendChild(el5, el6);
@@ -5609,13 +5686,13 @@ define('dummy/templates/configurable-columns', ['exports'], function (exports) {
         var element3 = dom.childAt(fragment, [0]);
         var element4 = dom.childAt(element3, [9, 1, 1]);
         var element5 = dom.childAt(element4, [5]);
-        var element6 = dom.childAt(element5, [4]);
+        var element6 = dom.childAt(element5, [5]);
         var element7 = dom.childAt(element3, [11]);
-        var morph0 = dom.createMorphAt(dom.childAt(element4, [3, 1]),2,3);
-        var morph1 = dom.createMorphAt(element5,2,3);
-        var morph2 = dom.createMorphAt(dom.childAt(element7, [1, 1]),0,1);
-        var morph3 = dom.createMorphAt(dom.childAt(element7, [3, 3, 1]),0,1);
-        var morph4 = dom.createMorphAt(dom.childAt(element7, [5, 3, 1]),0,1);
+        var morph0 = dom.createMorphAt(dom.childAt(element4, [3, 1]),3,3);
+        var morph1 = dom.createMorphAt(element5,3,3);
+        var morph2 = dom.createMorphAt(dom.childAt(element7, [1, 1]),1,1);
+        var morph3 = dom.createMorphAt(dom.childAt(element7, [3, 3, 1]),1,1);
+        var morph4 = dom.createMorphAt(dom.childAt(element7, [5, 3, 1]),1,1);
         block(env, morph0, context, "each", [get(env, context, "columns")], {}, child0, null);
         inline(env, morph1, context, "input", [], {"class": "checkbox-input", "type": "checkbox", "checked": get(env, context, "isFluid")});
         element(env, element6, context, "action", ["refreshTable"], {});
@@ -5636,11 +5713,14 @@ define('dummy/templates/documentation', ['exports'], function (exports) {
     var child0 = (function() {
       return {
         isHTMLBars: true,
+        revision: "Ember@1.11.3",
         blockParams: 0,
         cachedFragment: null,
         hasRendered: false,
         build: function build(dom) {
-          var el0 = dom.createTextNode("configurable column\n          demo.");
+          var el0 = dom.createDocumentFragment();
+          var el1 = dom.createTextNode("configurable column\n          demo.");
+          dom.appendChild(el0, el1);
           return el0;
         },
         render: function render(context, env, contextualElement) {
@@ -5668,6 +5748,7 @@ define('dummy/templates/documentation', ['exports'], function (exports) {
     }());
     return {
       isHTMLBars: true,
+      revision: "Ember@1.11.3",
       blockParams: 0,
       cachedFragment: null,
       hasRendered: false,
@@ -6127,6 +6208,8 @@ define('dummy/templates/documentation', ['exports'], function (exports) {
         dom.appendChild(el6, el7);
         dom.appendChild(el5, el6);
         var el6 = dom.createTextNode(" (resizing a column steals width\n          from neighboring columns). You can experiment with this behavior in\n          the ");
+        dom.appendChild(el5, el6);
+        var el6 = dom.createComment("");
         dom.appendChild(el5, el6);
         var el6 = dom.createTextNode("\n        ");
         dom.appendChild(el5, el6);
@@ -7044,7 +7127,7 @@ define('dummy/templates/documentation', ['exports'], function (exports) {
         } else {
           fragment = this.build(dom);
         }
-        var morph0 = dom.createMorphAt(dom.childAt(fragment, [0, 5, 27, 5, 1]),4,5);
+        var morph0 = dom.createMorphAt(dom.childAt(fragment, [0, 5, 27, 5, 1]),5,5);
         block(env, morph0, context, "link-to", ["configurable-columns"], {}, child0, null);
         return fragment;
       }
@@ -7059,12 +7142,13 @@ define('dummy/templates/dynamic-bar-table/dynamic-bar-table', ['exports'], funct
   exports['default'] = Ember.HTMLBars.template((function() {
     return {
       isHTMLBars: true,
+      revision: "Ember@1.11.3",
       blockParams: 0,
       cachedFragment: null,
       hasRendered: false,
       build: function build(dom) {
         var el0 = dom.createDocumentFragment();
-        var el1 = dom.createTextNode("");
+        var el1 = dom.createComment("");
         dom.appendChild(el0, el1);
         var el1 = dom.createTextNode("\n");
         dom.appendChild(el0, el1);
@@ -7090,8 +7174,8 @@ define('dummy/templates/dynamic-bar-table/dynamic-bar-table', ['exports'], funct
         } else {
           fragment = this.build(dom);
         }
-        if (this.cachedFragment) { dom.repairClonedNode(fragment,[0]); }
-        var morph0 = dom.createMorphAt(fragment,0,1,contextualElement);
+        var morph0 = dom.createMorphAt(fragment,0,0,contextualElement);
+        dom.insertBoundary(fragment, 0);
         inline(env, morph0, context, "ember-table", [], {"hasHeader": true, "hasFooter": false, "rowHeight": 30, "columns": get(env, context, "tableColumns"), "content": get(env, context, "tableContent")});
         return fragment;
       }
@@ -7106,6 +7190,7 @@ define('dummy/templates/dynamic-bars', ['exports'], function (exports) {
   exports['default'] = Ember.HTMLBars.template((function() {
     return {
       isHTMLBars: true,
+      revision: "Ember@1.11.3",
       blockParams: 0,
       cachedFragment: null,
       hasRendered: false,
@@ -7140,6 +7225,8 @@ define('dummy/templates/dynamic-bars', ['exports'], function (exports) {
         var el5 = dom.createElement("div");
         dom.setAttribute(el5,"class","ember-table-example-container");
         var el6 = dom.createTextNode("\n          ");
+        dom.appendChild(el5, el6);
+        var el6 = dom.createComment("");
         dom.appendChild(el5, el6);
         var el6 = dom.createTextNode("\n        ");
         dom.appendChild(el5, el6);
@@ -7288,7 +7375,7 @@ define('dummy/templates/dynamic-bars', ['exports'], function (exports) {
         } else {
           fragment = this.build(dom);
         }
-        var morph0 = dom.createMorphAt(dom.childAt(fragment, [0, 3, 1, 1, 1]),0,1);
+        var morph0 = dom.createMorphAt(dom.childAt(fragment, [0, 3, 1, 1, 1]),1,1);
         inline(env, morph0, context, "partial", ["dynamic-bar-table/dynamic-bar-table"], {});
         return fragment;
       }
@@ -7304,12 +7391,15 @@ define('dummy/templates/editable-table/editable-table-cell', ['exports'], functi
     var child0 = (function() {
       return {
         isHTMLBars: true,
+        revision: "Ember@1.11.3",
         blockParams: 0,
         cachedFragment: null,
         hasRendered: false,
         build: function build(dom) {
           var el0 = dom.createDocumentFragment();
           var el1 = dom.createTextNode("    ");
+          dom.appendChild(el0, el1);
+          var el1 = dom.createComment("");
           dom.appendChild(el0, el1);
           var el1 = dom.createTextNode("\n");
           dom.appendChild(el0, el1);
@@ -7335,7 +7425,7 @@ define('dummy/templates/editable-table/editable-table-cell', ['exports'], functi
           } else {
             fragment = this.build(dom);
           }
-          var morph0 = dom.createMorphAt(fragment,0,1,contextualElement);
+          var morph0 = dom.createMorphAt(fragment,1,1,contextualElement);
           inline(env, morph0, context, "view", [get(env, context, "view.innerTextField")], {});
           return fragment;
         }
@@ -7344,6 +7434,7 @@ define('dummy/templates/editable-table/editable-table-cell', ['exports'], functi
     var child1 = (function() {
       return {
         isHTMLBars: true,
+        revision: "Ember@1.11.3",
         blockParams: 0,
         cachedFragment: null,
         hasRendered: false,
@@ -7353,6 +7444,8 @@ define('dummy/templates/editable-table/editable-table-cell', ['exports'], functi
           dom.appendChild(el0, el1);
           var el1 = dom.createElement("span");
           dom.setAttribute(el1,"class","content");
+          var el2 = dom.createComment("");
+          dom.appendChild(el1, el2);
           dom.appendChild(el0, el1);
           var el1 = dom.createTextNode("\n");
           dom.appendChild(el0, el1);
@@ -7378,7 +7471,7 @@ define('dummy/templates/editable-table/editable-table-cell', ['exports'], functi
           } else {
             fragment = this.build(dom);
           }
-          var morph0 = dom.createMorphAt(dom.childAt(fragment, [1]),-1,-1);
+          var morph0 = dom.createMorphAt(dom.childAt(fragment, [1]),0,0);
           content(env, morph0, context, "view.cellContent");
           return fragment;
         }
@@ -7386,13 +7479,18 @@ define('dummy/templates/editable-table/editable-table-cell', ['exports'], functi
     }());
     return {
       isHTMLBars: true,
+      revision: "Ember@1.11.3",
       blockParams: 0,
       cachedFragment: null,
       hasRendered: false,
       build: function build(dom) {
-        var el0 = dom.createElement("span");
-        dom.setAttribute(el0,"class","ember-table-content");
-        var el1 = dom.createTextNode("\n");
+        var el0 = dom.createDocumentFragment();
+        var el1 = dom.createElement("span");
+        dom.setAttribute(el1,"class","ember-table-content");
+        var el2 = dom.createTextNode("\n");
+        dom.appendChild(el1, el2);
+        var el2 = dom.createComment("");
+        dom.appendChild(el1, el2);
         dom.appendChild(el0, el1);
         return el0;
       },
@@ -7416,7 +7514,7 @@ define('dummy/templates/editable-table/editable-table-cell', ['exports'], functi
         } else {
           fragment = this.build(dom);
         }
-        var morph0 = dom.createMorphAt(fragment,0,-1);
+        var morph0 = dom.createMorphAt(dom.childAt(fragment, [0]),1,1);
         block(env, morph0, context, "if", [get(env, context, "view.isEditing")], {}, child0, child1);
         return fragment;
       }
@@ -7431,12 +7529,13 @@ define('dummy/templates/editable-table/editable-table', ['exports'], function (e
   exports['default'] = Ember.HTMLBars.template((function() {
     return {
       isHTMLBars: true,
+      revision: "Ember@1.11.3",
       blockParams: 0,
       cachedFragment: null,
       hasRendered: false,
       build: function build(dom) {
         var el0 = dom.createDocumentFragment();
-        var el1 = dom.createTextNode("");
+        var el1 = dom.createComment("");
         dom.appendChild(el0, el1);
         var el1 = dom.createTextNode("\n");
         dom.appendChild(el0, el1);
@@ -7462,8 +7561,8 @@ define('dummy/templates/editable-table/editable-table', ['exports'], function (e
         } else {
           fragment = this.build(dom);
         }
-        if (this.cachedFragment) { dom.repairClonedNode(fragment,[0]); }
-        var morph0 = dom.createMorphAt(fragment,0,1,contextualElement);
+        var morph0 = dom.createMorphAt(fragment,0,0,contextualElement);
+        dom.insertBoundary(fragment, 0);
         inline(env, morph0, context, "ember-table", [], {"hasHeader": true, "hasFooter": false, "numFixedColumns": 0, "rowHeight": 30, "columns": get(env, context, "tableColumns"), "content": get(env, context, "tableContent")});
         return fragment;
       }
@@ -7478,25 +7577,28 @@ define('dummy/templates/editable-table/rating-table-cell', ['exports'], function
   exports['default'] = Ember.HTMLBars.template((function() {
     return {
       isHTMLBars: true,
+      revision: "Ember@1.11.3",
       blockParams: 0,
       cachedFragment: null,
       hasRendered: false,
       build: function build(dom) {
-        var el0 = dom.createElement("div");
-        dom.setAttribute(el0,"class","rating");
-        var el1 = dom.createTextNode("\n  ");
-        dom.appendChild(el0, el1);
-        var el1 = dom.createElement("span");
-        dom.appendChild(el0, el1);
-        var el1 = dom.createElement("span");
-        dom.appendChild(el0, el1);
-        var el1 = dom.createElement("span");
-        dom.appendChild(el0, el1);
-        var el1 = dom.createElement("span");
-        dom.appendChild(el0, el1);
-        var el1 = dom.createElement("span");
-        dom.appendChild(el0, el1);
-        var el1 = dom.createTextNode("\n");
+        var el0 = dom.createDocumentFragment();
+        var el1 = dom.createElement("div");
+        dom.setAttribute(el1,"class","rating");
+        var el2 = dom.createTextNode("\n  ");
+        dom.appendChild(el1, el2);
+        var el2 = dom.createElement("span");
+        dom.appendChild(el1, el2);
+        var el2 = dom.createElement("span");
+        dom.appendChild(el1, el2);
+        var el2 = dom.createElement("span");
+        dom.appendChild(el1, el2);
+        var el2 = dom.createElement("span");
+        dom.appendChild(el1, el2);
+        var el2 = dom.createElement("span");
+        dom.appendChild(el1, el2);
+        var el2 = dom.createTextNode("\n");
+        dom.appendChild(el1, el2);
         dom.appendChild(el0, el1);
         return el0;
       },
@@ -7532,6 +7634,7 @@ define('dummy/templates/editable', ['exports'], function (exports) {
   exports['default'] = Ember.HTMLBars.template((function() {
     return {
       isHTMLBars: true,
+      revision: "Ember@1.11.3",
       blockParams: 0,
       cachedFragment: null,
       hasRendered: false,
@@ -7566,6 +7669,8 @@ define('dummy/templates/editable', ['exports'], function (exports) {
         var el5 = dom.createElement("div");
         dom.setAttribute(el5,"class","ember-table-example-container");
         var el6 = dom.createTextNode("\n          ");
+        dom.appendChild(el5, el6);
+        var el6 = dom.createComment("");
         dom.appendChild(el5, el6);
         var el6 = dom.createTextNode("\n        ");
         dom.appendChild(el5, el6);
@@ -7741,7 +7846,7 @@ define('dummy/templates/editable', ['exports'], function (exports) {
         } else {
           fragment = this.build(dom);
         }
-        var morph0 = dom.createMorphAt(dom.childAt(fragment, [0, 3, 1, 1, 1]),0,1);
+        var morph0 = dom.createMorphAt(dom.childAt(fragment, [0, 3, 1, 1, 1]),1,1);
         inline(env, morph0, context, "partial", ["editable-table/editable-table"], {});
         return fragment;
       }
@@ -7756,6 +7861,7 @@ define('dummy/templates/empty-cell', ['exports'], function (exports) {
   exports['default'] = Ember.HTMLBars.template((function() {
     return {
       isHTMLBars: true,
+      revision: "Ember@1.11.3",
       blockParams: 0,
       cachedFragment: null,
       hasRendered: false,
@@ -7795,22 +7901,27 @@ define('dummy/templates/financial-table/financial-table-cell', ['exports'], func
   exports['default'] = Ember.HTMLBars.template((function() {
     return {
       isHTMLBars: true,
+      revision: "Ember@1.11.3",
       blockParams: 0,
       cachedFragment: null,
       hasRendered: false,
       build: function build(dom) {
-        var el0 = dom.createElement("div");
-        dom.setAttribute(el0,"class","ember-table-cell-container");
-        var el1 = dom.createTextNode("\n  ");
-        dom.appendChild(el0, el1);
-        var el1 = dom.createElement("span");
-        dom.setAttribute(el1,"class","ember-table-content");
-        var el2 = dom.createTextNode("\n    ");
-        dom.appendChild(el1, el2);
+        var el0 = dom.createDocumentFragment();
+        var el1 = dom.createElement("div");
+        dom.setAttribute(el1,"class","ember-table-cell-container");
         var el2 = dom.createTextNode("\n  ");
         dom.appendChild(el1, el2);
-        dom.appendChild(el0, el1);
-        var el1 = dom.createTextNode("\n");
+        var el2 = dom.createElement("span");
+        dom.setAttribute(el2,"class","ember-table-content");
+        var el3 = dom.createTextNode("\n    ");
+        dom.appendChild(el2, el3);
+        var el3 = dom.createComment("");
+        dom.appendChild(el2, el3);
+        var el3 = dom.createTextNode("\n  ");
+        dom.appendChild(el2, el3);
+        dom.appendChild(el1, el2);
+        var el2 = dom.createTextNode("\n");
+        dom.appendChild(el1, el2);
         dom.appendChild(el0, el1);
         return el0;
       },
@@ -7834,7 +7945,7 @@ define('dummy/templates/financial-table/financial-table-cell', ['exports'], func
         } else {
           fragment = this.build(dom);
         }
-        var morph0 = dom.createMorphAt(dom.childAt(fragment, [1]),0,1);
+        var morph0 = dom.createMorphAt(dom.childAt(fragment, [0, 1]),1,1);
         content(env, morph0, context, "view.cellContent");
         return fragment;
       }
@@ -7849,29 +7960,34 @@ define('dummy/templates/financial-table/financial-table-header-cell', ['exports'
   exports['default'] = Ember.HTMLBars.template((function() {
     return {
       isHTMLBars: true,
+      revision: "Ember@1.11.3",
       blockParams: 0,
       cachedFragment: null,
       hasRendered: false,
       build: function build(dom) {
-        var el0 = dom.createElement("div");
-        dom.setAttribute(el0,"class","ember-table-cell-container");
-        var el1 = dom.createTextNode("\n  ");
-        dom.appendChild(el0, el1);
+        var el0 = dom.createDocumentFragment();
         var el1 = dom.createElement("div");
-        dom.setAttribute(el1,"class","ember-table-header-content-container");
-        var el2 = dom.createTextNode("\n    ");
-        dom.appendChild(el1, el2);
-        var el2 = dom.createElement("span");
-        dom.setAttribute(el2,"class","ember-table-content");
-        var el3 = dom.createTextNode("\n      ");
-        dom.appendChild(el2, el3);
-        var el3 = dom.createTextNode("\n    ");
-        dom.appendChild(el2, el3);
-        dom.appendChild(el1, el2);
+        dom.setAttribute(el1,"class","ember-table-cell-container");
         var el2 = dom.createTextNode("\n  ");
         dom.appendChild(el1, el2);
-        dom.appendChild(el0, el1);
-        var el1 = dom.createTextNode("\n");
+        var el2 = dom.createElement("div");
+        dom.setAttribute(el2,"class","ember-table-header-content-container");
+        var el3 = dom.createTextNode("\n    ");
+        dom.appendChild(el2, el3);
+        var el3 = dom.createElement("span");
+        dom.setAttribute(el3,"class","ember-table-content");
+        var el4 = dom.createTextNode("\n      ");
+        dom.appendChild(el3, el4);
+        var el4 = dom.createComment("");
+        dom.appendChild(el3, el4);
+        var el4 = dom.createTextNode("\n    ");
+        dom.appendChild(el3, el4);
+        dom.appendChild(el2, el3);
+        var el3 = dom.createTextNode("\n  ");
+        dom.appendChild(el2, el3);
+        dom.appendChild(el1, el2);
+        var el2 = dom.createTextNode("\n");
+        dom.appendChild(el1, el2);
         dom.appendChild(el0, el1);
         return el0;
       },
@@ -7895,7 +8011,7 @@ define('dummy/templates/financial-table/financial-table-header-cell', ['exports'
         } else {
           fragment = this.build(dom);
         }
-        var morph0 = dom.createMorphAt(dom.childAt(fragment, [1, 1]),0,1);
+        var morph0 = dom.createMorphAt(dom.childAt(fragment, [0, 1, 1]),1,1);
         content(env, morph0, context, "view.content.headerCellName");
         return fragment;
       }
@@ -7910,6 +8026,7 @@ define('dummy/templates/financial-table/financial-table-header-tree-cell', ['exp
   exports['default'] = Ember.HTMLBars.template((function() {
     return {
       isHTMLBars: true,
+      revision: "Ember@1.11.3",
       blockParams: 0,
       cachedFragment: null,
       hasRendered: false,
@@ -7921,6 +8038,8 @@ define('dummy/templates/financial-table/financial-table-header-tree-cell', ['exp
         dom.appendChild(el1, el2);
         var el2 = dom.createElement("span");
         var el3 = dom.createTextNode("\n    ");
+        dom.appendChild(el2, el3);
+        var el3 = dom.createComment("");
         dom.appendChild(el2, el3);
         var el3 = dom.createTextNode("\n  ");
         dom.appendChild(el2, el3);
@@ -7934,6 +8053,8 @@ define('dummy/templates/financial-table/financial-table-header-tree-cell', ['exp
         var el3 = dom.createElement("span");
         dom.setAttribute(el3,"class","ember-table-content");
         var el4 = dom.createTextNode("\n      ");
+        dom.appendChild(el3, el4);
+        var el4 = dom.createComment("");
         dom.appendChild(el3, el4);
         var el4 = dom.createTextNode("\n    ");
         dom.appendChild(el3, el4);
@@ -7970,8 +8091,8 @@ define('dummy/templates/financial-table/financial-table-header-tree-cell', ['exp
         }
         var element0 = dom.childAt(fragment, [0]);
         var element1 = dom.childAt(element0, [1]);
-        var morph0 = dom.createMorphAt(element1,0,1);
-        var morph1 = dom.createMorphAt(dom.childAt(element0, [3, 1]),0,1);
+        var morph0 = dom.createMorphAt(element1,1,1);
+        var morph1 = dom.createMorphAt(dom.childAt(element0, [3, 1]),1,1);
         element(env, element1, context, "bind-attr", [], {"class": ":ember-table-toggle-span :ember-table-toggle\n      isCollapsed:ember-table-expand:ember-table-collapse"});
         element(env, element1, context, "action", ["toggleTableCollapse"], {});
         inline(env, morph0, context, "fa-icon", ["caret-down"], {"classNames": "ember-table-toggle-icon"});
@@ -7989,6 +8110,7 @@ define('dummy/templates/financial-table/financial-table-tree-cell', ['exports'],
   exports['default'] = Ember.HTMLBars.template((function() {
     return {
       isHTMLBars: true,
+      revision: "Ember@1.11.3",
       blockParams: 0,
       cachedFragment: null,
       hasRendered: false,
@@ -8001,6 +8123,8 @@ define('dummy/templates/financial-table/financial-table-tree-cell', ['exports'],
         var el2 = dom.createElement("span");
         var el3 = dom.createTextNode("\n    ");
         dom.appendChild(el2, el3);
+        var el3 = dom.createComment("");
+        dom.appendChild(el2, el3);
         var el3 = dom.createTextNode("\n  ");
         dom.appendChild(el2, el3);
         dom.appendChild(el1, el2);
@@ -8009,6 +8133,8 @@ define('dummy/templates/financial-table/financial-table-tree-cell', ['exports'],
         var el2 = dom.createElement("span");
         dom.setAttribute(el2,"class","ember-table-content");
         var el3 = dom.createTextNode("\n    ");
+        dom.appendChild(el2, el3);
+        var el3 = dom.createComment("");
         dom.appendChild(el2, el3);
         var el3 = dom.createTextNode("\n  ");
         dom.appendChild(el2, el3);
@@ -8042,8 +8168,8 @@ define('dummy/templates/financial-table/financial-table-tree-cell', ['exports'],
         }
         var element0 = dom.childAt(fragment, [0]);
         var element1 = dom.childAt(element0, [1]);
-        var morph0 = dom.createMorphAt(element1,0,1);
-        var morph1 = dom.createMorphAt(dom.childAt(element0, [3]),0,1);
+        var morph0 = dom.createMorphAt(element1,1,1);
+        var morph1 = dom.createMorphAt(dom.childAt(element0, [3]),1,1);
         element(env, element0, context, "bind-attr", [], {"style": "view.paddingStyle"});
         element(env, element1, context, "bind-attr", [], {"class": ":ember-table-toggle-span view.row.isLeaf::ember-table-toggle\n    view.row.isCollapsed:ember-table-expand:ember-table-collapse"});
         element(env, element1, context, "action", ["toggleCollapse", get(env, context, "view.row")], {});
@@ -8062,12 +8188,13 @@ define('dummy/templates/financial-table/financial-table', ['exports'], function 
   exports['default'] = Ember.HTMLBars.template((function() {
     return {
       isHTMLBars: true,
+      revision: "Ember@1.11.3",
       blockParams: 0,
       cachedFragment: null,
       hasRendered: false,
       build: function build(dom) {
         var el0 = dom.createDocumentFragment();
-        var el1 = dom.createTextNode("");
+        var el1 = dom.createComment("");
         dom.appendChild(el0, el1);
         var el1 = dom.createTextNode("\n");
         dom.appendChild(el0, el1);
@@ -8093,8 +8220,8 @@ define('dummy/templates/financial-table/financial-table', ['exports'], function 
         } else {
           fragment = this.build(dom);
         }
-        if (this.cachedFragment) { dom.repairClonedNode(fragment,[0]); }
-        var morph0 = dom.createMorphAt(fragment,0,1,contextualElement);
+        var morph0 = dom.createMorphAt(fragment,0,0,contextualElement);
+        dom.insertBoundary(fragment, 0);
         inline(env, morph0, context, "financial-table", [], {"data": get(env, context, "data")});
         return fragment;
       }
@@ -8109,6 +8236,7 @@ define('dummy/templates/financial', ['exports'], function (exports) {
   exports['default'] = Ember.HTMLBars.template((function() {
     return {
       isHTMLBars: true,
+      revision: "Ember@1.11.3",
       blockParams: 0,
       cachedFragment: null,
       hasRendered: false,
@@ -8143,6 +8271,8 @@ define('dummy/templates/financial', ['exports'], function (exports) {
         var el5 = dom.createElement("div");
         dom.setAttribute(el5,"class","ember-table-example-container ember-table-financial");
         var el6 = dom.createTextNode("\n          ");
+        dom.appendChild(el5, el6);
+        var el6 = dom.createComment("");
         dom.appendChild(el5, el6);
         var el6 = dom.createTextNode("\n        ");
         dom.appendChild(el5, el6);
@@ -8507,7 +8637,7 @@ define('dummy/templates/financial', ['exports'], function (exports) {
         } else {
           fragment = this.build(dom);
         }
-        var morph0 = dom.createMorphAt(dom.childAt(fragment, [0, 3, 1, 1, 1]),0,1);
+        var morph0 = dom.createMorphAt(dom.childAt(fragment, [0, 3, 1, 1, 1]),1,1);
         inline(env, morph0, context, "partial", ["financial-table/financial-table"], {});
         return fragment;
       }
@@ -8523,12 +8653,15 @@ define('dummy/templates/footer-table-container', ['exports'], function (exports)
     var child0 = (function() {
       return {
         isHTMLBars: true,
+        revision: "Ember@1.11.3",
         blockParams: 0,
         cachedFragment: null,
         hasRendered: false,
         build: function build(dom) {
           var el0 = dom.createDocumentFragment();
           var el1 = dom.createTextNode("    ");
+          dom.appendChild(el0, el1);
+          var el1 = dom.createComment("");
           dom.appendChild(el0, el1);
           var el1 = dom.createTextNode("\n");
           dom.appendChild(el0, el1);
@@ -8554,7 +8687,7 @@ define('dummy/templates/footer-table-container', ['exports'], function (exports)
           } else {
             fragment = this.build(dom);
           }
-          var morph0 = dom.createMorphAt(fragment,0,1,contextualElement);
+          var morph0 = dom.createMorphAt(fragment,1,1,contextualElement);
           inline(env, morph0, context, "view", ["table-block"], {"classNames": "ember-table-left-table-block", "content": get(env, context, "footerContent"), "columns": get(env, context, "fixedColumns"), "width": get(env, context, "_fixedBlockWidth"), "height": get(env, context, "footerHeight")});
           return fragment;
         }
@@ -8562,6 +8695,7 @@ define('dummy/templates/footer-table-container', ['exports'], function (exports)
     }());
     return {
       isHTMLBars: true,
+      revision: "Ember@1.11.3",
       blockParams: 0,
       cachedFragment: null,
       hasRendered: false,
@@ -8571,7 +8705,11 @@ define('dummy/templates/footer-table-container', ['exports'], function (exports)
         dom.setAttribute(el1,"class","ember-table-table-fixed-wrapper");
         var el2 = dom.createTextNode("\n");
         dom.appendChild(el1, el2);
+        var el2 = dom.createComment("");
+        dom.appendChild(el1, el2);
         var el2 = dom.createTextNode("  ");
+        dom.appendChild(el1, el2);
+        var el2 = dom.createComment("");
         dom.appendChild(el1, el2);
         var el2 = dom.createTextNode("\n");
         dom.appendChild(el1, el2);
@@ -8601,8 +8739,8 @@ define('dummy/templates/footer-table-container', ['exports'], function (exports)
           fragment = this.build(dom);
         }
         var element0 = dom.childAt(fragment, [0]);
-        var morph0 = dom.createMorphAt(element0,0,1);
-        var morph1 = dom.createMorphAt(element0,1,2);
+        var morph0 = dom.createMorphAt(element0,1,1);
+        var morph1 = dom.createMorphAt(element0,3,3);
         block(env, morph0, context, "if", [get(env, context, "numFixedColumns")], {}, child0, null);
         inline(env, morph1, context, "view", ["table-block"], {"classNames": "ember-table-right-table-block", "content": get(env, context, "footerContent"), "columns": get(env, context, "tableColumns"), "scrollLeft": get(env, context, "_tableScrollLeft"), "width": get(env, context, "_tableBlockWidth"), "height": get(env, context, "footerHeight")});
         return fragment;
@@ -8619,11 +8757,14 @@ define('dummy/templates/footer', ['exports'], function (exports) {
     var child0 = (function() {
       return {
         isHTMLBars: true,
+        revision: "Ember@1.11.3",
         blockParams: 0,
         cachedFragment: null,
         hasRendered: false,
         build: function build(dom) {
-          var el0 = dom.createTextNode("Overview & Getting Started");
+          var el0 = dom.createDocumentFragment();
+          var el1 = dom.createTextNode("Overview & Getting Started");
+          dom.appendChild(el0, el1);
           return el0;
         },
         render: function render(context, env, contextualElement) {
@@ -8652,11 +8793,14 @@ define('dummy/templates/footer', ['exports'], function (exports) {
     var child1 = (function() {
       return {
         isHTMLBars: true,
+        revision: "Ember@1.11.3",
         blockParams: 0,
         cachedFragment: null,
         hasRendered: false,
         build: function build(dom) {
-          var el0 = dom.createTextNode("API & Documentation");
+          var el0 = dom.createDocumentFragment();
+          var el1 = dom.createTextNode("API & Documentation");
+          dom.appendChild(el0, el1);
           return el0;
         },
         render: function render(context, env, contextualElement) {
@@ -8685,11 +8829,14 @@ define('dummy/templates/footer', ['exports'], function (exports) {
     var child2 = (function() {
       return {
         isHTMLBars: true,
+        revision: "Ember@1.11.3",
         blockParams: 0,
         cachedFragment: null,
         hasRendered: false,
         build: function build(dom) {
-          var el0 = dom.createTextNode("Migration Guides");
+          var el0 = dom.createDocumentFragment();
+          var el1 = dom.createTextNode("Migration Guides");
+          dom.appendChild(el0, el1);
           return el0;
         },
         render: function render(context, env, contextualElement) {
@@ -8718,11 +8865,14 @@ define('dummy/templates/footer', ['exports'], function (exports) {
     var child3 = (function() {
       return {
         isHTMLBars: true,
+        revision: "Ember@1.11.3",
         blockParams: 0,
         cachedFragment: null,
         hasRendered: false,
         build: function build(dom) {
-          var el0 = dom.createTextNode("Community Examples");
+          var el0 = dom.createDocumentFragment();
+          var el1 = dom.createTextNode("Community Examples");
+          dom.appendChild(el0, el1);
           return el0;
         },
         render: function render(context, env, contextualElement) {
@@ -8751,11 +8901,14 @@ define('dummy/templates/footer', ['exports'], function (exports) {
     var child4 = (function() {
       return {
         isHTMLBars: true,
+        revision: "Ember@1.11.3",
         blockParams: 0,
         cachedFragment: null,
         hasRendered: false,
         build: function build(dom) {
-          var el0 = dom.createTextNode("Hello World table");
+          var el0 = dom.createDocumentFragment();
+          var el1 = dom.createTextNode("Hello World table");
+          dom.appendChild(el0, el1);
           return el0;
         },
         render: function render(context, env, contextualElement) {
@@ -8784,11 +8937,14 @@ define('dummy/templates/footer', ['exports'], function (exports) {
     var child5 = (function() {
       return {
         isHTMLBars: true,
+        revision: "Ember@1.11.3",
         blockParams: 0,
         cachedFragment: null,
         hasRendered: false,
         build: function build(dom) {
-          var el0 = dom.createTextNode("AJAX cells");
+          var el0 = dom.createDocumentFragment();
+          var el1 = dom.createTextNode("AJAX cells");
+          dom.appendChild(el0, el1);
           return el0;
         },
         render: function render(context, env, contextualElement) {
@@ -8817,11 +8973,14 @@ define('dummy/templates/footer', ['exports'], function (exports) {
     var child6 = (function() {
       return {
         isHTMLBars: true,
+        revision: "Ember@1.11.3",
         blockParams: 0,
         cachedFragment: null,
         hasRendered: false,
         build: function build(dom) {
-          var el0 = dom.createTextNode("Bar cells");
+          var el0 = dom.createDocumentFragment();
+          var el1 = dom.createTextNode("Bar cells");
+          dom.appendChild(el0, el1);
           return el0;
         },
         render: function render(context, env, contextualElement) {
@@ -8850,11 +9009,14 @@ define('dummy/templates/footer', ['exports'], function (exports) {
     var child7 = (function() {
       return {
         isHTMLBars: true,
+        revision: "Ember@1.11.3",
         blockParams: 0,
         cachedFragment: null,
         hasRendered: false,
         build: function build(dom) {
-          var el0 = dom.createTextNode("Dynamic bar cells");
+          var el0 = dom.createDocumentFragment();
+          var el1 = dom.createTextNode("Dynamic bar cells");
+          dom.appendChild(el0, el1);
           return el0;
         },
         render: function render(context, env, contextualElement) {
@@ -8883,11 +9045,14 @@ define('dummy/templates/footer', ['exports'], function (exports) {
     var child8 = (function() {
       return {
         isHTMLBars: true,
+        revision: "Ember@1.11.3",
         blockParams: 0,
         cachedFragment: null,
         hasRendered: false,
         build: function build(dom) {
-          var el0 = dom.createTextNode("Tree & financial table");
+          var el0 = dom.createDocumentFragment();
+          var el1 = dom.createTextNode("Tree & financial table");
+          dom.appendChild(el0, el1);
           return el0;
         },
         render: function render(context, env, contextualElement) {
@@ -8916,11 +9081,14 @@ define('dummy/templates/footer', ['exports'], function (exports) {
     var child9 = (function() {
       return {
         isHTMLBars: true,
+        revision: "Ember@1.11.3",
         blockParams: 0,
         cachedFragment: null,
         hasRendered: false,
         build: function build(dom) {
-          var el0 = dom.createTextNode("Editable cells");
+          var el0 = dom.createDocumentFragment();
+          var el1 = dom.createTextNode("Editable cells");
+          dom.appendChild(el0, el1);
           return el0;
         },
         render: function render(context, env, contextualElement) {
@@ -8949,11 +9117,14 @@ define('dummy/templates/footer', ['exports'], function (exports) {
     var child10 = (function() {
       return {
         isHTMLBars: true,
+        revision: "Ember@1.11.3",
         blockParams: 0,
         cachedFragment: null,
         hasRendered: false,
         build: function build(dom) {
-          var el0 = dom.createTextNode("Sparkline cells");
+          var el0 = dom.createDocumentFragment();
+          var el1 = dom.createTextNode("Sparkline cells");
+          dom.appendChild(el0, el1);
           return el0;
         },
         render: function render(context, env, contextualElement) {
@@ -8982,11 +9153,14 @@ define('dummy/templates/footer', ['exports'], function (exports) {
     var child11 = (function() {
       return {
         isHTMLBars: true,
+        revision: "Ember@1.11.3",
         blockParams: 0,
         cachedFragment: null,
         hasRendered: false,
         build: function build(dom) {
-          var el0 = dom.createTextNode("Horizon cells");
+          var el0 = dom.createDocumentFragment();
+          var el1 = dom.createTextNode("Horizon cells");
+          dom.appendChild(el0, el1);
           return el0;
         },
         render: function render(context, env, contextualElement) {
@@ -9015,11 +9189,14 @@ define('dummy/templates/footer', ['exports'], function (exports) {
     var child12 = (function() {
       return {
         isHTMLBars: true,
+        revision: "Ember@1.11.3",
         blockParams: 0,
         cachedFragment: null,
         hasRendered: false,
         build: function build(dom) {
-          var el0 = dom.createTextNode("Configurable columns");
+          var el0 = dom.createDocumentFragment();
+          var el1 = dom.createTextNode("Configurable columns");
+          dom.appendChild(el0, el1);
           return el0;
         },
         render: function render(context, env, contextualElement) {
@@ -9048,11 +9225,14 @@ define('dummy/templates/footer', ['exports'], function (exports) {
     var child13 = (function() {
       return {
         isHTMLBars: true,
+        revision: "Ember@1.11.3",
         blockParams: 0,
         cachedFragment: null,
         hasRendered: false,
         build: function build(dom) {
-          var el0 = dom.createTextNode("License");
+          var el0 = dom.createDocumentFragment();
+          var el1 = dom.createTextNode("License");
+          dom.appendChild(el0, el1);
           return el0;
         },
         render: function render(context, env, contextualElement) {
@@ -9080,6 +9260,7 @@ define('dummy/templates/footer', ['exports'], function (exports) {
     }());
     return {
       isHTMLBars: true,
+      revision: "Ember@1.11.3",
       blockParams: 0,
       cachedFragment: null,
       hasRendered: false,
@@ -9114,18 +9295,26 @@ define('dummy/templates/footer', ['exports'], function (exports) {
         var el6 = dom.createTextNode("\n          ");
         dom.appendChild(el5, el6);
         var el6 = dom.createElement("li");
+        var el7 = dom.createComment("");
+        dom.appendChild(el6, el7);
         dom.appendChild(el5, el6);
         var el6 = dom.createTextNode("\n          ");
         dom.appendChild(el5, el6);
         var el6 = dom.createElement("li");
+        var el7 = dom.createComment("");
+        dom.appendChild(el6, el7);
         dom.appendChild(el5, el6);
         var el6 = dom.createTextNode("\n          ");
         dom.appendChild(el5, el6);
         var el6 = dom.createElement("li");
+        var el7 = dom.createComment("");
+        dom.appendChild(el6, el7);
         dom.appendChild(el5, el6);
         var el6 = dom.createTextNode("\n          ");
         dom.appendChild(el5, el6);
         var el6 = dom.createElement("li");
+        var el7 = dom.createComment("");
+        dom.appendChild(el6, el7);
         dom.appendChild(el5, el6);
         var el6 = dom.createTextNode("\n        ");
         dom.appendChild(el5, el6);
@@ -9152,38 +9341,56 @@ define('dummy/templates/footer', ['exports'], function (exports) {
         var el6 = dom.createTextNode("\n          ");
         dom.appendChild(el5, el6);
         var el6 = dom.createElement("li");
+        var el7 = dom.createComment("");
+        dom.appendChild(el6, el7);
         dom.appendChild(el5, el6);
         var el6 = dom.createTextNode("\n          ");
         dom.appendChild(el5, el6);
         var el6 = dom.createElement("li");
+        var el7 = dom.createComment("");
+        dom.appendChild(el6, el7);
         dom.appendChild(el5, el6);
         var el6 = dom.createTextNode("\n          ");
         dom.appendChild(el5, el6);
         var el6 = dom.createElement("li");
+        var el7 = dom.createComment("");
+        dom.appendChild(el6, el7);
         dom.appendChild(el5, el6);
         var el6 = dom.createTextNode("\n          ");
         dom.appendChild(el5, el6);
         var el6 = dom.createElement("li");
+        var el7 = dom.createComment("");
+        dom.appendChild(el6, el7);
         dom.appendChild(el5, el6);
         var el6 = dom.createTextNode("\n          ");
         dom.appendChild(el5, el6);
         var el6 = dom.createElement("li");
+        var el7 = dom.createComment("");
+        dom.appendChild(el6, el7);
         dom.appendChild(el5, el6);
         var el6 = dom.createTextNode("\n          ");
         dom.appendChild(el5, el6);
         var el6 = dom.createElement("li");
+        var el7 = dom.createComment("");
+        dom.appendChild(el6, el7);
         dom.appendChild(el5, el6);
         var el6 = dom.createTextNode("\n          ");
         dom.appendChild(el5, el6);
         var el6 = dom.createElement("li");
+        var el7 = dom.createComment("");
+        dom.appendChild(el6, el7);
         dom.appendChild(el5, el6);
         var el6 = dom.createTextNode("\n          ");
         dom.appendChild(el5, el6);
         var el6 = dom.createElement("li");
+        var el7 = dom.createComment("");
+        dom.appendChild(el6, el7);
         dom.appendChild(el5, el6);
         var el6 = dom.createTextNode("\n          ");
         dom.appendChild(el5, el6);
         var el6 = dom.createElement("li");
+        var el7 = dom.createComment("");
+        dom.appendChild(el6, el7);
         dom.appendChild(el5, el6);
         var el6 = dom.createTextNode("\n        ");
         dom.appendChild(el5, el6);
@@ -9220,6 +9427,8 @@ define('dummy/templates/footer', ['exports'], function (exports) {
         var el6 = dom.createTextNode("\n          ");
         dom.appendChild(el5, el6);
         var el6 = dom.createElement("li");
+        var el7 = dom.createComment("");
+        dom.appendChild(el6, el7);
         dom.appendChild(el5, el6);
         var el6 = dom.createTextNode("\n        ");
         dom.appendChild(el5, el6);
@@ -9373,20 +9582,20 @@ define('dummy/templates/footer', ['exports'], function (exports) {
         var element0 = dom.childAt(fragment, [0, 1, 1]);
         var element1 = dom.childAt(element0, [1, 1]);
         var element2 = dom.childAt(element0, [3, 1]);
-        var morph0 = dom.createMorphAt(dom.childAt(element1, [3]),-1,-1);
-        var morph1 = dom.createMorphAt(dom.childAt(element1, [5]),-1,-1);
-        var morph2 = dom.createMorphAt(dom.childAt(element1, [7]),-1,-1);
-        var morph3 = dom.createMorphAt(dom.childAt(element1, [9]),-1,-1);
-        var morph4 = dom.createMorphAt(dom.childAt(element2, [3]),-1,-1);
-        var morph5 = dom.createMorphAt(dom.childAt(element2, [5]),-1,-1);
-        var morph6 = dom.createMorphAt(dom.childAt(element2, [7]),-1,-1);
-        var morph7 = dom.createMorphAt(dom.childAt(element2, [9]),-1,-1);
-        var morph8 = dom.createMorphAt(dom.childAt(element2, [11]),-1,-1);
-        var morph9 = dom.createMorphAt(dom.childAt(element2, [13]),-1,-1);
-        var morph10 = dom.createMorphAt(dom.childAt(element2, [15]),-1,-1);
-        var morph11 = dom.createMorphAt(dom.childAt(element2, [17]),-1,-1);
-        var morph12 = dom.createMorphAt(dom.childAt(element2, [19]),-1,-1);
-        var morph13 = dom.createMorphAt(dom.childAt(element0, [5, 1, 5]),-1,-1);
+        var morph0 = dom.createMorphAt(dom.childAt(element1, [3]),0,0);
+        var morph1 = dom.createMorphAt(dom.childAt(element1, [5]),0,0);
+        var morph2 = dom.createMorphAt(dom.childAt(element1, [7]),0,0);
+        var morph3 = dom.createMorphAt(dom.childAt(element1, [9]),0,0);
+        var morph4 = dom.createMorphAt(dom.childAt(element2, [3]),0,0);
+        var morph5 = dom.createMorphAt(dom.childAt(element2, [5]),0,0);
+        var morph6 = dom.createMorphAt(dom.childAt(element2, [7]),0,0);
+        var morph7 = dom.createMorphAt(dom.childAt(element2, [9]),0,0);
+        var morph8 = dom.createMorphAt(dom.childAt(element2, [11]),0,0);
+        var morph9 = dom.createMorphAt(dom.childAt(element2, [13]),0,0);
+        var morph10 = dom.createMorphAt(dom.childAt(element2, [15]),0,0);
+        var morph11 = dom.createMorphAt(dom.childAt(element2, [17]),0,0);
+        var morph12 = dom.createMorphAt(dom.childAt(element2, [19]),0,0);
+        var morph13 = dom.createMorphAt(dom.childAt(element0, [5, 1, 5]),0,0);
         block(env, morph0, context, "link-to", ["overview"], {}, child0, null);
         block(env, morph1, context, "link-to", ["documentation"], {}, child1, null);
         block(env, morph2, context, "link-to", ["migration-guides"], {}, child2, null);
@@ -9414,22 +9623,27 @@ define('dummy/templates/header-cell', ['exports'], function (exports) {
   exports['default'] = Ember.HTMLBars.template((function() {
     return {
       isHTMLBars: true,
+      revision: "Ember@1.11.3",
       blockParams: 0,
       cachedFragment: null,
       hasRendered: false,
       build: function build(dom) {
-        var el0 = dom.createElement("div");
-        dom.setAttribute(el0,"class","ember-table-content-container");
-        var el1 = dom.createTextNode("\n  ");
-        dom.appendChild(el0, el1);
-        var el1 = dom.createElement("span");
-        dom.setAttribute(el1,"class","ember-table-content");
-        var el2 = dom.createTextNode("\n    ");
-        dom.appendChild(el1, el2);
+        var el0 = dom.createDocumentFragment();
+        var el1 = dom.createElement("div");
+        dom.setAttribute(el1,"class","ember-table-content-container");
         var el2 = dom.createTextNode("\n  ");
         dom.appendChild(el1, el2);
-        dom.appendChild(el0, el1);
-        var el1 = dom.createTextNode("\n");
+        var el2 = dom.createElement("span");
+        dom.setAttribute(el2,"class","ember-table-content");
+        var el3 = dom.createTextNode("\n    ");
+        dom.appendChild(el2, el3);
+        var el3 = dom.createComment("");
+        dom.appendChild(el2, el3);
+        var el3 = dom.createTextNode("\n  ");
+        dom.appendChild(el2, el3);
+        dom.appendChild(el1, el2);
+        var el2 = dom.createTextNode("\n");
+        dom.appendChild(el1, el2);
         dom.appendChild(el0, el1);
         return el0;
       },
@@ -9453,8 +9667,8 @@ define('dummy/templates/header-cell', ['exports'], function (exports) {
         } else {
           fragment = this.build(dom);
         }
-        var element0 = fragment;
-        var morph0 = dom.createMorphAt(dom.childAt(element0, [1]),0,1);
+        var element0 = dom.childAt(fragment, [0]);
+        var morph0 = dom.createMorphAt(dom.childAt(element0, [1]),1,1);
         element(env, element0, context, "action", ["sortByColumn", get(env, context, "view.content")], {});
         content(env, morph0, context, "view.content.headerCellName");
         return fragment;
@@ -9470,12 +9684,13 @@ define('dummy/templates/header-row', ['exports'], function (exports) {
   exports['default'] = Ember.HTMLBars.template((function() {
     return {
       isHTMLBars: true,
+      revision: "Ember@1.11.3",
       blockParams: 0,
       cachedFragment: null,
       hasRendered: false,
       build: function build(dom) {
         var el0 = dom.createDocumentFragment();
-        var el1 = dom.createTextNode("");
+        var el1 = dom.createComment("");
         dom.appendChild(el0, el1);
         var el1 = dom.createTextNode("\n");
         dom.appendChild(el0, el1);
@@ -9501,8 +9716,8 @@ define('dummy/templates/header-row', ['exports'], function (exports) {
         } else {
           fragment = this.build(dom);
         }
-        if (this.cachedFragment) { dom.repairClonedNode(fragment,[0]); }
-        var morph0 = dom.createMorphAt(fragment,0,1,contextualElement);
+        var morph0 = dom.createMorphAt(fragment,0,0,contextualElement);
+        dom.insertBoundary(fragment, 0);
         inline(env, morph0, context, "view", ["multi-item-collection"], {"content": get(env, context, "view.content"), "itemViewClassField": "headerCellViewClass", "width": get(env, context, "controller._tableColumnsWidth")});
         return fragment;
       }
@@ -9518,12 +9733,15 @@ define('dummy/templates/header-table-container', ['exports'], function (exports)
     var child0 = (function() {
       return {
         isHTMLBars: true,
+        revision: "Ember@1.11.3",
         blockParams: 0,
         cachedFragment: null,
         hasRendered: false,
         build: function build(dom) {
           var el0 = dom.createDocumentFragment();
           var el1 = dom.createTextNode("    ");
+          dom.appendChild(el0, el1);
+          var el1 = dom.createComment("");
           dom.appendChild(el0, el1);
           var el1 = dom.createTextNode("\n");
           dom.appendChild(el0, el1);
@@ -9549,7 +9767,7 @@ define('dummy/templates/header-table-container', ['exports'], function (exports)
           } else {
             fragment = this.build(dom);
           }
-          var morph0 = dom.createMorphAt(fragment,0,1,contextualElement);
+          var morph0 = dom.createMorphAt(fragment,1,1,contextualElement);
           inline(env, morph0, context, "view", ["header-block"], {"classNames": "ember-table-left-table-block", "columns": get(env, context, "fixedColumns"), "width": get(env, context, "_fixedBlockWidth"), "height": get(env, context, "headerHeight")});
           return fragment;
         }
@@ -9557,6 +9775,7 @@ define('dummy/templates/header-table-container', ['exports'], function (exports)
     }());
     return {
       isHTMLBars: true,
+      revision: "Ember@1.11.3",
       blockParams: 0,
       cachedFragment: null,
       hasRendered: false,
@@ -9566,7 +9785,11 @@ define('dummy/templates/header-table-container', ['exports'], function (exports)
         dom.setAttribute(el1,"class","ember-table-table-fixed-wrapper");
         var el2 = dom.createTextNode("\n");
         dom.appendChild(el1, el2);
+        var el2 = dom.createComment("");
+        dom.appendChild(el1, el2);
         var el2 = dom.createTextNode("  ");
+        dom.appendChild(el1, el2);
+        var el2 = dom.createComment("");
         dom.appendChild(el1, el2);
         var el2 = dom.createTextNode("\n");
         dom.appendChild(el1, el2);
@@ -9596,8 +9819,8 @@ define('dummy/templates/header-table-container', ['exports'], function (exports)
           fragment = this.build(dom);
         }
         var element0 = dom.childAt(fragment, [0]);
-        var morph0 = dom.createMorphAt(element0,0,1);
-        var morph1 = dom.createMorphAt(element0,1,2);
+        var morph0 = dom.createMorphAt(element0,1,1);
+        var morph1 = dom.createMorphAt(element0,3,3);
         block(env, morph0, context, "if", [get(env, context, "controller.numFixedColumns")], {}, child0, null);
         inline(env, morph1, context, "view", ["header-block"], {"classNames": "ember-table-right-table-block", "columns": get(env, context, "tableColumns"), "scrollLeft": get(env, context, "_tableScrollLeft"), "width": get(env, context, "_tableBlockWidth"), "height": get(env, context, "headerHeight")});
         return fragment;
@@ -9613,12 +9836,13 @@ define('dummy/templates/horizon-table/horizon-table', ['exports'], function (exp
   exports['default'] = Ember.HTMLBars.template((function() {
     return {
       isHTMLBars: true,
+      revision: "Ember@1.11.3",
       blockParams: 0,
       cachedFragment: null,
       hasRendered: false,
       build: function build(dom) {
         var el0 = dom.createDocumentFragment();
-        var el1 = dom.createTextNode("");
+        var el1 = dom.createComment("");
         dom.appendChild(el0, el1);
         var el1 = dom.createTextNode("\n");
         dom.appendChild(el0, el1);
@@ -9644,8 +9868,8 @@ define('dummy/templates/horizon-table/horizon-table', ['exports'], function (exp
         } else {
           fragment = this.build(dom);
         }
-        if (this.cachedFragment) { dom.repairClonedNode(fragment,[0]); }
-        var morph0 = dom.createMorphAt(fragment,0,1,contextualElement);
+        var morph0 = dom.createMorphAt(fragment,0,0,contextualElement);
+        dom.insertBoundary(fragment, 0);
         inline(env, morph0, context, "ember-table", [], {"hasHeader": true, "hasFooter": false, "numFixedColumns": 0, "rowHeight": 30, "columns": get(env, context, "tableColumns"), "content": get(env, context, "tableContent")});
         return fragment;
       }
@@ -9660,6 +9884,7 @@ define('dummy/templates/horizon', ['exports'], function (exports) {
   exports['default'] = Ember.HTMLBars.template((function() {
     return {
       isHTMLBars: true,
+      revision: "Ember@1.11.3",
       blockParams: 0,
       cachedFragment: null,
       hasRendered: false,
@@ -9694,6 +9919,8 @@ define('dummy/templates/horizon', ['exports'], function (exports) {
         var el5 = dom.createElement("div");
         dom.setAttribute(el5,"class","ember-table-example-container");
         var el6 = dom.createTextNode("\n          ");
+        dom.appendChild(el5, el6);
+        var el6 = dom.createComment("");
         dom.appendChild(el5, el6);
         var el6 = dom.createTextNode("\n        ");
         dom.appendChild(el5, el6);
@@ -9815,7 +10042,7 @@ define('dummy/templates/horizon', ['exports'], function (exports) {
         } else {
           fragment = this.build(dom);
         }
-        var morph0 = dom.createMorphAt(dom.childAt(fragment, [0, 3, 1, 1, 1]),0,1);
+        var morph0 = dom.createMorphAt(dom.childAt(fragment, [0, 3, 1, 1, 1]),1,1);
         inline(env, morph0, context, "partial", ["horizon-table/horizon-table"], {});
         return fragment;
       }
@@ -9830,6 +10057,7 @@ define('dummy/templates/license', ['exports'], function (exports) {
   exports['default'] = Ember.HTMLBars.template((function() {
     return {
       isHTMLBars: true,
+      revision: "Ember@1.11.3",
       blockParams: 0,
       cachedFragment: null,
       hasRendered: false,
@@ -9923,11 +10151,14 @@ define('dummy/templates/migration-guides', ['exports'], function (exports) {
     var child0 = (function() {
       return {
         isHTMLBars: true,
+        revision: "Ember@1.11.3",
         blockParams: 0,
         cachedFragment: null,
         hasRendered: false,
         build: function build(dom) {
-          var el0 = dom.createTextNode("configurable column demo.");
+          var el0 = dom.createDocumentFragment();
+          var el1 = dom.createTextNode("configurable column demo.");
+          dom.appendChild(el0, el1);
           return el0;
         },
         render: function render(context, env, contextualElement) {
@@ -9956,11 +10187,14 @@ define('dummy/templates/migration-guides', ['exports'], function (exports) {
     var child1 = (function() {
       return {
         isHTMLBars: true,
+        revision: "Ember@1.11.3",
         blockParams: 0,
         cachedFragment: null,
         hasRendered: false,
         build: function build(dom) {
-          var el0 = dom.createTextNode("here");
+          var el0 = dom.createDocumentFragment();
+          var el1 = dom.createTextNode("here");
+          dom.appendChild(el0, el1);
           return el0;
         },
         render: function render(context, env, contextualElement) {
@@ -9988,6 +10222,7 @@ define('dummy/templates/migration-guides', ['exports'], function (exports) {
     }());
     return {
       isHTMLBars: true,
+      revision: "Ember@1.11.3",
       blockParams: 0,
       cachedFragment: null,
       hasRendered: false,
@@ -10085,6 +10320,8 @@ define('dummy/templates/migration-guides', ['exports'], function (exports) {
         dom.appendChild(el3, el4);
         var el4 = dom.createElement("p");
         var el5 = dom.createTextNode("\n        To get a sense for the new column resizing changes, check out the\n        ");
+        dom.appendChild(el4, el5);
+        var el5 = dom.createComment("");
         dom.appendChild(el4, el5);
         var el5 = dom.createTextNode("\n      ");
         dom.appendChild(el4, el5);
@@ -10452,6 +10689,8 @@ define('dummy/templates/migration-guides', ['exports'], function (exports) {
         var el5 = dom.createElement("li");
         var el6 = dom.createTextNode("\n          While you’re modifying that handlebars file, you may want to make\n          sure it looks like the structure of the new Ember Table examples. You\n          can see one ");
         dom.appendChild(el5, el6);
+        var el6 = dom.createComment("");
+        dom.appendChild(el5, el6);
         var el6 = dom.createTextNode(". In\n          particular, you might get errors if you don’t properly bind your\n          columns and content of the table, using ");
         dom.appendChild(el5, el6);
         var el6 = dom.createElement("code");
@@ -10589,8 +10828,8 @@ define('dummy/templates/migration-guides', ['exports'], function (exports) {
           fragment = this.build(dom);
         }
         var element0 = dom.childAt(fragment, [0, 3, 1]);
-        var morph0 = dom.createMorphAt(dom.childAt(element0, [11]),0,1);
-        var morph1 = dom.createMorphAt(dom.childAt(element0, [37, 7]),0,1);
+        var morph0 = dom.createMorphAt(dom.childAt(element0, [11]),1,1);
+        var morph1 = dom.createMorphAt(dom.childAt(element0, [37, 7]),1,1);
         block(env, morph0, context, "link-to", ["configurable-columns"], {}, child0, null);
         block(env, morph1, context, "link-to", ["simple"], {}, child1, null);
         return fragment;
@@ -10606,6 +10845,7 @@ define('dummy/templates/navigation', ['exports'], function (exports) {
   exports['default'] = Ember.HTMLBars.template((function() {
     return {
       isHTMLBars: true,
+      revision: "Ember@1.11.3",
       blockParams: 0,
       cachedFragment: null,
       hasRendered: false,
@@ -10756,6 +10996,7 @@ define('dummy/templates/overview', ['exports'], function (exports) {
     var child0 = (function() {
       return {
         isHTMLBars: true,
+        revision: "Ember@1.11.3",
         blockParams: 0,
         cachedFragment: null,
         hasRendered: false,
@@ -10810,6 +11051,7 @@ define('dummy/templates/overview', ['exports'], function (exports) {
     var child1 = (function() {
       return {
         isHTMLBars: true,
+        revision: "Ember@1.11.3",
         blockParams: 0,
         cachedFragment: null,
         hasRendered: false,
@@ -10864,6 +11106,7 @@ define('dummy/templates/overview', ['exports'], function (exports) {
     var child2 = (function() {
       return {
         isHTMLBars: true,
+        revision: "Ember@1.11.3",
         blockParams: 0,
         cachedFragment: null,
         hasRendered: false,
@@ -10918,6 +11161,7 @@ define('dummy/templates/overview', ['exports'], function (exports) {
     var child3 = (function() {
       return {
         isHTMLBars: true,
+        revision: "Ember@1.11.3",
         blockParams: 0,
         cachedFragment: null,
         hasRendered: false,
@@ -10972,6 +11216,7 @@ define('dummy/templates/overview', ['exports'], function (exports) {
     var child4 = (function() {
       return {
         isHTMLBars: true,
+        revision: "Ember@1.11.3",
         blockParams: 0,
         cachedFragment: null,
         hasRendered: false,
@@ -11026,6 +11271,7 @@ define('dummy/templates/overview', ['exports'], function (exports) {
     var child5 = (function() {
       return {
         isHTMLBars: true,
+        revision: "Ember@1.11.3",
         blockParams: 0,
         cachedFragment: null,
         hasRendered: false,
@@ -11080,6 +11326,7 @@ define('dummy/templates/overview', ['exports'], function (exports) {
     var child6 = (function() {
       return {
         isHTMLBars: true,
+        revision: "Ember@1.11.3",
         blockParams: 0,
         cachedFragment: null,
         hasRendered: false,
@@ -11134,6 +11381,7 @@ define('dummy/templates/overview', ['exports'], function (exports) {
     var child7 = (function() {
       return {
         isHTMLBars: true,
+        revision: "Ember@1.11.3",
         blockParams: 0,
         cachedFragment: null,
         hasRendered: false,
@@ -11188,6 +11436,7 @@ define('dummy/templates/overview', ['exports'], function (exports) {
     var child8 = (function() {
       return {
         isHTMLBars: true,
+        revision: "Ember@1.11.3",
         blockParams: 0,
         cachedFragment: null,
         hasRendered: false,
@@ -11242,11 +11491,14 @@ define('dummy/templates/overview', ['exports'], function (exports) {
     var child9 = (function() {
       return {
         isHTMLBars: true,
+        revision: "Ember@1.11.3",
         blockParams: 0,
         cachedFragment: null,
         hasRendered: false,
         build: function build(dom) {
-          var el0 = dom.createTextNode("Community Examples");
+          var el0 = dom.createDocumentFragment();
+          var el1 = dom.createTextNode("Community Examples");
+          dom.appendChild(el0, el1);
           return el0;
         },
         render: function render(context, env, contextualElement) {
@@ -11274,6 +11526,7 @@ define('dummy/templates/overview', ['exports'], function (exports) {
     }());
     return {
       isHTMLBars: true,
+      revision: "Ember@1.11.3",
       blockParams: 0,
       cachedFragment: null,
       hasRendered: false,
@@ -11315,6 +11568,8 @@ define('dummy/templates/overview', ['exports'], function (exports) {
         var el5 = dom.createElement("div");
         dom.setAttribute(el5,"class","ember-table-example-container ember-table-financial");
         var el6 = dom.createTextNode("\n          ");
+        dom.appendChild(el5, el6);
+        var el6 = dom.createComment("");
         dom.appendChild(el5, el6);
         var el6 = dom.createTextNode("\n        ");
         dom.appendChild(el5, el6);
@@ -11476,21 +11731,23 @@ define('dummy/templates/overview', ['exports'], function (exports) {
         dom.setAttribute(el4,"class","row ember-table-examples");
         var el5 = dom.createTextNode("\n");
         dom.appendChild(el4, el5);
-        var el5 = dom.createTextNode("");
+        var el5 = dom.createComment("");
         dom.appendChild(el4, el5);
-        var el5 = dom.createTextNode("");
+        var el5 = dom.createComment("");
         dom.appendChild(el4, el5);
-        var el5 = dom.createTextNode("");
+        var el5 = dom.createComment("");
         dom.appendChild(el4, el5);
-        var el5 = dom.createTextNode("");
+        var el5 = dom.createComment("");
         dom.appendChild(el4, el5);
-        var el5 = dom.createTextNode("");
+        var el5 = dom.createComment("");
         dom.appendChild(el4, el5);
-        var el5 = dom.createTextNode("");
+        var el5 = dom.createComment("");
         dom.appendChild(el4, el5);
-        var el5 = dom.createTextNode("");
+        var el5 = dom.createComment("");
         dom.appendChild(el4, el5);
-        var el5 = dom.createTextNode("");
+        var el5 = dom.createComment("");
+        dom.appendChild(el4, el5);
+        var el5 = dom.createComment("");
         dom.appendChild(el4, el5);
         var el5 = dom.createTextNode("      ");
         dom.appendChild(el4, el5);
@@ -11499,6 +11756,8 @@ define('dummy/templates/overview', ['exports'], function (exports) {
         dom.appendChild(el3, el4);
         var el4 = dom.createElement("p");
         var el5 = dom.createTextNode("Looking for more ways to extend ember-table? Check out the ");
+        dom.appendChild(el4, el5);
+        var el5 = dom.createComment("");
         dom.appendChild(el4, el5);
         var el5 = dom.createTextNode(".");
         dom.appendChild(el4, el5);
@@ -11669,7 +11928,7 @@ define('dummy/templates/overview', ['exports'], function (exports) {
         var el4 = dom.createTextNode("\n      ");
         dom.appendChild(el3, el4);
         var el4 = dom.createElement("p");
-        var el5 = dom.createTextNode("The current version is 0.7.0.");
+        var el5 = dom.createTextNode("The current version is 0.8.0.");
         dom.appendChild(el4, el5);
         dom.appendChild(el3, el4);
         var el4 = dom.createTextNode("\n      ");
@@ -11787,18 +12046,17 @@ define('dummy/templates/overview', ['exports'], function (exports) {
         var element0 = dom.childAt(fragment, [0]);
         var element1 = dom.childAt(element0, [5, 1]);
         var element2 = dom.childAt(element1, [7]);
-        if (this.cachedFragment) { dom.repairClonedNode(element2,[1,2,3,4,5,6,7,8]); }
-        var morph0 = dom.createMorphAt(dom.childAt(element0, [1, 1, 5, 1]),0,1);
-        var morph1 = dom.createMorphAt(element2,0,1);
-        var morph2 = dom.createMorphAt(element2,1,2);
-        var morph3 = dom.createMorphAt(element2,2,3);
-        var morph4 = dom.createMorphAt(element2,3,4);
-        var morph5 = dom.createMorphAt(element2,4,5);
-        var morph6 = dom.createMorphAt(element2,5,6);
-        var morph7 = dom.createMorphAt(element2,6,7);
-        var morph8 = dom.createMorphAt(element2,7,8);
-        var morph9 = dom.createMorphAt(element2,8,9);
-        var morph10 = dom.createMorphAt(dom.childAt(element1, [9]),0,1);
+        var morph0 = dom.createMorphAt(dom.childAt(element0, [1, 1, 5, 1]),1,1);
+        var morph1 = dom.createMorphAt(element2,1,1);
+        var morph2 = dom.createMorphAt(element2,2,2);
+        var morph3 = dom.createMorphAt(element2,3,3);
+        var morph4 = dom.createMorphAt(element2,4,4);
+        var morph5 = dom.createMorphAt(element2,5,5);
+        var morph6 = dom.createMorphAt(element2,6,6);
+        var morph7 = dom.createMorphAt(element2,7,7);
+        var morph8 = dom.createMorphAt(element2,8,8);
+        var morph9 = dom.createMorphAt(element2,9,9);
+        var morph10 = dom.createMorphAt(dom.childAt(element1, [9]),1,1);
         inline(env, morph0, context, "financial-table", [], {"data": get(env, context, "data")});
         block(env, morph1, context, "link-to", ["simple"], {}, child0, null);
         block(env, morph2, context, "link-to", ["ajax"], {}, child1, null);
@@ -11823,6 +12081,7 @@ define('dummy/templates/scroll-container', ['exports'], function (exports) {
   exports['default'] = Ember.HTMLBars.template((function() {
     return {
       isHTMLBars: true,
+      revision: "Ember@1.11.3",
       blockParams: 0,
       cachedFragment: null,
       hasRendered: false,
@@ -11835,6 +12094,8 @@ define('dummy/templates/scroll-container', ['exports'], function (exports) {
         var el2 = dom.createElement("div");
         dom.setAttribute(el2,"class","antiscroll-inner");
         var el3 = dom.createTextNode("\n    ");
+        dom.appendChild(el2, el3);
+        var el3 = dom.createComment("");
         dom.appendChild(el2, el3);
         var el3 = dom.createTextNode("\n  ");
         dom.appendChild(el2, el3);
@@ -11866,7 +12127,7 @@ define('dummy/templates/scroll-container', ['exports'], function (exports) {
         } else {
           fragment = this.build(dom);
         }
-        var morph0 = dom.createMorphAt(dom.childAt(fragment, [0, 1]),0,1);
+        var morph0 = dom.createMorphAt(dom.childAt(fragment, [0, 1]),1,1);
         inline(env, morph0, context, "view", ["scroll-panel"], {});
         return fragment;
       }
@@ -11881,12 +12142,13 @@ define('dummy/templates/simple-table/simple-table', ['exports'], function (expor
   exports['default'] = Ember.HTMLBars.template((function() {
     return {
       isHTMLBars: true,
+      revision: "Ember@1.11.3",
       blockParams: 0,
       cachedFragment: null,
       hasRendered: false,
       build: function build(dom) {
         var el0 = dom.createDocumentFragment();
-        var el1 = dom.createTextNode("");
+        var el1 = dom.createComment("");
         dom.appendChild(el0, el1);
         var el1 = dom.createTextNode("\n");
         dom.appendChild(el0, el1);
@@ -11912,8 +12174,8 @@ define('dummy/templates/simple-table/simple-table', ['exports'], function (expor
         } else {
           fragment = this.build(dom);
         }
-        if (this.cachedFragment) { dom.repairClonedNode(fragment,[0]); }
-        var morph0 = dom.createMorphAt(fragment,0,1,contextualElement);
+        var morph0 = dom.createMorphAt(fragment,0,0,contextualElement);
+        dom.insertBoundary(fragment, 0);
         inline(env, morph0, context, "ember-table", [], {"hasFooter": false, "columns": get(env, context, "tableColumns"), "content": get(env, context, "tableContent")});
         return fragment;
       }
@@ -11928,6 +12190,7 @@ define('dummy/templates/simple', ['exports'], function (exports) {
   exports['default'] = Ember.HTMLBars.template((function() {
     return {
       isHTMLBars: true,
+      revision: "Ember@1.11.3",
       blockParams: 0,
       cachedFragment: null,
       hasRendered: false,
@@ -11962,6 +12225,8 @@ define('dummy/templates/simple', ['exports'], function (exports) {
         var el5 = dom.createElement("div");
         dom.setAttribute(el5,"class","ember-table-example-container");
         var el6 = dom.createTextNode("\n          ");
+        dom.appendChild(el5, el6);
+        var el6 = dom.createComment("");
         dom.appendChild(el5, el6);
         var el6 = dom.createTextNode("\n        ");
         dom.appendChild(el5, el6);
@@ -12056,7 +12321,7 @@ define('dummy/templates/simple', ['exports'], function (exports) {
         } else {
           fragment = this.build(dom);
         }
-        var morph0 = dom.createMorphAt(dom.childAt(fragment, [0, 3, 1, 1, 1]),0,1);
+        var morph0 = dom.createMorphAt(dom.childAt(fragment, [0, 3, 1, 1, 1]),1,1);
         inline(env, morph0, context, "partial", ["simple-table/simple-table"], {});
         return fragment;
       }
@@ -12071,12 +12336,13 @@ define('dummy/templates/sparkline-table/sparkline-table', ['exports'], function 
   exports['default'] = Ember.HTMLBars.template((function() {
     return {
       isHTMLBars: true,
+      revision: "Ember@1.11.3",
       blockParams: 0,
       cachedFragment: null,
       hasRendered: false,
       build: function build(dom) {
         var el0 = dom.createDocumentFragment();
-        var el1 = dom.createTextNode("");
+        var el1 = dom.createComment("");
         dom.appendChild(el0, el1);
         var el1 = dom.createTextNode("\n");
         dom.appendChild(el0, el1);
@@ -12102,8 +12368,8 @@ define('dummy/templates/sparkline-table/sparkline-table', ['exports'], function 
         } else {
           fragment = this.build(dom);
         }
-        if (this.cachedFragment) { dom.repairClonedNode(fragment,[0]); }
-        var morph0 = dom.createMorphAt(fragment,0,1,contextualElement);
+        var morph0 = dom.createMorphAt(fragment,0,0,contextualElement);
+        dom.insertBoundary(fragment, 0);
         inline(env, morph0, context, "ember-table", [], {"hasHeader": true, "hasFooter": false, "numFixedColumns": 1, "rowHeight": 30, "columns": get(env, context, "tableColumns"), "content": get(env, context, "tableContent")});
         return fragment;
       }
@@ -12118,6 +12384,7 @@ define('dummy/templates/sparkline', ['exports'], function (exports) {
   exports['default'] = Ember.HTMLBars.template((function() {
     return {
       isHTMLBars: true,
+      revision: "Ember@1.11.3",
       blockParams: 0,
       cachedFragment: null,
       hasRendered: false,
@@ -12152,6 +12419,8 @@ define('dummy/templates/sparkline', ['exports'], function (exports) {
         var el5 = dom.createElement("div");
         dom.setAttribute(el5,"class","ember-table-example-container");
         var el6 = dom.createTextNode("\n          ");
+        dom.appendChild(el5, el6);
+        var el6 = dom.createComment("");
         dom.appendChild(el5, el6);
         var el6 = dom.createTextNode("\n        ");
         dom.appendChild(el5, el6);
@@ -12273,7 +12542,7 @@ define('dummy/templates/sparkline', ['exports'], function (exports) {
         } else {
           fragment = this.build(dom);
         }
-        var morph0 = dom.createMorphAt(dom.childAt(fragment, [0, 3, 1, 1, 1]),0,1);
+        var morph0 = dom.createMorphAt(dom.childAt(fragment, [0, 3, 1, 1, 1]),1,1);
         inline(env, morph0, context, "partial", ["sparkline-table/sparkline-table"], {});
         return fragment;
       }
@@ -12289,11 +12558,14 @@ define('dummy/templates/sub-navigation', ['exports'], function (exports) {
     var child0 = (function() {
       return {
         isHTMLBars: true,
+        revision: "Ember@1.11.3",
         blockParams: 0,
         cachedFragment: null,
         hasRendered: false,
         build: function build(dom) {
-          var el0 = dom.createTextNode("Overview & Getting Started");
+          var el0 = dom.createDocumentFragment();
+          var el1 = dom.createTextNode("Overview & Getting Started");
+          dom.appendChild(el0, el1);
           return el0;
         },
         render: function render(context, env, contextualElement) {
@@ -12322,11 +12594,14 @@ define('dummy/templates/sub-navigation', ['exports'], function (exports) {
     var child1 = (function() {
       return {
         isHTMLBars: true,
+        revision: "Ember@1.11.3",
         blockParams: 0,
         cachedFragment: null,
         hasRendered: false,
         build: function build(dom) {
-          var el0 = dom.createTextNode("API & Documentation");
+          var el0 = dom.createDocumentFragment();
+          var el1 = dom.createTextNode("API & Documentation");
+          dom.appendChild(el0, el1);
           return el0;
         },
         render: function render(context, env, contextualElement) {
@@ -12355,11 +12630,14 @@ define('dummy/templates/sub-navigation', ['exports'], function (exports) {
     var child2 = (function() {
       return {
         isHTMLBars: true,
+        revision: "Ember@1.11.3",
         blockParams: 0,
         cachedFragment: null,
         hasRendered: false,
         build: function build(dom) {
-          var el0 = dom.createTextNode("Migration Guides");
+          var el0 = dom.createDocumentFragment();
+          var el1 = dom.createTextNode("Migration Guides");
+          dom.appendChild(el0, el1);
           return el0;
         },
         render: function render(context, env, contextualElement) {
@@ -12388,11 +12666,14 @@ define('dummy/templates/sub-navigation', ['exports'], function (exports) {
     var child3 = (function() {
       return {
         isHTMLBars: true,
+        revision: "Ember@1.11.3",
         blockParams: 0,
         cachedFragment: null,
         hasRendered: false,
         build: function build(dom) {
-          var el0 = dom.createTextNode("Hello World table");
+          var el0 = dom.createDocumentFragment();
+          var el1 = dom.createTextNode("Hello World table");
+          dom.appendChild(el0, el1);
           return el0;
         },
         render: function render(context, env, contextualElement) {
@@ -12421,11 +12702,14 @@ define('dummy/templates/sub-navigation', ['exports'], function (exports) {
     var child4 = (function() {
       return {
         isHTMLBars: true,
+        revision: "Ember@1.11.3",
         blockParams: 0,
         cachedFragment: null,
         hasRendered: false,
         build: function build(dom) {
-          var el0 = dom.createTextNode("AJAX cells");
+          var el0 = dom.createDocumentFragment();
+          var el1 = dom.createTextNode("AJAX cells");
+          dom.appendChild(el0, el1);
           return el0;
         },
         render: function render(context, env, contextualElement) {
@@ -12454,11 +12738,14 @@ define('dummy/templates/sub-navigation', ['exports'], function (exports) {
     var child5 = (function() {
       return {
         isHTMLBars: true,
+        revision: "Ember@1.11.3",
         blockParams: 0,
         cachedFragment: null,
         hasRendered: false,
         build: function build(dom) {
-          var el0 = dom.createTextNode("Bar cells");
+          var el0 = dom.createDocumentFragment();
+          var el1 = dom.createTextNode("Bar cells");
+          dom.appendChild(el0, el1);
           return el0;
         },
         render: function render(context, env, contextualElement) {
@@ -12487,11 +12774,14 @@ define('dummy/templates/sub-navigation', ['exports'], function (exports) {
     var child6 = (function() {
       return {
         isHTMLBars: true,
+        revision: "Ember@1.11.3",
         blockParams: 0,
         cachedFragment: null,
         hasRendered: false,
         build: function build(dom) {
-          var el0 = dom.createTextNode("Dynamic bar cells");
+          var el0 = dom.createDocumentFragment();
+          var el1 = dom.createTextNode("Dynamic bar cells");
+          dom.appendChild(el0, el1);
           return el0;
         },
         render: function render(context, env, contextualElement) {
@@ -12520,11 +12810,14 @@ define('dummy/templates/sub-navigation', ['exports'], function (exports) {
     var child7 = (function() {
       return {
         isHTMLBars: true,
+        revision: "Ember@1.11.3",
         blockParams: 0,
         cachedFragment: null,
         hasRendered: false,
         build: function build(dom) {
-          var el0 = dom.createTextNode("Tree & financial table");
+          var el0 = dom.createDocumentFragment();
+          var el1 = dom.createTextNode("Tree & financial table");
+          dom.appendChild(el0, el1);
           return el0;
         },
         render: function render(context, env, contextualElement) {
@@ -12553,11 +12846,14 @@ define('dummy/templates/sub-navigation', ['exports'], function (exports) {
     var child8 = (function() {
       return {
         isHTMLBars: true,
+        revision: "Ember@1.11.3",
         blockParams: 0,
         cachedFragment: null,
         hasRendered: false,
         build: function build(dom) {
-          var el0 = dom.createTextNode("Editable cells");
+          var el0 = dom.createDocumentFragment();
+          var el1 = dom.createTextNode("Editable cells");
+          dom.appendChild(el0, el1);
           return el0;
         },
         render: function render(context, env, contextualElement) {
@@ -12586,11 +12882,14 @@ define('dummy/templates/sub-navigation', ['exports'], function (exports) {
     var child9 = (function() {
       return {
         isHTMLBars: true,
+        revision: "Ember@1.11.3",
         blockParams: 0,
         cachedFragment: null,
         hasRendered: false,
         build: function build(dom) {
-          var el0 = dom.createTextNode("Sparkline cells");
+          var el0 = dom.createDocumentFragment();
+          var el1 = dom.createTextNode("Sparkline cells");
+          dom.appendChild(el0, el1);
           return el0;
         },
         render: function render(context, env, contextualElement) {
@@ -12619,11 +12918,14 @@ define('dummy/templates/sub-navigation', ['exports'], function (exports) {
     var child10 = (function() {
       return {
         isHTMLBars: true,
+        revision: "Ember@1.11.3",
         blockParams: 0,
         cachedFragment: null,
         hasRendered: false,
         build: function build(dom) {
-          var el0 = dom.createTextNode("Horizon cells");
+          var el0 = dom.createDocumentFragment();
+          var el1 = dom.createTextNode("Horizon cells");
+          dom.appendChild(el0, el1);
           return el0;
         },
         render: function render(context, env, contextualElement) {
@@ -12652,11 +12954,14 @@ define('dummy/templates/sub-navigation', ['exports'], function (exports) {
     var child11 = (function() {
       return {
         isHTMLBars: true,
+        revision: "Ember@1.11.3",
         blockParams: 0,
         cachedFragment: null,
         hasRendered: false,
         build: function build(dom) {
-          var el0 = dom.createTextNode("Configurable columns");
+          var el0 = dom.createDocumentFragment();
+          var el1 = dom.createTextNode("Configurable columns");
+          dom.appendChild(el0, el1);
           return el0;
         },
         render: function render(context, env, contextualElement) {
@@ -12685,6 +12990,7 @@ define('dummy/templates/sub-navigation', ['exports'], function (exports) {
     var child12 = (function() {
       return {
         isHTMLBars: true,
+        revision: "Ember@1.11.3",
         blockParams: 0,
         cachedFragment: null,
         hasRendered: false,
@@ -12733,6 +13039,7 @@ define('dummy/templates/sub-navigation', ['exports'], function (exports) {
     }());
     return {
       isHTMLBars: true,
+      revision: "Ember@1.11.3",
       blockParams: 0,
       cachedFragment: null,
       hasRendered: false,
@@ -12801,14 +13108,20 @@ define('dummy/templates/sub-navigation', ['exports'], function (exports) {
         var el3 = dom.createTextNode("\n    ");
         dom.appendChild(el2, el3);
         var el3 = dom.createElement("li");
+        var el4 = dom.createComment("");
+        dom.appendChild(el3, el4);
         dom.appendChild(el2, el3);
         var el3 = dom.createTextNode("\n    ");
         dom.appendChild(el2, el3);
         var el3 = dom.createElement("li");
+        var el4 = dom.createComment("");
+        dom.appendChild(el3, el4);
         dom.appendChild(el2, el3);
         var el3 = dom.createTextNode("\n    ");
         dom.appendChild(el2, el3);
         var el3 = dom.createElement("li");
+        var el4 = dom.createComment("");
+        dom.appendChild(el3, el4);
         dom.appendChild(el2, el3);
         var el3 = dom.createTextNode("\n  ");
         dom.appendChild(el2, el3);
@@ -12831,38 +13144,56 @@ define('dummy/templates/sub-navigation', ['exports'], function (exports) {
         var el3 = dom.createTextNode("\n    ");
         dom.appendChild(el2, el3);
         var el3 = dom.createElement("li");
+        var el4 = dom.createComment("");
+        dom.appendChild(el3, el4);
         dom.appendChild(el2, el3);
         var el3 = dom.createTextNode("\n    ");
         dom.appendChild(el2, el3);
         var el3 = dom.createElement("li");
+        var el4 = dom.createComment("");
+        dom.appendChild(el3, el4);
         dom.appendChild(el2, el3);
         var el3 = dom.createTextNode("\n    ");
         dom.appendChild(el2, el3);
         var el3 = dom.createElement("li");
+        var el4 = dom.createComment("");
+        dom.appendChild(el3, el4);
         dom.appendChild(el2, el3);
         var el3 = dom.createTextNode("\n    ");
         dom.appendChild(el2, el3);
         var el3 = dom.createElement("li");
+        var el4 = dom.createComment("");
+        dom.appendChild(el3, el4);
         dom.appendChild(el2, el3);
         var el3 = dom.createTextNode("\n    ");
         dom.appendChild(el2, el3);
         var el3 = dom.createElement("li");
+        var el4 = dom.createComment("");
+        dom.appendChild(el3, el4);
         dom.appendChild(el2, el3);
         var el3 = dom.createTextNode("\n    ");
         dom.appendChild(el2, el3);
         var el3 = dom.createElement("li");
+        var el4 = dom.createComment("");
+        dom.appendChild(el3, el4);
         dom.appendChild(el2, el3);
         var el3 = dom.createTextNode("\n    ");
         dom.appendChild(el2, el3);
         var el3 = dom.createElement("li");
+        var el4 = dom.createComment("");
+        dom.appendChild(el3, el4);
         dom.appendChild(el2, el3);
         var el3 = dom.createTextNode("\n    ");
         dom.appendChild(el2, el3);
         var el3 = dom.createElement("li");
+        var el4 = dom.createComment("");
+        dom.appendChild(el3, el4);
         dom.appendChild(el2, el3);
         var el3 = dom.createTextNode("\n    ");
         dom.appendChild(el2, el3);
         var el3 = dom.createElement("li");
+        var el4 = dom.createComment("");
+        dom.appendChild(el3, el4);
         dom.appendChild(el2, el3);
         var el3 = dom.createTextNode("\n  ");
         dom.appendChild(el2, el3);
@@ -12872,6 +13203,8 @@ define('dummy/templates/sub-navigation', ['exports'], function (exports) {
         var el2 = dom.createElement("hr");
         dom.appendChild(el1, el2);
         var el2 = dom.createTextNode("\n");
+        dom.appendChild(el1, el2);
+        var el2 = dom.createComment("");
         dom.appendChild(el1, el2);
         dom.appendChild(el0, el1);
         var el1 = dom.createTextNode("\n");
@@ -12901,19 +13234,19 @@ define('dummy/templates/sub-navigation', ['exports'], function (exports) {
         var element0 = dom.childAt(fragment, [0]);
         var element1 = dom.childAt(element0, [5]);
         var element2 = dom.childAt(element0, [9]);
-        var morph0 = dom.createMorphAt(dom.childAt(element1, [3]),-1,-1);
-        var morph1 = dom.createMorphAt(dom.childAt(element1, [5]),-1,-1);
-        var morph2 = dom.createMorphAt(dom.childAt(element1, [7]),-1,-1);
-        var morph3 = dom.createMorphAt(dom.childAt(element2, [3]),-1,-1);
-        var morph4 = dom.createMorphAt(dom.childAt(element2, [5]),-1,-1);
-        var morph5 = dom.createMorphAt(dom.childAt(element2, [7]),-1,-1);
-        var morph6 = dom.createMorphAt(dom.childAt(element2, [9]),-1,-1);
-        var morph7 = dom.createMorphAt(dom.childAt(element2, [11]),-1,-1);
-        var morph8 = dom.createMorphAt(dom.childAt(element2, [13]),-1,-1);
-        var morph9 = dom.createMorphAt(dom.childAt(element2, [15]),-1,-1);
-        var morph10 = dom.createMorphAt(dom.childAt(element2, [17]),-1,-1);
-        var morph11 = dom.createMorphAt(dom.childAt(element2, [19]),-1,-1);
-        var morph12 = dom.createMorphAt(element0,12,-1);
+        var morph0 = dom.createMorphAt(dom.childAt(element1, [3]),0,0);
+        var morph1 = dom.createMorphAt(dom.childAt(element1, [5]),0,0);
+        var morph2 = dom.createMorphAt(dom.childAt(element1, [7]),0,0);
+        var morph3 = dom.createMorphAt(dom.childAt(element2, [3]),0,0);
+        var morph4 = dom.createMorphAt(dom.childAt(element2, [5]),0,0);
+        var morph5 = dom.createMorphAt(dom.childAt(element2, [7]),0,0);
+        var morph6 = dom.createMorphAt(dom.childAt(element2, [9]),0,0);
+        var morph7 = dom.createMorphAt(dom.childAt(element2, [11]),0,0);
+        var morph8 = dom.createMorphAt(dom.childAt(element2, [13]),0,0);
+        var morph9 = dom.createMorphAt(dom.childAt(element2, [15]),0,0);
+        var morph10 = dom.createMorphAt(dom.childAt(element2, [17]),0,0);
+        var morph11 = dom.createMorphAt(dom.childAt(element2, [19]),0,0);
+        var morph12 = dom.createMorphAt(element0,13,13);
         block(env, morph0, context, "link-to", ["overview"], {}, child0, null);
         block(env, morph1, context, "link-to", ["documentation"], {}, child1, null);
         block(env, morph2, context, "link-to", ["migration-guides"], {}, child2, null);
@@ -12940,15 +13273,20 @@ define('dummy/templates/table-cell', ['exports'], function (exports) {
   exports['default'] = Ember.HTMLBars.template((function() {
     return {
       isHTMLBars: true,
+      revision: "Ember@1.11.3",
       blockParams: 0,
       cachedFragment: null,
       hasRendered: false,
       build: function build(dom) {
-        var el0 = dom.createElement("span");
-        dom.setAttribute(el0,"class","ember-table-content");
-        var el1 = dom.createTextNode("\n  ");
-        dom.appendChild(el0, el1);
-        var el1 = dom.createTextNode("\n");
+        var el0 = dom.createDocumentFragment();
+        var el1 = dom.createElement("span");
+        dom.setAttribute(el1,"class","ember-table-content");
+        var el2 = dom.createTextNode("\n  ");
+        dom.appendChild(el1, el2);
+        var el2 = dom.createComment("");
+        dom.appendChild(el1, el2);
+        var el2 = dom.createTextNode("\n");
+        dom.appendChild(el1, el2);
         dom.appendChild(el0, el1);
         return el0;
       },
@@ -12972,7 +13310,7 @@ define('dummy/templates/table-cell', ['exports'], function (exports) {
         } else {
           fragment = this.build(dom);
         }
-        var morph0 = dom.createMorphAt(fragment,0,1);
+        var morph0 = dom.createMorphAt(dom.childAt(fragment, [0]),1,1);
         content(env, morph0, context, "view.cellContent");
         return fragment;
       }
@@ -12987,12 +13325,13 @@ define('dummy/templates/table-row', ['exports'], function (exports) {
   exports['default'] = Ember.HTMLBars.template((function() {
     return {
       isHTMLBars: true,
+      revision: "Ember@1.11.3",
       blockParams: 0,
       cachedFragment: null,
       hasRendered: false,
       build: function build(dom) {
         var el0 = dom.createDocumentFragment();
-        var el1 = dom.createTextNode("");
+        var el1 = dom.createComment("");
         dom.appendChild(el0, el1);
         var el1 = dom.createTextNode("\n");
         dom.appendChild(el0, el1);
@@ -13018,8 +13357,8 @@ define('dummy/templates/table-row', ['exports'], function (exports) {
         } else {
           fragment = this.build(dom);
         }
-        if (this.cachedFragment) { dom.repairClonedNode(fragment,[0]); }
-        var morph0 = dom.createMorphAt(fragment,0,1,contextualElement);
+        var morph0 = dom.createMorphAt(fragment,0,0,contextualElement);
+        dom.insertBoundary(fragment, 0);
         inline(env, morph0, context, "view", ["multi-item-collection"], {"row": get(env, context, "view.row"), "content": get(env, context, "view.columns"), "itemViewClassField": "tableCellViewClass", "width": get(env, context, "controller._tableColumnsWidth")});
         return fragment;
       }
@@ -13034,6 +13373,7 @@ define('dummy/templates/tree_table/table_header_cell', ['exports'], function (ex
   exports['default'] = Ember.HTMLBars.template((function() {
     return {
       isHTMLBars: true,
+      revision: "Ember@1.11.3",
       blockParams: 0,
       cachedFragment: null,
       hasRendered: false,
@@ -13046,6 +13386,8 @@ define('dummy/templates/tree_table/table_header_cell', ['exports'], function (ex
         var el2 = dom.createElement("span");
         dom.setAttribute(el2,"class","ember-table-content");
         var el3 = dom.createTextNode("\n    ");
+        dom.appendChild(el2, el3);
+        var el3 = dom.createComment("");
         dom.appendChild(el2, el3);
         var el3 = dom.createTextNode("\n  ");
         dom.appendChild(el2, el3);
@@ -13078,7 +13420,7 @@ define('dummy/templates/tree_table/table_header_cell', ['exports'], function (ex
           fragment = this.build(dom);
         }
         var element0 = dom.childAt(fragment, [0]);
-        var morph0 = dom.createMorphAt(dom.childAt(element0, [1]),0,1);
+        var morph0 = dom.createMorphAt(dom.childAt(element0, [1]),1,1);
         element(env, element0, context, "action", ["sortByColumn", get(env, context, "view.content")], {});
         content(env, morph0, context, "view.content.headerCellName");
         return fragment;
@@ -13094,6 +13436,7 @@ define('dummy/templates/tree_table/table_header_tree_cell', ['exports'], functio
   exports['default'] = Ember.HTMLBars.template((function() {
     return {
       isHTMLBars: true,
+      revision: "Ember@1.11.3",
       blockParams: 0,
       cachedFragment: null,
       hasRendered: false,
@@ -13101,6 +13444,8 @@ define('dummy/templates/tree_table/table_header_tree_cell', ['exports'], functio
         var el0 = dom.createDocumentFragment();
         var el1 = dom.createElement("span");
         var el2 = dom.createTextNode("\n  ");
+        dom.appendChild(el1, el2);
+        var el2 = dom.createComment("");
         dom.appendChild(el1, el2);
         var el2 = dom.createTextNode("\n");
         dom.appendChild(el1, el2);
@@ -13114,6 +13459,8 @@ define('dummy/templates/tree_table/table_header_tree_cell', ['exports'], functio
         var el2 = dom.createElement("span");
         dom.setAttribute(el2,"class","ember-table-content");
         var el3 = dom.createTextNode("\n    ");
+        dom.appendChild(el2, el3);
+        var el3 = dom.createComment("");
         dom.appendChild(el2, el3);
         var el3 = dom.createTextNode("\n  ");
         dom.appendChild(el2, el3);
@@ -13147,8 +13494,8 @@ define('dummy/templates/tree_table/table_header_tree_cell', ['exports'], functio
         }
         var element0 = dom.childAt(fragment, [0]);
         var element1 = dom.childAt(fragment, [2]);
-        var morph0 = dom.createMorphAt(element0,0,1);
-        var morph1 = dom.createMorphAt(dom.childAt(element1, [1]),0,1);
+        var morph0 = dom.createMorphAt(element0,1,1);
+        var morph1 = dom.createMorphAt(dom.childAt(element1, [1]),1,1);
         element(env, element0, context, "bind-attr", [], {"class": ":ember-table-toggle-span view.row.isLeaf::ember-table-toggle\n    view.row.isCollapsed:ember-table-expand:ember-table-collapse"});
         element(env, element0, context, "action", ["toggleCollapse", get(env, context, "view.row")], {});
         inline(env, morph0, context, "fa-icon", ["caret-down"], {"classNames": "ember-table-toggle-icon"});
@@ -13167,6 +13514,7 @@ define('dummy/templates/tree_table/table_tree_cell', ['exports'], function (expo
   exports['default'] = Ember.HTMLBars.template((function() {
     return {
       isHTMLBars: true,
+      revision: "Ember@1.11.3",
       blockParams: 0,
       cachedFragment: null,
       hasRendered: false,
@@ -13174,6 +13522,8 @@ define('dummy/templates/tree_table/table_tree_cell', ['exports'], function (expo
         var el0 = dom.createDocumentFragment();
         var el1 = dom.createElement("span");
         var el2 = dom.createTextNode("\n  ");
+        dom.appendChild(el1, el2);
+        var el2 = dom.createComment("");
         dom.appendChild(el1, el2);
         var el2 = dom.createTextNode("\n");
         dom.appendChild(el1, el2);
@@ -13183,6 +13533,8 @@ define('dummy/templates/tree_table/table_tree_cell', ['exports'], function (expo
         var el1 = dom.createElement("span");
         dom.setAttribute(el1,"class","ember-table-content");
         var el2 = dom.createTextNode("\n  ");
+        dom.appendChild(el1, el2);
+        var el2 = dom.createComment("");
         dom.appendChild(el1, el2);
         var el2 = dom.createTextNode("\n");
         dom.appendChild(el1, el2);
@@ -13212,8 +13564,8 @@ define('dummy/templates/tree_table/table_tree_cell', ['exports'], function (expo
           fragment = this.build(dom);
         }
         var element0 = dom.childAt(fragment, [0]);
-        var morph0 = dom.createMorphAt(element0,0,1);
-        var morph1 = dom.createMorphAt(dom.childAt(fragment, [2]),0,1);
+        var morph0 = dom.createMorphAt(element0,1,1);
+        var morph1 = dom.createMorphAt(dom.childAt(fragment, [2]),1,1);
         element(env, element0, context, "bind-attr", [], {"class": ":ember-table-toggle-span view.row.isLeaf::ember-table-toggle\n    view.row.isCollapsed:ember-table-expand:ember-table-collapse"});
         element(env, element0, context, "action", ["toggleCollapse", get(env, context, "view.row")], {});
         inline(env, morph0, context, "fa-icon", ["caret-down"], {"classNames": "ember-table-toggle-icon"});
@@ -14448,7 +14800,7 @@ catch(err) {
 if (runningTests) {
   require("dummy/tests/test-helper");
 } else {
-  require("dummy/app")["default"].create({"name":"ember-table","version":"0.7.0.b88b75f0"});
+  require("dummy/app")["default"].create({"name":"ember-table","version":"0.8.0.d5b357e3"});
 }
 
 /* jshint ignore:end */
