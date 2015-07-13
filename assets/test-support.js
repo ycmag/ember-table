@@ -9,7 +9,7 @@
  *            Portions Copyright 2008-2011 Apple Inc. All rights reserved.
  * @license   Licensed under MIT license
  *            See https://raw.github.com/emberjs/ember.js/master/LICENSE
- * @version   1.9.0
+ * @version   1.10.1
  */
 
 (function() {
@@ -36,7 +36,7 @@ var enifed, requireModule, eriuqer, requirejs, Ember;
       seen[name] = {};
 
       if (!registry[name]) {
-        throw new Error("Could not find module " + name);
+        throw new Error('Could not find module ' + name);
       }
 
       var mod = registry[name];
@@ -60,9 +60,11 @@ var enifed, requireModule, eriuqer, requirejs, Ember;
     };
 
     function resolve(child, name) {
-      if (child.charAt(0) !== '.') { return child; }
-      var parts = child.split("/");
-      var parentBase = name.split("/").slice(0, -1);
+      if (child.charAt(0) !== '.') {
+        return child;
+      }
+      var parts = child.split('/');
+      var parentBase = name.split('/').slice(0, -1);
 
       for (var i=0, l=parts.length; i<l; i++) {
         var part = parts[i];
@@ -72,12 +74,16 @@ var enifed, requireModule, eriuqer, requirejs, Ember;
         else { parentBase.push(part); }
       }
 
-      return parentBase.join("/");
+      return parentBase.join('/');
     }
 
     requirejs._eak_seen = registry;
 
-    Ember.__loader = {define: enifed, require: eriuqer, registry: registry};
+    Ember.__loader = {
+      define: enifed,
+      require: eriuqer,
+      registry: registry
+    };
   } else {
     enifed = Ember.__loader.define;
     requirejs = eriuqer = requireModule = Ember.__loader.require;
@@ -125,7 +131,15 @@ enifed("ember-debug",
         falsy, an exception will be thrown.
     */
     Ember.assert = function(desc, test) {
-      if (!test) {
+      var throwAssertion;
+
+      if (Ember.typeOf(test) === 'function') {
+        throwAssertion = !test();
+      } else {
+        throwAssertion = !test;
+      }
+
+      if (throwAssertion) {
         throw new EmberError("Assertion Failed: " + desc);
       }
     };
@@ -143,7 +157,9 @@ enifed("ember-debug",
     Ember.warn = function(message, test) {
       if (!test) {
         Logger.warn("WARNING: "+message);
-        if ('trace' in Logger) Logger.trace();
+        if ('trace' in Logger) {
+          Logger.trace();
+        }
       }
     };
 
@@ -171,9 +187,19 @@ enifed("ember-debug",
       @param {String} message A description of the deprecation.
       @param {Boolean} test An optional boolean. If falsy, the deprecation
         will be displayed.
+      @param {Object} options An optional object that can be used to pass
+        in a `url` to the transition guide on the emberjs.com website.
     */
-    Ember.deprecate = function(message, test) {
-      if (test) { return; }
+    Ember.deprecate = function(message, test, options) {
+      var noDeprecation;
+
+      if (typeof test === 'function') {
+        noDeprecation = test();
+      } else {
+        noDeprecation = test;
+      }
+
+      if (noDeprecation) { return; }
 
       if (Ember.ENV.RAISE_ON_DEPRECATION) { throw new EmberError(message); }
 
@@ -181,6 +207,13 @@ enifed("ember-debug",
 
       // When using new Error, we can't do the arguments check for Chrome. Alternatives are welcome
       try { __fail__.fail(); } catch (e) { error = e; }
+
+      if (arguments.length === 3) {
+        Ember.assert('options argument to Ember.deprecate should be an object', options && typeof options === 'object');
+        if (options.url) {
+          message += ' See ' + options.url + ' for more details.';
+        }
+      }
 
       if (Ember.LOG_STACKTRACE_ON_DEPRECATION && error.stack) {
         var stack;
@@ -307,6 +340,19 @@ enifed("ember-debug",
         }, false);
       }
     }
+
+    /*
+      We are transitioning away from `ember.js` to `ember.debug.js` to make
+      it much clearer that it is only for local development purposes.
+
+      This flag value is changed by the tooling (by a simple string replacement)
+      so that if `ember.js` (which must be output for backwards compat reasons) is
+      used a nice helpful warning message will be printed out.
+    */
+    var runningNonEmberDebugJS = false;
+    __exports__.runningNonEmberDebugJS = runningNonEmberDebugJS;if (runningNonEmberDebugJS) {
+      Ember.warn('Please use `ember.debug.js` instead of `ember.js` for development and debugging.');
+    }
   });
 enifed("ember-testing",
   ["ember-metal/core","ember-testing/initializers","ember-testing/support","ember-testing/setup_for_testing","ember-testing/test","ember-testing/adapters/adapter","ember-testing/adapters/qunit","ember-testing/helpers"],
@@ -337,12 +383,12 @@ enifed("ember-testing",
     Ember.setupForTesting = setupForTesting;
   });
 enifed("ember-testing/adapters/adapter",
-  ["ember-metal/core","ember-runtime/system/object","exports"],
-  function(__dependency1__, __dependency2__, __exports__) {
+  ["ember-runtime/system/object","exports"],
+  function(__dependency1__, __exports__) {
     "use strict";
-    var Ember = __dependency1__["default"];
-    // Ember.K
-    var EmberObject = __dependency2__["default"];
+    var EmberObject = __dependency1__["default"];
+
+    function K() { return this; }
 
     /**
      @module ember
@@ -366,7 +412,7 @@ enifed("ember-testing/adapters/adapter",
         @public
         @method asyncStart
       */
-      asyncStart: Ember.K,
+      asyncStart: K,
 
       /**
         This callback will be called whenever an async operation has completed.
@@ -374,7 +420,7 @@ enifed("ember-testing/adapters/adapter",
         @public
         @method asyncEnd
       */
-      asyncEnd: Ember.K,
+      asyncEnd: K,
 
       /**
         Override this method with your testing framework's false assertion.
@@ -488,7 +534,7 @@ enifed("ember-testing/helpers",
       var $el = app.testHelpers.findWithAssert(selector, context);
       run($el, 'mousedown');
 
-      if ($el.is(':input')) {
+      if ($el.is(':input, [contenteditable=true]')) {
         var type = $el.prop('type');
         if (type !== 'checkbox' && type !== 'radio' && type !== 'hidden') {
           run($el, function(){
@@ -606,8 +652,10 @@ enifed("ember-testing/helpers",
 
         // Every 10ms, poll for the async thing to have finished
         var watcher = setInterval(function() {
+          var router = app.__container__.lookup('router:main');
+
           // 1. If the router is loading, keep polling
-          var routerIsLoading = !!app.__container__.lookup('router:main').router.activeTransition;
+          var routerIsLoading = router.router && !!router.router.activeTransition;
           if (routerIsLoading) { return; }
 
           // 2. If there are pending Ajax requests, keep polling
@@ -843,6 +891,7 @@ enifed("ember-testing/helpers",
        click('.btn');
        ```
 
+       @since 1.9.0
        @method pauseTest
        @return {Object} A promise that will never resolve
        */
@@ -1013,16 +1062,15 @@ enifed("ember-testing/support",
     });
   });
 enifed("ember-testing/test",
-  ["ember-metal/core","ember-metal/run_loop","ember-metal/platform","ember-runtime/compare","ember-runtime/ext/rsvp","ember-testing/setup_for_testing","ember-application/system/application","exports"],
-  function(__dependency1__, __dependency2__, __dependency3__, __dependency4__, __dependency5__, __dependency6__, __dependency7__, __exports__) {
+  ["ember-metal/core","ember-metal/run_loop","ember-metal/platform","ember-runtime/ext/rsvp","ember-testing/setup_for_testing","ember-application/system/application","exports"],
+  function(__dependency1__, __dependency2__, __dependency3__, __dependency4__, __dependency5__, __dependency6__, __exports__) {
     "use strict";
     var Ember = __dependency1__["default"];
     var emberRun = __dependency2__["default"];
     var create = __dependency3__.create;
-    var compare = __dependency4__["default"];
-    var RSVP = __dependency5__["default"];
-    var setupForTesting = __dependency6__["default"];
-    var EmberApplication = __dependency7__["default"];
+    var RSVP = __dependency4__["default"];
+    var setupForTesting = __dependency5__["default"];
+    var EmberApplication = __dependency6__["default"];
 
     /**
       @module ember
@@ -1283,15 +1331,13 @@ enifed("ember-testing/test",
          @since 1.2.0
       */
       unregisterWaiter: function(context, callback) {
-        var pair;
         if (!this.waiters) { return; }
         if (arguments.length === 1) {
           callback = context;
           context = null;
         }
-        pair = [context, callback];
         this.waiters = Ember.A(this.waiters.filter(function(elt) {
-          return compare(elt, pair)!==0;
+          return !(elt[0] === context && elt[1] === callback);
         }));
       }
     };

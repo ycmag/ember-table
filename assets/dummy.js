@@ -3783,1106 +3783,9445 @@ define('dummy/templates/ajax-table/ajax-cell', ['exports'], function (exports) {
 
   'use strict';
 
-  exports['default'] = Ember.Handlebars.template({"1":function(depth0,helpers,partials,data) {
-    var escapeExpression=this.escapeExpression, buffer = '';
-    data.buffer.push("  <img width=\"30\" ");
-    data.buffer.push(escapeExpression(helpers['bind-attr'].call(depth0, {"name":"bind-attr","hash":{
-      'src': ("view.cellContent")
-    },"hashTypes":{'src': "STRING"},"hashContexts":{'src': depth0},"types":[],"contexts":[],"data":data})));
-    data.buffer.push("/>\n");
-    return buffer;
-  },"3":function(depth0,helpers,partials,data) {
-    data.buffer.push("  <img src=\"images/loading.gif\" style=\"padding: 8px;\"/>\n");
-    },"compiler":[6,">= 2.0.0-beta.1"],"main":function(depth0,helpers,partials,data) {
-    var stack1, buffer = '';
-    stack1 = helpers['if'].call(depth0, "view.row.isLoaded", {"name":"if","hash":{},"hashTypes":{},"hashContexts":{},"fn":this.program(1, data),"inverse":this.program(3, data),"types":["ID"],"contexts":[depth0],"data":data});
-    if (stack1 != null) { data.buffer.push(stack1); }
-    return buffer;
-  },"useData":true});
+  exports['default'] = Ember.HTMLBars.template((function() {
+    var child0 = (function() {
+      return {
+        isHTMLBars: true,
+        blockParams: 0,
+        cachedFragment: null,
+        hasRendered: false,
+        build: function build(dom) {
+          var el0 = dom.createDocumentFragment();
+          var el1 = dom.createTextNode("  ");
+          dom.appendChild(el0, el1);
+          var el1 = dom.createElement("img");
+          dom.setAttribute(el1,"width","30");
+          dom.appendChild(el0, el1);
+          var el1 = dom.createTextNode("\n");
+          dom.appendChild(el0, el1);
+          return el0;
+        },
+        render: function render(context, env, contextualElement) {
+          var dom = env.dom;
+          var hooks = env.hooks, element = hooks.element;
+          dom.detectNamespace(contextualElement);
+          var fragment;
+          if (env.useFragmentCache && dom.canClone) {
+            if (this.cachedFragment === null) {
+              fragment = this.build(dom);
+              if (this.hasRendered) {
+                this.cachedFragment = fragment;
+              } else {
+                this.hasRendered = true;
+              }
+            }
+            if (this.cachedFragment) {
+              fragment = dom.cloneNode(this.cachedFragment, true);
+            }
+          } else {
+            fragment = this.build(dom);
+          }
+          var element0 = dom.childAt(fragment, [1]);
+          element(env, element0, context, "bind-attr", [], {"src": "view.cellContent"});
+          return fragment;
+        }
+      };
+    }());
+    var child1 = (function() {
+      return {
+        isHTMLBars: true,
+        blockParams: 0,
+        cachedFragment: null,
+        hasRendered: false,
+        build: function build(dom) {
+          var el0 = dom.createDocumentFragment();
+          var el1 = dom.createTextNode("  ");
+          dom.appendChild(el0, el1);
+          var el1 = dom.createElement("img");
+          dom.setAttribute(el1,"src","images/loading.gif");
+          dom.setAttribute(el1,"style","padding: 8px;");
+          dom.appendChild(el0, el1);
+          var el1 = dom.createTextNode("\n");
+          dom.appendChild(el0, el1);
+          return el0;
+        },
+        render: function render(context, env, contextualElement) {
+          var dom = env.dom;
+          dom.detectNamespace(contextualElement);
+          var fragment;
+          if (env.useFragmentCache && dom.canClone) {
+            if (this.cachedFragment === null) {
+              fragment = this.build(dom);
+              if (this.hasRendered) {
+                this.cachedFragment = fragment;
+              } else {
+                this.hasRendered = true;
+              }
+            }
+            if (this.cachedFragment) {
+              fragment = dom.cloneNode(this.cachedFragment, true);
+            }
+          } else {
+            fragment = this.build(dom);
+          }
+          return fragment;
+        }
+      };
+    }());
+    return {
+      isHTMLBars: true,
+      blockParams: 0,
+      cachedFragment: null,
+      hasRendered: false,
+      build: function build(dom) {
+        var el0 = dom.createDocumentFragment();
+        var el1 = dom.createTextNode("");
+        dom.appendChild(el0, el1);
+        var el1 = dom.createTextNode("");
+        dom.appendChild(el0, el1);
+        return el0;
+      },
+      render: function render(context, env, contextualElement) {
+        var dom = env.dom;
+        var hooks = env.hooks, get = hooks.get, block = hooks.block;
+        dom.detectNamespace(contextualElement);
+        var fragment;
+        if (env.useFragmentCache && dom.canClone) {
+          if (this.cachedFragment === null) {
+            fragment = this.build(dom);
+            if (this.hasRendered) {
+              this.cachedFragment = fragment;
+            } else {
+              this.hasRendered = true;
+            }
+          }
+          if (this.cachedFragment) {
+            fragment = dom.cloneNode(this.cachedFragment, true);
+          }
+        } else {
+          fragment = this.build(dom);
+        }
+        if (this.cachedFragment) { dom.repairClonedNode(fragment,[0,1]); }
+        var morph0 = dom.createMorphAt(fragment,0,1,contextualElement);
+        block(env, morph0, context, "if", [get(env, context, "view.row.isLoaded")], {}, child0, child1);
+        return fragment;
+      }
+    };
+  }()));
 
 });
 define('dummy/templates/ajax-table/ajax-table', ['exports'], function (exports) {
 
   'use strict';
 
-  exports['default'] = Ember.Handlebars.template({"compiler":[6,">= 2.0.0-beta.1"],"main":function(depth0,helpers,partials,data) {
-    var helperMissing=helpers.helperMissing, escapeExpression=this.escapeExpression, buffer = '';
-    data.buffer.push(escapeExpression(((helpers['ember-table'] || (depth0 && depth0['ember-table']) || helperMissing).call(depth0, {"name":"ember-table","hash":{
-      'content': ("tableContent"),
-      'columns': ("tableColumns"),
-      'rowHeight': (35),
-      'numRows': (100),
-      'numFixedColumns': (0),
-      'hasFooter': (false),
-      'hasHeader': (true)
-    },"hashTypes":{'content': "ID",'columns': "ID",'rowHeight': "NUMBER",'numRows': "NUMBER",'numFixedColumns': "NUMBER",'hasFooter': "BOOLEAN",'hasHeader': "BOOLEAN"},"hashContexts":{'content': depth0,'columns': depth0,'rowHeight': depth0,'numRows': depth0,'numFixedColumns': depth0,'hasFooter': depth0,'hasHeader': depth0},"types":[],"contexts":[],"data":data}))));
-    data.buffer.push("\n");
-    return buffer;
-  },"useData":true});
+  exports['default'] = Ember.HTMLBars.template((function() {
+    return {
+      isHTMLBars: true,
+      blockParams: 0,
+      cachedFragment: null,
+      hasRendered: false,
+      build: function build(dom) {
+        var el0 = dom.createDocumentFragment();
+        var el1 = dom.createTextNode("");
+        dom.appendChild(el0, el1);
+        var el1 = dom.createTextNode("\n");
+        dom.appendChild(el0, el1);
+        return el0;
+      },
+      render: function render(context, env, contextualElement) {
+        var dom = env.dom;
+        var hooks = env.hooks, get = hooks.get, inline = hooks.inline;
+        dom.detectNamespace(contextualElement);
+        var fragment;
+        if (env.useFragmentCache && dom.canClone) {
+          if (this.cachedFragment === null) {
+            fragment = this.build(dom);
+            if (this.hasRendered) {
+              this.cachedFragment = fragment;
+            } else {
+              this.hasRendered = true;
+            }
+          }
+          if (this.cachedFragment) {
+            fragment = dom.cloneNode(this.cachedFragment, true);
+          }
+        } else {
+          fragment = this.build(dom);
+        }
+        if (this.cachedFragment) { dom.repairClonedNode(fragment,[0]); }
+        var morph0 = dom.createMorphAt(fragment,0,1,contextualElement);
+        inline(env, morph0, context, "ember-table", [], {"hasHeader": true, "hasFooter": false, "numFixedColumns": 0, "numRows": 100, "rowHeight": 35, "columns": get(env, context, "tableColumns"), "content": get(env, context, "tableContent")});
+        return fragment;
+      }
+    };
+  }()));
 
 });
 define('dummy/templates/ajax', ['exports'], function (exports) {
 
   'use strict';
 
-  exports['default'] = Ember.Handlebars.template({"compiler":[6,">= 2.0.0-beta.1"],"main":function(depth0,helpers,partials,data) {
-    var helperMissing=helpers.helperMissing, escapeExpression=this.escapeExpression, buffer = '';
-    data.buffer.push("<div class=\"col-md-10 col-md-offset-2 left-border main-content-container\">\n  <h1>Ember Table <small>Ajax Cells</small></h1>\n\n  <div class=\"row\">\n    <div class=\"col-md-12\">\n      <div class=\"example-container\">\n        <div class=\"ember-table-example-container\">\n          ");
-    data.buffer.push(escapeExpression(((helpers.partial || (depth0 && depth0.partial) || helperMissing).call(depth0, "ajax-table/ajax-table", {"name":"partial","hash":{},"hashTypes":{},"hashContexts":{},"types":["STRING"],"contexts":[depth0],"data":data}))));
-    data.buffer.push("\n        </div>\n      </div>\n      <div class=\"example-description\">\n        <p class=\"reduced\">Ember-Table with ajax cells.</p>\n      </div>\n    </div>\n\n    <div class=\"col-md-12 bumper-30\">\n      <h3>Template</h3>\n      <div class=\"highlight\">\n        <pre class=\"prettyprint lang-html\">{{ember-table\n  hasHeader=true\n  hasFooter=false\n  numFixedColumns=0\n  numRows=100\n  rowHeight=35\n  columns=tableColumns\n  content=tableContent\n}}\n</pre>\n      </div>\n    </div>\n\n    <div class=\"col-md-12 bumper-30\">\n      <h3>Controller</h3>\n      <div class=\"highlight\">\n        <pre class=\"prettyprint lang-js\">import Ember from &#39;ember&#39;;\nimport ColumnDefinition from &#39;ember-table&#x2F;models&#x2F;column-definition&#39;;\nimport AjaxTableLazyDataSource from\n  &#39;..&#x2F;views&#x2F;ajax-table-lazy-data-source&#39;;\n\nexport default Ember.Controller.extend({\n  tableColumns: Ember.computed(function() {\n    var avatar = ColumnDefinition.create({\n      savedWidth: 80,\n      headerCellName: &#39;avatar&#39;,\n      tableCellViewClass: &#39;ajax-image-table-cell&#39;,\n      contentPath: &#39;avatar&#39;\n    });\n    var columnNames = [&#39;login&#39;, &#39;type&#39;, &#39;createdAt&#39;];\n    var columns = columnNames.map(function(key) {\n      return ColumnDefinition.create({\n        savedWidth: 150,\n        headerCellName: key.w(),\n        contentPath: key\n      });\n    });\n    columns.unshift(avatar);\n    return columns;\n  }),\n\n  tableContent: Ember.computed(function() {\n    return AjaxTableLazyDataSource.create({\n      content: new Array(100)\n    });\n  })\n});\n</pre>\n      </div>\n    </div>\n\n    <div class=\"col-md-12 bumper-30\">\n      <h3>views/ajax-image-table-cell.js</h3>\n      <div class=\"highlight\">\n        <pre class=\"prettyprint lang-js\">import TableCell from &#39;ember-table&#x2F;views&#x2F;table-cell&#39;;\n\nexport default TableCell.extend({\n  templateName: &#39;ajax-table&#x2F;ajax-cell&#39;,\n  classNames: &#39;img-table-cell&#39;\n});\n</pre>\n      </div>\n    </div>\n\n    <div class=\"col-md-12 bumper-30\">\n      <h3>templates/ajax-table/ajax-cell.hbs</h3>\n      <div class=\"highlight\">\n        <pre class=\"prettyprint lang-html\">{{#if view.row.isLoaded}}\n  &lt;img width=&quot;30&quot; {{bind-attr src=&quot;view.cellContent&quot;}}&#x2F;&gt;\n{{else}}\n  &lt;img src=&quot;images&#x2F;loading.gif&quot; style=&quot;padding: 8px;&quot;&#x2F;&gt;\n{{&#x2F;if}}\n</pre>\n      </div>\n    </div>\n\n    <div class=\"col-md-12 bumper-30\">\n      <h3>views/ajax-table-lazy-data-source.js</h3>\n      <div class=\"highlight\">\n        <pre class=\"prettyprint lang-js\">import Ember from &#39;ember&#39;;\n\nexport default Ember.ArrayProxy.extend({\n  createGithubEvent: function(row, event) {\n    row.set(&#39;type&#39;, event.type);\n    row.set(&#39;createdAt&#39;, event.created_at);\n    row.set(&#39;login&#39;, event.actor.login);\n    row.set(&#39;avatar&#39;, event.actor.avatar_url);\n    row.set(&#39;isLoaded&#39;, true);\n    return row;\n  },\n\n  requestGithubEvent: function(page) {\n    var _this = this;\n    var content = this.get(&#39;content&#39;);\n    var start = (page - 1) * 30;\n    var end = start + 30;\n    var url = &#39;https:&#x2F;&#x2F;api.github.com&#x2F;repos&#x2F;emberjs&#x2F;ember.js&#x2F;events?page=&#39; +\n      page + &#39;&amp;per_page=30&amp;callback=?&#39;;\n    Ember.$.getJSON(url, function(json) {\n      return json.data.forEach(function(event, index) {\n        var row = content[start + index];\n        return _this.createGithubEvent(row, event);\n      });\n    });\n    for (var index = start; index &lt; end; index++) {\n      content[index] = Ember.Object.create({\n        eventId: index,\n        isLoaded: false\n      });\n    }\n  },\n\n  objectAt: function(index) {\n    var content = this.get(&#39;content&#39;);\n    var row = content[index];\n    if (row &amp;&amp; !row.get(&#39;error&#39;)) {\n      return row;\n    }\n    this.requestGithubEvent(Math.floor(index &#x2F; 30 + 1));\n    return content[index];\n  }\n});\n</pre>\n      </div>\n    </div>\n  </div>\n</div>\n");
-    return buffer;
-  },"useData":true});
+  exports['default'] = Ember.HTMLBars.template((function() {
+    return {
+      isHTMLBars: true,
+      blockParams: 0,
+      cachedFragment: null,
+      hasRendered: false,
+      build: function build(dom) {
+        var el0 = dom.createDocumentFragment();
+        var el1 = dom.createElement("div");
+        dom.setAttribute(el1,"class","col-md-10 col-md-offset-2 left-border main-content-container");
+        var el2 = dom.createTextNode("\n  ");
+        dom.appendChild(el1, el2);
+        var el2 = dom.createElement("h1");
+        var el3 = dom.createTextNode("Ember Table ");
+        dom.appendChild(el2, el3);
+        var el3 = dom.createElement("small");
+        var el4 = dom.createTextNode("Ajax Cells");
+        dom.appendChild(el3, el4);
+        dom.appendChild(el2, el3);
+        dom.appendChild(el1, el2);
+        var el2 = dom.createTextNode("\n\n  ");
+        dom.appendChild(el1, el2);
+        var el2 = dom.createElement("div");
+        dom.setAttribute(el2,"class","row");
+        var el3 = dom.createTextNode("\n    ");
+        dom.appendChild(el2, el3);
+        var el3 = dom.createElement("div");
+        dom.setAttribute(el3,"class","col-md-12");
+        var el4 = dom.createTextNode("\n      ");
+        dom.appendChild(el3, el4);
+        var el4 = dom.createElement("div");
+        dom.setAttribute(el4,"class","example-container");
+        var el5 = dom.createTextNode("\n        ");
+        dom.appendChild(el4, el5);
+        var el5 = dom.createElement("div");
+        dom.setAttribute(el5,"class","ember-table-example-container");
+        var el6 = dom.createTextNode("\n          ");
+        dom.appendChild(el5, el6);
+        var el6 = dom.createTextNode("\n        ");
+        dom.appendChild(el5, el6);
+        dom.appendChild(el4, el5);
+        var el5 = dom.createTextNode("\n      ");
+        dom.appendChild(el4, el5);
+        dom.appendChild(el3, el4);
+        var el4 = dom.createTextNode("\n      ");
+        dom.appendChild(el3, el4);
+        var el4 = dom.createElement("div");
+        dom.setAttribute(el4,"class","example-description");
+        var el5 = dom.createTextNode("\n        ");
+        dom.appendChild(el4, el5);
+        var el5 = dom.createElement("p");
+        dom.setAttribute(el5,"class","reduced");
+        var el6 = dom.createTextNode("Ember-Table with ajax cells.");
+        dom.appendChild(el5, el6);
+        dom.appendChild(el4, el5);
+        var el5 = dom.createTextNode("\n      ");
+        dom.appendChild(el4, el5);
+        dom.appendChild(el3, el4);
+        var el4 = dom.createTextNode("\n    ");
+        dom.appendChild(el3, el4);
+        dom.appendChild(el2, el3);
+        var el3 = dom.createTextNode("\n\n    ");
+        dom.appendChild(el2, el3);
+        var el3 = dom.createElement("div");
+        dom.setAttribute(el3,"class","col-md-12 bumper-30");
+        var el4 = dom.createTextNode("\n      ");
+        dom.appendChild(el3, el4);
+        var el4 = dom.createElement("h3");
+        var el5 = dom.createTextNode("Template");
+        dom.appendChild(el4, el5);
+        dom.appendChild(el3, el4);
+        var el4 = dom.createTextNode("\n      ");
+        dom.appendChild(el3, el4);
+        var el4 = dom.createElement("div");
+        dom.setAttribute(el4,"class","highlight");
+        var el5 = dom.createTextNode("\n        ");
+        dom.appendChild(el4, el5);
+        var el5 = dom.createElement("pre");
+        dom.setAttribute(el5,"class","prettyprint lang-html");
+        var el6 = dom.createTextNode("{{ember-table\n  hasHeader=true\n  hasFooter=false\n  numFixedColumns=0\n  numRows=100\n  rowHeight=35\n  columns=tableColumns\n  content=tableContent\n}}\n");
+        dom.appendChild(el5, el6);
+        dom.appendChild(el4, el5);
+        var el5 = dom.createTextNode("\n      ");
+        dom.appendChild(el4, el5);
+        dom.appendChild(el3, el4);
+        var el4 = dom.createTextNode("\n    ");
+        dom.appendChild(el3, el4);
+        dom.appendChild(el2, el3);
+        var el3 = dom.createTextNode("\n\n    ");
+        dom.appendChild(el2, el3);
+        var el3 = dom.createElement("div");
+        dom.setAttribute(el3,"class","col-md-12 bumper-30");
+        var el4 = dom.createTextNode("\n      ");
+        dom.appendChild(el3, el4);
+        var el4 = dom.createElement("h3");
+        var el5 = dom.createTextNode("Controller");
+        dom.appendChild(el4, el5);
+        dom.appendChild(el3, el4);
+        var el4 = dom.createTextNode("\n      ");
+        dom.appendChild(el3, el4);
+        var el4 = dom.createElement("div");
+        dom.setAttribute(el4,"class","highlight");
+        var el5 = dom.createTextNode("\n        ");
+        dom.appendChild(el4, el5);
+        var el5 = dom.createElement("pre");
+        dom.setAttribute(el5,"class","prettyprint lang-js");
+        var el6 = dom.createTextNode("import Ember from &#39;ember&#39;;\nimport ColumnDefinition from &#39;ember-table&#x2F;models&#x2F;column-definition&#39;;\nimport AjaxTableLazyDataSource from\n  &#39;..&#x2F;views&#x2F;ajax-table-lazy-data-source&#39;;\n\nexport default Ember.Controller.extend({\n  tableColumns: Ember.computed(function() {\n    var avatar = ColumnDefinition.create({\n      savedWidth: 80,\n      headerCellName: &#39;avatar&#39;,\n      tableCellViewClass: &#39;ajax-image-table-cell&#39;,\n      contentPath: &#39;avatar&#39;\n    });\n    var columnNames = [&#39;login&#39;, &#39;type&#39;, &#39;createdAt&#39;];\n    var columns = columnNames.map(function(key) {\n      return ColumnDefinition.create({\n        savedWidth: 150,\n        headerCellName: key.w(),\n        contentPath: key\n      });\n    });\n    columns.unshift(avatar);\n    return columns;\n  }),\n\n  tableContent: Ember.computed(function() {\n    return AjaxTableLazyDataSource.create({\n      content: new Array(100)\n    });\n  })\n});\n");
+        dom.appendChild(el5, el6);
+        dom.appendChild(el4, el5);
+        var el5 = dom.createTextNode("\n      ");
+        dom.appendChild(el4, el5);
+        dom.appendChild(el3, el4);
+        var el4 = dom.createTextNode("\n    ");
+        dom.appendChild(el3, el4);
+        dom.appendChild(el2, el3);
+        var el3 = dom.createTextNode("\n\n    ");
+        dom.appendChild(el2, el3);
+        var el3 = dom.createElement("div");
+        dom.setAttribute(el3,"class","col-md-12 bumper-30");
+        var el4 = dom.createTextNode("\n      ");
+        dom.appendChild(el3, el4);
+        var el4 = dom.createElement("h3");
+        var el5 = dom.createTextNode("views/ajax-image-table-cell.js");
+        dom.appendChild(el4, el5);
+        dom.appendChild(el3, el4);
+        var el4 = dom.createTextNode("\n      ");
+        dom.appendChild(el3, el4);
+        var el4 = dom.createElement("div");
+        dom.setAttribute(el4,"class","highlight");
+        var el5 = dom.createTextNode("\n        ");
+        dom.appendChild(el4, el5);
+        var el5 = dom.createElement("pre");
+        dom.setAttribute(el5,"class","prettyprint lang-js");
+        var el6 = dom.createTextNode("import TableCell from &#39;ember-table&#x2F;views&#x2F;table-cell&#39;;\n\nexport default TableCell.extend({\n  templateName: &#39;ajax-table&#x2F;ajax-cell&#39;,\n  classNames: &#39;img-table-cell&#39;\n});\n");
+        dom.appendChild(el5, el6);
+        dom.appendChild(el4, el5);
+        var el5 = dom.createTextNode("\n      ");
+        dom.appendChild(el4, el5);
+        dom.appendChild(el3, el4);
+        var el4 = dom.createTextNode("\n    ");
+        dom.appendChild(el3, el4);
+        dom.appendChild(el2, el3);
+        var el3 = dom.createTextNode("\n\n    ");
+        dom.appendChild(el2, el3);
+        var el3 = dom.createElement("div");
+        dom.setAttribute(el3,"class","col-md-12 bumper-30");
+        var el4 = dom.createTextNode("\n      ");
+        dom.appendChild(el3, el4);
+        var el4 = dom.createElement("h3");
+        var el5 = dom.createTextNode("templates/ajax-table/ajax-cell.hbs");
+        dom.appendChild(el4, el5);
+        dom.appendChild(el3, el4);
+        var el4 = dom.createTextNode("\n      ");
+        dom.appendChild(el3, el4);
+        var el4 = dom.createElement("div");
+        dom.setAttribute(el4,"class","highlight");
+        var el5 = dom.createTextNode("\n        ");
+        dom.appendChild(el4, el5);
+        var el5 = dom.createElement("pre");
+        dom.setAttribute(el5,"class","prettyprint lang-html");
+        var el6 = dom.createTextNode("{{#if view.row.isLoaded}}\n  &lt;img width=&quot;30&quot; {{bind-attr src=&quot;view.cellContent&quot;}}&#x2F;&gt;\n{{else}}\n  &lt;img src=&quot;images&#x2F;loading.gif&quot; style=&quot;padding: 8px;&quot;&#x2F;&gt;\n{{&#x2F;if}}\n");
+        dom.appendChild(el5, el6);
+        dom.appendChild(el4, el5);
+        var el5 = dom.createTextNode("\n      ");
+        dom.appendChild(el4, el5);
+        dom.appendChild(el3, el4);
+        var el4 = dom.createTextNode("\n    ");
+        dom.appendChild(el3, el4);
+        dom.appendChild(el2, el3);
+        var el3 = dom.createTextNode("\n\n    ");
+        dom.appendChild(el2, el3);
+        var el3 = dom.createElement("div");
+        dom.setAttribute(el3,"class","col-md-12 bumper-30");
+        var el4 = dom.createTextNode("\n      ");
+        dom.appendChild(el3, el4);
+        var el4 = dom.createElement("h3");
+        var el5 = dom.createTextNode("views/ajax-table-lazy-data-source.js");
+        dom.appendChild(el4, el5);
+        dom.appendChild(el3, el4);
+        var el4 = dom.createTextNode("\n      ");
+        dom.appendChild(el3, el4);
+        var el4 = dom.createElement("div");
+        dom.setAttribute(el4,"class","highlight");
+        var el5 = dom.createTextNode("\n        ");
+        dom.appendChild(el4, el5);
+        var el5 = dom.createElement("pre");
+        dom.setAttribute(el5,"class","prettyprint lang-js");
+        var el6 = dom.createTextNode("import Ember from &#39;ember&#39;;\n\nexport default Ember.ArrayProxy.extend({\n  createGithubEvent: function(row, event) {\n    row.set(&#39;type&#39;, event.type);\n    row.set(&#39;createdAt&#39;, event.created_at);\n    row.set(&#39;login&#39;, event.actor.login);\n    row.set(&#39;avatar&#39;, event.actor.avatar_url);\n    row.set(&#39;isLoaded&#39;, true);\n    return row;\n  },\n\n  requestGithubEvent: function(page) {\n    var _this = this;\n    var content = this.get(&#39;content&#39;);\n    var start = (page - 1) * 30;\n    var end = start + 30;\n    var url = &#39;https:&#x2F;&#x2F;api.github.com&#x2F;repos&#x2F;emberjs&#x2F;ember.js&#x2F;events?page=&#39; +\n      page + &#39;&amp;per_page=30&amp;callback=?&#39;;\n    Ember.$.getJSON(url, function(json) {\n      return json.data.forEach(function(event, index) {\n        var row = content[start + index];\n        return _this.createGithubEvent(row, event);\n      });\n    });\n    for (var index = start; index &lt; end; index++) {\n      content[index] = Ember.Object.create({\n        eventId: index,\n        isLoaded: false\n      });\n    }\n  },\n\n  objectAt: function(index) {\n    var content = this.get(&#39;content&#39;);\n    var row = content[index];\n    if (row &amp;&amp; !row.get(&#39;error&#39;)) {\n      return row;\n    }\n    this.requestGithubEvent(Math.floor(index &#x2F; 30 + 1));\n    return content[index];\n  }\n});\n");
+        dom.appendChild(el5, el6);
+        dom.appendChild(el4, el5);
+        var el5 = dom.createTextNode("\n      ");
+        dom.appendChild(el4, el5);
+        dom.appendChild(el3, el4);
+        var el4 = dom.createTextNode("\n    ");
+        dom.appendChild(el3, el4);
+        dom.appendChild(el2, el3);
+        var el3 = dom.createTextNode("\n  ");
+        dom.appendChild(el2, el3);
+        dom.appendChild(el1, el2);
+        var el2 = dom.createTextNode("\n");
+        dom.appendChild(el1, el2);
+        dom.appendChild(el0, el1);
+        var el1 = dom.createTextNode("\n");
+        dom.appendChild(el0, el1);
+        return el0;
+      },
+      render: function render(context, env, contextualElement) {
+        var dom = env.dom;
+        var hooks = env.hooks, inline = hooks.inline;
+        dom.detectNamespace(contextualElement);
+        var fragment;
+        if (env.useFragmentCache && dom.canClone) {
+          if (this.cachedFragment === null) {
+            fragment = this.build(dom);
+            if (this.hasRendered) {
+              this.cachedFragment = fragment;
+            } else {
+              this.hasRendered = true;
+            }
+          }
+          if (this.cachedFragment) {
+            fragment = dom.cloneNode(this.cachedFragment, true);
+          }
+        } else {
+          fragment = this.build(dom);
+        }
+        var morph0 = dom.createMorphAt(dom.childAt(fragment, [0, 3, 1, 1, 1]),0,1);
+        inline(env, morph0, context, "partial", ["ajax-table/ajax-table"], {});
+        return fragment;
+      }
+    };
+  }()));
 
 });
 define('dummy/templates/application', ['exports'], function (exports) {
 
   'use strict';
 
-  exports['default'] = Ember.Handlebars.template({"1":function(depth0,helpers,partials,data) {
-    var buffer = '';
-    data.buffer.push("  <div class=\"hero-container\">\n    <div class=\"hero table-hero\">\n      <div class=\"hero-overlay\"></div>\n    </div>\n    <div class=\"container hero-content-container\">\n      <div class=\"row\">\n        <div class=\"span12 hero-tagline center-align hidden-tablet\">\n          <h1 class=\"elevated\">Ember Table</h1>\n          <p class=\"elevated\">A fast, lazy rendered, easily extensible table built with Ember.js.<br><br><a target=\"_BLANK\" href=\"https://github.com/Addepar/ember-table/releases\" class=\"addepar-btn addepar-btn-large addepar-btn-outline addepar-btn-white\">Download Ember-Table</a></p>\n        </div>\n      </div>\n    </div>\n  </div>\n");
-    return buffer;
-  },"3":function(depth0,helpers,partials,data) {
-    var buffer = '';
-    data.buffer.push("  <div class=\"hero-container small-hero-container\">\n    <div class=\"hero table-hero\">\n      <div class=\"hero-overlay\"></div>\n    </div>\n  </div>\n");
-    return buffer;
-  },"compiler":[6,">= 2.0.0-beta.1"],"main":function(depth0,helpers,partials,data) {
-    var stack1, helperMissing=helpers.helperMissing, escapeExpression=this.escapeExpression, buffer = '';
-    data.buffer.push(escapeExpression(((helpers.partial || (depth0 && depth0.partial) || helperMissing).call(depth0, "navigation", {"name":"partial","hash":{},"hashTypes":{},"hashContexts":{},"types":["STRING"],"contexts":[depth0],"data":data}))));
-    data.buffer.push("\n\n");
-    stack1 = helpers['if'].call(depth0, "showLargeHero", {"name":"if","hash":{},"hashTypes":{},"hashContexts":{},"fn":this.program(1, data),"inverse":this.program(3, data),"types":["ID"],"contexts":[depth0],"data":data});
-    if (stack1 != null) { data.buffer.push(stack1); }
-    data.buffer.push("\n<div class=\"container\">\n  <div class=\"row\">\n\n    ");
-    data.buffer.push(escapeExpression(((helpers.partial || (depth0 && depth0.partial) || helperMissing).call(depth0, "sub-navigation", {"name":"partial","hash":{},"hashTypes":{},"hashContexts":{},"types":["STRING"],"contexts":[depth0],"data":data}))));
-    data.buffer.push("\n\n    ");
-    stack1 = helpers._triageMustache.call(depth0, "outlet", {"name":"_triageMustache","hash":{},"hashTypes":{},"hashContexts":{},"types":["ID"],"contexts":[depth0],"data":data});
-    if (stack1 != null) { data.buffer.push(stack1); }
-    data.buffer.push("\n  </div>\n</div>\n\n");
-    data.buffer.push(escapeExpression(((helpers.partial || (depth0 && depth0.partial) || helperMissing).call(depth0, "footer", {"name":"partial","hash":{},"hashTypes":{},"hashContexts":{},"types":["STRING"],"contexts":[depth0],"data":data}))));
-    data.buffer.push("\n");
-    return buffer;
-  },"useData":true});
+  exports['default'] = Ember.HTMLBars.template((function() {
+    var child0 = (function() {
+      return {
+        isHTMLBars: true,
+        blockParams: 0,
+        cachedFragment: null,
+        hasRendered: false,
+        build: function build(dom) {
+          var el0 = dom.createDocumentFragment();
+          var el1 = dom.createTextNode("  ");
+          dom.appendChild(el0, el1);
+          var el1 = dom.createElement("div");
+          dom.setAttribute(el1,"class","hero-container");
+          var el2 = dom.createTextNode("\n    ");
+          dom.appendChild(el1, el2);
+          var el2 = dom.createElement("div");
+          dom.setAttribute(el2,"class","hero table-hero");
+          var el3 = dom.createTextNode("\n      ");
+          dom.appendChild(el2, el3);
+          var el3 = dom.createElement("div");
+          dom.setAttribute(el3,"class","hero-overlay");
+          dom.appendChild(el2, el3);
+          var el3 = dom.createTextNode("\n    ");
+          dom.appendChild(el2, el3);
+          dom.appendChild(el1, el2);
+          var el2 = dom.createTextNode("\n    ");
+          dom.appendChild(el1, el2);
+          var el2 = dom.createElement("div");
+          dom.setAttribute(el2,"class","container hero-content-container");
+          var el3 = dom.createTextNode("\n      ");
+          dom.appendChild(el2, el3);
+          var el3 = dom.createElement("div");
+          dom.setAttribute(el3,"class","row");
+          var el4 = dom.createTextNode("\n        ");
+          dom.appendChild(el3, el4);
+          var el4 = dom.createElement("div");
+          dom.setAttribute(el4,"class","span12 hero-tagline center-align hidden-tablet");
+          var el5 = dom.createTextNode("\n          ");
+          dom.appendChild(el4, el5);
+          var el5 = dom.createElement("h1");
+          dom.setAttribute(el5,"class","elevated");
+          var el6 = dom.createTextNode("Ember Table");
+          dom.appendChild(el5, el6);
+          dom.appendChild(el4, el5);
+          var el5 = dom.createTextNode("\n          ");
+          dom.appendChild(el4, el5);
+          var el5 = dom.createElement("p");
+          dom.setAttribute(el5,"class","elevated");
+          var el6 = dom.createTextNode("A fast, lazy rendered, easily extensible table built with Ember.js.");
+          dom.appendChild(el5, el6);
+          var el6 = dom.createElement("br");
+          dom.appendChild(el5, el6);
+          var el6 = dom.createElement("br");
+          dom.appendChild(el5, el6);
+          var el6 = dom.createElement("a");
+          dom.setAttribute(el6,"target","_BLANK");
+          dom.setAttribute(el6,"href","https://github.com/Addepar/ember-table/releases");
+          dom.setAttribute(el6,"class","addepar-btn addepar-btn-large addepar-btn-outline addepar-btn-white");
+          var el7 = dom.createTextNode("Download Ember-Table");
+          dom.appendChild(el6, el7);
+          dom.appendChild(el5, el6);
+          dom.appendChild(el4, el5);
+          var el5 = dom.createTextNode("\n        ");
+          dom.appendChild(el4, el5);
+          dom.appendChild(el3, el4);
+          var el4 = dom.createTextNode("\n      ");
+          dom.appendChild(el3, el4);
+          dom.appendChild(el2, el3);
+          var el3 = dom.createTextNode("\n    ");
+          dom.appendChild(el2, el3);
+          dom.appendChild(el1, el2);
+          var el2 = dom.createTextNode("\n  ");
+          dom.appendChild(el1, el2);
+          dom.appendChild(el0, el1);
+          var el1 = dom.createTextNode("\n");
+          dom.appendChild(el0, el1);
+          return el0;
+        },
+        render: function render(context, env, contextualElement) {
+          var dom = env.dom;
+          dom.detectNamespace(contextualElement);
+          var fragment;
+          if (env.useFragmentCache && dom.canClone) {
+            if (this.cachedFragment === null) {
+              fragment = this.build(dom);
+              if (this.hasRendered) {
+                this.cachedFragment = fragment;
+              } else {
+                this.hasRendered = true;
+              }
+            }
+            if (this.cachedFragment) {
+              fragment = dom.cloneNode(this.cachedFragment, true);
+            }
+          } else {
+            fragment = this.build(dom);
+          }
+          return fragment;
+        }
+      };
+    }());
+    var child1 = (function() {
+      return {
+        isHTMLBars: true,
+        blockParams: 0,
+        cachedFragment: null,
+        hasRendered: false,
+        build: function build(dom) {
+          var el0 = dom.createDocumentFragment();
+          var el1 = dom.createTextNode("  ");
+          dom.appendChild(el0, el1);
+          var el1 = dom.createElement("div");
+          dom.setAttribute(el1,"class","hero-container small-hero-container");
+          var el2 = dom.createTextNode("\n    ");
+          dom.appendChild(el1, el2);
+          var el2 = dom.createElement("div");
+          dom.setAttribute(el2,"class","hero table-hero");
+          var el3 = dom.createTextNode("\n      ");
+          dom.appendChild(el2, el3);
+          var el3 = dom.createElement("div");
+          dom.setAttribute(el3,"class","hero-overlay");
+          dom.appendChild(el2, el3);
+          var el3 = dom.createTextNode("\n    ");
+          dom.appendChild(el2, el3);
+          dom.appendChild(el1, el2);
+          var el2 = dom.createTextNode("\n  ");
+          dom.appendChild(el1, el2);
+          dom.appendChild(el0, el1);
+          var el1 = dom.createTextNode("\n");
+          dom.appendChild(el0, el1);
+          return el0;
+        },
+        render: function render(context, env, contextualElement) {
+          var dom = env.dom;
+          dom.detectNamespace(contextualElement);
+          var fragment;
+          if (env.useFragmentCache && dom.canClone) {
+            if (this.cachedFragment === null) {
+              fragment = this.build(dom);
+              if (this.hasRendered) {
+                this.cachedFragment = fragment;
+              } else {
+                this.hasRendered = true;
+              }
+            }
+            if (this.cachedFragment) {
+              fragment = dom.cloneNode(this.cachedFragment, true);
+            }
+          } else {
+            fragment = this.build(dom);
+          }
+          return fragment;
+        }
+      };
+    }());
+    return {
+      isHTMLBars: true,
+      blockParams: 0,
+      cachedFragment: null,
+      hasRendered: false,
+      build: function build(dom) {
+        var el0 = dom.createDocumentFragment();
+        var el1 = dom.createTextNode("");
+        dom.appendChild(el0, el1);
+        var el1 = dom.createTextNode("\n\n");
+        dom.appendChild(el0, el1);
+        var el1 = dom.createTextNode("\n");
+        dom.appendChild(el0, el1);
+        var el1 = dom.createElement("div");
+        dom.setAttribute(el1,"class","container");
+        var el2 = dom.createTextNode("\n  ");
+        dom.appendChild(el1, el2);
+        var el2 = dom.createElement("div");
+        dom.setAttribute(el2,"class","row");
+        var el3 = dom.createTextNode("\n\n    ");
+        dom.appendChild(el2, el3);
+        var el3 = dom.createTextNode("\n\n    ");
+        dom.appendChild(el2, el3);
+        var el3 = dom.createTextNode("\n  ");
+        dom.appendChild(el2, el3);
+        dom.appendChild(el1, el2);
+        var el2 = dom.createTextNode("\n");
+        dom.appendChild(el1, el2);
+        dom.appendChild(el0, el1);
+        var el1 = dom.createTextNode("\n\n");
+        dom.appendChild(el0, el1);
+        var el1 = dom.createTextNode("\n");
+        dom.appendChild(el0, el1);
+        return el0;
+      },
+      render: function render(context, env, contextualElement) {
+        var dom = env.dom;
+        var hooks = env.hooks, inline = hooks.inline, get = hooks.get, block = hooks.block, content = hooks.content;
+        dom.detectNamespace(contextualElement);
+        var fragment;
+        if (env.useFragmentCache && dom.canClone) {
+          if (this.cachedFragment === null) {
+            fragment = this.build(dom);
+            if (this.hasRendered) {
+              this.cachedFragment = fragment;
+            } else {
+              this.hasRendered = true;
+            }
+          }
+          if (this.cachedFragment) {
+            fragment = dom.cloneNode(this.cachedFragment, true);
+          }
+        } else {
+          fragment = this.build(dom);
+        }
+        if (this.cachedFragment) { dom.repairClonedNode(fragment,[0]); }
+        var element0 = dom.childAt(fragment, [3, 1]);
+        var morph0 = dom.createMorphAt(fragment,0,1,contextualElement);
+        var morph1 = dom.createMorphAt(fragment,1,2,contextualElement);
+        var morph2 = dom.createMorphAt(element0,0,1);
+        var morph3 = dom.createMorphAt(element0,1,2);
+        var morph4 = dom.createMorphAt(fragment,4,5,contextualElement);
+        inline(env, morph0, context, "partial", ["navigation"], {});
+        block(env, morph1, context, "if", [get(env, context, "showLargeHero")], {}, child0, child1);
+        inline(env, morph2, context, "partial", ["sub-navigation"], {});
+        content(env, morph3, context, "outlet");
+        inline(env, morph4, context, "partial", ["footer"], {});
+        return fragment;
+      }
+    };
+  }()));
 
 });
 define('dummy/templates/bar-table/bar-cell', ['exports'], function (exports) {
 
   'use strict';
 
-  exports['default'] = Ember.Handlebars.template({"compiler":[6,">= 2.0.0-beta.1"],"main":function(depth0,helpers,partials,data) {
-    var escapeExpression=this.escapeExpression, buffer = '';
-    data.buffer.push("<span class=\"bar-cell\" ");
-    data.buffer.push(escapeExpression(helpers['bind-attr'].call(depth0, {"name":"bind-attr","hash":{
-      'style': ("view.histogramStyle")
-    },"hashTypes":{'style': "STRING"},"hashContexts":{'style': depth0},"types":[],"contexts":[],"data":data})));
-    data.buffer.push(">\n</span>\n");
-    return buffer;
-  },"useData":true});
+  exports['default'] = Ember.HTMLBars.template((function() {
+    return {
+      isHTMLBars: true,
+      blockParams: 0,
+      cachedFragment: null,
+      hasRendered: false,
+      build: function build(dom) {
+        var el0 = dom.createDocumentFragment();
+        var el1 = dom.createElement("span");
+        dom.setAttribute(el1,"class","bar-cell");
+        var el2 = dom.createTextNode("\n");
+        dom.appendChild(el1, el2);
+        dom.appendChild(el0, el1);
+        var el1 = dom.createTextNode("\n");
+        dom.appendChild(el0, el1);
+        return el0;
+      },
+      render: function render(context, env, contextualElement) {
+        var dom = env.dom;
+        var hooks = env.hooks, element = hooks.element;
+        dom.detectNamespace(contextualElement);
+        var fragment;
+        if (env.useFragmentCache && dom.canClone) {
+          if (this.cachedFragment === null) {
+            fragment = this.build(dom);
+            if (this.hasRendered) {
+              this.cachedFragment = fragment;
+            } else {
+              this.hasRendered = true;
+            }
+          }
+          if (this.cachedFragment) {
+            fragment = dom.cloneNode(this.cachedFragment, true);
+          }
+        } else {
+          fragment = this.build(dom);
+        }
+        var element0 = dom.childAt(fragment, [0]);
+        element(env, element0, context, "bind-attr", [], {"style": "view.histogramStyle"});
+        return fragment;
+      }
+    };
+  }()));
 
 });
 define('dummy/templates/bar-table/bar-table', ['exports'], function (exports) {
 
   'use strict';
 
-  exports['default'] = Ember.Handlebars.template({"compiler":[6,">= 2.0.0-beta.1"],"main":function(depth0,helpers,partials,data) {
-    var helperMissing=helpers.helperMissing, escapeExpression=this.escapeExpression, buffer = '';
-    data.buffer.push(escapeExpression(((helpers['ember-table'] || (depth0 && depth0['ember-table']) || helperMissing).call(depth0, {"name":"ember-table","hash":{
-      'content': ("tableContent"),
-      'columns': ("tableColumns"),
-      'rowHeight': (30),
-      'hasFooter': (false),
-      'hasHeader': (true)
-    },"hashTypes":{'content': "ID",'columns': "ID",'rowHeight': "NUMBER",'hasFooter': "BOOLEAN",'hasHeader': "BOOLEAN"},"hashContexts":{'content': depth0,'columns': depth0,'rowHeight': depth0,'hasFooter': depth0,'hasHeader': depth0},"types":[],"contexts":[],"data":data}))));
-    data.buffer.push("\n");
-    return buffer;
-  },"useData":true});
+  exports['default'] = Ember.HTMLBars.template((function() {
+    return {
+      isHTMLBars: true,
+      blockParams: 0,
+      cachedFragment: null,
+      hasRendered: false,
+      build: function build(dom) {
+        var el0 = dom.createDocumentFragment();
+        var el1 = dom.createTextNode("");
+        dom.appendChild(el0, el1);
+        var el1 = dom.createTextNode("\n");
+        dom.appendChild(el0, el1);
+        return el0;
+      },
+      render: function render(context, env, contextualElement) {
+        var dom = env.dom;
+        var hooks = env.hooks, get = hooks.get, inline = hooks.inline;
+        dom.detectNamespace(contextualElement);
+        var fragment;
+        if (env.useFragmentCache && dom.canClone) {
+          if (this.cachedFragment === null) {
+            fragment = this.build(dom);
+            if (this.hasRendered) {
+              this.cachedFragment = fragment;
+            } else {
+              this.hasRendered = true;
+            }
+          }
+          if (this.cachedFragment) {
+            fragment = dom.cloneNode(this.cachedFragment, true);
+          }
+        } else {
+          fragment = this.build(dom);
+        }
+        if (this.cachedFragment) { dom.repairClonedNode(fragment,[0]); }
+        var morph0 = dom.createMorphAt(fragment,0,1,contextualElement);
+        inline(env, morph0, context, "ember-table", [], {"hasHeader": true, "hasFooter": false, "rowHeight": 30, "columns": get(env, context, "tableColumns"), "content": get(env, context, "tableContent")});
+        return fragment;
+      }
+    };
+  }()));
 
 });
 define('dummy/templates/bars', ['exports'], function (exports) {
 
   'use strict';
 
-  exports['default'] = Ember.Handlebars.template({"compiler":[6,">= 2.0.0-beta.1"],"main":function(depth0,helpers,partials,data) {
-    var helperMissing=helpers.helperMissing, escapeExpression=this.escapeExpression, buffer = '';
-    data.buffer.push("<div class=\"col-md-10 col-md-offset-2 left-border main-content-container\">\n  <h1>Ember Table <small>D3 Chart Table Cells</small></h1>\n\n  <div class=\"row\">\n    <div class=\"col-md-12\">\n      <div class=\"example-container\">\n        <div class=\"ember-table-example-container\">\n          ");
-    data.buffer.push(escapeExpression(((helpers.partial || (depth0 && depth0.partial) || helperMissing).call(depth0, "bar-table/bar-table", {"name":"partial","hash":{},"hashTypes":{},"hashContexts":{},"types":["STRING"],"contexts":[depth0],"data":data}))));
-    data.buffer.push("\n        </div>\n      </div>\n    </div>\n\n    <div class=\"col-md-12 bumper-30\">\n      <h3>Template</h3>\n      <div class=\"highlight\">\n        <pre class=\"prettyprint lang-html\">{{ember-table\n  hasHeader=true\n  hasFooter=false\n  rowHeight=30\n  columns=tableColumns\n  content=tableContent\n}}\n</pre>\n      </div>\n    </div>\n\n    <div class=\"col-md-12 bumper-30\">\n      <h3>Controller</h3>\n      <div class=\"highlight\">\n        <pre class=\"prettyprint lang-js\">import Ember from &#39;ember&#39;;\nimport ColumnDefinition from &#39;ember-table&#x2F;models&#x2F;column-definition&#39;;\n\nexport default Ember.Controller.extend({\n  tableColumns: Ember.computed(function() {\n    var colors = [&#39;blue&#39;, &#39;teal&#39;, &#39;green&#39;, &#39;yellow&#39;, &#39;orange&#39;];\n    var firstColumn = ColumnDefinition.create({\n      savedWidth: 50,\n      headerCellName: &#39;Name&#39;,\n      contentPath: &#39;key&#39;\n    });\n    var columns = colors.map(function(color, index) {\n      return ColumnDefinition.create({\n        color: color,\n        headerCellName: &#39;Bar&#39;,\n        tableCellViewClass: &#39;bar-table-cell&#39;,\n        contentPath: &#39;value&#39; + (index + 1)\n      });\n    });\n    columns.unshift(firstColumn);\n    return columns;\n  }),\n\n  tableContent: Ember.computed(function() {\n    var content = [];\n    for (var i = 0; i &lt; 100; i++) {\n      content.pushObject({\n        key: i,\n        value1: Math.random() * 80 + 10,\n        value2: Math.random() * 80 + 10,\n        value3: Math.random() * 80 + 10,\n        value4: Math.random() * 80 + 10,\n        value5: Math.random() * 80 + 10\n      });\n    }\n    return content;\n  })\n});\n</pre>\n      </div>\n    </div>\n\n    <div class=\"col-md-12 bumper-30\">\n      <h3>views/bar-table-cell.js</h3>\n      <div class=\"highlight\">\n        <pre class=\"prettyprint lang-js\">import Ember from &#39;ember&#39;;\nimport TableCell from &#39;ember-table&#x2F;views&#x2F;table-cell&#39;;\n\nexport default TableCell.extend({\n  templateName: &#39;bar_table&#x2F;bar-cell&#39;,\n  classNameBindings: [&#39;column.color&#39;],\n\n  barWidth: Ember.computed(function() {\n    var properties = this.getProperties(&#39;column&#39;, &#39;row&#39;);\n    var column = properties.column;\n    var row = properties.row;\n    if (!(column &amp;&amp; row)) {\n      return 0;\n    }\n    return Math.round(+this.get(&#39;cellContent&#39;));\n  }).property(&#39;column&#39;, &#39;row&#39;, &#39;cellContent&#39;),\n\n  histogramStyle: Ember.computed(function() {\n    return &#39;width: &#39; + (this.get(&#39;barWidth&#39;)) + &#39;%;&#39;;\n  }).property(&#39;barWidth&#39;)\n});\n</pre>\n      </div>\n    </div>\n\n    <div class=\"col-md-12 bumper-30\">\n      <h3>templates/bar-table/bar-cell.hbs</h3>\n      <div class=\"highlight\">\n        <pre class=\"prettyprint lang-html\">&lt;span class=&quot;bar-cell&quot; {{bind-attr style=&quot;view.histogramStyle&quot;}}&gt;\n&lt;&#x2F;span&gt;\n</pre>\n      </div>\n    </div>\n  </div>\n</div>\n");
-    return buffer;
-  },"useData":true});
+  exports['default'] = Ember.HTMLBars.template((function() {
+    return {
+      isHTMLBars: true,
+      blockParams: 0,
+      cachedFragment: null,
+      hasRendered: false,
+      build: function build(dom) {
+        var el0 = dom.createDocumentFragment();
+        var el1 = dom.createElement("div");
+        dom.setAttribute(el1,"class","col-md-10 col-md-offset-2 left-border main-content-container");
+        var el2 = dom.createTextNode("\n  ");
+        dom.appendChild(el1, el2);
+        var el2 = dom.createElement("h1");
+        var el3 = dom.createTextNode("Ember Table ");
+        dom.appendChild(el2, el3);
+        var el3 = dom.createElement("small");
+        var el4 = dom.createTextNode("D3 Chart Table Cells");
+        dom.appendChild(el3, el4);
+        dom.appendChild(el2, el3);
+        dom.appendChild(el1, el2);
+        var el2 = dom.createTextNode("\n\n  ");
+        dom.appendChild(el1, el2);
+        var el2 = dom.createElement("div");
+        dom.setAttribute(el2,"class","row");
+        var el3 = dom.createTextNode("\n    ");
+        dom.appendChild(el2, el3);
+        var el3 = dom.createElement("div");
+        dom.setAttribute(el3,"class","col-md-12");
+        var el4 = dom.createTextNode("\n      ");
+        dom.appendChild(el3, el4);
+        var el4 = dom.createElement("div");
+        dom.setAttribute(el4,"class","example-container");
+        var el5 = dom.createTextNode("\n        ");
+        dom.appendChild(el4, el5);
+        var el5 = dom.createElement("div");
+        dom.setAttribute(el5,"class","ember-table-example-container");
+        var el6 = dom.createTextNode("\n          ");
+        dom.appendChild(el5, el6);
+        var el6 = dom.createTextNode("\n        ");
+        dom.appendChild(el5, el6);
+        dom.appendChild(el4, el5);
+        var el5 = dom.createTextNode("\n      ");
+        dom.appendChild(el4, el5);
+        dom.appendChild(el3, el4);
+        var el4 = dom.createTextNode("\n    ");
+        dom.appendChild(el3, el4);
+        dom.appendChild(el2, el3);
+        var el3 = dom.createTextNode("\n\n    ");
+        dom.appendChild(el2, el3);
+        var el3 = dom.createElement("div");
+        dom.setAttribute(el3,"class","col-md-12 bumper-30");
+        var el4 = dom.createTextNode("\n      ");
+        dom.appendChild(el3, el4);
+        var el4 = dom.createElement("h3");
+        var el5 = dom.createTextNode("Template");
+        dom.appendChild(el4, el5);
+        dom.appendChild(el3, el4);
+        var el4 = dom.createTextNode("\n      ");
+        dom.appendChild(el3, el4);
+        var el4 = dom.createElement("div");
+        dom.setAttribute(el4,"class","highlight");
+        var el5 = dom.createTextNode("\n        ");
+        dom.appendChild(el4, el5);
+        var el5 = dom.createElement("pre");
+        dom.setAttribute(el5,"class","prettyprint lang-html");
+        var el6 = dom.createTextNode("{{ember-table\n  hasHeader=true\n  hasFooter=false\n  rowHeight=30\n  columns=tableColumns\n  content=tableContent\n}}\n");
+        dom.appendChild(el5, el6);
+        dom.appendChild(el4, el5);
+        var el5 = dom.createTextNode("\n      ");
+        dom.appendChild(el4, el5);
+        dom.appendChild(el3, el4);
+        var el4 = dom.createTextNode("\n    ");
+        dom.appendChild(el3, el4);
+        dom.appendChild(el2, el3);
+        var el3 = dom.createTextNode("\n\n    ");
+        dom.appendChild(el2, el3);
+        var el3 = dom.createElement("div");
+        dom.setAttribute(el3,"class","col-md-12 bumper-30");
+        var el4 = dom.createTextNode("\n      ");
+        dom.appendChild(el3, el4);
+        var el4 = dom.createElement("h3");
+        var el5 = dom.createTextNode("Controller");
+        dom.appendChild(el4, el5);
+        dom.appendChild(el3, el4);
+        var el4 = dom.createTextNode("\n      ");
+        dom.appendChild(el3, el4);
+        var el4 = dom.createElement("div");
+        dom.setAttribute(el4,"class","highlight");
+        var el5 = dom.createTextNode("\n        ");
+        dom.appendChild(el4, el5);
+        var el5 = dom.createElement("pre");
+        dom.setAttribute(el5,"class","prettyprint lang-js");
+        var el6 = dom.createTextNode("import Ember from &#39;ember&#39;;\nimport ColumnDefinition from &#39;ember-table&#x2F;models&#x2F;column-definition&#39;;\n\nexport default Ember.Controller.extend({\n  tableColumns: Ember.computed(function() {\n    var colors = [&#39;blue&#39;, &#39;teal&#39;, &#39;green&#39;, &#39;yellow&#39;, &#39;orange&#39;];\n    var firstColumn = ColumnDefinition.create({\n      savedWidth: 50,\n      headerCellName: &#39;Name&#39;,\n      contentPath: &#39;key&#39;\n    });\n    var columns = colors.map(function(color, index) {\n      return ColumnDefinition.create({\n        color: color,\n        headerCellName: &#39;Bar&#39;,\n        tableCellViewClass: &#39;bar-table-cell&#39;,\n        contentPath: &#39;value&#39; + (index + 1)\n      });\n    });\n    columns.unshift(firstColumn);\n    return columns;\n  }),\n\n  tableContent: Ember.computed(function() {\n    var content = [];\n    for (var i = 0; i &lt; 100; i++) {\n      content.pushObject({\n        key: i,\n        value1: Math.random() * 80 + 10,\n        value2: Math.random() * 80 + 10,\n        value3: Math.random() * 80 + 10,\n        value4: Math.random() * 80 + 10,\n        value5: Math.random() * 80 + 10\n      });\n    }\n    return content;\n  })\n});\n");
+        dom.appendChild(el5, el6);
+        dom.appendChild(el4, el5);
+        var el5 = dom.createTextNode("\n      ");
+        dom.appendChild(el4, el5);
+        dom.appendChild(el3, el4);
+        var el4 = dom.createTextNode("\n    ");
+        dom.appendChild(el3, el4);
+        dom.appendChild(el2, el3);
+        var el3 = dom.createTextNode("\n\n    ");
+        dom.appendChild(el2, el3);
+        var el3 = dom.createElement("div");
+        dom.setAttribute(el3,"class","col-md-12 bumper-30");
+        var el4 = dom.createTextNode("\n      ");
+        dom.appendChild(el3, el4);
+        var el4 = dom.createElement("h3");
+        var el5 = dom.createTextNode("views/bar-table-cell.js");
+        dom.appendChild(el4, el5);
+        dom.appendChild(el3, el4);
+        var el4 = dom.createTextNode("\n      ");
+        dom.appendChild(el3, el4);
+        var el4 = dom.createElement("div");
+        dom.setAttribute(el4,"class","highlight");
+        var el5 = dom.createTextNode("\n        ");
+        dom.appendChild(el4, el5);
+        var el5 = dom.createElement("pre");
+        dom.setAttribute(el5,"class","prettyprint lang-js");
+        var el6 = dom.createTextNode("import Ember from &#39;ember&#39;;\nimport TableCell from &#39;ember-table&#x2F;views&#x2F;table-cell&#39;;\n\nexport default TableCell.extend({\n  templateName: &#39;bar_table&#x2F;bar-cell&#39;,\n  classNameBindings: [&#39;column.color&#39;],\n\n  barWidth: Ember.computed(function() {\n    var properties = this.getProperties(&#39;column&#39;, &#39;row&#39;);\n    var column = properties.column;\n    var row = properties.row;\n    if (!(column &amp;&amp; row)) {\n      return 0;\n    }\n    return Math.round(+this.get(&#39;cellContent&#39;));\n  }).property(&#39;column&#39;, &#39;row&#39;, &#39;cellContent&#39;),\n\n  histogramStyle: Ember.computed(function() {\n    return &#39;width: &#39; + (this.get(&#39;barWidth&#39;)) + &#39;%;&#39;;\n  }).property(&#39;barWidth&#39;)\n});\n");
+        dom.appendChild(el5, el6);
+        dom.appendChild(el4, el5);
+        var el5 = dom.createTextNode("\n      ");
+        dom.appendChild(el4, el5);
+        dom.appendChild(el3, el4);
+        var el4 = dom.createTextNode("\n    ");
+        dom.appendChild(el3, el4);
+        dom.appendChild(el2, el3);
+        var el3 = dom.createTextNode("\n\n    ");
+        dom.appendChild(el2, el3);
+        var el3 = dom.createElement("div");
+        dom.setAttribute(el3,"class","col-md-12 bumper-30");
+        var el4 = dom.createTextNode("\n      ");
+        dom.appendChild(el3, el4);
+        var el4 = dom.createElement("h3");
+        var el5 = dom.createTextNode("templates/bar-table/bar-cell.hbs");
+        dom.appendChild(el4, el5);
+        dom.appendChild(el3, el4);
+        var el4 = dom.createTextNode("\n      ");
+        dom.appendChild(el3, el4);
+        var el4 = dom.createElement("div");
+        dom.setAttribute(el4,"class","highlight");
+        var el5 = dom.createTextNode("\n        ");
+        dom.appendChild(el4, el5);
+        var el5 = dom.createElement("pre");
+        dom.setAttribute(el5,"class","prettyprint lang-html");
+        var el6 = dom.createTextNode("&lt;span class=&quot;bar-cell&quot; {{bind-attr style=&quot;view.histogramStyle&quot;}}&gt;\n&lt;&#x2F;span&gt;\n");
+        dom.appendChild(el5, el6);
+        dom.appendChild(el4, el5);
+        var el5 = dom.createTextNode("\n      ");
+        dom.appendChild(el4, el5);
+        dom.appendChild(el3, el4);
+        var el4 = dom.createTextNode("\n    ");
+        dom.appendChild(el3, el4);
+        dom.appendChild(el2, el3);
+        var el3 = dom.createTextNode("\n  ");
+        dom.appendChild(el2, el3);
+        dom.appendChild(el1, el2);
+        var el2 = dom.createTextNode("\n");
+        dom.appendChild(el1, el2);
+        dom.appendChild(el0, el1);
+        var el1 = dom.createTextNode("\n");
+        dom.appendChild(el0, el1);
+        return el0;
+      },
+      render: function render(context, env, contextualElement) {
+        var dom = env.dom;
+        var hooks = env.hooks, inline = hooks.inline;
+        dom.detectNamespace(contextualElement);
+        var fragment;
+        if (env.useFragmentCache && dom.canClone) {
+          if (this.cachedFragment === null) {
+            fragment = this.build(dom);
+            if (this.hasRendered) {
+              this.cachedFragment = fragment;
+            } else {
+              this.hasRendered = true;
+            }
+          }
+          if (this.cachedFragment) {
+            fragment = dom.cloneNode(this.cachedFragment, true);
+          }
+        } else {
+          fragment = this.build(dom);
+        }
+        var morph0 = dom.createMorphAt(dom.childAt(fragment, [0, 3, 1, 1, 1]),0,1);
+        inline(env, morph0, context, "partial", ["bar-table/bar-table"], {});
+        return fragment;
+      }
+    };
+  }()));
 
 });
 define('dummy/templates/body-table-container', ['exports'], function (exports) {
 
   'use strict';
 
-  exports['default'] = Ember.Handlebars.template({"1":function(depth0,helpers,partials,data) {
-    var escapeExpression=this.escapeExpression, buffer = '';
-    data.buffer.push("        ");
-    data.buffer.push(escapeExpression(helpers.view.call(depth0, "lazy-table-block", {"name":"view","hash":{
-      'startIndex': ("_startIndex"),
-      'scrollTop': ("_scrollTop"),
-      'numItemsShowing': ("_numItemsShowing"),
-      'width': ("_fixedBlockWidth"),
-      'columns': ("fixedColumns"),
-      'content': ("bodyContent"),
-      'classNames': ("ember-table-left-table-block")
-    },"hashTypes":{'startIndex': "ID",'scrollTop': "ID",'numItemsShowing': "ID",'width': "ID",'columns': "ID",'content': "ID",'classNames': "STRING"},"hashContexts":{'startIndex': depth0,'scrollTop': depth0,'numItemsShowing': depth0,'width': depth0,'columns': depth0,'content': depth0,'classNames': depth0},"types":["STRING"],"contexts":[depth0],"data":data})));
-    data.buffer.push("\n");
-    return buffer;
-  },"compiler":[6,">= 2.0.0-beta.1"],"main":function(depth0,helpers,partials,data) {
-    var stack1, escapeExpression=this.escapeExpression, buffer = '';
-    data.buffer.push("<div class=\"antiscroll-box\">\n  <div class=\"antiscroll-inner\">\n    <div class=\"ember-table-table-scrollable-wrapper\">\n");
-    stack1 = helpers['if'].call(depth0, "numFixedColumns", {"name":"if","hash":{},"hashTypes":{},"hashContexts":{},"fn":this.program(1, data),"inverse":this.noop,"types":["ID"],"contexts":[depth0],"data":data});
-    if (stack1 != null) { data.buffer.push(stack1); }
-    data.buffer.push("      ");
-    data.buffer.push(escapeExpression(helpers.view.call(depth0, "lazy-table-block", {"name":"view","hash":{
-      'startIndex': ("_startIndex"),
-      'scrollTop': ("_scrollTop"),
-      'numItemsShowing': ("_numItemsShowing"),
-      'width': ("_tableBlockWidth"),
-      'scrollLeft': ("_tableScrollLeft"),
-      'columns': ("tableColumns"),
-      'content': ("bodyContent"),
-      'classNames': ("ember-table-right-table-block")
-    },"hashTypes":{'startIndex': "ID",'scrollTop': "ID",'numItemsShowing': "ID",'width': "ID",'scrollLeft': "ID",'columns': "ID",'content': "ID",'classNames': "STRING"},"hashContexts":{'startIndex': depth0,'scrollTop': depth0,'numItemsShowing': depth0,'width': depth0,'scrollLeft': depth0,'columns': depth0,'content': depth0,'classNames': depth0},"types":["STRING"],"contexts":[depth0],"data":data})));
-    data.buffer.push("\n    </div>\n  </div>\n</div>\n");
-    return buffer;
-  },"useData":true});
+  exports['default'] = Ember.HTMLBars.template((function() {
+    var child0 = (function() {
+      return {
+        isHTMLBars: true,
+        blockParams: 0,
+        cachedFragment: null,
+        hasRendered: false,
+        build: function build(dom) {
+          var el0 = dom.createDocumentFragment();
+          var el1 = dom.createTextNode("        ");
+          dom.appendChild(el0, el1);
+          var el1 = dom.createTextNode("\n");
+          dom.appendChild(el0, el1);
+          return el0;
+        },
+        render: function render(context, env, contextualElement) {
+          var dom = env.dom;
+          var hooks = env.hooks, get = hooks.get, inline = hooks.inline;
+          dom.detectNamespace(contextualElement);
+          var fragment;
+          if (env.useFragmentCache && dom.canClone) {
+            if (this.cachedFragment === null) {
+              fragment = this.build(dom);
+              if (this.hasRendered) {
+                this.cachedFragment = fragment;
+              } else {
+                this.hasRendered = true;
+              }
+            }
+            if (this.cachedFragment) {
+              fragment = dom.cloneNode(this.cachedFragment, true);
+            }
+          } else {
+            fragment = this.build(dom);
+          }
+          var morph0 = dom.createMorphAt(fragment,0,1,contextualElement);
+          inline(env, morph0, context, "view", ["lazy-table-block"], {"classNames": "ember-table-left-table-block", "content": get(env, context, "bodyContent"), "columns": get(env, context, "fixedColumns"), "width": get(env, context, "_fixedBlockWidth"), "numItemsShowing": get(env, context, "_numItemsShowing"), "scrollTop": get(env, context, "_scrollTop"), "startIndex": get(env, context, "_startIndex")});
+          return fragment;
+        }
+      };
+    }());
+    return {
+      isHTMLBars: true,
+      blockParams: 0,
+      cachedFragment: null,
+      hasRendered: false,
+      build: function build(dom) {
+        var el0 = dom.createDocumentFragment();
+        var el1 = dom.createElement("div");
+        dom.setAttribute(el1,"class","antiscroll-box");
+        var el2 = dom.createTextNode("\n  ");
+        dom.appendChild(el1, el2);
+        var el2 = dom.createElement("div");
+        dom.setAttribute(el2,"class","antiscroll-inner");
+        var el3 = dom.createTextNode("\n    ");
+        dom.appendChild(el2, el3);
+        var el3 = dom.createElement("div");
+        dom.setAttribute(el3,"class","ember-table-table-scrollable-wrapper");
+        var el4 = dom.createTextNode("\n");
+        dom.appendChild(el3, el4);
+        var el4 = dom.createTextNode("      ");
+        dom.appendChild(el3, el4);
+        var el4 = dom.createTextNode("\n    ");
+        dom.appendChild(el3, el4);
+        dom.appendChild(el2, el3);
+        var el3 = dom.createTextNode("\n  ");
+        dom.appendChild(el2, el3);
+        dom.appendChild(el1, el2);
+        var el2 = dom.createTextNode("\n");
+        dom.appendChild(el1, el2);
+        dom.appendChild(el0, el1);
+        var el1 = dom.createTextNode("\n");
+        dom.appendChild(el0, el1);
+        return el0;
+      },
+      render: function render(context, env, contextualElement) {
+        var dom = env.dom;
+        var hooks = env.hooks, get = hooks.get, block = hooks.block, inline = hooks.inline;
+        dom.detectNamespace(contextualElement);
+        var fragment;
+        if (env.useFragmentCache && dom.canClone) {
+          if (this.cachedFragment === null) {
+            fragment = this.build(dom);
+            if (this.hasRendered) {
+              this.cachedFragment = fragment;
+            } else {
+              this.hasRendered = true;
+            }
+          }
+          if (this.cachedFragment) {
+            fragment = dom.cloneNode(this.cachedFragment, true);
+          }
+        } else {
+          fragment = this.build(dom);
+        }
+        var element0 = dom.childAt(fragment, [0, 1, 1]);
+        var morph0 = dom.createMorphAt(element0,0,1);
+        var morph1 = dom.createMorphAt(element0,1,2);
+        block(env, morph0, context, "if", [get(env, context, "numFixedColumns")], {}, child0, null);
+        inline(env, morph1, context, "view", ["lazy-table-block"], {"classNames": "ember-table-right-table-block", "content": get(env, context, "bodyContent"), "columns": get(env, context, "tableColumns"), "scrollLeft": get(env, context, "_tableScrollLeft"), "width": get(env, context, "_tableBlockWidth"), "numItemsShowing": get(env, context, "_numItemsShowing"), "scrollTop": get(env, context, "_scrollTop"), "startIndex": get(env, context, "_startIndex")});
+        return fragment;
+      }
+    };
+  }()));
 
 });
 define('dummy/templates/community-examples', ['exports'], function (exports) {
 
   'use strict';
 
-  exports['default'] = Ember.Handlebars.template({"compiler":[6,">= 2.0.0-beta.1"],"main":function(depth0,helpers,partials,data) {
-    var buffer = '';
-    data.buffer.push("<div class=\"col-md-10 col-md-offset-2 left-border main-content-container\">\n  <div class=\"row\">\n    <div class=\"col-md-12\">\n      <h1>Community Examples</h1>\n      <p class=\"elevated\">Many people have extended ember-table to add new features or customize the way the table works with their app. We hope this list of community-built examples helps to provide inspiration and share commonly used design patterns.<br><br>This is a new list, and we're looking for more examples to add.<br>If you're willing to share your work here, please <a target=\"_BLANK\" href=\"https://github.com/Addepar/ember-table/issues\">open a GitHub ticket!</a></p>\n      <div class=\"row ember-table-examples\">\n        <div class=\"col-md-4\">\n          <h4 class=\"byline\">Server-side Sorting</h4>\n          <p class=\"byline\">By <a target=\"_BLANK\" href=\"https://github.com/seriousben\">seriousben</a></p>\n          <a target=\"_BLANK\" href=\"http://jsbin.com/nefiwoco/15/edit\">\n            <img class=\"preview-box\" src=\"images/community_examples/preview_server_side_sorting.png\" />\n          </a>\n        </div>\n      </div>\n    </div>\n  </div>\n</div>\n");
-    return buffer;
-  },"useData":true});
+  exports['default'] = Ember.HTMLBars.template((function() {
+    return {
+      isHTMLBars: true,
+      blockParams: 0,
+      cachedFragment: null,
+      hasRendered: false,
+      build: function build(dom) {
+        var el0 = dom.createDocumentFragment();
+        var el1 = dom.createElement("div");
+        dom.setAttribute(el1,"class","col-md-10 col-md-offset-2 left-border main-content-container");
+        var el2 = dom.createTextNode("\n  ");
+        dom.appendChild(el1, el2);
+        var el2 = dom.createElement("div");
+        dom.setAttribute(el2,"class","row");
+        var el3 = dom.createTextNode("\n    ");
+        dom.appendChild(el2, el3);
+        var el3 = dom.createElement("div");
+        dom.setAttribute(el3,"class","col-md-12");
+        var el4 = dom.createTextNode("\n      ");
+        dom.appendChild(el3, el4);
+        var el4 = dom.createElement("h1");
+        var el5 = dom.createTextNode("Community Examples");
+        dom.appendChild(el4, el5);
+        dom.appendChild(el3, el4);
+        var el4 = dom.createTextNode("\n      ");
+        dom.appendChild(el3, el4);
+        var el4 = dom.createElement("p");
+        dom.setAttribute(el4,"class","elevated");
+        var el5 = dom.createTextNode("Many people have extended ember-table to add new features or customize the way the table works with their app. We hope this list of community-built examples helps to provide inspiration and share commonly used design patterns.");
+        dom.appendChild(el4, el5);
+        var el5 = dom.createElement("br");
+        dom.appendChild(el4, el5);
+        var el5 = dom.createElement("br");
+        dom.appendChild(el4, el5);
+        var el5 = dom.createTextNode("This is a new list, and we're looking for more examples to add.");
+        dom.appendChild(el4, el5);
+        var el5 = dom.createElement("br");
+        dom.appendChild(el4, el5);
+        var el5 = dom.createTextNode("If you're willing to share your work here, please ");
+        dom.appendChild(el4, el5);
+        var el5 = dom.createElement("a");
+        dom.setAttribute(el5,"target","_BLANK");
+        dom.setAttribute(el5,"href","https://github.com/Addepar/ember-table/issues");
+        var el6 = dom.createTextNode("open a GitHub ticket!");
+        dom.appendChild(el5, el6);
+        dom.appendChild(el4, el5);
+        dom.appendChild(el3, el4);
+        var el4 = dom.createTextNode("\n      ");
+        dom.appendChild(el3, el4);
+        var el4 = dom.createElement("div");
+        dom.setAttribute(el4,"class","row ember-table-examples");
+        var el5 = dom.createTextNode("\n        ");
+        dom.appendChild(el4, el5);
+        var el5 = dom.createElement("div");
+        dom.setAttribute(el5,"class","col-md-4");
+        var el6 = dom.createTextNode("\n          ");
+        dom.appendChild(el5, el6);
+        var el6 = dom.createElement("h4");
+        dom.setAttribute(el6,"class","byline");
+        var el7 = dom.createTextNode("Server-side Sorting");
+        dom.appendChild(el6, el7);
+        dom.appendChild(el5, el6);
+        var el6 = dom.createTextNode("\n          ");
+        dom.appendChild(el5, el6);
+        var el6 = dom.createElement("p");
+        dom.setAttribute(el6,"class","byline");
+        var el7 = dom.createTextNode("By ");
+        dom.appendChild(el6, el7);
+        var el7 = dom.createElement("a");
+        dom.setAttribute(el7,"target","_BLANK");
+        dom.setAttribute(el7,"href","https://github.com/seriousben");
+        var el8 = dom.createTextNode("seriousben");
+        dom.appendChild(el7, el8);
+        dom.appendChild(el6, el7);
+        dom.appendChild(el5, el6);
+        var el6 = dom.createTextNode("\n          ");
+        dom.appendChild(el5, el6);
+        var el6 = dom.createElement("a");
+        dom.setAttribute(el6,"target","_BLANK");
+        dom.setAttribute(el6,"href","http://jsbin.com/nefiwoco/15/edit");
+        var el7 = dom.createTextNode("\n            ");
+        dom.appendChild(el6, el7);
+        var el7 = dom.createElement("img");
+        dom.setAttribute(el7,"class","preview-box");
+        dom.setAttribute(el7,"src","images/community_examples/preview_server_side_sorting.png");
+        dom.appendChild(el6, el7);
+        var el7 = dom.createTextNode("\n          ");
+        dom.appendChild(el6, el7);
+        dom.appendChild(el5, el6);
+        var el6 = dom.createTextNode("\n        ");
+        dom.appendChild(el5, el6);
+        dom.appendChild(el4, el5);
+        var el5 = dom.createTextNode("\n      ");
+        dom.appendChild(el4, el5);
+        dom.appendChild(el3, el4);
+        var el4 = dom.createTextNode("\n    ");
+        dom.appendChild(el3, el4);
+        dom.appendChild(el2, el3);
+        var el3 = dom.createTextNode("\n  ");
+        dom.appendChild(el2, el3);
+        dom.appendChild(el1, el2);
+        var el2 = dom.createTextNode("\n");
+        dom.appendChild(el1, el2);
+        dom.appendChild(el0, el1);
+        var el1 = dom.createTextNode("\n");
+        dom.appendChild(el0, el1);
+        return el0;
+      },
+      render: function render(context, env, contextualElement) {
+        var dom = env.dom;
+        dom.detectNamespace(contextualElement);
+        var fragment;
+        if (env.useFragmentCache && dom.canClone) {
+          if (this.cachedFragment === null) {
+            fragment = this.build(dom);
+            if (this.hasRendered) {
+              this.cachedFragment = fragment;
+            } else {
+              this.hasRendered = true;
+            }
+          }
+          if (this.cachedFragment) {
+            fragment = dom.cloneNode(this.cachedFragment, true);
+          }
+        } else {
+          fragment = this.build(dom);
+        }
+        return fragment;
+      }
+    };
+  }()));
 
 });
 define('dummy/templates/components/ember-table', ['exports'], function (exports) {
 
   'use strict';
 
-  exports['default'] = Ember.Handlebars.template({"1":function(depth0,helpers,partials,data) {
-    var escapeExpression=this.escapeExpression, buffer = '';
-    data.buffer.push("  ");
-    data.buffer.push(escapeExpression(helpers.view.call(depth0, "header-table-container", {"name":"view","hash":{},"hashTypes":{},"hashContexts":{},"types":["STRING"],"contexts":[depth0],"data":data})));
-    data.buffer.push("\n");
-    return buffer;
-  },"3":function(depth0,helpers,partials,data) {
-    var escapeExpression=this.escapeExpression, buffer = '';
-    data.buffer.push("  ");
-    data.buffer.push(escapeExpression(helpers.view.call(depth0, "footer-table-container", {"name":"view","hash":{},"hashTypes":{},"hashContexts":{},"types":["STRING"],"contexts":[depth0],"data":data})));
-    data.buffer.push("\n");
-    return buffer;
-  },"compiler":[6,">= 2.0.0-beta.1"],"main":function(depth0,helpers,partials,data) {
-    var stack1, escapeExpression=this.escapeExpression, buffer = '';
-    stack1 = helpers['if'].call(depth0, "hasHeader", {"name":"if","hash":{},"hashTypes":{},"hashContexts":{},"fn":this.program(1, data),"inverse":this.noop,"types":["ID"],"contexts":[depth0],"data":data});
-    if (stack1 != null) { data.buffer.push(stack1); }
-    data.buffer.push(escapeExpression(helpers.view.call(depth0, "body-table-container", {"name":"view","hash":{},"hashTypes":{},"hashContexts":{},"types":["STRING"],"contexts":[depth0],"data":data})));
-    data.buffer.push("\n");
-    stack1 = helpers['if'].call(depth0, "hasFooter", {"name":"if","hash":{},"hashTypes":{},"hashContexts":{},"fn":this.program(3, data),"inverse":this.noop,"types":["ID"],"contexts":[depth0],"data":data});
-    if (stack1 != null) { data.buffer.push(stack1); }
-    data.buffer.push(escapeExpression(helpers.view.call(depth0, "scroll-container", {"name":"view","hash":{},"hashTypes":{},"hashContexts":{},"types":["STRING"],"contexts":[depth0],"data":data})));
-    data.buffer.push("\n");
-    data.buffer.push(escapeExpression(helpers.view.call(depth0, "column-sortable-indicator", {"name":"view","hash":{},"hashTypes":{},"hashContexts":{},"types":["STRING"],"contexts":[depth0],"data":data})));
-    data.buffer.push("\n");
-    return buffer;
-  },"useData":true});
+  exports['default'] = Ember.HTMLBars.template((function() {
+    var child0 = (function() {
+      return {
+        isHTMLBars: true,
+        blockParams: 0,
+        cachedFragment: null,
+        hasRendered: false,
+        build: function build(dom) {
+          var el0 = dom.createDocumentFragment();
+          var el1 = dom.createTextNode("  ");
+          dom.appendChild(el0, el1);
+          var el1 = dom.createTextNode("\n");
+          dom.appendChild(el0, el1);
+          return el0;
+        },
+        render: function render(context, env, contextualElement) {
+          var dom = env.dom;
+          var hooks = env.hooks, inline = hooks.inline;
+          dom.detectNamespace(contextualElement);
+          var fragment;
+          if (env.useFragmentCache && dom.canClone) {
+            if (this.cachedFragment === null) {
+              fragment = this.build(dom);
+              if (this.hasRendered) {
+                this.cachedFragment = fragment;
+              } else {
+                this.hasRendered = true;
+              }
+            }
+            if (this.cachedFragment) {
+              fragment = dom.cloneNode(this.cachedFragment, true);
+            }
+          } else {
+            fragment = this.build(dom);
+          }
+          var morph0 = dom.createMorphAt(fragment,0,1,contextualElement);
+          inline(env, morph0, context, "view", ["header-table-container"], {});
+          return fragment;
+        }
+      };
+    }());
+    var child1 = (function() {
+      return {
+        isHTMLBars: true,
+        blockParams: 0,
+        cachedFragment: null,
+        hasRendered: false,
+        build: function build(dom) {
+          var el0 = dom.createDocumentFragment();
+          var el1 = dom.createTextNode("  ");
+          dom.appendChild(el0, el1);
+          var el1 = dom.createTextNode("\n");
+          dom.appendChild(el0, el1);
+          return el0;
+        },
+        render: function render(context, env, contextualElement) {
+          var dom = env.dom;
+          var hooks = env.hooks, inline = hooks.inline;
+          dom.detectNamespace(contextualElement);
+          var fragment;
+          if (env.useFragmentCache && dom.canClone) {
+            if (this.cachedFragment === null) {
+              fragment = this.build(dom);
+              if (this.hasRendered) {
+                this.cachedFragment = fragment;
+              } else {
+                this.hasRendered = true;
+              }
+            }
+            if (this.cachedFragment) {
+              fragment = dom.cloneNode(this.cachedFragment, true);
+            }
+          } else {
+            fragment = this.build(dom);
+          }
+          var morph0 = dom.createMorphAt(fragment,0,1,contextualElement);
+          inline(env, morph0, context, "view", ["footer-table-container"], {});
+          return fragment;
+        }
+      };
+    }());
+    return {
+      isHTMLBars: true,
+      blockParams: 0,
+      cachedFragment: null,
+      hasRendered: false,
+      build: function build(dom) {
+        var el0 = dom.createDocumentFragment();
+        var el1 = dom.createTextNode("");
+        dom.appendChild(el0, el1);
+        var el1 = dom.createTextNode("");
+        dom.appendChild(el0, el1);
+        var el1 = dom.createTextNode("\n");
+        dom.appendChild(el0, el1);
+        var el1 = dom.createTextNode("");
+        dom.appendChild(el0, el1);
+        var el1 = dom.createTextNode("\n");
+        dom.appendChild(el0, el1);
+        var el1 = dom.createTextNode("\n");
+        dom.appendChild(el0, el1);
+        return el0;
+      },
+      render: function render(context, env, contextualElement) {
+        var dom = env.dom;
+        var hooks = env.hooks, get = hooks.get, block = hooks.block, inline = hooks.inline;
+        dom.detectNamespace(contextualElement);
+        var fragment;
+        if (env.useFragmentCache && dom.canClone) {
+          if (this.cachedFragment === null) {
+            fragment = this.build(dom);
+            if (this.hasRendered) {
+              this.cachedFragment = fragment;
+            } else {
+              this.hasRendered = true;
+            }
+          }
+          if (this.cachedFragment) {
+            fragment = dom.cloneNode(this.cachedFragment, true);
+          }
+        } else {
+          fragment = this.build(dom);
+        }
+        if (this.cachedFragment) { dom.repairClonedNode(fragment,[0,1,3]); }
+        var morph0 = dom.createMorphAt(fragment,0,1,contextualElement);
+        var morph1 = dom.createMorphAt(fragment,1,2,contextualElement);
+        var morph2 = dom.createMorphAt(fragment,2,3,contextualElement);
+        var morph3 = dom.createMorphAt(fragment,3,4,contextualElement);
+        var morph4 = dom.createMorphAt(fragment,4,5,contextualElement);
+        block(env, morph0, context, "if", [get(env, context, "hasHeader")], {}, child0, null);
+        inline(env, morph1, context, "view", ["body-table-container"], {});
+        block(env, morph2, context, "if", [get(env, context, "hasFooter")], {}, child1, null);
+        inline(env, morph3, context, "view", ["scroll-container"], {});
+        inline(env, morph4, context, "view", ["column-sortable-indicator"], {});
+        return fragment;
+      }
+    };
+  }()));
 
 });
 define('dummy/templates/configurable-columns', ['exports'], function (exports) {
 
   'use strict';
 
-  exports['default'] = Ember.Handlebars.template({"1":function(depth0,helpers,partials,data) {
-    var stack1, helperMissing=helpers.helperMissing, escapeExpression=this.escapeExpression, buffer = '';
-    data.buffer.push("              <tr>\n                <td>");
-    stack1 = helpers._triageMustache.call(depth0, "headerCellName", {"name":"_triageMustache","hash":{},"hashTypes":{},"hashContexts":{},"types":["ID"],"contexts":[depth0],"data":data});
-    if (stack1 != null) { data.buffer.push(stack1); }
-    data.buffer.push("</td>\n                <td class=\"checkbox-cell\">");
-    data.buffer.push(escapeExpression(((helpers.input || (depth0 && depth0.input) || helperMissing).call(depth0, {"name":"input","hash":{
-      'checked': ("isSortable"),
-      'type': ("checkbox"),
-      'class': ("checkbox-input")
-    },"hashTypes":{'checked': "ID",'type': "STRING",'class': "STRING"},"hashContexts":{'checked': depth0,'type': depth0,'class': depth0},"types":[],"contexts":[],"data":data}))));
-    data.buffer.push("</td>\n                <td class=\"checkbox-cell\">");
-    data.buffer.push(escapeExpression(((helpers.input || (depth0 && depth0.input) || helperMissing).call(depth0, {"name":"input","hash":{
-      'checked': ("isResizable"),
-      'type': ("checkbox"),
-      'class': ("checkbox-input")
-    },"hashTypes":{'checked': "ID",'type': "STRING",'class': "STRING"},"hashContexts":{'checked': depth0,'type': depth0,'class': depth0},"types":[],"contexts":[],"data":data}))));
-    data.buffer.push("</td>\n                <td class=\"checkbox-cell\">");
-    data.buffer.push(escapeExpression(((helpers.input || (depth0 && depth0.input) || helperMissing).call(depth0, {"name":"input","hash":{
-      'checked': ("canAutoResize"),
-      'type': ("checkbox"),
-      'class': ("checkbox-input")
-    },"hashTypes":{'checked': "ID",'type': "STRING",'class': "STRING"},"hashContexts":{'checked': depth0,'type': depth0,'class': depth0},"types":[],"contexts":[],"data":data}))));
-    data.buffer.push("</td>\n                <td ");
-    data.buffer.push(escapeExpression(helpers['bind-attr'].call(depth0, {"name":"bind-attr","hash":{
-      'class': ("atMinWidth:at-limit")
-    },"hashTypes":{'class': "STRING"},"hashContexts":{'class': depth0},"types":[],"contexts":[],"data":data})));
-    data.buffer.push(">");
-    data.buffer.push(escapeExpression(((helpers.input || (depth0 && depth0.input) || helperMissing).call(depth0, {"name":"input","hash":{
-      'min': ("1"),
-      'type': ("number"),
-      'class': ("text-input"),
-      'value': ("minWidthValue")
-    },"hashTypes":{'min': "STRING",'type': "STRING",'class': "STRING",'value': "ID"},"hashContexts":{'min': depth0,'type': depth0,'class': depth0,'value': depth0},"types":[],"contexts":[],"data":data}))));
-    data.buffer.push("</td>\n                <td ");
-    data.buffer.push(escapeExpression(helpers['bind-attr'].call(depth0, {"name":"bind-attr","hash":{
-      'class': ("atMaxWidth:at-limit")
-    },"hashTypes":{'class': "STRING"},"hashContexts":{'class': depth0},"types":[],"contexts":[],"data":data})));
-    data.buffer.push(">");
-    data.buffer.push(escapeExpression(((helpers.input || (depth0 && depth0.input) || helperMissing).call(depth0, {"name":"input","hash":{
-      'min': ("1"),
-      'type': ("number"),
-      'class': ("text-input"),
-      'value': ("maxWidthValue")
-    },"hashTypes":{'min': "STRING",'type': "STRING",'class': "STRING",'value': "ID"},"hashContexts":{'min': depth0,'type': depth0,'class': depth0,'value': depth0},"types":[],"contexts":[],"data":data}))));
-    data.buffer.push("</td>\n                <td>");
-    stack1 = helpers._triageMustache.call(depth0, "width", {"name":"_triageMustache","hash":{},"hashTypes":{},"hashContexts":{},"types":["ID"],"contexts":[depth0],"data":data});
-    if (stack1 != null) { data.buffer.push(stack1); }
-    data.buffer.push("</td>\n                <td>");
-    stack1 = helpers._triageMustache.call(depth0, "savedWidth", {"name":"_triageMustache","hash":{},"hashTypes":{},"hashContexts":{},"types":["ID"],"contexts":[depth0],"data":data});
-    if (stack1 != null) { data.buffer.push(stack1); }
-    data.buffer.push("</td>\n              </tr>\n");
-    return buffer;
-  },"3":function(depth0,helpers,partials,data) {
-    var helperMissing=helpers.helperMissing, escapeExpression=this.escapeExpression, buffer = '';
-    data.buffer.push("          <div class=\"ember-table-example-container-small\">\n            ");
-    data.buffer.push(escapeExpression(((helpers['configurable-table'] || (depth0 && depth0['configurable-table']) || helperMissing).call(depth0, {"name":"configurable-table","hash":{
-      'parentWidth': ("demoTableWidth"),
-      'content': ("content"),
-      'columns': ("columns"),
-      'columnMode': ("columnMode"),
-      'hasFooter': (false)
-    },"hashTypes":{'parentWidth': "ID",'content': "ID",'columns': "ID",'columnMode': "ID",'hasFooter': "BOOLEAN"},"hashContexts":{'parentWidth': depth0,'content': depth0,'columns': depth0,'columnMode': depth0,'hasFooter': depth0},"types":[],"contexts":[],"data":data}))));
-    data.buffer.push("\n          </div>\n");
-    return buffer;
-  },"5":function(depth0,helpers,partials,data) {
-    data.buffer.push("\n  columnMode=\"fluid\"");
-    },"7":function(depth0,helpers,partials,data) {
-    var stack1, buffer = '';
-    data.buffer.push("\n");
-    stack1 = helpers._triageMustache.call(depth0, "columnDefinitionDocumentation", {"name":"_triageMustache","hash":{},"hashTypes":{},"hashContexts":{},"types":["ID"],"contexts":[depth0],"data":data});
-    if (stack1 != null) { data.buffer.push(stack1); }
-    return buffer;
-  },"compiler":[6,">= 2.0.0-beta.1"],"main":function(depth0,helpers,partials,data) {
-    var stack1, helperMissing=helpers.helperMissing, escapeExpression=this.escapeExpression, buffer = '';
-    data.buffer.push("<div class=\"col-md-10 col-md-offset-2 left-border main-content-container\">\n  <h1>Ember Table <small>Configurable Column Demo</small></h1>\n\n  <p>Ember Table's column settings give you a lot of fine-grained control over\n  reordering and resizing behavior. Use this demo to play with the options and\n  find what works for your use!</p>\n\n  <p>You can drag the right border of the table container to see how the table\n  should respond to width changes. The refresh button is useful to see how the\n  table would be initialized given the settings you've selected.</p>\n\n  <p>When you're done configuring, check out the code below - it's updated live\n  with the settings you selected.</p>\n\n  <div class=\"row\">\n    <div class=\"col-md-12\">\n      <div class=\"configuration-container\">\n        <div class=\"title-text\">Configure Demo</div>\n        <table class=\"table table-bordered table-condensed\">\n          <tbody>\n            <tr>\n              <th>Column</th>\n              <th class=\"checkbox-column\">Reorder</th>\n              <th class=\"checkbox-column\">Resize</th>\n              <th class=\"checkbox-column\">Auto-Resize</th>\n              <th class=\"width-column\">Min Width</th>\n              <th class=\"width-column\">Max Width</th>\n              <th class=\"width-column\">Actual Width</th>\n              <th class=\"width-column\">Saved Width</th>\n            </tr>\n");
-    stack1 = helpers.each.call(depth0, "columns", {"name":"each","hash":{},"hashTypes":{},"hashContexts":{},"fn":this.program(1, data),"inverse":this.noop,"types":["ID"],"contexts":[depth0],"data":data});
-    if (stack1 != null) { data.buffer.push(stack1); }
-    data.buffer.push("          </tbody>\n        </table>\n        <div class=\"table-options-footer\">\n          <div class=\"fluid-mode-text\">Fluid Mode</div>\n          ");
-    data.buffer.push(escapeExpression(((helpers.input || (depth0 && depth0.input) || helperMissing).call(depth0, {"name":"input","hash":{
-      'checked': ("isFluid"),
-      'type': ("checkbox"),
-      'class': ("checkbox-input")
-    },"hashTypes":{'checked': "ID",'type': "STRING",'class': "STRING"},"hashContexts":{'checked': depth0,'type': depth0,'class': depth0},"types":[],"contexts":[],"data":data}))));
-    data.buffer.push("\n          <button class=\"addepar-btn-primary refresh-btn\" ");
-    data.buffer.push(escapeExpression(helpers.action.call(depth0, "refreshTable", {"name":"action","hash":{},"hashTypes":{},"hashContexts":{},"types":["STRING"],"contexts":[depth0],"data":data})));
-    data.buffer.push(">Refresh Table</button>\n        </div>\n      </div>\n    </div>\n  </div>\n\n  <div class=\"row\">\n    <div class=\"col-md-12\">\n      <div class=\"example-container js-resizable-container\">\n");
-    stack1 = helpers['if'].call(depth0, "showTable", {"name":"if","hash":{},"hashTypes":{},"hashContexts":{},"fn":this.program(3, data),"inverse":this.noop,"types":["ID"],"contexts":[depth0],"data":data});
-    if (stack1 != null) { data.buffer.push(stack1); }
-    data.buffer.push("      </div>\n    </div>\n\n    <div class=\"col-md-12 bumper-30\">\n      <h3>Template</h3>\n      <div class=\"highlight\">\n<pre class=\"prettyprint lang-html\">&#123;&#123;table-component\n  hasFooter=false\n  columns=tableColumns\n  content=tableContent");
-    stack1 = helpers['if'].call(depth0, "isFluid", {"name":"if","hash":{},"hashTypes":{},"hashContexts":{},"fn":this.program(5, data),"inverse":this.noop,"types":["ID"],"contexts":[depth0],"data":data});
-    if (stack1 != null) { data.buffer.push(stack1); }
-    data.buffer.push("\n&#125;&#125;</pre>\n      </div>\n    </div>\n\n    <div class=\"col-md-12 bumper-30\">\n      <h3>Controller</h3>\n      <div class=\"highlight\">\n<pre class=\"lang-js\">\nimport Ember from 'ember';\nimport ColumnDefinition from 'ember-table/models/column-definition';\n\nexport default Ember.Controller.extend({\n  tableColumns: Ember.computed(function() { ");
-    stack1 = helpers.each.call(depth0, "columns", {"name":"each","hash":{},"hashTypes":{},"hashContexts":{},"fn":this.program(7, data),"inverse":this.noop,"types":["ID"],"contexts":[depth0],"data":data});
-    if (stack1 != null) { data.buffer.push(stack1); }
-    data.buffer.push("\n    return [dateColumn, openColumn, highColumn, lowColumn, closeColumn];\n  }),\n\n  tableContent: Ember.computed(function() {\n    var content = [];\n    var date;\n    for (var i = 0; i < 100; i++) {\n      date = new Date();\n      date.setDate(date.getDate() + i);\n      content.pushObject({\n        date: date,\n        open: Math.random() * 100 - 50,\n        high: Math.random() * 100 - 50,\n        low: Math.random() * 100 - 50,\n        close: Math.random() * 100 - 50,\n        volume: Math.random() * 1000000\n      });\n    }\n    return content;\n  })\n});</pre>\n      </div>\n    </div>\n  </div>\n</div>\n");
-    return buffer;
-  },"useData":true});
+  exports['default'] = Ember.HTMLBars.template((function() {
+    var child0 = (function() {
+      return {
+        isHTMLBars: true,
+        blockParams: 0,
+        cachedFragment: null,
+        hasRendered: false,
+        build: function build(dom) {
+          var el0 = dom.createDocumentFragment();
+          var el1 = dom.createTextNode("              ");
+          dom.appendChild(el0, el1);
+          var el1 = dom.createElement("tr");
+          var el2 = dom.createTextNode("\n                ");
+          dom.appendChild(el1, el2);
+          var el2 = dom.createElement("td");
+          dom.appendChild(el1, el2);
+          var el2 = dom.createTextNode("\n                ");
+          dom.appendChild(el1, el2);
+          var el2 = dom.createElement("td");
+          dom.setAttribute(el2,"class","checkbox-cell");
+          dom.appendChild(el1, el2);
+          var el2 = dom.createTextNode("\n                ");
+          dom.appendChild(el1, el2);
+          var el2 = dom.createElement("td");
+          dom.setAttribute(el2,"class","checkbox-cell");
+          dom.appendChild(el1, el2);
+          var el2 = dom.createTextNode("\n                ");
+          dom.appendChild(el1, el2);
+          var el2 = dom.createElement("td");
+          dom.setAttribute(el2,"class","checkbox-cell");
+          dom.appendChild(el1, el2);
+          var el2 = dom.createTextNode("\n                ");
+          dom.appendChild(el1, el2);
+          var el2 = dom.createElement("td");
+          dom.appendChild(el1, el2);
+          var el2 = dom.createTextNode("\n                ");
+          dom.appendChild(el1, el2);
+          var el2 = dom.createElement("td");
+          dom.appendChild(el1, el2);
+          var el2 = dom.createTextNode("\n                ");
+          dom.appendChild(el1, el2);
+          var el2 = dom.createElement("td");
+          dom.appendChild(el1, el2);
+          var el2 = dom.createTextNode("\n                ");
+          dom.appendChild(el1, el2);
+          var el2 = dom.createElement("td");
+          dom.appendChild(el1, el2);
+          var el2 = dom.createTextNode("\n              ");
+          dom.appendChild(el1, el2);
+          dom.appendChild(el0, el1);
+          var el1 = dom.createTextNode("\n");
+          dom.appendChild(el0, el1);
+          return el0;
+        },
+        render: function render(context, env, contextualElement) {
+          var dom = env.dom;
+          var hooks = env.hooks, content = hooks.content, get = hooks.get, inline = hooks.inline, element = hooks.element;
+          dom.detectNamespace(contextualElement);
+          var fragment;
+          if (env.useFragmentCache && dom.canClone) {
+            if (this.cachedFragment === null) {
+              fragment = this.build(dom);
+              if (this.hasRendered) {
+                this.cachedFragment = fragment;
+              } else {
+                this.hasRendered = true;
+              }
+            }
+            if (this.cachedFragment) {
+              fragment = dom.cloneNode(this.cachedFragment, true);
+            }
+          } else {
+            fragment = this.build(dom);
+          }
+          var element0 = dom.childAt(fragment, [1]);
+          var element1 = dom.childAt(element0, [9]);
+          var element2 = dom.childAt(element0, [11]);
+          var morph0 = dom.createMorphAt(dom.childAt(element0, [1]),-1,-1);
+          var morph1 = dom.createMorphAt(dom.childAt(element0, [3]),-1,-1);
+          var morph2 = dom.createMorphAt(dom.childAt(element0, [5]),-1,-1);
+          var morph3 = dom.createMorphAt(dom.childAt(element0, [7]),-1,-1);
+          var morph4 = dom.createMorphAt(element1,-1,-1);
+          var morph5 = dom.createMorphAt(element2,-1,-1);
+          var morph6 = dom.createMorphAt(dom.childAt(element0, [13]),-1,-1);
+          var morph7 = dom.createMorphAt(dom.childAt(element0, [15]),-1,-1);
+          content(env, morph0, context, "headerCellName");
+          inline(env, morph1, context, "input", [], {"class": "checkbox-input", "type": "checkbox", "checked": get(env, context, "isSortable")});
+          inline(env, morph2, context, "input", [], {"class": "checkbox-input", "type": "checkbox", "checked": get(env, context, "isResizable")});
+          inline(env, morph3, context, "input", [], {"class": "checkbox-input", "type": "checkbox", "checked": get(env, context, "canAutoResize")});
+          element(env, element1, context, "bind-attr", [], {"class": "atMinWidth:at-limit"});
+          inline(env, morph4, context, "input", [], {"value": get(env, context, "minWidthValue"), "class": "text-input", "type": "number", "min": "1"});
+          element(env, element2, context, "bind-attr", [], {"class": "atMaxWidth:at-limit"});
+          inline(env, morph5, context, "input", [], {"value": get(env, context, "maxWidthValue"), "class": "text-input", "type": "number", "min": "1"});
+          content(env, morph6, context, "width");
+          content(env, morph7, context, "savedWidth");
+          return fragment;
+        }
+      };
+    }());
+    var child1 = (function() {
+      return {
+        isHTMLBars: true,
+        blockParams: 0,
+        cachedFragment: null,
+        hasRendered: false,
+        build: function build(dom) {
+          var el0 = dom.createDocumentFragment();
+          var el1 = dom.createTextNode("          ");
+          dom.appendChild(el0, el1);
+          var el1 = dom.createElement("div");
+          dom.setAttribute(el1,"class","ember-table-example-container-small");
+          var el2 = dom.createTextNode("\n            ");
+          dom.appendChild(el1, el2);
+          var el2 = dom.createTextNode("\n          ");
+          dom.appendChild(el1, el2);
+          dom.appendChild(el0, el1);
+          var el1 = dom.createTextNode("\n");
+          dom.appendChild(el0, el1);
+          return el0;
+        },
+        render: function render(context, env, contextualElement) {
+          var dom = env.dom;
+          var hooks = env.hooks, get = hooks.get, inline = hooks.inline;
+          dom.detectNamespace(contextualElement);
+          var fragment;
+          if (env.useFragmentCache && dom.canClone) {
+            if (this.cachedFragment === null) {
+              fragment = this.build(dom);
+              if (this.hasRendered) {
+                this.cachedFragment = fragment;
+              } else {
+                this.hasRendered = true;
+              }
+            }
+            if (this.cachedFragment) {
+              fragment = dom.cloneNode(this.cachedFragment, true);
+            }
+          } else {
+            fragment = this.build(dom);
+          }
+          var morph0 = dom.createMorphAt(dom.childAt(fragment, [1]),0,1);
+          inline(env, morph0, context, "configurable-table", [], {"hasFooter": false, "columnMode": get(env, context, "columnMode"), "columns": get(env, context, "columns"), "content": get(env, context, "content"), "parentWidth": get(env, context, "demoTableWidth")});
+          return fragment;
+        }
+      };
+    }());
+    var child2 = (function() {
+      return {
+        isHTMLBars: true,
+        blockParams: 0,
+        cachedFragment: null,
+        hasRendered: false,
+        build: function build(dom) {
+          var el0 = dom.createTextNode("\n  columnMode=\"fluid\"");
+          return el0;
+        },
+        render: function render(context, env, contextualElement) {
+          var dom = env.dom;
+          dom.detectNamespace(contextualElement);
+          var fragment;
+          if (env.useFragmentCache && dom.canClone) {
+            if (this.cachedFragment === null) {
+              fragment = this.build(dom);
+              if (this.hasRendered) {
+                this.cachedFragment = fragment;
+              } else {
+                this.hasRendered = true;
+              }
+            }
+            if (this.cachedFragment) {
+              fragment = dom.cloneNode(this.cachedFragment, true);
+            }
+          } else {
+            fragment = this.build(dom);
+          }
+          return fragment;
+        }
+      };
+    }());
+    var child3 = (function() {
+      return {
+        isHTMLBars: true,
+        blockParams: 0,
+        cachedFragment: null,
+        hasRendered: false,
+        build: function build(dom) {
+          var el0 = dom.createDocumentFragment();
+          var el1 = dom.createTextNode("\n");
+          dom.appendChild(el0, el1);
+          var el1 = dom.createTextNode("");
+          dom.appendChild(el0, el1);
+          return el0;
+        },
+        render: function render(context, env, contextualElement) {
+          var dom = env.dom;
+          var hooks = env.hooks, content = hooks.content;
+          dom.detectNamespace(contextualElement);
+          var fragment;
+          if (env.useFragmentCache && dom.canClone) {
+            if (this.cachedFragment === null) {
+              fragment = this.build(dom);
+              if (this.hasRendered) {
+                this.cachedFragment = fragment;
+              } else {
+                this.hasRendered = true;
+              }
+            }
+            if (this.cachedFragment) {
+              fragment = dom.cloneNode(this.cachedFragment, true);
+            }
+          } else {
+            fragment = this.build(dom);
+          }
+          if (this.cachedFragment) { dom.repairClonedNode(fragment,[1]); }
+          var morph0 = dom.createMorphAt(fragment,0,1,contextualElement);
+          content(env, morph0, context, "columnDefinitionDocumentation");
+          return fragment;
+        }
+      };
+    }());
+    return {
+      isHTMLBars: true,
+      blockParams: 0,
+      cachedFragment: null,
+      hasRendered: false,
+      build: function build(dom) {
+        var el0 = dom.createDocumentFragment();
+        var el1 = dom.createElement("div");
+        dom.setAttribute(el1,"class","col-md-10 col-md-offset-2 left-border main-content-container");
+        var el2 = dom.createTextNode("\n  ");
+        dom.appendChild(el1, el2);
+        var el2 = dom.createElement("h1");
+        var el3 = dom.createTextNode("Ember Table ");
+        dom.appendChild(el2, el3);
+        var el3 = dom.createElement("small");
+        var el4 = dom.createTextNode("Configurable Column Demo");
+        dom.appendChild(el3, el4);
+        dom.appendChild(el2, el3);
+        dom.appendChild(el1, el2);
+        var el2 = dom.createTextNode("\n\n  ");
+        dom.appendChild(el1, el2);
+        var el2 = dom.createElement("p");
+        var el3 = dom.createTextNode("Ember Table's column settings give you a lot of fine-grained control over\n  reordering and resizing behavior. Use this demo to play with the options and\n  find what works for your use!");
+        dom.appendChild(el2, el3);
+        dom.appendChild(el1, el2);
+        var el2 = dom.createTextNode("\n\n  ");
+        dom.appendChild(el1, el2);
+        var el2 = dom.createElement("p");
+        var el3 = dom.createTextNode("You can drag the right border of the table container to see how the table\n  should respond to width changes. The refresh button is useful to see how the\n  table would be initialized given the settings you've selected.");
+        dom.appendChild(el2, el3);
+        dom.appendChild(el1, el2);
+        var el2 = dom.createTextNode("\n\n  ");
+        dom.appendChild(el1, el2);
+        var el2 = dom.createElement("p");
+        var el3 = dom.createTextNode("When you're done configuring, check out the code below - it's updated live\n  with the settings you selected.");
+        dom.appendChild(el2, el3);
+        dom.appendChild(el1, el2);
+        var el2 = dom.createTextNode("\n\n  ");
+        dom.appendChild(el1, el2);
+        var el2 = dom.createElement("div");
+        dom.setAttribute(el2,"class","row");
+        var el3 = dom.createTextNode("\n    ");
+        dom.appendChild(el2, el3);
+        var el3 = dom.createElement("div");
+        dom.setAttribute(el3,"class","col-md-12");
+        var el4 = dom.createTextNode("\n      ");
+        dom.appendChild(el3, el4);
+        var el4 = dom.createElement("div");
+        dom.setAttribute(el4,"class","configuration-container");
+        var el5 = dom.createTextNode("\n        ");
+        dom.appendChild(el4, el5);
+        var el5 = dom.createElement("div");
+        dom.setAttribute(el5,"class","title-text");
+        var el6 = dom.createTextNode("Configure Demo");
+        dom.appendChild(el5, el6);
+        dom.appendChild(el4, el5);
+        var el5 = dom.createTextNode("\n        ");
+        dom.appendChild(el4, el5);
+        var el5 = dom.createElement("table");
+        dom.setAttribute(el5,"class","table table-bordered table-condensed");
+        var el6 = dom.createTextNode("\n          ");
+        dom.appendChild(el5, el6);
+        var el6 = dom.createElement("tbody");
+        var el7 = dom.createTextNode("\n            ");
+        dom.appendChild(el6, el7);
+        var el7 = dom.createElement("tr");
+        var el8 = dom.createTextNode("\n              ");
+        dom.appendChild(el7, el8);
+        var el8 = dom.createElement("th");
+        var el9 = dom.createTextNode("Column");
+        dom.appendChild(el8, el9);
+        dom.appendChild(el7, el8);
+        var el8 = dom.createTextNode("\n              ");
+        dom.appendChild(el7, el8);
+        var el8 = dom.createElement("th");
+        dom.setAttribute(el8,"class","checkbox-column");
+        var el9 = dom.createTextNode("Reorder");
+        dom.appendChild(el8, el9);
+        dom.appendChild(el7, el8);
+        var el8 = dom.createTextNode("\n              ");
+        dom.appendChild(el7, el8);
+        var el8 = dom.createElement("th");
+        dom.setAttribute(el8,"class","checkbox-column");
+        var el9 = dom.createTextNode("Resize");
+        dom.appendChild(el8, el9);
+        dom.appendChild(el7, el8);
+        var el8 = dom.createTextNode("\n              ");
+        dom.appendChild(el7, el8);
+        var el8 = dom.createElement("th");
+        dom.setAttribute(el8,"class","checkbox-column");
+        var el9 = dom.createTextNode("Auto-Resize");
+        dom.appendChild(el8, el9);
+        dom.appendChild(el7, el8);
+        var el8 = dom.createTextNode("\n              ");
+        dom.appendChild(el7, el8);
+        var el8 = dom.createElement("th");
+        dom.setAttribute(el8,"class","width-column");
+        var el9 = dom.createTextNode("Min Width");
+        dom.appendChild(el8, el9);
+        dom.appendChild(el7, el8);
+        var el8 = dom.createTextNode("\n              ");
+        dom.appendChild(el7, el8);
+        var el8 = dom.createElement("th");
+        dom.setAttribute(el8,"class","width-column");
+        var el9 = dom.createTextNode("Max Width");
+        dom.appendChild(el8, el9);
+        dom.appendChild(el7, el8);
+        var el8 = dom.createTextNode("\n              ");
+        dom.appendChild(el7, el8);
+        var el8 = dom.createElement("th");
+        dom.setAttribute(el8,"class","width-column");
+        var el9 = dom.createTextNode("Actual Width");
+        dom.appendChild(el8, el9);
+        dom.appendChild(el7, el8);
+        var el8 = dom.createTextNode("\n              ");
+        dom.appendChild(el7, el8);
+        var el8 = dom.createElement("th");
+        dom.setAttribute(el8,"class","width-column");
+        var el9 = dom.createTextNode("Saved Width");
+        dom.appendChild(el8, el9);
+        dom.appendChild(el7, el8);
+        var el8 = dom.createTextNode("\n            ");
+        dom.appendChild(el7, el8);
+        dom.appendChild(el6, el7);
+        var el7 = dom.createTextNode("\n");
+        dom.appendChild(el6, el7);
+        var el7 = dom.createTextNode("          ");
+        dom.appendChild(el6, el7);
+        dom.appendChild(el5, el6);
+        var el6 = dom.createTextNode("\n        ");
+        dom.appendChild(el5, el6);
+        dom.appendChild(el4, el5);
+        var el5 = dom.createTextNode("\n        ");
+        dom.appendChild(el4, el5);
+        var el5 = dom.createElement("div");
+        dom.setAttribute(el5,"class","table-options-footer");
+        var el6 = dom.createTextNode("\n          ");
+        dom.appendChild(el5, el6);
+        var el6 = dom.createElement("div");
+        dom.setAttribute(el6,"class","fluid-mode-text");
+        var el7 = dom.createTextNode("Fluid Mode");
+        dom.appendChild(el6, el7);
+        dom.appendChild(el5, el6);
+        var el6 = dom.createTextNode("\n          ");
+        dom.appendChild(el5, el6);
+        var el6 = dom.createTextNode("\n          ");
+        dom.appendChild(el5, el6);
+        var el6 = dom.createElement("button");
+        dom.setAttribute(el6,"class","addepar-btn-primary refresh-btn");
+        var el7 = dom.createTextNode("Refresh Table");
+        dom.appendChild(el6, el7);
+        dom.appendChild(el5, el6);
+        var el6 = dom.createTextNode("\n        ");
+        dom.appendChild(el5, el6);
+        dom.appendChild(el4, el5);
+        var el5 = dom.createTextNode("\n      ");
+        dom.appendChild(el4, el5);
+        dom.appendChild(el3, el4);
+        var el4 = dom.createTextNode("\n    ");
+        dom.appendChild(el3, el4);
+        dom.appendChild(el2, el3);
+        var el3 = dom.createTextNode("\n  ");
+        dom.appendChild(el2, el3);
+        dom.appendChild(el1, el2);
+        var el2 = dom.createTextNode("\n\n  ");
+        dom.appendChild(el1, el2);
+        var el2 = dom.createElement("div");
+        dom.setAttribute(el2,"class","row");
+        var el3 = dom.createTextNode("\n    ");
+        dom.appendChild(el2, el3);
+        var el3 = dom.createElement("div");
+        dom.setAttribute(el3,"class","col-md-12");
+        var el4 = dom.createTextNode("\n      ");
+        dom.appendChild(el3, el4);
+        var el4 = dom.createElement("div");
+        dom.setAttribute(el4,"class","example-container js-resizable-container");
+        var el5 = dom.createTextNode("\n");
+        dom.appendChild(el4, el5);
+        var el5 = dom.createTextNode("      ");
+        dom.appendChild(el4, el5);
+        dom.appendChild(el3, el4);
+        var el4 = dom.createTextNode("\n    ");
+        dom.appendChild(el3, el4);
+        dom.appendChild(el2, el3);
+        var el3 = dom.createTextNode("\n\n    ");
+        dom.appendChild(el2, el3);
+        var el3 = dom.createElement("div");
+        dom.setAttribute(el3,"class","col-md-12 bumper-30");
+        var el4 = dom.createTextNode("\n      ");
+        dom.appendChild(el3, el4);
+        var el4 = dom.createElement("h3");
+        var el5 = dom.createTextNode("Template");
+        dom.appendChild(el4, el5);
+        dom.appendChild(el3, el4);
+        var el4 = dom.createTextNode("\n      ");
+        dom.appendChild(el3, el4);
+        var el4 = dom.createElement("div");
+        dom.setAttribute(el4,"class","highlight");
+        var el5 = dom.createTextNode("\n");
+        dom.appendChild(el4, el5);
+        var el5 = dom.createElement("pre");
+        dom.setAttribute(el5,"class","prettyprint lang-html");
+        var el6 = dom.createTextNode("{{table-component\n  hasFooter=false\n  columns=tableColumns\n  content=tableContent");
+        dom.appendChild(el5, el6);
+        var el6 = dom.createTextNode("\n}}");
+        dom.appendChild(el5, el6);
+        dom.appendChild(el4, el5);
+        var el5 = dom.createTextNode("\n      ");
+        dom.appendChild(el4, el5);
+        dom.appendChild(el3, el4);
+        var el4 = dom.createTextNode("\n    ");
+        dom.appendChild(el3, el4);
+        dom.appendChild(el2, el3);
+        var el3 = dom.createTextNode("\n\n    ");
+        dom.appendChild(el2, el3);
+        var el3 = dom.createElement("div");
+        dom.setAttribute(el3,"class","col-md-12 bumper-30");
+        var el4 = dom.createTextNode("\n      ");
+        dom.appendChild(el3, el4);
+        var el4 = dom.createElement("h3");
+        var el5 = dom.createTextNode("Controller");
+        dom.appendChild(el4, el5);
+        dom.appendChild(el3, el4);
+        var el4 = dom.createTextNode("\n      ");
+        dom.appendChild(el3, el4);
+        var el4 = dom.createElement("div");
+        dom.setAttribute(el4,"class","highlight");
+        var el5 = dom.createTextNode("\n");
+        dom.appendChild(el4, el5);
+        var el5 = dom.createElement("pre");
+        dom.setAttribute(el5,"class","lang-js");
+        var el6 = dom.createTextNode("\nimport Ember from 'ember';\nimport ColumnDefinition from 'ember-table/models/column-definition';\n\nexport default Ember.Controller.extend({\n  tableColumns: Ember.computed(function() { ");
+        dom.appendChild(el5, el6);
+        var el6 = dom.createTextNode("\n    return [dateColumn, openColumn, highColumn, lowColumn, closeColumn];\n  }),\n\n  tableContent: Ember.computed(function() {\n    var content = [];\n    var date;\n    for (var i = 0; i < 100; i++) {\n      date = new Date();\n      date.setDate(date.getDate() + i);\n      content.pushObject({\n        date: date,\n        open: Math.random() * 100 - 50,\n        high: Math.random() * 100 - 50,\n        low: Math.random() * 100 - 50,\n        close: Math.random() * 100 - 50,\n        volume: Math.random() * 1000000\n      });\n    }\n    return content;\n  })\n});");
+        dom.appendChild(el5, el6);
+        dom.appendChild(el4, el5);
+        var el5 = dom.createTextNode("\n      ");
+        dom.appendChild(el4, el5);
+        dom.appendChild(el3, el4);
+        var el4 = dom.createTextNode("\n    ");
+        dom.appendChild(el3, el4);
+        dom.appendChild(el2, el3);
+        var el3 = dom.createTextNode("\n  ");
+        dom.appendChild(el2, el3);
+        dom.appendChild(el1, el2);
+        var el2 = dom.createTextNode("\n");
+        dom.appendChild(el1, el2);
+        dom.appendChild(el0, el1);
+        var el1 = dom.createTextNode("\n");
+        dom.appendChild(el0, el1);
+        return el0;
+      },
+      render: function render(context, env, contextualElement) {
+        var dom = env.dom;
+        var hooks = env.hooks, get = hooks.get, block = hooks.block, inline = hooks.inline, element = hooks.element;
+        dom.detectNamespace(contextualElement);
+        var fragment;
+        if (env.useFragmentCache && dom.canClone) {
+          if (this.cachedFragment === null) {
+            fragment = this.build(dom);
+            if (this.hasRendered) {
+              this.cachedFragment = fragment;
+            } else {
+              this.hasRendered = true;
+            }
+          }
+          if (this.cachedFragment) {
+            fragment = dom.cloneNode(this.cachedFragment, true);
+          }
+        } else {
+          fragment = this.build(dom);
+        }
+        var element3 = dom.childAt(fragment, [0]);
+        var element4 = dom.childAt(element3, [9, 1, 1]);
+        var element5 = dom.childAt(element4, [5]);
+        var element6 = dom.childAt(element5, [4]);
+        var element7 = dom.childAt(element3, [11]);
+        var morph0 = dom.createMorphAt(dom.childAt(element4, [3, 1]),2,3);
+        var morph1 = dom.createMorphAt(element5,2,3);
+        var morph2 = dom.createMorphAt(dom.childAt(element7, [1, 1]),0,1);
+        var morph3 = dom.createMorphAt(dom.childAt(element7, [3, 3, 1]),0,1);
+        var morph4 = dom.createMorphAt(dom.childAt(element7, [5, 3, 1]),0,1);
+        block(env, morph0, context, "each", [get(env, context, "columns")], {}, child0, null);
+        inline(env, morph1, context, "input", [], {"class": "checkbox-input", "type": "checkbox", "checked": get(env, context, "isFluid")});
+        element(env, element6, context, "action", ["refreshTable"], {});
+        block(env, morph2, context, "if", [get(env, context, "showTable")], {}, child1, null);
+        block(env, morph3, context, "if", [get(env, context, "isFluid")], {}, child2, null);
+        block(env, morph4, context, "each", [get(env, context, "columns")], {}, child3, null);
+        return fragment;
+      }
+    };
+  }()));
 
 });
 define('dummy/templates/documentation', ['exports'], function (exports) {
 
   'use strict';
 
-  exports['default'] = Ember.Handlebars.template({"1":function(depth0,helpers,partials,data) {
-    data.buffer.push("configurable column\n          demo.");
-    },"compiler":[6,">= 2.0.0-beta.1"],"main":function(depth0,helpers,partials,data) {
-    var stack1, helperMissing=helpers.helperMissing, buffer = '';
-    data.buffer.push("<div class=\"col-md-10 col-md-offset-2 left-border main-content-container\">\n  <h1>API &amp; Documentation</h1>\n  <h2>Ember.Table.TableComponent Options</h2>\n\n  <table class=\"table ember-table-options\">\n    <tr>\n      <th style=\"min-width: 200px;\">Option</th>\n      <th style=\"min-width: 150px;\">Default</th>\n      <th>Description</th>\n    </tr>\n    <tr>\n      <td>content <b>(required)</b></td>\n      <td>[]</td>\n      <td>\n        <p>\n          An array of row objects, or a promise that resolves to an array \n          of row objects (so compatible with ember-data). \n          Usually each row is a hash where the keys are column\n          names and the values are the rows's values. However, could be any\n          object, since each column can define a function to return the column\n          value given the row object. See\n          <code>Ember.Table.ColumnDefinition.getCellContent</code>.\n        </p>\n      </td>\n    </tr>\n    <tr>\n      <td>columns <b>(required)</b></td>\n      <td>null</td>\n      <td>\n        <p>\n          An array of column definitions: see\n          <code>Ember.Table.ColumnDefinition</code>.  Allows each column to\n          have its own configuration.\n        </p>\n      </td>\n    </tr>\n    <tr>\n      <td>numFixedColumns</td>\n      <td>0</td>\n      <td>\n        <p>\n          The number of fixed columns on the left side of the table. Fixed\n          columns are always visible, even when the table is scrolled\n          horizontally.\n        </p>\n      </td>\n    </tr>\n    <tr>\n      <td>numFooterRow</td>\n      <td>0</td>\n      <td>\n        <p>\n          The number of footer rows in the table. Footer rows appear at the\n          bottom of the table and are always visible.\n        </p>\n      </td>\n    </tr>\n    <tr>\n      <td>rowHeight</td>\n      <td>30</td>\n      <td>\n        <p>\n          The row height in pixels. A consistent row height is necessary to\n          calculate which rows are being shown, to enable lazy rendering.\n        </p>\n      </td>\n    </tr>\n    <tr>\n      <td>minHeaderHeight</td>\n      <td>30</td>\n      <td>\n        <p>\n          The minimum header height in pixels. Headers will grow in height if\n          given more content than they can display.\n        </p>\n      </td>\n    </tr>\n    <tr>\n      <td>footerHeight</td>\n      <td>30</td>\n      <td><p>The footer height in pixels.</p></td>\n    </tr>\n    <tr>\n      <td>hasHeader</td>\n      <td>true</td>\n      <td><p>Enables or disables the header block.</p></td>\n    </tr>\n    <tr>\n      <td>hasFooter</td>\n      <td>true</td>\n      <td><p>Enables or disables the footer block.</p></td>\n    </tr>\n    <tr>\n      <td>enableColumnReorder</td>\n      <td>true</td>\n      <td>\n        <p>\n          Allow the columns to be rearranged by drag-and-drop. Only columns\n          with <code>isSortable=true</code> (the default setting) will be\n          affected.\n        </p>\n      </td>\n    </tr>\n    <tr>\n      <td>enableContentSelection</td>\n      <td>false</td>\n      <td><p>Allow users to select the content of table cells.</p></td>\n    </tr>\n    <tr>\n      <td>styleBindings</td>\n      <td>'height'</td>\n      <td>\n        <p>\n          Values which are bound to the table's style attr. See\n          <code>Ember.StyleBindingsMixin</code> documentation for more details.\n        </p>\n      </td>\n    </tr>\n    <tr>\n      <td>columnMode</td>\n      <td>'standard'</td>\n      <td>\n        <p>\n          Sets which column resizing behavior to use. Possible values are\n          <code>'standard'</code> (resizing a column pushes or pulls all other\n          columns) and <code>'fluid'</code> (resizing a column steals width\n          from neighboring columns). You can experiment with this behavior in\n          the ");
-    stack1 = ((helpers['link-to'] || (depth0 && depth0['link-to']) || helperMissing).call(depth0, "configurable-columns", {"name":"link-to","hash":{},"hashTypes":{},"hashContexts":{},"fn":this.program(1, data),"inverse":this.noop,"types":["STRING"],"contexts":[depth0],"data":data}));
-    if (stack1 != null) { data.buffer.push(stack1); }
-    data.buffer.push("\n        </p>\n      </td>\n    </tr>\n    <tr>\n      <td>selectionMode</td>\n      <td>'single'</td>\n      <td>\n        <p>\n          Sets which row selection behavior to follow. Possible values are\n          <code>'none'</code> (clicking on a row does nothing),\n          <code>'single'</code> (clicking on a row selects it and deselects\n          other rows), and <code>'multiple'</code> (multiple rows can be\n          selected through ctrl/cmd-click or shift-click).\n        </p>\n      </td>\n    </tr>\n    <tr>\n      <td>selection (output)</td>\n      <td>undefined</td>\n      <td>\n        <p>\n          An array of the rows currently selected. If\n          <code>selectionMode</code> is set to <code>'single'</code>, the array\n          will contain either one or zero elements.\n        </p>\n      </td>\n    </tr>\n  </table>\n\n  <h2>Ember.Table.ColumnDefinition Options</h2>\n  <table class=\"table ember-table-options\">\n    <tr>\n      <th style=\"min-width: 200px;\">Option</th>\n      <th style=\"min-width: 150px;\">Default</th>\n      <th>Description</th>\n    </tr>\n    <tr>\n      <td>headerCellName</td>\n      <td>undefined</td>\n      <td><p>Name of the column, to be displayed in the header.</p></td>\n    </tr>\n    <tr>\n      <td>contentPath</td>\n      <td>undefined</td>\n      <td>\n        <p>\n          Path of the content for this cell. If the row object is a hash of\n          keys and values to specify data for each column,\n          <code>contentPath</code> corresponds to the key. Use either this or\n          <code>getCellContent</code>.\n        </p>\n      </td>\n    </tr>\n    <tr>\n      <td>minWidth</td>\n      <td>25</td>\n      <td>\n        <p>\n          Minimum column width in pixels. Affects both manual resizing and\n          automatic resizing.\n        </p>\n      </td>\n    </tr>\n    <tr>\n      <td>maxWidth</td>\n      <td>undefined</td>\n      <td>\n        <p>\n          Maximum column width in pixels. Affects both manual resizing and\n          automatic resizing.\n        </p>\n      </td>\n    </tr>\n    <tr>\n      <td>savedWidth</td>\n      <td>150</td>\n      <td>\n        <p>\n          The initial column width in pixels. Updated whenever the column (not\n          window) is resized. Can be persisted.\n        </p>\n      </td>\n    </tr>\n    <tr>\n      <td>isResizable</td>\n      <td>true</td>\n      <td><p>Whether the column can be manually resized.</p></td>\n    </tr>\n    <tr>\n      <td>isSortable</td>\n      <td>true</td>\n      <td>\n        <p>\n          Whether the column can be rearranged with other columns. Only matters\n          if the table's <code>enableColumnReorder</code> property is set to\n          true (the default).\n        </p>\n      </td>\n    </tr>\n    <tr>\n      <td>textAlign</td>\n      <td>'text-align-right'</td>\n      <td>\n        <p>\n          Alignment of the text in the cell. Possible values are\n          <code>'left'</code>, <code>'center'</code>, and <code>'right'</code>.\n        </p>\n      </td>\n    </tr>\n    <tr>\n      <td>canAutoResize</td>\n      <td>false</td>\n      <td>\n        <p>\n          Whether the column can automatically resize to fill space in the\n          table.\n        </p>\n      </td>\n    </tr>\n    <tr>\n      <td>headerCellView</td>\n      <td>'Ember.Table.HeaderCell'</td>\n      <td>\n        <p>\n          Override to use a custom view for the header cell. Specified as a\n          string.\n        </p>\n      </td>\n    </tr>\n    <tr>\n      <td>tableCellView</td>\n      <td>'Ember.Table.TableCell'</td>\n      <td>\n        <p>\n          Override to use a custom view for table cells. Specified as a string.\n        </p>\n      </td>\n    </tr>\n    <tr>\n      <td>getCellContent</td>\n      <td>(function)</td>\n      <td>\n        <p>\n          Override to customize how the column gets data from each row object.\n          Given a row, should return a formatted cell value, e.g. $20,000,000.\n          Use either this or <code>contentPath</code>.\n        </p>\n      </td>\n    </tr>\n    <tr>\n      <td>setCellContent</td>\n      <td>Ember.K</td>\n      <td>\n        <p>\n          Override to maintain a consistent path to update cell values.\n          Recommended to make this a function which takes (row, value) and\n          updates the row value.\n        </p>\n      </td>\n    </tr>\n  </table>\n\n  <h2>Ember.Table.TableCell Options</h2>\n  <table class=\"table ember-table-options\">\n    <tr>\n      <th style=\"min-width: 200px;\">Option</th>\n      <th style=\"min-width: 150px;\">Default</th>\n      <th>Description</th>\n    </tr>\n    <tr>\n      <td>templateName</td>\n      <td>'table-cell'</td>\n      <td>\n        <p>The name of the template to be rendered into the cell.\n        Used for rendering custom templates.\n        </p>\n      </td>\n    </tr>\n    <tr>\n      <td>classNames</td>\n      <td>['ember-table-cell']</td>\n      <td><p>The class names applied to the cell. Override to give\n        the cell custom styling (border, background color, etc).</p></td>\n    </tr>\n    <tr>\n      <td>classNameBindings</td>\n      <td>'column.textAlign'</td>\n      <td><p>A binding used to dynamically associate class names\n        with this table cell. E.g. you can bind to a column property\n        to have cell colors or styles vary across columns.</p></td>\n    </tr>\n    <tr>\n      <td>styleBindings</td>\n      <td>'width'</td>\n      <td>\n        <p>\n          Values which are bound to the cell's style attr. See\n          <code>Ember.StyleBindingsMixin</code> documentation for more details.\n        </p>\n      </td>\n    </tr>\n  </table>\n\n  <h2>Ember.Table.HeaderCell Options</h2>\n  <table class=\"table ember-table-options\">\n    <tr>\n      <th style=\"min-width: 200px;\">Option</th>\n      <th style=\"min-width: 150px;\">Default</th>\n      <th>Description</th>\n    </tr>\n    <tr>\n      <td>templateName</td>\n      <td>'header-cell'</td>\n      <td><p>See description in <code>Ember.Table.TableCell</code>.</p></td>\n    </tr>\n    <tr>\n      <td>classNames</td>\n      <td>['ember-table-cell', 'ember-table-header-cell']</td>\n      <td><p>See description in <code>Ember.Table.TableCell</code>.</p></td>\n    </tr>\n    <tr>\n      <td>classNameBindings</td>\n      <td>['column.isSortable:sortable', 'column.textAlign']</td>\n      <td><p>See description in <code>Ember.Table.TableCell</code>.</p></td>\n    </tr>\n    <tr>\n      <td>styleBindings</td>\n      <td>['width', 'height']</td>\n      <td><p>See description in <code>Ember.Table.TableCell</code>.</p></td>\n    </tr>\n  </table>\n</div>\n");
-    return buffer;
-  },"useData":true});
+  exports['default'] = Ember.HTMLBars.template((function() {
+    var child0 = (function() {
+      return {
+        isHTMLBars: true,
+        blockParams: 0,
+        cachedFragment: null,
+        hasRendered: false,
+        build: function build(dom) {
+          var el0 = dom.createTextNode("configurable column\n          demo.");
+          return el0;
+        },
+        render: function render(context, env, contextualElement) {
+          var dom = env.dom;
+          dom.detectNamespace(contextualElement);
+          var fragment;
+          if (env.useFragmentCache && dom.canClone) {
+            if (this.cachedFragment === null) {
+              fragment = this.build(dom);
+              if (this.hasRendered) {
+                this.cachedFragment = fragment;
+              } else {
+                this.hasRendered = true;
+              }
+            }
+            if (this.cachedFragment) {
+              fragment = dom.cloneNode(this.cachedFragment, true);
+            }
+          } else {
+            fragment = this.build(dom);
+          }
+          return fragment;
+        }
+      };
+    }());
+    return {
+      isHTMLBars: true,
+      blockParams: 0,
+      cachedFragment: null,
+      hasRendered: false,
+      build: function build(dom) {
+        var el0 = dom.createDocumentFragment();
+        var el1 = dom.createElement("div");
+        dom.setAttribute(el1,"class","col-md-10 col-md-offset-2 left-border main-content-container");
+        var el2 = dom.createTextNode("\n  ");
+        dom.appendChild(el1, el2);
+        var el2 = dom.createElement("h1");
+        var el3 = dom.createTextNode("API & Documentation");
+        dom.appendChild(el2, el3);
+        dom.appendChild(el1, el2);
+        var el2 = dom.createTextNode("\n  ");
+        dom.appendChild(el1, el2);
+        var el2 = dom.createElement("h2");
+        var el3 = dom.createTextNode("Ember.Table.TableComponent Options");
+        dom.appendChild(el2, el3);
+        dom.appendChild(el1, el2);
+        var el2 = dom.createTextNode("\n\n  ");
+        dom.appendChild(el1, el2);
+        var el2 = dom.createElement("table");
+        dom.setAttribute(el2,"class","table ember-table-options");
+        var el3 = dom.createTextNode("\n    ");
+        dom.appendChild(el2, el3);
+        var el3 = dom.createElement("tr");
+        var el4 = dom.createTextNode("\n      ");
+        dom.appendChild(el3, el4);
+        var el4 = dom.createElement("th");
+        dom.setAttribute(el4,"style","min-width: 200px;");
+        var el5 = dom.createTextNode("Option");
+        dom.appendChild(el4, el5);
+        dom.appendChild(el3, el4);
+        var el4 = dom.createTextNode("\n      ");
+        dom.appendChild(el3, el4);
+        var el4 = dom.createElement("th");
+        dom.setAttribute(el4,"style","min-width: 150px;");
+        var el5 = dom.createTextNode("Default");
+        dom.appendChild(el4, el5);
+        dom.appendChild(el3, el4);
+        var el4 = dom.createTextNode("\n      ");
+        dom.appendChild(el3, el4);
+        var el4 = dom.createElement("th");
+        var el5 = dom.createTextNode("Description");
+        dom.appendChild(el4, el5);
+        dom.appendChild(el3, el4);
+        var el4 = dom.createTextNode("\n    ");
+        dom.appendChild(el3, el4);
+        dom.appendChild(el2, el3);
+        var el3 = dom.createTextNode("\n    ");
+        dom.appendChild(el2, el3);
+        var el3 = dom.createElement("tr");
+        var el4 = dom.createTextNode("\n      ");
+        dom.appendChild(el3, el4);
+        var el4 = dom.createElement("td");
+        var el5 = dom.createTextNode("content ");
+        dom.appendChild(el4, el5);
+        var el5 = dom.createElement("b");
+        var el6 = dom.createTextNode("(required)");
+        dom.appendChild(el5, el6);
+        dom.appendChild(el4, el5);
+        dom.appendChild(el3, el4);
+        var el4 = dom.createTextNode("\n      ");
+        dom.appendChild(el3, el4);
+        var el4 = dom.createElement("td");
+        var el5 = dom.createTextNode("[]");
+        dom.appendChild(el4, el5);
+        dom.appendChild(el3, el4);
+        var el4 = dom.createTextNode("\n      ");
+        dom.appendChild(el3, el4);
+        var el4 = dom.createElement("td");
+        var el5 = dom.createTextNode("\n        ");
+        dom.appendChild(el4, el5);
+        var el5 = dom.createElement("p");
+        var el6 = dom.createTextNode("\n          An array of row objects, or a promise that resolves to an array \n          of row objects (so compatible with ember-data). \n          Usually each row is a hash where the keys are column\n          names and the values are the rows's values. However, could be any\n          object, since each column can define a function to return the column\n          value given the row object. See\n          ");
+        dom.appendChild(el5, el6);
+        var el6 = dom.createElement("code");
+        var el7 = dom.createTextNode("Ember.Table.ColumnDefinition.getCellContent");
+        dom.appendChild(el6, el7);
+        dom.appendChild(el5, el6);
+        var el6 = dom.createTextNode(".\n        ");
+        dom.appendChild(el5, el6);
+        dom.appendChild(el4, el5);
+        var el5 = dom.createTextNode("\n      ");
+        dom.appendChild(el4, el5);
+        dom.appendChild(el3, el4);
+        var el4 = dom.createTextNode("\n    ");
+        dom.appendChild(el3, el4);
+        dom.appendChild(el2, el3);
+        var el3 = dom.createTextNode("\n    ");
+        dom.appendChild(el2, el3);
+        var el3 = dom.createElement("tr");
+        var el4 = dom.createTextNode("\n      ");
+        dom.appendChild(el3, el4);
+        var el4 = dom.createElement("td");
+        var el5 = dom.createTextNode("columns ");
+        dom.appendChild(el4, el5);
+        var el5 = dom.createElement("b");
+        var el6 = dom.createTextNode("(required)");
+        dom.appendChild(el5, el6);
+        dom.appendChild(el4, el5);
+        dom.appendChild(el3, el4);
+        var el4 = dom.createTextNode("\n      ");
+        dom.appendChild(el3, el4);
+        var el4 = dom.createElement("td");
+        var el5 = dom.createTextNode("null");
+        dom.appendChild(el4, el5);
+        dom.appendChild(el3, el4);
+        var el4 = dom.createTextNode("\n      ");
+        dom.appendChild(el3, el4);
+        var el4 = dom.createElement("td");
+        var el5 = dom.createTextNode("\n        ");
+        dom.appendChild(el4, el5);
+        var el5 = dom.createElement("p");
+        var el6 = dom.createTextNode("\n          An array of column definitions: see\n          ");
+        dom.appendChild(el5, el6);
+        var el6 = dom.createElement("code");
+        var el7 = dom.createTextNode("Ember.Table.ColumnDefinition");
+        dom.appendChild(el6, el7);
+        dom.appendChild(el5, el6);
+        var el6 = dom.createTextNode(".  Allows each column to\n          have its own configuration.\n        ");
+        dom.appendChild(el5, el6);
+        dom.appendChild(el4, el5);
+        var el5 = dom.createTextNode("\n      ");
+        dom.appendChild(el4, el5);
+        dom.appendChild(el3, el4);
+        var el4 = dom.createTextNode("\n    ");
+        dom.appendChild(el3, el4);
+        dom.appendChild(el2, el3);
+        var el3 = dom.createTextNode("\n    ");
+        dom.appendChild(el2, el3);
+        var el3 = dom.createElement("tr");
+        var el4 = dom.createTextNode("\n      ");
+        dom.appendChild(el3, el4);
+        var el4 = dom.createElement("td");
+        var el5 = dom.createTextNode("numFixedColumns");
+        dom.appendChild(el4, el5);
+        dom.appendChild(el3, el4);
+        var el4 = dom.createTextNode("\n      ");
+        dom.appendChild(el3, el4);
+        var el4 = dom.createElement("td");
+        var el5 = dom.createTextNode("0");
+        dom.appendChild(el4, el5);
+        dom.appendChild(el3, el4);
+        var el4 = dom.createTextNode("\n      ");
+        dom.appendChild(el3, el4);
+        var el4 = dom.createElement("td");
+        var el5 = dom.createTextNode("\n        ");
+        dom.appendChild(el4, el5);
+        var el5 = dom.createElement("p");
+        var el6 = dom.createTextNode("\n          The number of fixed columns on the left side of the table. Fixed\n          columns are always visible, even when the table is scrolled\n          horizontally.\n        ");
+        dom.appendChild(el5, el6);
+        dom.appendChild(el4, el5);
+        var el5 = dom.createTextNode("\n      ");
+        dom.appendChild(el4, el5);
+        dom.appendChild(el3, el4);
+        var el4 = dom.createTextNode("\n    ");
+        dom.appendChild(el3, el4);
+        dom.appendChild(el2, el3);
+        var el3 = dom.createTextNode("\n    ");
+        dom.appendChild(el2, el3);
+        var el3 = dom.createElement("tr");
+        var el4 = dom.createTextNode("\n      ");
+        dom.appendChild(el3, el4);
+        var el4 = dom.createElement("td");
+        var el5 = dom.createTextNode("numFooterRow");
+        dom.appendChild(el4, el5);
+        dom.appendChild(el3, el4);
+        var el4 = dom.createTextNode("\n      ");
+        dom.appendChild(el3, el4);
+        var el4 = dom.createElement("td");
+        var el5 = dom.createTextNode("0");
+        dom.appendChild(el4, el5);
+        dom.appendChild(el3, el4);
+        var el4 = dom.createTextNode("\n      ");
+        dom.appendChild(el3, el4);
+        var el4 = dom.createElement("td");
+        var el5 = dom.createTextNode("\n        ");
+        dom.appendChild(el4, el5);
+        var el5 = dom.createElement("p");
+        var el6 = dom.createTextNode("\n          The number of footer rows in the table. Footer rows appear at the\n          bottom of the table and are always visible.\n        ");
+        dom.appendChild(el5, el6);
+        dom.appendChild(el4, el5);
+        var el5 = dom.createTextNode("\n      ");
+        dom.appendChild(el4, el5);
+        dom.appendChild(el3, el4);
+        var el4 = dom.createTextNode("\n    ");
+        dom.appendChild(el3, el4);
+        dom.appendChild(el2, el3);
+        var el3 = dom.createTextNode("\n    ");
+        dom.appendChild(el2, el3);
+        var el3 = dom.createElement("tr");
+        var el4 = dom.createTextNode("\n      ");
+        dom.appendChild(el3, el4);
+        var el4 = dom.createElement("td");
+        var el5 = dom.createTextNode("rowHeight");
+        dom.appendChild(el4, el5);
+        dom.appendChild(el3, el4);
+        var el4 = dom.createTextNode("\n      ");
+        dom.appendChild(el3, el4);
+        var el4 = dom.createElement("td");
+        var el5 = dom.createTextNode("30");
+        dom.appendChild(el4, el5);
+        dom.appendChild(el3, el4);
+        var el4 = dom.createTextNode("\n      ");
+        dom.appendChild(el3, el4);
+        var el4 = dom.createElement("td");
+        var el5 = dom.createTextNode("\n        ");
+        dom.appendChild(el4, el5);
+        var el5 = dom.createElement("p");
+        var el6 = dom.createTextNode("\n          The row height in pixels. A consistent row height is necessary to\n          calculate which rows are being shown, to enable lazy rendering.\n        ");
+        dom.appendChild(el5, el6);
+        dom.appendChild(el4, el5);
+        var el5 = dom.createTextNode("\n      ");
+        dom.appendChild(el4, el5);
+        dom.appendChild(el3, el4);
+        var el4 = dom.createTextNode("\n    ");
+        dom.appendChild(el3, el4);
+        dom.appendChild(el2, el3);
+        var el3 = dom.createTextNode("\n    ");
+        dom.appendChild(el2, el3);
+        var el3 = dom.createElement("tr");
+        var el4 = dom.createTextNode("\n      ");
+        dom.appendChild(el3, el4);
+        var el4 = dom.createElement("td");
+        var el5 = dom.createTextNode("minHeaderHeight");
+        dom.appendChild(el4, el5);
+        dom.appendChild(el3, el4);
+        var el4 = dom.createTextNode("\n      ");
+        dom.appendChild(el3, el4);
+        var el4 = dom.createElement("td");
+        var el5 = dom.createTextNode("30");
+        dom.appendChild(el4, el5);
+        dom.appendChild(el3, el4);
+        var el4 = dom.createTextNode("\n      ");
+        dom.appendChild(el3, el4);
+        var el4 = dom.createElement("td");
+        var el5 = dom.createTextNode("\n        ");
+        dom.appendChild(el4, el5);
+        var el5 = dom.createElement("p");
+        var el6 = dom.createTextNode("\n          The minimum header height in pixels. Headers will grow in height if\n          given more content than they can display.\n        ");
+        dom.appendChild(el5, el6);
+        dom.appendChild(el4, el5);
+        var el5 = dom.createTextNode("\n      ");
+        dom.appendChild(el4, el5);
+        dom.appendChild(el3, el4);
+        var el4 = dom.createTextNode("\n    ");
+        dom.appendChild(el3, el4);
+        dom.appendChild(el2, el3);
+        var el3 = dom.createTextNode("\n    ");
+        dom.appendChild(el2, el3);
+        var el3 = dom.createElement("tr");
+        var el4 = dom.createTextNode("\n      ");
+        dom.appendChild(el3, el4);
+        var el4 = dom.createElement("td");
+        var el5 = dom.createTextNode("footerHeight");
+        dom.appendChild(el4, el5);
+        dom.appendChild(el3, el4);
+        var el4 = dom.createTextNode("\n      ");
+        dom.appendChild(el3, el4);
+        var el4 = dom.createElement("td");
+        var el5 = dom.createTextNode("30");
+        dom.appendChild(el4, el5);
+        dom.appendChild(el3, el4);
+        var el4 = dom.createTextNode("\n      ");
+        dom.appendChild(el3, el4);
+        var el4 = dom.createElement("td");
+        var el5 = dom.createElement("p");
+        var el6 = dom.createTextNode("The footer height in pixels.");
+        dom.appendChild(el5, el6);
+        dom.appendChild(el4, el5);
+        dom.appendChild(el3, el4);
+        var el4 = dom.createTextNode("\n    ");
+        dom.appendChild(el3, el4);
+        dom.appendChild(el2, el3);
+        var el3 = dom.createTextNode("\n    ");
+        dom.appendChild(el2, el3);
+        var el3 = dom.createElement("tr");
+        var el4 = dom.createTextNode("\n      ");
+        dom.appendChild(el3, el4);
+        var el4 = dom.createElement("td");
+        var el5 = dom.createTextNode("hasHeader");
+        dom.appendChild(el4, el5);
+        dom.appendChild(el3, el4);
+        var el4 = dom.createTextNode("\n      ");
+        dom.appendChild(el3, el4);
+        var el4 = dom.createElement("td");
+        var el5 = dom.createTextNode("true");
+        dom.appendChild(el4, el5);
+        dom.appendChild(el3, el4);
+        var el4 = dom.createTextNode("\n      ");
+        dom.appendChild(el3, el4);
+        var el4 = dom.createElement("td");
+        var el5 = dom.createElement("p");
+        var el6 = dom.createTextNode("Enables or disables the header block.");
+        dom.appendChild(el5, el6);
+        dom.appendChild(el4, el5);
+        dom.appendChild(el3, el4);
+        var el4 = dom.createTextNode("\n    ");
+        dom.appendChild(el3, el4);
+        dom.appendChild(el2, el3);
+        var el3 = dom.createTextNode("\n    ");
+        dom.appendChild(el2, el3);
+        var el3 = dom.createElement("tr");
+        var el4 = dom.createTextNode("\n      ");
+        dom.appendChild(el3, el4);
+        var el4 = dom.createElement("td");
+        var el5 = dom.createTextNode("hasFooter");
+        dom.appendChild(el4, el5);
+        dom.appendChild(el3, el4);
+        var el4 = dom.createTextNode("\n      ");
+        dom.appendChild(el3, el4);
+        var el4 = dom.createElement("td");
+        var el5 = dom.createTextNode("true");
+        dom.appendChild(el4, el5);
+        dom.appendChild(el3, el4);
+        var el4 = dom.createTextNode("\n      ");
+        dom.appendChild(el3, el4);
+        var el4 = dom.createElement("td");
+        var el5 = dom.createElement("p");
+        var el6 = dom.createTextNode("Enables or disables the footer block.");
+        dom.appendChild(el5, el6);
+        dom.appendChild(el4, el5);
+        dom.appendChild(el3, el4);
+        var el4 = dom.createTextNode("\n    ");
+        dom.appendChild(el3, el4);
+        dom.appendChild(el2, el3);
+        var el3 = dom.createTextNode("\n    ");
+        dom.appendChild(el2, el3);
+        var el3 = dom.createElement("tr");
+        var el4 = dom.createTextNode("\n      ");
+        dom.appendChild(el3, el4);
+        var el4 = dom.createElement("td");
+        var el5 = dom.createTextNode("enableColumnReorder");
+        dom.appendChild(el4, el5);
+        dom.appendChild(el3, el4);
+        var el4 = dom.createTextNode("\n      ");
+        dom.appendChild(el3, el4);
+        var el4 = dom.createElement("td");
+        var el5 = dom.createTextNode("true");
+        dom.appendChild(el4, el5);
+        dom.appendChild(el3, el4);
+        var el4 = dom.createTextNode("\n      ");
+        dom.appendChild(el3, el4);
+        var el4 = dom.createElement("td");
+        var el5 = dom.createTextNode("\n        ");
+        dom.appendChild(el4, el5);
+        var el5 = dom.createElement("p");
+        var el6 = dom.createTextNode("\n          Allow the columns to be rearranged by drag-and-drop. Only columns\n          with ");
+        dom.appendChild(el5, el6);
+        var el6 = dom.createElement("code");
+        var el7 = dom.createTextNode("isSortable=true");
+        dom.appendChild(el6, el7);
+        dom.appendChild(el5, el6);
+        var el6 = dom.createTextNode(" (the default setting) will be\n          affected.\n        ");
+        dom.appendChild(el5, el6);
+        dom.appendChild(el4, el5);
+        var el5 = dom.createTextNode("\n      ");
+        dom.appendChild(el4, el5);
+        dom.appendChild(el3, el4);
+        var el4 = dom.createTextNode("\n    ");
+        dom.appendChild(el3, el4);
+        dom.appendChild(el2, el3);
+        var el3 = dom.createTextNode("\n    ");
+        dom.appendChild(el2, el3);
+        var el3 = dom.createElement("tr");
+        var el4 = dom.createTextNode("\n      ");
+        dom.appendChild(el3, el4);
+        var el4 = dom.createElement("td");
+        var el5 = dom.createTextNode("enableContentSelection");
+        dom.appendChild(el4, el5);
+        dom.appendChild(el3, el4);
+        var el4 = dom.createTextNode("\n      ");
+        dom.appendChild(el3, el4);
+        var el4 = dom.createElement("td");
+        var el5 = dom.createTextNode("false");
+        dom.appendChild(el4, el5);
+        dom.appendChild(el3, el4);
+        var el4 = dom.createTextNode("\n      ");
+        dom.appendChild(el3, el4);
+        var el4 = dom.createElement("td");
+        var el5 = dom.createElement("p");
+        var el6 = dom.createTextNode("Allow users to select the content of table cells.");
+        dom.appendChild(el5, el6);
+        dom.appendChild(el4, el5);
+        dom.appendChild(el3, el4);
+        var el4 = dom.createTextNode("\n    ");
+        dom.appendChild(el3, el4);
+        dom.appendChild(el2, el3);
+        var el3 = dom.createTextNode("\n    ");
+        dom.appendChild(el2, el3);
+        var el3 = dom.createElement("tr");
+        var el4 = dom.createTextNode("\n      ");
+        dom.appendChild(el3, el4);
+        var el4 = dom.createElement("td");
+        var el5 = dom.createTextNode("styleBindings");
+        dom.appendChild(el4, el5);
+        dom.appendChild(el3, el4);
+        var el4 = dom.createTextNode("\n      ");
+        dom.appendChild(el3, el4);
+        var el4 = dom.createElement("td");
+        var el5 = dom.createTextNode("'height'");
+        dom.appendChild(el4, el5);
+        dom.appendChild(el3, el4);
+        var el4 = dom.createTextNode("\n      ");
+        dom.appendChild(el3, el4);
+        var el4 = dom.createElement("td");
+        var el5 = dom.createTextNode("\n        ");
+        dom.appendChild(el4, el5);
+        var el5 = dom.createElement("p");
+        var el6 = dom.createTextNode("\n          Values which are bound to the table's style attr. See\n          ");
+        dom.appendChild(el5, el6);
+        var el6 = dom.createElement("code");
+        var el7 = dom.createTextNode("Ember.StyleBindingsMixin");
+        dom.appendChild(el6, el7);
+        dom.appendChild(el5, el6);
+        var el6 = dom.createTextNode(" documentation for more details.\n        ");
+        dom.appendChild(el5, el6);
+        dom.appendChild(el4, el5);
+        var el5 = dom.createTextNode("\n      ");
+        dom.appendChild(el4, el5);
+        dom.appendChild(el3, el4);
+        var el4 = dom.createTextNode("\n    ");
+        dom.appendChild(el3, el4);
+        dom.appendChild(el2, el3);
+        var el3 = dom.createTextNode("\n    ");
+        dom.appendChild(el2, el3);
+        var el3 = dom.createElement("tr");
+        var el4 = dom.createTextNode("\n      ");
+        dom.appendChild(el3, el4);
+        var el4 = dom.createElement("td");
+        var el5 = dom.createTextNode("columnMode");
+        dom.appendChild(el4, el5);
+        dom.appendChild(el3, el4);
+        var el4 = dom.createTextNode("\n      ");
+        dom.appendChild(el3, el4);
+        var el4 = dom.createElement("td");
+        var el5 = dom.createTextNode("'standard'");
+        dom.appendChild(el4, el5);
+        dom.appendChild(el3, el4);
+        var el4 = dom.createTextNode("\n      ");
+        dom.appendChild(el3, el4);
+        var el4 = dom.createElement("td");
+        var el5 = dom.createTextNode("\n        ");
+        dom.appendChild(el4, el5);
+        var el5 = dom.createElement("p");
+        var el6 = dom.createTextNode("\n          Sets which column resizing behavior to use. Possible values are\n          ");
+        dom.appendChild(el5, el6);
+        var el6 = dom.createElement("code");
+        var el7 = dom.createTextNode("'standard'");
+        dom.appendChild(el6, el7);
+        dom.appendChild(el5, el6);
+        var el6 = dom.createTextNode(" (resizing a column pushes or pulls all other\n          columns) and ");
+        dom.appendChild(el5, el6);
+        var el6 = dom.createElement("code");
+        var el7 = dom.createTextNode("'fluid'");
+        dom.appendChild(el6, el7);
+        dom.appendChild(el5, el6);
+        var el6 = dom.createTextNode(" (resizing a column steals width\n          from neighboring columns). You can experiment with this behavior in\n          the ");
+        dom.appendChild(el5, el6);
+        var el6 = dom.createTextNode("\n        ");
+        dom.appendChild(el5, el6);
+        dom.appendChild(el4, el5);
+        var el5 = dom.createTextNode("\n      ");
+        dom.appendChild(el4, el5);
+        dom.appendChild(el3, el4);
+        var el4 = dom.createTextNode("\n    ");
+        dom.appendChild(el3, el4);
+        dom.appendChild(el2, el3);
+        var el3 = dom.createTextNode("\n    ");
+        dom.appendChild(el2, el3);
+        var el3 = dom.createElement("tr");
+        var el4 = dom.createTextNode("\n      ");
+        dom.appendChild(el3, el4);
+        var el4 = dom.createElement("td");
+        var el5 = dom.createTextNode("selectionMode");
+        dom.appendChild(el4, el5);
+        dom.appendChild(el3, el4);
+        var el4 = dom.createTextNode("\n      ");
+        dom.appendChild(el3, el4);
+        var el4 = dom.createElement("td");
+        var el5 = dom.createTextNode("'single'");
+        dom.appendChild(el4, el5);
+        dom.appendChild(el3, el4);
+        var el4 = dom.createTextNode("\n      ");
+        dom.appendChild(el3, el4);
+        var el4 = dom.createElement("td");
+        var el5 = dom.createTextNode("\n        ");
+        dom.appendChild(el4, el5);
+        var el5 = dom.createElement("p");
+        var el6 = dom.createTextNode("\n          Sets which row selection behavior to follow. Possible values are\n          ");
+        dom.appendChild(el5, el6);
+        var el6 = dom.createElement("code");
+        var el7 = dom.createTextNode("'none'");
+        dom.appendChild(el6, el7);
+        dom.appendChild(el5, el6);
+        var el6 = dom.createTextNode(" (clicking on a row does nothing),\n          ");
+        dom.appendChild(el5, el6);
+        var el6 = dom.createElement("code");
+        var el7 = dom.createTextNode("'single'");
+        dom.appendChild(el6, el7);
+        dom.appendChild(el5, el6);
+        var el6 = dom.createTextNode(" (clicking on a row selects it and deselects\n          other rows), and ");
+        dom.appendChild(el5, el6);
+        var el6 = dom.createElement("code");
+        var el7 = dom.createTextNode("'multiple'");
+        dom.appendChild(el6, el7);
+        dom.appendChild(el5, el6);
+        var el6 = dom.createTextNode(" (multiple rows can be\n          selected through ctrl/cmd-click or shift-click).\n        ");
+        dom.appendChild(el5, el6);
+        dom.appendChild(el4, el5);
+        var el5 = dom.createTextNode("\n      ");
+        dom.appendChild(el4, el5);
+        dom.appendChild(el3, el4);
+        var el4 = dom.createTextNode("\n    ");
+        dom.appendChild(el3, el4);
+        dom.appendChild(el2, el3);
+        var el3 = dom.createTextNode("\n    ");
+        dom.appendChild(el2, el3);
+        var el3 = dom.createElement("tr");
+        var el4 = dom.createTextNode("\n      ");
+        dom.appendChild(el3, el4);
+        var el4 = dom.createElement("td");
+        var el5 = dom.createTextNode("selection (output)");
+        dom.appendChild(el4, el5);
+        dom.appendChild(el3, el4);
+        var el4 = dom.createTextNode("\n      ");
+        dom.appendChild(el3, el4);
+        var el4 = dom.createElement("td");
+        var el5 = dom.createTextNode("undefined");
+        dom.appendChild(el4, el5);
+        dom.appendChild(el3, el4);
+        var el4 = dom.createTextNode("\n      ");
+        dom.appendChild(el3, el4);
+        var el4 = dom.createElement("td");
+        var el5 = dom.createTextNode("\n        ");
+        dom.appendChild(el4, el5);
+        var el5 = dom.createElement("p");
+        var el6 = dom.createTextNode("\n          An array of the rows currently selected. If\n          ");
+        dom.appendChild(el5, el6);
+        var el6 = dom.createElement("code");
+        var el7 = dom.createTextNode("selectionMode");
+        dom.appendChild(el6, el7);
+        dom.appendChild(el5, el6);
+        var el6 = dom.createTextNode(" is set to ");
+        dom.appendChild(el5, el6);
+        var el6 = dom.createElement("code");
+        var el7 = dom.createTextNode("'single'");
+        dom.appendChild(el6, el7);
+        dom.appendChild(el5, el6);
+        var el6 = dom.createTextNode(", the array\n          will contain either one or zero elements.\n        ");
+        dom.appendChild(el5, el6);
+        dom.appendChild(el4, el5);
+        var el5 = dom.createTextNode("\n      ");
+        dom.appendChild(el4, el5);
+        dom.appendChild(el3, el4);
+        var el4 = dom.createTextNode("\n    ");
+        dom.appendChild(el3, el4);
+        dom.appendChild(el2, el3);
+        var el3 = dom.createTextNode("\n  ");
+        dom.appendChild(el2, el3);
+        dom.appendChild(el1, el2);
+        var el2 = dom.createTextNode("\n\n  ");
+        dom.appendChild(el1, el2);
+        var el2 = dom.createElement("h2");
+        var el3 = dom.createTextNode("Ember.Table.ColumnDefinition Options");
+        dom.appendChild(el2, el3);
+        dom.appendChild(el1, el2);
+        var el2 = dom.createTextNode("\n  ");
+        dom.appendChild(el1, el2);
+        var el2 = dom.createElement("table");
+        dom.setAttribute(el2,"class","table ember-table-options");
+        var el3 = dom.createTextNode("\n    ");
+        dom.appendChild(el2, el3);
+        var el3 = dom.createElement("tr");
+        var el4 = dom.createTextNode("\n      ");
+        dom.appendChild(el3, el4);
+        var el4 = dom.createElement("th");
+        dom.setAttribute(el4,"style","min-width: 200px;");
+        var el5 = dom.createTextNode("Option");
+        dom.appendChild(el4, el5);
+        dom.appendChild(el3, el4);
+        var el4 = dom.createTextNode("\n      ");
+        dom.appendChild(el3, el4);
+        var el4 = dom.createElement("th");
+        dom.setAttribute(el4,"style","min-width: 150px;");
+        var el5 = dom.createTextNode("Default");
+        dom.appendChild(el4, el5);
+        dom.appendChild(el3, el4);
+        var el4 = dom.createTextNode("\n      ");
+        dom.appendChild(el3, el4);
+        var el4 = dom.createElement("th");
+        var el5 = dom.createTextNode("Description");
+        dom.appendChild(el4, el5);
+        dom.appendChild(el3, el4);
+        var el4 = dom.createTextNode("\n    ");
+        dom.appendChild(el3, el4);
+        dom.appendChild(el2, el3);
+        var el3 = dom.createTextNode("\n    ");
+        dom.appendChild(el2, el3);
+        var el3 = dom.createElement("tr");
+        var el4 = dom.createTextNode("\n      ");
+        dom.appendChild(el3, el4);
+        var el4 = dom.createElement("td");
+        var el5 = dom.createTextNode("headerCellName");
+        dom.appendChild(el4, el5);
+        dom.appendChild(el3, el4);
+        var el4 = dom.createTextNode("\n      ");
+        dom.appendChild(el3, el4);
+        var el4 = dom.createElement("td");
+        var el5 = dom.createTextNode("undefined");
+        dom.appendChild(el4, el5);
+        dom.appendChild(el3, el4);
+        var el4 = dom.createTextNode("\n      ");
+        dom.appendChild(el3, el4);
+        var el4 = dom.createElement("td");
+        var el5 = dom.createElement("p");
+        var el6 = dom.createTextNode("Name of the column, to be displayed in the header.");
+        dom.appendChild(el5, el6);
+        dom.appendChild(el4, el5);
+        dom.appendChild(el3, el4);
+        var el4 = dom.createTextNode("\n    ");
+        dom.appendChild(el3, el4);
+        dom.appendChild(el2, el3);
+        var el3 = dom.createTextNode("\n    ");
+        dom.appendChild(el2, el3);
+        var el3 = dom.createElement("tr");
+        var el4 = dom.createTextNode("\n      ");
+        dom.appendChild(el3, el4);
+        var el4 = dom.createElement("td");
+        var el5 = dom.createTextNode("contentPath");
+        dom.appendChild(el4, el5);
+        dom.appendChild(el3, el4);
+        var el4 = dom.createTextNode("\n      ");
+        dom.appendChild(el3, el4);
+        var el4 = dom.createElement("td");
+        var el5 = dom.createTextNode("undefined");
+        dom.appendChild(el4, el5);
+        dom.appendChild(el3, el4);
+        var el4 = dom.createTextNode("\n      ");
+        dom.appendChild(el3, el4);
+        var el4 = dom.createElement("td");
+        var el5 = dom.createTextNode("\n        ");
+        dom.appendChild(el4, el5);
+        var el5 = dom.createElement("p");
+        var el6 = dom.createTextNode("\n          Path of the content for this cell. If the row object is a hash of\n          keys and values to specify data for each column,\n          ");
+        dom.appendChild(el5, el6);
+        var el6 = dom.createElement("code");
+        var el7 = dom.createTextNode("contentPath");
+        dom.appendChild(el6, el7);
+        dom.appendChild(el5, el6);
+        var el6 = dom.createTextNode(" corresponds to the key. Use either this or\n          ");
+        dom.appendChild(el5, el6);
+        var el6 = dom.createElement("code");
+        var el7 = dom.createTextNode("getCellContent");
+        dom.appendChild(el6, el7);
+        dom.appendChild(el5, el6);
+        var el6 = dom.createTextNode(".\n        ");
+        dom.appendChild(el5, el6);
+        dom.appendChild(el4, el5);
+        var el5 = dom.createTextNode("\n      ");
+        dom.appendChild(el4, el5);
+        dom.appendChild(el3, el4);
+        var el4 = dom.createTextNode("\n    ");
+        dom.appendChild(el3, el4);
+        dom.appendChild(el2, el3);
+        var el3 = dom.createTextNode("\n    ");
+        dom.appendChild(el2, el3);
+        var el3 = dom.createElement("tr");
+        var el4 = dom.createTextNode("\n      ");
+        dom.appendChild(el3, el4);
+        var el4 = dom.createElement("td");
+        var el5 = dom.createTextNode("minWidth");
+        dom.appendChild(el4, el5);
+        dom.appendChild(el3, el4);
+        var el4 = dom.createTextNode("\n      ");
+        dom.appendChild(el3, el4);
+        var el4 = dom.createElement("td");
+        var el5 = dom.createTextNode("25");
+        dom.appendChild(el4, el5);
+        dom.appendChild(el3, el4);
+        var el4 = dom.createTextNode("\n      ");
+        dom.appendChild(el3, el4);
+        var el4 = dom.createElement("td");
+        var el5 = dom.createTextNode("\n        ");
+        dom.appendChild(el4, el5);
+        var el5 = dom.createElement("p");
+        var el6 = dom.createTextNode("\n          Minimum column width in pixels. Affects both manual resizing and\n          automatic resizing.\n        ");
+        dom.appendChild(el5, el6);
+        dom.appendChild(el4, el5);
+        var el5 = dom.createTextNode("\n      ");
+        dom.appendChild(el4, el5);
+        dom.appendChild(el3, el4);
+        var el4 = dom.createTextNode("\n    ");
+        dom.appendChild(el3, el4);
+        dom.appendChild(el2, el3);
+        var el3 = dom.createTextNode("\n    ");
+        dom.appendChild(el2, el3);
+        var el3 = dom.createElement("tr");
+        var el4 = dom.createTextNode("\n      ");
+        dom.appendChild(el3, el4);
+        var el4 = dom.createElement("td");
+        var el5 = dom.createTextNode("maxWidth");
+        dom.appendChild(el4, el5);
+        dom.appendChild(el3, el4);
+        var el4 = dom.createTextNode("\n      ");
+        dom.appendChild(el3, el4);
+        var el4 = dom.createElement("td");
+        var el5 = dom.createTextNode("undefined");
+        dom.appendChild(el4, el5);
+        dom.appendChild(el3, el4);
+        var el4 = dom.createTextNode("\n      ");
+        dom.appendChild(el3, el4);
+        var el4 = dom.createElement("td");
+        var el5 = dom.createTextNode("\n        ");
+        dom.appendChild(el4, el5);
+        var el5 = dom.createElement("p");
+        var el6 = dom.createTextNode("\n          Maximum column width in pixels. Affects both manual resizing and\n          automatic resizing.\n        ");
+        dom.appendChild(el5, el6);
+        dom.appendChild(el4, el5);
+        var el5 = dom.createTextNode("\n      ");
+        dom.appendChild(el4, el5);
+        dom.appendChild(el3, el4);
+        var el4 = dom.createTextNode("\n    ");
+        dom.appendChild(el3, el4);
+        dom.appendChild(el2, el3);
+        var el3 = dom.createTextNode("\n    ");
+        dom.appendChild(el2, el3);
+        var el3 = dom.createElement("tr");
+        var el4 = dom.createTextNode("\n      ");
+        dom.appendChild(el3, el4);
+        var el4 = dom.createElement("td");
+        var el5 = dom.createTextNode("savedWidth");
+        dom.appendChild(el4, el5);
+        dom.appendChild(el3, el4);
+        var el4 = dom.createTextNode("\n      ");
+        dom.appendChild(el3, el4);
+        var el4 = dom.createElement("td");
+        var el5 = dom.createTextNode("150");
+        dom.appendChild(el4, el5);
+        dom.appendChild(el3, el4);
+        var el4 = dom.createTextNode("\n      ");
+        dom.appendChild(el3, el4);
+        var el4 = dom.createElement("td");
+        var el5 = dom.createTextNode("\n        ");
+        dom.appendChild(el4, el5);
+        var el5 = dom.createElement("p");
+        var el6 = dom.createTextNode("\n          The initial column width in pixels. Updated whenever the column (not\n          window) is resized. Can be persisted.\n        ");
+        dom.appendChild(el5, el6);
+        dom.appendChild(el4, el5);
+        var el5 = dom.createTextNode("\n      ");
+        dom.appendChild(el4, el5);
+        dom.appendChild(el3, el4);
+        var el4 = dom.createTextNode("\n    ");
+        dom.appendChild(el3, el4);
+        dom.appendChild(el2, el3);
+        var el3 = dom.createTextNode("\n    ");
+        dom.appendChild(el2, el3);
+        var el3 = dom.createElement("tr");
+        var el4 = dom.createTextNode("\n      ");
+        dom.appendChild(el3, el4);
+        var el4 = dom.createElement("td");
+        var el5 = dom.createTextNode("isResizable");
+        dom.appendChild(el4, el5);
+        dom.appendChild(el3, el4);
+        var el4 = dom.createTextNode("\n      ");
+        dom.appendChild(el3, el4);
+        var el4 = dom.createElement("td");
+        var el5 = dom.createTextNode("true");
+        dom.appendChild(el4, el5);
+        dom.appendChild(el3, el4);
+        var el4 = dom.createTextNode("\n      ");
+        dom.appendChild(el3, el4);
+        var el4 = dom.createElement("td");
+        var el5 = dom.createElement("p");
+        var el6 = dom.createTextNode("Whether the column can be manually resized.");
+        dom.appendChild(el5, el6);
+        dom.appendChild(el4, el5);
+        dom.appendChild(el3, el4);
+        var el4 = dom.createTextNode("\n    ");
+        dom.appendChild(el3, el4);
+        dom.appendChild(el2, el3);
+        var el3 = dom.createTextNode("\n    ");
+        dom.appendChild(el2, el3);
+        var el3 = dom.createElement("tr");
+        var el4 = dom.createTextNode("\n      ");
+        dom.appendChild(el3, el4);
+        var el4 = dom.createElement("td");
+        var el5 = dom.createTextNode("isSortable");
+        dom.appendChild(el4, el5);
+        dom.appendChild(el3, el4);
+        var el4 = dom.createTextNode("\n      ");
+        dom.appendChild(el3, el4);
+        var el4 = dom.createElement("td");
+        var el5 = dom.createTextNode("true");
+        dom.appendChild(el4, el5);
+        dom.appendChild(el3, el4);
+        var el4 = dom.createTextNode("\n      ");
+        dom.appendChild(el3, el4);
+        var el4 = dom.createElement("td");
+        var el5 = dom.createTextNode("\n        ");
+        dom.appendChild(el4, el5);
+        var el5 = dom.createElement("p");
+        var el6 = dom.createTextNode("\n          Whether the column can be rearranged with other columns. Only matters\n          if the table's ");
+        dom.appendChild(el5, el6);
+        var el6 = dom.createElement("code");
+        var el7 = dom.createTextNode("enableColumnReorder");
+        dom.appendChild(el6, el7);
+        dom.appendChild(el5, el6);
+        var el6 = dom.createTextNode(" property is set to\n          true (the default).\n        ");
+        dom.appendChild(el5, el6);
+        dom.appendChild(el4, el5);
+        var el5 = dom.createTextNode("\n      ");
+        dom.appendChild(el4, el5);
+        dom.appendChild(el3, el4);
+        var el4 = dom.createTextNode("\n    ");
+        dom.appendChild(el3, el4);
+        dom.appendChild(el2, el3);
+        var el3 = dom.createTextNode("\n    ");
+        dom.appendChild(el2, el3);
+        var el3 = dom.createElement("tr");
+        var el4 = dom.createTextNode("\n      ");
+        dom.appendChild(el3, el4);
+        var el4 = dom.createElement("td");
+        var el5 = dom.createTextNode("textAlign");
+        dom.appendChild(el4, el5);
+        dom.appendChild(el3, el4);
+        var el4 = dom.createTextNode("\n      ");
+        dom.appendChild(el3, el4);
+        var el4 = dom.createElement("td");
+        var el5 = dom.createTextNode("'text-align-right'");
+        dom.appendChild(el4, el5);
+        dom.appendChild(el3, el4);
+        var el4 = dom.createTextNode("\n      ");
+        dom.appendChild(el3, el4);
+        var el4 = dom.createElement("td");
+        var el5 = dom.createTextNode("\n        ");
+        dom.appendChild(el4, el5);
+        var el5 = dom.createElement("p");
+        var el6 = dom.createTextNode("\n          Alignment of the text in the cell. Possible values are\n          ");
+        dom.appendChild(el5, el6);
+        var el6 = dom.createElement("code");
+        var el7 = dom.createTextNode("'left'");
+        dom.appendChild(el6, el7);
+        dom.appendChild(el5, el6);
+        var el6 = dom.createTextNode(", ");
+        dom.appendChild(el5, el6);
+        var el6 = dom.createElement("code");
+        var el7 = dom.createTextNode("'center'");
+        dom.appendChild(el6, el7);
+        dom.appendChild(el5, el6);
+        var el6 = dom.createTextNode(", and ");
+        dom.appendChild(el5, el6);
+        var el6 = dom.createElement("code");
+        var el7 = dom.createTextNode("'right'");
+        dom.appendChild(el6, el7);
+        dom.appendChild(el5, el6);
+        var el6 = dom.createTextNode(".\n        ");
+        dom.appendChild(el5, el6);
+        dom.appendChild(el4, el5);
+        var el5 = dom.createTextNode("\n      ");
+        dom.appendChild(el4, el5);
+        dom.appendChild(el3, el4);
+        var el4 = dom.createTextNode("\n    ");
+        dom.appendChild(el3, el4);
+        dom.appendChild(el2, el3);
+        var el3 = dom.createTextNode("\n    ");
+        dom.appendChild(el2, el3);
+        var el3 = dom.createElement("tr");
+        var el4 = dom.createTextNode("\n      ");
+        dom.appendChild(el3, el4);
+        var el4 = dom.createElement("td");
+        var el5 = dom.createTextNode("canAutoResize");
+        dom.appendChild(el4, el5);
+        dom.appendChild(el3, el4);
+        var el4 = dom.createTextNode("\n      ");
+        dom.appendChild(el3, el4);
+        var el4 = dom.createElement("td");
+        var el5 = dom.createTextNode("false");
+        dom.appendChild(el4, el5);
+        dom.appendChild(el3, el4);
+        var el4 = dom.createTextNode("\n      ");
+        dom.appendChild(el3, el4);
+        var el4 = dom.createElement("td");
+        var el5 = dom.createTextNode("\n        ");
+        dom.appendChild(el4, el5);
+        var el5 = dom.createElement("p");
+        var el6 = dom.createTextNode("\n          Whether the column can automatically resize to fill space in the\n          table.\n        ");
+        dom.appendChild(el5, el6);
+        dom.appendChild(el4, el5);
+        var el5 = dom.createTextNode("\n      ");
+        dom.appendChild(el4, el5);
+        dom.appendChild(el3, el4);
+        var el4 = dom.createTextNode("\n    ");
+        dom.appendChild(el3, el4);
+        dom.appendChild(el2, el3);
+        var el3 = dom.createTextNode("\n    ");
+        dom.appendChild(el2, el3);
+        var el3 = dom.createElement("tr");
+        var el4 = dom.createTextNode("\n      ");
+        dom.appendChild(el3, el4);
+        var el4 = dom.createElement("td");
+        var el5 = dom.createTextNode("headerCellView");
+        dom.appendChild(el4, el5);
+        dom.appendChild(el3, el4);
+        var el4 = dom.createTextNode("\n      ");
+        dom.appendChild(el3, el4);
+        var el4 = dom.createElement("td");
+        var el5 = dom.createTextNode("'Ember.Table.HeaderCell'");
+        dom.appendChild(el4, el5);
+        dom.appendChild(el3, el4);
+        var el4 = dom.createTextNode("\n      ");
+        dom.appendChild(el3, el4);
+        var el4 = dom.createElement("td");
+        var el5 = dom.createTextNode("\n        ");
+        dom.appendChild(el4, el5);
+        var el5 = dom.createElement("p");
+        var el6 = dom.createTextNode("\n          Override to use a custom view for the header cell. Specified as a\n          string.\n        ");
+        dom.appendChild(el5, el6);
+        dom.appendChild(el4, el5);
+        var el5 = dom.createTextNode("\n      ");
+        dom.appendChild(el4, el5);
+        dom.appendChild(el3, el4);
+        var el4 = dom.createTextNode("\n    ");
+        dom.appendChild(el3, el4);
+        dom.appendChild(el2, el3);
+        var el3 = dom.createTextNode("\n    ");
+        dom.appendChild(el2, el3);
+        var el3 = dom.createElement("tr");
+        var el4 = dom.createTextNode("\n      ");
+        dom.appendChild(el3, el4);
+        var el4 = dom.createElement("td");
+        var el5 = dom.createTextNode("tableCellView");
+        dom.appendChild(el4, el5);
+        dom.appendChild(el3, el4);
+        var el4 = dom.createTextNode("\n      ");
+        dom.appendChild(el3, el4);
+        var el4 = dom.createElement("td");
+        var el5 = dom.createTextNode("'Ember.Table.TableCell'");
+        dom.appendChild(el4, el5);
+        dom.appendChild(el3, el4);
+        var el4 = dom.createTextNode("\n      ");
+        dom.appendChild(el3, el4);
+        var el4 = dom.createElement("td");
+        var el5 = dom.createTextNode("\n        ");
+        dom.appendChild(el4, el5);
+        var el5 = dom.createElement("p");
+        var el6 = dom.createTextNode("\n          Override to use a custom view for table cells. Specified as a string.\n        ");
+        dom.appendChild(el5, el6);
+        dom.appendChild(el4, el5);
+        var el5 = dom.createTextNode("\n      ");
+        dom.appendChild(el4, el5);
+        dom.appendChild(el3, el4);
+        var el4 = dom.createTextNode("\n    ");
+        dom.appendChild(el3, el4);
+        dom.appendChild(el2, el3);
+        var el3 = dom.createTextNode("\n    ");
+        dom.appendChild(el2, el3);
+        var el3 = dom.createElement("tr");
+        var el4 = dom.createTextNode("\n      ");
+        dom.appendChild(el3, el4);
+        var el4 = dom.createElement("td");
+        var el5 = dom.createTextNode("getCellContent");
+        dom.appendChild(el4, el5);
+        dom.appendChild(el3, el4);
+        var el4 = dom.createTextNode("\n      ");
+        dom.appendChild(el3, el4);
+        var el4 = dom.createElement("td");
+        var el5 = dom.createTextNode("(function)");
+        dom.appendChild(el4, el5);
+        dom.appendChild(el3, el4);
+        var el4 = dom.createTextNode("\n      ");
+        dom.appendChild(el3, el4);
+        var el4 = dom.createElement("td");
+        var el5 = dom.createTextNode("\n        ");
+        dom.appendChild(el4, el5);
+        var el5 = dom.createElement("p");
+        var el6 = dom.createTextNode("\n          Override to customize how the column gets data from each row object.\n          Given a row, should return a formatted cell value, e.g. $20,000,000.\n          Use either this or ");
+        dom.appendChild(el5, el6);
+        var el6 = dom.createElement("code");
+        var el7 = dom.createTextNode("contentPath");
+        dom.appendChild(el6, el7);
+        dom.appendChild(el5, el6);
+        var el6 = dom.createTextNode(".\n        ");
+        dom.appendChild(el5, el6);
+        dom.appendChild(el4, el5);
+        var el5 = dom.createTextNode("\n      ");
+        dom.appendChild(el4, el5);
+        dom.appendChild(el3, el4);
+        var el4 = dom.createTextNode("\n    ");
+        dom.appendChild(el3, el4);
+        dom.appendChild(el2, el3);
+        var el3 = dom.createTextNode("\n    ");
+        dom.appendChild(el2, el3);
+        var el3 = dom.createElement("tr");
+        var el4 = dom.createTextNode("\n      ");
+        dom.appendChild(el3, el4);
+        var el4 = dom.createElement("td");
+        var el5 = dom.createTextNode("setCellContent");
+        dom.appendChild(el4, el5);
+        dom.appendChild(el3, el4);
+        var el4 = dom.createTextNode("\n      ");
+        dom.appendChild(el3, el4);
+        var el4 = dom.createElement("td");
+        var el5 = dom.createTextNode("Ember.K");
+        dom.appendChild(el4, el5);
+        dom.appendChild(el3, el4);
+        var el4 = dom.createTextNode("\n      ");
+        dom.appendChild(el3, el4);
+        var el4 = dom.createElement("td");
+        var el5 = dom.createTextNode("\n        ");
+        dom.appendChild(el4, el5);
+        var el5 = dom.createElement("p");
+        var el6 = dom.createTextNode("\n          Override to maintain a consistent path to update cell values.\n          Recommended to make this a function which takes (row, value) and\n          updates the row value.\n        ");
+        dom.appendChild(el5, el6);
+        dom.appendChild(el4, el5);
+        var el5 = dom.createTextNode("\n      ");
+        dom.appendChild(el4, el5);
+        dom.appendChild(el3, el4);
+        var el4 = dom.createTextNode("\n    ");
+        dom.appendChild(el3, el4);
+        dom.appendChild(el2, el3);
+        var el3 = dom.createTextNode("\n  ");
+        dom.appendChild(el2, el3);
+        dom.appendChild(el1, el2);
+        var el2 = dom.createTextNode("\n\n  ");
+        dom.appendChild(el1, el2);
+        var el2 = dom.createElement("h2");
+        var el3 = dom.createTextNode("Ember.Table.TableCell Options");
+        dom.appendChild(el2, el3);
+        dom.appendChild(el1, el2);
+        var el2 = dom.createTextNode("\n  ");
+        dom.appendChild(el1, el2);
+        var el2 = dom.createElement("table");
+        dom.setAttribute(el2,"class","table ember-table-options");
+        var el3 = dom.createTextNode("\n    ");
+        dom.appendChild(el2, el3);
+        var el3 = dom.createElement("tr");
+        var el4 = dom.createTextNode("\n      ");
+        dom.appendChild(el3, el4);
+        var el4 = dom.createElement("th");
+        dom.setAttribute(el4,"style","min-width: 200px;");
+        var el5 = dom.createTextNode("Option");
+        dom.appendChild(el4, el5);
+        dom.appendChild(el3, el4);
+        var el4 = dom.createTextNode("\n      ");
+        dom.appendChild(el3, el4);
+        var el4 = dom.createElement("th");
+        dom.setAttribute(el4,"style","min-width: 150px;");
+        var el5 = dom.createTextNode("Default");
+        dom.appendChild(el4, el5);
+        dom.appendChild(el3, el4);
+        var el4 = dom.createTextNode("\n      ");
+        dom.appendChild(el3, el4);
+        var el4 = dom.createElement("th");
+        var el5 = dom.createTextNode("Description");
+        dom.appendChild(el4, el5);
+        dom.appendChild(el3, el4);
+        var el4 = dom.createTextNode("\n    ");
+        dom.appendChild(el3, el4);
+        dom.appendChild(el2, el3);
+        var el3 = dom.createTextNode("\n    ");
+        dom.appendChild(el2, el3);
+        var el3 = dom.createElement("tr");
+        var el4 = dom.createTextNode("\n      ");
+        dom.appendChild(el3, el4);
+        var el4 = dom.createElement("td");
+        var el5 = dom.createTextNode("templateName");
+        dom.appendChild(el4, el5);
+        dom.appendChild(el3, el4);
+        var el4 = dom.createTextNode("\n      ");
+        dom.appendChild(el3, el4);
+        var el4 = dom.createElement("td");
+        var el5 = dom.createTextNode("'table-cell'");
+        dom.appendChild(el4, el5);
+        dom.appendChild(el3, el4);
+        var el4 = dom.createTextNode("\n      ");
+        dom.appendChild(el3, el4);
+        var el4 = dom.createElement("td");
+        var el5 = dom.createTextNode("\n        ");
+        dom.appendChild(el4, el5);
+        var el5 = dom.createElement("p");
+        var el6 = dom.createTextNode("The name of the template to be rendered into the cell.\n        Used for rendering custom templates.\n        ");
+        dom.appendChild(el5, el6);
+        dom.appendChild(el4, el5);
+        var el5 = dom.createTextNode("\n      ");
+        dom.appendChild(el4, el5);
+        dom.appendChild(el3, el4);
+        var el4 = dom.createTextNode("\n    ");
+        dom.appendChild(el3, el4);
+        dom.appendChild(el2, el3);
+        var el3 = dom.createTextNode("\n    ");
+        dom.appendChild(el2, el3);
+        var el3 = dom.createElement("tr");
+        var el4 = dom.createTextNode("\n      ");
+        dom.appendChild(el3, el4);
+        var el4 = dom.createElement("td");
+        var el5 = dom.createTextNode("classNames");
+        dom.appendChild(el4, el5);
+        dom.appendChild(el3, el4);
+        var el4 = dom.createTextNode("\n      ");
+        dom.appendChild(el3, el4);
+        var el4 = dom.createElement("td");
+        var el5 = dom.createTextNode("['ember-table-cell']");
+        dom.appendChild(el4, el5);
+        dom.appendChild(el3, el4);
+        var el4 = dom.createTextNode("\n      ");
+        dom.appendChild(el3, el4);
+        var el4 = dom.createElement("td");
+        var el5 = dom.createElement("p");
+        var el6 = dom.createTextNode("The class names applied to the cell. Override to give\n        the cell custom styling (border, background color, etc).");
+        dom.appendChild(el5, el6);
+        dom.appendChild(el4, el5);
+        dom.appendChild(el3, el4);
+        var el4 = dom.createTextNode("\n    ");
+        dom.appendChild(el3, el4);
+        dom.appendChild(el2, el3);
+        var el3 = dom.createTextNode("\n    ");
+        dom.appendChild(el2, el3);
+        var el3 = dom.createElement("tr");
+        var el4 = dom.createTextNode("\n      ");
+        dom.appendChild(el3, el4);
+        var el4 = dom.createElement("td");
+        var el5 = dom.createTextNode("classNameBindings");
+        dom.appendChild(el4, el5);
+        dom.appendChild(el3, el4);
+        var el4 = dom.createTextNode("\n      ");
+        dom.appendChild(el3, el4);
+        var el4 = dom.createElement("td");
+        var el5 = dom.createTextNode("'column.textAlign'");
+        dom.appendChild(el4, el5);
+        dom.appendChild(el3, el4);
+        var el4 = dom.createTextNode("\n      ");
+        dom.appendChild(el3, el4);
+        var el4 = dom.createElement("td");
+        var el5 = dom.createElement("p");
+        var el6 = dom.createTextNode("A binding used to dynamically associate class names\n        with this table cell. E.g. you can bind to a column property\n        to have cell colors or styles vary across columns.");
+        dom.appendChild(el5, el6);
+        dom.appendChild(el4, el5);
+        dom.appendChild(el3, el4);
+        var el4 = dom.createTextNode("\n    ");
+        dom.appendChild(el3, el4);
+        dom.appendChild(el2, el3);
+        var el3 = dom.createTextNode("\n    ");
+        dom.appendChild(el2, el3);
+        var el3 = dom.createElement("tr");
+        var el4 = dom.createTextNode("\n      ");
+        dom.appendChild(el3, el4);
+        var el4 = dom.createElement("td");
+        var el5 = dom.createTextNode("styleBindings");
+        dom.appendChild(el4, el5);
+        dom.appendChild(el3, el4);
+        var el4 = dom.createTextNode("\n      ");
+        dom.appendChild(el3, el4);
+        var el4 = dom.createElement("td");
+        var el5 = dom.createTextNode("'width'");
+        dom.appendChild(el4, el5);
+        dom.appendChild(el3, el4);
+        var el4 = dom.createTextNode("\n      ");
+        dom.appendChild(el3, el4);
+        var el4 = dom.createElement("td");
+        var el5 = dom.createTextNode("\n        ");
+        dom.appendChild(el4, el5);
+        var el5 = dom.createElement("p");
+        var el6 = dom.createTextNode("\n          Values which are bound to the cell's style attr. See\n          ");
+        dom.appendChild(el5, el6);
+        var el6 = dom.createElement("code");
+        var el7 = dom.createTextNode("Ember.StyleBindingsMixin");
+        dom.appendChild(el6, el7);
+        dom.appendChild(el5, el6);
+        var el6 = dom.createTextNode(" documentation for more details.\n        ");
+        dom.appendChild(el5, el6);
+        dom.appendChild(el4, el5);
+        var el5 = dom.createTextNode("\n      ");
+        dom.appendChild(el4, el5);
+        dom.appendChild(el3, el4);
+        var el4 = dom.createTextNode("\n    ");
+        dom.appendChild(el3, el4);
+        dom.appendChild(el2, el3);
+        var el3 = dom.createTextNode("\n  ");
+        dom.appendChild(el2, el3);
+        dom.appendChild(el1, el2);
+        var el2 = dom.createTextNode("\n\n  ");
+        dom.appendChild(el1, el2);
+        var el2 = dom.createElement("h2");
+        var el3 = dom.createTextNode("Ember.Table.HeaderCell Options");
+        dom.appendChild(el2, el3);
+        dom.appendChild(el1, el2);
+        var el2 = dom.createTextNode("\n  ");
+        dom.appendChild(el1, el2);
+        var el2 = dom.createElement("table");
+        dom.setAttribute(el2,"class","table ember-table-options");
+        var el3 = dom.createTextNode("\n    ");
+        dom.appendChild(el2, el3);
+        var el3 = dom.createElement("tr");
+        var el4 = dom.createTextNode("\n      ");
+        dom.appendChild(el3, el4);
+        var el4 = dom.createElement("th");
+        dom.setAttribute(el4,"style","min-width: 200px;");
+        var el5 = dom.createTextNode("Option");
+        dom.appendChild(el4, el5);
+        dom.appendChild(el3, el4);
+        var el4 = dom.createTextNode("\n      ");
+        dom.appendChild(el3, el4);
+        var el4 = dom.createElement("th");
+        dom.setAttribute(el4,"style","min-width: 150px;");
+        var el5 = dom.createTextNode("Default");
+        dom.appendChild(el4, el5);
+        dom.appendChild(el3, el4);
+        var el4 = dom.createTextNode("\n      ");
+        dom.appendChild(el3, el4);
+        var el4 = dom.createElement("th");
+        var el5 = dom.createTextNode("Description");
+        dom.appendChild(el4, el5);
+        dom.appendChild(el3, el4);
+        var el4 = dom.createTextNode("\n    ");
+        dom.appendChild(el3, el4);
+        dom.appendChild(el2, el3);
+        var el3 = dom.createTextNode("\n    ");
+        dom.appendChild(el2, el3);
+        var el3 = dom.createElement("tr");
+        var el4 = dom.createTextNode("\n      ");
+        dom.appendChild(el3, el4);
+        var el4 = dom.createElement("td");
+        var el5 = dom.createTextNode("templateName");
+        dom.appendChild(el4, el5);
+        dom.appendChild(el3, el4);
+        var el4 = dom.createTextNode("\n      ");
+        dom.appendChild(el3, el4);
+        var el4 = dom.createElement("td");
+        var el5 = dom.createTextNode("'header-cell'");
+        dom.appendChild(el4, el5);
+        dom.appendChild(el3, el4);
+        var el4 = dom.createTextNode("\n      ");
+        dom.appendChild(el3, el4);
+        var el4 = dom.createElement("td");
+        var el5 = dom.createElement("p");
+        var el6 = dom.createTextNode("See description in ");
+        dom.appendChild(el5, el6);
+        var el6 = dom.createElement("code");
+        var el7 = dom.createTextNode("Ember.Table.TableCell");
+        dom.appendChild(el6, el7);
+        dom.appendChild(el5, el6);
+        var el6 = dom.createTextNode(".");
+        dom.appendChild(el5, el6);
+        dom.appendChild(el4, el5);
+        dom.appendChild(el3, el4);
+        var el4 = dom.createTextNode("\n    ");
+        dom.appendChild(el3, el4);
+        dom.appendChild(el2, el3);
+        var el3 = dom.createTextNode("\n    ");
+        dom.appendChild(el2, el3);
+        var el3 = dom.createElement("tr");
+        var el4 = dom.createTextNode("\n      ");
+        dom.appendChild(el3, el4);
+        var el4 = dom.createElement("td");
+        var el5 = dom.createTextNode("classNames");
+        dom.appendChild(el4, el5);
+        dom.appendChild(el3, el4);
+        var el4 = dom.createTextNode("\n      ");
+        dom.appendChild(el3, el4);
+        var el4 = dom.createElement("td");
+        var el5 = dom.createTextNode("['ember-table-cell', 'ember-table-header-cell']");
+        dom.appendChild(el4, el5);
+        dom.appendChild(el3, el4);
+        var el4 = dom.createTextNode("\n      ");
+        dom.appendChild(el3, el4);
+        var el4 = dom.createElement("td");
+        var el5 = dom.createElement("p");
+        var el6 = dom.createTextNode("See description in ");
+        dom.appendChild(el5, el6);
+        var el6 = dom.createElement("code");
+        var el7 = dom.createTextNode("Ember.Table.TableCell");
+        dom.appendChild(el6, el7);
+        dom.appendChild(el5, el6);
+        var el6 = dom.createTextNode(".");
+        dom.appendChild(el5, el6);
+        dom.appendChild(el4, el5);
+        dom.appendChild(el3, el4);
+        var el4 = dom.createTextNode("\n    ");
+        dom.appendChild(el3, el4);
+        dom.appendChild(el2, el3);
+        var el3 = dom.createTextNode("\n    ");
+        dom.appendChild(el2, el3);
+        var el3 = dom.createElement("tr");
+        var el4 = dom.createTextNode("\n      ");
+        dom.appendChild(el3, el4);
+        var el4 = dom.createElement("td");
+        var el5 = dom.createTextNode("classNameBindings");
+        dom.appendChild(el4, el5);
+        dom.appendChild(el3, el4);
+        var el4 = dom.createTextNode("\n      ");
+        dom.appendChild(el3, el4);
+        var el4 = dom.createElement("td");
+        var el5 = dom.createTextNode("['column.isSortable:sortable', 'column.textAlign']");
+        dom.appendChild(el4, el5);
+        dom.appendChild(el3, el4);
+        var el4 = dom.createTextNode("\n      ");
+        dom.appendChild(el3, el4);
+        var el4 = dom.createElement("td");
+        var el5 = dom.createElement("p");
+        var el6 = dom.createTextNode("See description in ");
+        dom.appendChild(el5, el6);
+        var el6 = dom.createElement("code");
+        var el7 = dom.createTextNode("Ember.Table.TableCell");
+        dom.appendChild(el6, el7);
+        dom.appendChild(el5, el6);
+        var el6 = dom.createTextNode(".");
+        dom.appendChild(el5, el6);
+        dom.appendChild(el4, el5);
+        dom.appendChild(el3, el4);
+        var el4 = dom.createTextNode("\n    ");
+        dom.appendChild(el3, el4);
+        dom.appendChild(el2, el3);
+        var el3 = dom.createTextNode("\n    ");
+        dom.appendChild(el2, el3);
+        var el3 = dom.createElement("tr");
+        var el4 = dom.createTextNode("\n      ");
+        dom.appendChild(el3, el4);
+        var el4 = dom.createElement("td");
+        var el5 = dom.createTextNode("styleBindings");
+        dom.appendChild(el4, el5);
+        dom.appendChild(el3, el4);
+        var el4 = dom.createTextNode("\n      ");
+        dom.appendChild(el3, el4);
+        var el4 = dom.createElement("td");
+        var el5 = dom.createTextNode("['width', 'height']");
+        dom.appendChild(el4, el5);
+        dom.appendChild(el3, el4);
+        var el4 = dom.createTextNode("\n      ");
+        dom.appendChild(el3, el4);
+        var el4 = dom.createElement("td");
+        var el5 = dom.createElement("p");
+        var el6 = dom.createTextNode("See description in ");
+        dom.appendChild(el5, el6);
+        var el6 = dom.createElement("code");
+        var el7 = dom.createTextNode("Ember.Table.TableCell");
+        dom.appendChild(el6, el7);
+        dom.appendChild(el5, el6);
+        var el6 = dom.createTextNode(".");
+        dom.appendChild(el5, el6);
+        dom.appendChild(el4, el5);
+        dom.appendChild(el3, el4);
+        var el4 = dom.createTextNode("\n    ");
+        dom.appendChild(el3, el4);
+        dom.appendChild(el2, el3);
+        var el3 = dom.createTextNode("\n  ");
+        dom.appendChild(el2, el3);
+        dom.appendChild(el1, el2);
+        var el2 = dom.createTextNode("\n");
+        dom.appendChild(el1, el2);
+        dom.appendChild(el0, el1);
+        var el1 = dom.createTextNode("\n");
+        dom.appendChild(el0, el1);
+        return el0;
+      },
+      render: function render(context, env, contextualElement) {
+        var dom = env.dom;
+        var hooks = env.hooks, block = hooks.block;
+        dom.detectNamespace(contextualElement);
+        var fragment;
+        if (env.useFragmentCache && dom.canClone) {
+          if (this.cachedFragment === null) {
+            fragment = this.build(dom);
+            if (this.hasRendered) {
+              this.cachedFragment = fragment;
+            } else {
+              this.hasRendered = true;
+            }
+          }
+          if (this.cachedFragment) {
+            fragment = dom.cloneNode(this.cachedFragment, true);
+          }
+        } else {
+          fragment = this.build(dom);
+        }
+        var morph0 = dom.createMorphAt(dom.childAt(fragment, [0, 5, 27, 5, 1]),4,5);
+        block(env, morph0, context, "link-to", ["configurable-columns"], {}, child0, null);
+        return fragment;
+      }
+    };
+  }()));
 
 });
 define('dummy/templates/dynamic-bar-table/dynamic-bar-table', ['exports'], function (exports) {
 
   'use strict';
 
-  exports['default'] = Ember.Handlebars.template({"compiler":[6,">= 2.0.0-beta.1"],"main":function(depth0,helpers,partials,data) {
-    var helperMissing=helpers.helperMissing, escapeExpression=this.escapeExpression, buffer = '';
-    data.buffer.push(escapeExpression(((helpers['ember-table'] || (depth0 && depth0['ember-table']) || helperMissing).call(depth0, {"name":"ember-table","hash":{
-      'content': ("tableContent"),
-      'columns': ("tableColumns"),
-      'rowHeight': (30),
-      'hasFooter': (false),
-      'hasHeader': (true)
-    },"hashTypes":{'content': "ID",'columns': "ID",'rowHeight': "NUMBER",'hasFooter': "BOOLEAN",'hasHeader': "BOOLEAN"},"hashContexts":{'content': depth0,'columns': depth0,'rowHeight': depth0,'hasFooter': depth0,'hasHeader': depth0},"types":[],"contexts":[],"data":data}))));
-    data.buffer.push("\n");
-    return buffer;
-  },"useData":true});
+  exports['default'] = Ember.HTMLBars.template((function() {
+    return {
+      isHTMLBars: true,
+      blockParams: 0,
+      cachedFragment: null,
+      hasRendered: false,
+      build: function build(dom) {
+        var el0 = dom.createDocumentFragment();
+        var el1 = dom.createTextNode("");
+        dom.appendChild(el0, el1);
+        var el1 = dom.createTextNode("\n");
+        dom.appendChild(el0, el1);
+        return el0;
+      },
+      render: function render(context, env, contextualElement) {
+        var dom = env.dom;
+        var hooks = env.hooks, get = hooks.get, inline = hooks.inline;
+        dom.detectNamespace(contextualElement);
+        var fragment;
+        if (env.useFragmentCache && dom.canClone) {
+          if (this.cachedFragment === null) {
+            fragment = this.build(dom);
+            if (this.hasRendered) {
+              this.cachedFragment = fragment;
+            } else {
+              this.hasRendered = true;
+            }
+          }
+          if (this.cachedFragment) {
+            fragment = dom.cloneNode(this.cachedFragment, true);
+          }
+        } else {
+          fragment = this.build(dom);
+        }
+        if (this.cachedFragment) { dom.repairClonedNode(fragment,[0]); }
+        var morph0 = dom.createMorphAt(fragment,0,1,contextualElement);
+        inline(env, morph0, context, "ember-table", [], {"hasHeader": true, "hasFooter": false, "rowHeight": 30, "columns": get(env, context, "tableColumns"), "content": get(env, context, "tableContent")});
+        return fragment;
+      }
+    };
+  }()));
 
 });
 define('dummy/templates/dynamic-bars', ['exports'], function (exports) {
 
   'use strict';
 
-  exports['default'] = Ember.Handlebars.template({"compiler":[6,">= 2.0.0-beta.1"],"main":function(depth0,helpers,partials,data) {
-    var helperMissing=helpers.helperMissing, escapeExpression=this.escapeExpression, buffer = '';
-    data.buffer.push("<div class=\"col-md-10 col-md-offset-2 left-border main-content-container\">\n  <h1>Ember Table <small>Dynamic Bar</small></h1>\n\n  <div class=\"row\">\n    <div class=\"col-md-12\">\n      <div class=\"example-container\">\n        <div class=\"ember-table-example-container\">\n          ");
-    data.buffer.push(escapeExpression(((helpers.partial || (depth0 && depth0.partial) || helperMissing).call(depth0, "dynamic-bar-table/dynamic-bar-table", {"name":"partial","hash":{},"hashTypes":{},"hashContexts":{},"types":["STRING"],"contexts":[depth0],"data":data}))));
-    data.buffer.push("\n        </div>\n      </div>\n    </div>\n\n    <div class=\"col-md-12 bumper-30\">\n      <h3>Template</h3>\n      <div class=\"highlight\">\n        <pre class=\"prettyprint lang-html\">{{ember-table\n  hasHeader=true\n  hasFooter=false\n  rowHeight=30\n  columns=tableColumns\n  content=tableContent\n}}\n</pre>\n      </div>\n    </div>\n\n    <div class=\"col-md-12 bumper-30\">\n      <h3>Controller</h3>\n      <div class=\"highlight\">\n        <pre class=\"prettyprint lang-js\">import Ember from &#39;ember&#39;;\nimport ColumnDefinition from &#39;ember-table&#x2F;models&#x2F;column-definition&#39;;\n\nexport default Ember.Controller.extend({\n  &#x2F;&#x2F; TODO(azirbel): Don&#39;t use setInterval in an Ember application\n  init: function() {\n    &#x2F;&#x2F; TODO(azirbel): Call this._super()\n    var _this = this;\n    setInterval(function() {\n      _this.get(&#39;tableContent&#39;).forEach(function(item) {\n        item.set(&#39;value1&#39;, _this.getNextValue(item.get(&#39;value1&#39;)));\n        item.set(&#39;value2&#39;, _this.getNextValue(item.get(&#39;value2&#39;)));\n        item.set(&#39;value3&#39;, _this.getNextValue(item.get(&#39;value3&#39;)));\n        item.set(&#39;value4&#39;, _this.getNextValue(item.get(&#39;value4&#39;)));\n        item.set(&#39;value5&#39;, _this.getNextValue(item.get(&#39;value5&#39;)));\n      });\n    }, 1500);\n  },\n\n  getNextValue: function(current) {\n    current = current + (Math.random() * 10 - 5);\n    current = Math.min(100, current);\n    current = Math.max(0, current);\n    return current;\n  },\n\n  tableColumns: Ember.computed(function() {\n    var colors = [&#39;blue&#39;, &#39;teal&#39;, &#39;green&#39;, &#39;yellow&#39;, &#39;orange&#39;];\n    var firstColumn = ColumnDefinition.create({\n      savedWidth: 50,\n      headerCellName: &#39;Name&#39;,\n      contentPath: &#39;key&#39;\n    });\n    var columns = colors.map(function(color, index) {\n      return ColumnDefinition.create({\n        color: color,\n        headerCellName: &#39;Bar&#39;,\n        tableCellViewClass: &#39;bar-table-cell&#39;,\n        contentPath: &#39;value&#39; + (index + 1)\n      });\n    });\n    columns.unshift(firstColumn);\n    return columns;\n  }),\n\n  tableContent: Ember.computed(function() {\n    var content = [];\n    for (var i = 0; i &lt; 100; i++) {\n      content.pushObject(Ember.Object.create({\n        key: i,\n        value1: Math.random() * 80 + 10,\n        value2: Math.random() * 80 + 10,\n        value3: Math.random() * 80 + 10,\n        value4: Math.random() * 80 + 10,\n        value5: Math.random() * 80 + 10\n      }));\n    }\n    return content;\n  })\n});\n</pre>\n      </div>\n    </div>\n\n    <div class=\"col-md-12 bumper-30\">\n      <h3>views/bar-table-cell.js</h3>\n      <div class=\"highlight\">\n        <pre class=\"prettyprint lang-js\">import Ember from &#39;ember&#39;;\nimport TableCell from &#39;ember-table&#x2F;views&#x2F;table-cell&#39;;\n\nexport default TableCell.extend({\n  templateName: &#39;bar_table&#x2F;bar-cell&#39;,\n  classNameBindings: [&#39;column.color&#39;],\n\n  barWidth: Ember.computed(function() {\n    var properties = this.getProperties(&#39;column&#39;, &#39;row&#39;);\n    var column = properties.column;\n    var row = properties.row;\n    if (!(column &amp;&amp; row)) {\n      return 0;\n    }\n    return Math.round(+this.get(&#39;cellContent&#39;));\n  }).property(&#39;column&#39;, &#39;row&#39;, &#39;cellContent&#39;),\n\n  histogramStyle: Ember.computed(function() {\n    return &#39;width: &#39; + (this.get(&#39;barWidth&#39;)) + &#39;%;&#39;;\n  }).property(&#39;barWidth&#39;)\n});\n</pre>\n      </div>\n    </div>\n\n    <div class=\"col-md-12 bumper-30\">\n      <h3>templates/bar-table/bar-cell.hbs</h3>\n      <div class=\"highlight\">\n        <pre class=\"prettyprint lang-html\">&lt;span class=&quot;bar-cell&quot; {{bind-attr style=&quot;view.histogramStyle&quot;}}&gt;\n&lt;&#x2F;span&gt;\n</pre>\n      </div>\n    </div>\n  </div>\n</div>\n");
-    return buffer;
-  },"useData":true});
+  exports['default'] = Ember.HTMLBars.template((function() {
+    return {
+      isHTMLBars: true,
+      blockParams: 0,
+      cachedFragment: null,
+      hasRendered: false,
+      build: function build(dom) {
+        var el0 = dom.createDocumentFragment();
+        var el1 = dom.createElement("div");
+        dom.setAttribute(el1,"class","col-md-10 col-md-offset-2 left-border main-content-container");
+        var el2 = dom.createTextNode("\n  ");
+        dom.appendChild(el1, el2);
+        var el2 = dom.createElement("h1");
+        var el3 = dom.createTextNode("Ember Table ");
+        dom.appendChild(el2, el3);
+        var el3 = dom.createElement("small");
+        var el4 = dom.createTextNode("Dynamic Bar");
+        dom.appendChild(el3, el4);
+        dom.appendChild(el2, el3);
+        dom.appendChild(el1, el2);
+        var el2 = dom.createTextNode("\n\n  ");
+        dom.appendChild(el1, el2);
+        var el2 = dom.createElement("div");
+        dom.setAttribute(el2,"class","row");
+        var el3 = dom.createTextNode("\n    ");
+        dom.appendChild(el2, el3);
+        var el3 = dom.createElement("div");
+        dom.setAttribute(el3,"class","col-md-12");
+        var el4 = dom.createTextNode("\n      ");
+        dom.appendChild(el3, el4);
+        var el4 = dom.createElement("div");
+        dom.setAttribute(el4,"class","example-container");
+        var el5 = dom.createTextNode("\n        ");
+        dom.appendChild(el4, el5);
+        var el5 = dom.createElement("div");
+        dom.setAttribute(el5,"class","ember-table-example-container");
+        var el6 = dom.createTextNode("\n          ");
+        dom.appendChild(el5, el6);
+        var el6 = dom.createTextNode("\n        ");
+        dom.appendChild(el5, el6);
+        dom.appendChild(el4, el5);
+        var el5 = dom.createTextNode("\n      ");
+        dom.appendChild(el4, el5);
+        dom.appendChild(el3, el4);
+        var el4 = dom.createTextNode("\n    ");
+        dom.appendChild(el3, el4);
+        dom.appendChild(el2, el3);
+        var el3 = dom.createTextNode("\n\n    ");
+        dom.appendChild(el2, el3);
+        var el3 = dom.createElement("div");
+        dom.setAttribute(el3,"class","col-md-12 bumper-30");
+        var el4 = dom.createTextNode("\n      ");
+        dom.appendChild(el3, el4);
+        var el4 = dom.createElement("h3");
+        var el5 = dom.createTextNode("Template");
+        dom.appendChild(el4, el5);
+        dom.appendChild(el3, el4);
+        var el4 = dom.createTextNode("\n      ");
+        dom.appendChild(el3, el4);
+        var el4 = dom.createElement("div");
+        dom.setAttribute(el4,"class","highlight");
+        var el5 = dom.createTextNode("\n        ");
+        dom.appendChild(el4, el5);
+        var el5 = dom.createElement("pre");
+        dom.setAttribute(el5,"class","prettyprint lang-html");
+        var el6 = dom.createTextNode("{{ember-table\n  hasHeader=true\n  hasFooter=false\n  rowHeight=30\n  columns=tableColumns\n  content=tableContent\n}}\n");
+        dom.appendChild(el5, el6);
+        dom.appendChild(el4, el5);
+        var el5 = dom.createTextNode("\n      ");
+        dom.appendChild(el4, el5);
+        dom.appendChild(el3, el4);
+        var el4 = dom.createTextNode("\n    ");
+        dom.appendChild(el3, el4);
+        dom.appendChild(el2, el3);
+        var el3 = dom.createTextNode("\n\n    ");
+        dom.appendChild(el2, el3);
+        var el3 = dom.createElement("div");
+        dom.setAttribute(el3,"class","col-md-12 bumper-30");
+        var el4 = dom.createTextNode("\n      ");
+        dom.appendChild(el3, el4);
+        var el4 = dom.createElement("h3");
+        var el5 = dom.createTextNode("Controller");
+        dom.appendChild(el4, el5);
+        dom.appendChild(el3, el4);
+        var el4 = dom.createTextNode("\n      ");
+        dom.appendChild(el3, el4);
+        var el4 = dom.createElement("div");
+        dom.setAttribute(el4,"class","highlight");
+        var el5 = dom.createTextNode("\n        ");
+        dom.appendChild(el4, el5);
+        var el5 = dom.createElement("pre");
+        dom.setAttribute(el5,"class","prettyprint lang-js");
+        var el6 = dom.createTextNode("import Ember from &#39;ember&#39;;\nimport ColumnDefinition from &#39;ember-table&#x2F;models&#x2F;column-definition&#39;;\n\nexport default Ember.Controller.extend({\n  &#x2F;&#x2F; TODO(azirbel): Don&#39;t use setInterval in an Ember application\n  init: function() {\n    &#x2F;&#x2F; TODO(azirbel): Call this._super()\n    var _this = this;\n    setInterval(function() {\n      _this.get(&#39;tableContent&#39;).forEach(function(item) {\n        item.set(&#39;value1&#39;, _this.getNextValue(item.get(&#39;value1&#39;)));\n        item.set(&#39;value2&#39;, _this.getNextValue(item.get(&#39;value2&#39;)));\n        item.set(&#39;value3&#39;, _this.getNextValue(item.get(&#39;value3&#39;)));\n        item.set(&#39;value4&#39;, _this.getNextValue(item.get(&#39;value4&#39;)));\n        item.set(&#39;value5&#39;, _this.getNextValue(item.get(&#39;value5&#39;)));\n      });\n    }, 1500);\n  },\n\n  getNextValue: function(current) {\n    current = current + (Math.random() * 10 - 5);\n    current = Math.min(100, current);\n    current = Math.max(0, current);\n    return current;\n  },\n\n  tableColumns: Ember.computed(function() {\n    var colors = [&#39;blue&#39;, &#39;teal&#39;, &#39;green&#39;, &#39;yellow&#39;, &#39;orange&#39;];\n    var firstColumn = ColumnDefinition.create({\n      savedWidth: 50,\n      headerCellName: &#39;Name&#39;,\n      contentPath: &#39;key&#39;\n    });\n    var columns = colors.map(function(color, index) {\n      return ColumnDefinition.create({\n        color: color,\n        headerCellName: &#39;Bar&#39;,\n        tableCellViewClass: &#39;bar-table-cell&#39;,\n        contentPath: &#39;value&#39; + (index + 1)\n      });\n    });\n    columns.unshift(firstColumn);\n    return columns;\n  }),\n\n  tableContent: Ember.computed(function() {\n    var content = [];\n    for (var i = 0; i &lt; 100; i++) {\n      content.pushObject(Ember.Object.create({\n        key: i,\n        value1: Math.random() * 80 + 10,\n        value2: Math.random() * 80 + 10,\n        value3: Math.random() * 80 + 10,\n        value4: Math.random() * 80 + 10,\n        value5: Math.random() * 80 + 10\n      }));\n    }\n    return content;\n  })\n});\n");
+        dom.appendChild(el5, el6);
+        dom.appendChild(el4, el5);
+        var el5 = dom.createTextNode("\n      ");
+        dom.appendChild(el4, el5);
+        dom.appendChild(el3, el4);
+        var el4 = dom.createTextNode("\n    ");
+        dom.appendChild(el3, el4);
+        dom.appendChild(el2, el3);
+        var el3 = dom.createTextNode("\n\n    ");
+        dom.appendChild(el2, el3);
+        var el3 = dom.createElement("div");
+        dom.setAttribute(el3,"class","col-md-12 bumper-30");
+        var el4 = dom.createTextNode("\n      ");
+        dom.appendChild(el3, el4);
+        var el4 = dom.createElement("h3");
+        var el5 = dom.createTextNode("views/bar-table-cell.js");
+        dom.appendChild(el4, el5);
+        dom.appendChild(el3, el4);
+        var el4 = dom.createTextNode("\n      ");
+        dom.appendChild(el3, el4);
+        var el4 = dom.createElement("div");
+        dom.setAttribute(el4,"class","highlight");
+        var el5 = dom.createTextNode("\n        ");
+        dom.appendChild(el4, el5);
+        var el5 = dom.createElement("pre");
+        dom.setAttribute(el5,"class","prettyprint lang-js");
+        var el6 = dom.createTextNode("import Ember from &#39;ember&#39;;\nimport TableCell from &#39;ember-table&#x2F;views&#x2F;table-cell&#39;;\n\nexport default TableCell.extend({\n  templateName: &#39;bar_table&#x2F;bar-cell&#39;,\n  classNameBindings: [&#39;column.color&#39;],\n\n  barWidth: Ember.computed(function() {\n    var properties = this.getProperties(&#39;column&#39;, &#39;row&#39;);\n    var column = properties.column;\n    var row = properties.row;\n    if (!(column &amp;&amp; row)) {\n      return 0;\n    }\n    return Math.round(+this.get(&#39;cellContent&#39;));\n  }).property(&#39;column&#39;, &#39;row&#39;, &#39;cellContent&#39;),\n\n  histogramStyle: Ember.computed(function() {\n    return &#39;width: &#39; + (this.get(&#39;barWidth&#39;)) + &#39;%;&#39;;\n  }).property(&#39;barWidth&#39;)\n});\n");
+        dom.appendChild(el5, el6);
+        dom.appendChild(el4, el5);
+        var el5 = dom.createTextNode("\n      ");
+        dom.appendChild(el4, el5);
+        dom.appendChild(el3, el4);
+        var el4 = dom.createTextNode("\n    ");
+        dom.appendChild(el3, el4);
+        dom.appendChild(el2, el3);
+        var el3 = dom.createTextNode("\n\n    ");
+        dom.appendChild(el2, el3);
+        var el3 = dom.createElement("div");
+        dom.setAttribute(el3,"class","col-md-12 bumper-30");
+        var el4 = dom.createTextNode("\n      ");
+        dom.appendChild(el3, el4);
+        var el4 = dom.createElement("h3");
+        var el5 = dom.createTextNode("templates/bar-table/bar-cell.hbs");
+        dom.appendChild(el4, el5);
+        dom.appendChild(el3, el4);
+        var el4 = dom.createTextNode("\n      ");
+        dom.appendChild(el3, el4);
+        var el4 = dom.createElement("div");
+        dom.setAttribute(el4,"class","highlight");
+        var el5 = dom.createTextNode("\n        ");
+        dom.appendChild(el4, el5);
+        var el5 = dom.createElement("pre");
+        dom.setAttribute(el5,"class","prettyprint lang-html");
+        var el6 = dom.createTextNode("&lt;span class=&quot;bar-cell&quot; {{bind-attr style=&quot;view.histogramStyle&quot;}}&gt;\n&lt;&#x2F;span&gt;\n");
+        dom.appendChild(el5, el6);
+        dom.appendChild(el4, el5);
+        var el5 = dom.createTextNode("\n      ");
+        dom.appendChild(el4, el5);
+        dom.appendChild(el3, el4);
+        var el4 = dom.createTextNode("\n    ");
+        dom.appendChild(el3, el4);
+        dom.appendChild(el2, el3);
+        var el3 = dom.createTextNode("\n  ");
+        dom.appendChild(el2, el3);
+        dom.appendChild(el1, el2);
+        var el2 = dom.createTextNode("\n");
+        dom.appendChild(el1, el2);
+        dom.appendChild(el0, el1);
+        var el1 = dom.createTextNode("\n");
+        dom.appendChild(el0, el1);
+        return el0;
+      },
+      render: function render(context, env, contextualElement) {
+        var dom = env.dom;
+        var hooks = env.hooks, inline = hooks.inline;
+        dom.detectNamespace(contextualElement);
+        var fragment;
+        if (env.useFragmentCache && dom.canClone) {
+          if (this.cachedFragment === null) {
+            fragment = this.build(dom);
+            if (this.hasRendered) {
+              this.cachedFragment = fragment;
+            } else {
+              this.hasRendered = true;
+            }
+          }
+          if (this.cachedFragment) {
+            fragment = dom.cloneNode(this.cachedFragment, true);
+          }
+        } else {
+          fragment = this.build(dom);
+        }
+        var morph0 = dom.createMorphAt(dom.childAt(fragment, [0, 3, 1, 1, 1]),0,1);
+        inline(env, morph0, context, "partial", ["dynamic-bar-table/dynamic-bar-table"], {});
+        return fragment;
+      }
+    };
+  }()));
 
 });
 define('dummy/templates/editable-table/editable-table-cell', ['exports'], function (exports) {
 
   'use strict';
 
-  exports['default'] = Ember.Handlebars.template({"1":function(depth0,helpers,partials,data) {
-    var escapeExpression=this.escapeExpression, buffer = '';
-    data.buffer.push("    ");
-    data.buffer.push(escapeExpression(helpers.view.call(depth0, "view.innerTextField", {"name":"view","hash":{},"hashTypes":{},"hashContexts":{},"types":["ID"],"contexts":[depth0],"data":data})));
-    data.buffer.push("\n");
-    return buffer;
-  },"3":function(depth0,helpers,partials,data) {
-    var stack1, buffer = '';
-    data.buffer.push("    <span class='content'>");
-    stack1 = helpers._triageMustache.call(depth0, "view.cellContent", {"name":"_triageMustache","hash":{},"hashTypes":{},"hashContexts":{},"types":["ID"],"contexts":[depth0],"data":data});
-    if (stack1 != null) { data.buffer.push(stack1); }
-    data.buffer.push("</span>\n");
-    return buffer;
-  },"compiler":[6,">= 2.0.0-beta.1"],"main":function(depth0,helpers,partials,data) {
-    var stack1, buffer = '';
-    data.buffer.push("<span class=\"ember-table-content\">\n");
-    stack1 = helpers['if'].call(depth0, "view.isEditing", {"name":"if","hash":{},"hashTypes":{},"hashContexts":{},"fn":this.program(1, data),"inverse":this.program(3, data),"types":["ID"],"contexts":[depth0],"data":data});
-    if (stack1 != null) { data.buffer.push(stack1); }
-    data.buffer.push("</span>");
-    return buffer;
-  },"useData":true});
+  exports['default'] = Ember.HTMLBars.template((function() {
+    var child0 = (function() {
+      return {
+        isHTMLBars: true,
+        blockParams: 0,
+        cachedFragment: null,
+        hasRendered: false,
+        build: function build(dom) {
+          var el0 = dom.createDocumentFragment();
+          var el1 = dom.createTextNode("    ");
+          dom.appendChild(el0, el1);
+          var el1 = dom.createTextNode("\n");
+          dom.appendChild(el0, el1);
+          return el0;
+        },
+        render: function render(context, env, contextualElement) {
+          var dom = env.dom;
+          var hooks = env.hooks, get = hooks.get, inline = hooks.inline;
+          dom.detectNamespace(contextualElement);
+          var fragment;
+          if (env.useFragmentCache && dom.canClone) {
+            if (this.cachedFragment === null) {
+              fragment = this.build(dom);
+              if (this.hasRendered) {
+                this.cachedFragment = fragment;
+              } else {
+                this.hasRendered = true;
+              }
+            }
+            if (this.cachedFragment) {
+              fragment = dom.cloneNode(this.cachedFragment, true);
+            }
+          } else {
+            fragment = this.build(dom);
+          }
+          var morph0 = dom.createMorphAt(fragment,0,1,contextualElement);
+          inline(env, morph0, context, "view", [get(env, context, "view.innerTextField")], {});
+          return fragment;
+        }
+      };
+    }());
+    var child1 = (function() {
+      return {
+        isHTMLBars: true,
+        blockParams: 0,
+        cachedFragment: null,
+        hasRendered: false,
+        build: function build(dom) {
+          var el0 = dom.createDocumentFragment();
+          var el1 = dom.createTextNode("    ");
+          dom.appendChild(el0, el1);
+          var el1 = dom.createElement("span");
+          dom.setAttribute(el1,"class","content");
+          dom.appendChild(el0, el1);
+          var el1 = dom.createTextNode("\n");
+          dom.appendChild(el0, el1);
+          return el0;
+        },
+        render: function render(context, env, contextualElement) {
+          var dom = env.dom;
+          var hooks = env.hooks, content = hooks.content;
+          dom.detectNamespace(contextualElement);
+          var fragment;
+          if (env.useFragmentCache && dom.canClone) {
+            if (this.cachedFragment === null) {
+              fragment = this.build(dom);
+              if (this.hasRendered) {
+                this.cachedFragment = fragment;
+              } else {
+                this.hasRendered = true;
+              }
+            }
+            if (this.cachedFragment) {
+              fragment = dom.cloneNode(this.cachedFragment, true);
+            }
+          } else {
+            fragment = this.build(dom);
+          }
+          var morph0 = dom.createMorphAt(dom.childAt(fragment, [1]),-1,-1);
+          content(env, morph0, context, "view.cellContent");
+          return fragment;
+        }
+      };
+    }());
+    return {
+      isHTMLBars: true,
+      blockParams: 0,
+      cachedFragment: null,
+      hasRendered: false,
+      build: function build(dom) {
+        var el0 = dom.createElement("span");
+        dom.setAttribute(el0,"class","ember-table-content");
+        var el1 = dom.createTextNode("\n");
+        dom.appendChild(el0, el1);
+        return el0;
+      },
+      render: function render(context, env, contextualElement) {
+        var dom = env.dom;
+        var hooks = env.hooks, get = hooks.get, block = hooks.block;
+        dom.detectNamespace(contextualElement);
+        var fragment;
+        if (env.useFragmentCache && dom.canClone) {
+          if (this.cachedFragment === null) {
+            fragment = this.build(dom);
+            if (this.hasRendered) {
+              this.cachedFragment = fragment;
+            } else {
+              this.hasRendered = true;
+            }
+          }
+          if (this.cachedFragment) {
+            fragment = dom.cloneNode(this.cachedFragment, true);
+          }
+        } else {
+          fragment = this.build(dom);
+        }
+        var morph0 = dom.createMorphAt(fragment,0,-1);
+        block(env, morph0, context, "if", [get(env, context, "view.isEditing")], {}, child0, child1);
+        return fragment;
+      }
+    };
+  }()));
 
 });
 define('dummy/templates/editable-table/editable-table', ['exports'], function (exports) {
 
   'use strict';
 
-  exports['default'] = Ember.Handlebars.template({"compiler":[6,">= 2.0.0-beta.1"],"main":function(depth0,helpers,partials,data) {
-    var helperMissing=helpers.helperMissing, escapeExpression=this.escapeExpression, buffer = '';
-    data.buffer.push(escapeExpression(((helpers['ember-table'] || (depth0 && depth0['ember-table']) || helperMissing).call(depth0, {"name":"ember-table","hash":{
-      'content': ("tableContent"),
-      'columns': ("tableColumns"),
-      'rowHeight': (30),
-      'numFixedColumns': (0),
-      'hasFooter': (false),
-      'hasHeader': (true)
-    },"hashTypes":{'content': "ID",'columns': "ID",'rowHeight': "NUMBER",'numFixedColumns': "NUMBER",'hasFooter': "BOOLEAN",'hasHeader': "BOOLEAN"},"hashContexts":{'content': depth0,'columns': depth0,'rowHeight': depth0,'numFixedColumns': depth0,'hasFooter': depth0,'hasHeader': depth0},"types":[],"contexts":[],"data":data}))));
-    data.buffer.push("\n");
-    return buffer;
-  },"useData":true});
+  exports['default'] = Ember.HTMLBars.template((function() {
+    return {
+      isHTMLBars: true,
+      blockParams: 0,
+      cachedFragment: null,
+      hasRendered: false,
+      build: function build(dom) {
+        var el0 = dom.createDocumentFragment();
+        var el1 = dom.createTextNode("");
+        dom.appendChild(el0, el1);
+        var el1 = dom.createTextNode("\n");
+        dom.appendChild(el0, el1);
+        return el0;
+      },
+      render: function render(context, env, contextualElement) {
+        var dom = env.dom;
+        var hooks = env.hooks, get = hooks.get, inline = hooks.inline;
+        dom.detectNamespace(contextualElement);
+        var fragment;
+        if (env.useFragmentCache && dom.canClone) {
+          if (this.cachedFragment === null) {
+            fragment = this.build(dom);
+            if (this.hasRendered) {
+              this.cachedFragment = fragment;
+            } else {
+              this.hasRendered = true;
+            }
+          }
+          if (this.cachedFragment) {
+            fragment = dom.cloneNode(this.cachedFragment, true);
+          }
+        } else {
+          fragment = this.build(dom);
+        }
+        if (this.cachedFragment) { dom.repairClonedNode(fragment,[0]); }
+        var morph0 = dom.createMorphAt(fragment,0,1,contextualElement);
+        inline(env, morph0, context, "ember-table", [], {"hasHeader": true, "hasFooter": false, "numFixedColumns": 0, "rowHeight": 30, "columns": get(env, context, "tableColumns"), "content": get(env, context, "tableContent")});
+        return fragment;
+      }
+    };
+  }()));
 
 });
 define('dummy/templates/editable-table/rating-table-cell', ['exports'], function (exports) {
 
   'use strict';
 
-  exports['default'] = Ember.Handlebars.template({"compiler":[6,">= 2.0.0-beta.1"],"main":function(depth0,helpers,partials,data) {
-    data.buffer.push("<div class=\"rating\">\n  <span></span><span></span><span></span><span></span><span></span>\n</div>");
-    },"useData":true});
+  exports['default'] = Ember.HTMLBars.template((function() {
+    return {
+      isHTMLBars: true,
+      blockParams: 0,
+      cachedFragment: null,
+      hasRendered: false,
+      build: function build(dom) {
+        var el0 = dom.createElement("div");
+        dom.setAttribute(el0,"class","rating");
+        var el1 = dom.createTextNode("\n  ");
+        dom.appendChild(el0, el1);
+        var el1 = dom.createElement("span");
+        dom.appendChild(el0, el1);
+        var el1 = dom.createElement("span");
+        dom.appendChild(el0, el1);
+        var el1 = dom.createElement("span");
+        dom.appendChild(el0, el1);
+        var el1 = dom.createElement("span");
+        dom.appendChild(el0, el1);
+        var el1 = dom.createElement("span");
+        dom.appendChild(el0, el1);
+        var el1 = dom.createTextNode("\n");
+        dom.appendChild(el0, el1);
+        return el0;
+      },
+      render: function render(context, env, contextualElement) {
+        var dom = env.dom;
+        dom.detectNamespace(contextualElement);
+        var fragment;
+        if (env.useFragmentCache && dom.canClone) {
+          if (this.cachedFragment === null) {
+            fragment = this.build(dom);
+            if (this.hasRendered) {
+              this.cachedFragment = fragment;
+            } else {
+              this.hasRendered = true;
+            }
+          }
+          if (this.cachedFragment) {
+            fragment = dom.cloneNode(this.cachedFragment, true);
+          }
+        } else {
+          fragment = this.build(dom);
+        }
+        return fragment;
+      }
+    };
+  }()));
 
 });
 define('dummy/templates/editable', ['exports'], function (exports) {
 
   'use strict';
 
-  exports['default'] = Ember.Handlebars.template({"compiler":[6,">= 2.0.0-beta.1"],"main":function(depth0,helpers,partials,data) {
-    var helperMissing=helpers.helperMissing, escapeExpression=this.escapeExpression, buffer = '';
-    data.buffer.push("<div class=\"col-md-10 col-md-offset-2 left-border main-content-container\">\n  <h1>Ember Table <small>Editable</small></h1>\n\n  <div class=\"row\">\n    <div class=\"col-md-12\">\n      <div class=\"example-container\">\n        <div class=\"ember-table-example-container\">\n          ");
-    data.buffer.push(escapeExpression(((helpers.partial || (depth0 && depth0.partial) || helperMissing).call(depth0, "editable-table/editable-table", {"name":"partial","hash":{},"hashTypes":{},"hashContexts":{},"types":["STRING"],"contexts":[depth0],"data":data}))));
-    data.buffer.push("\n        </div>\n      </div>\n    </div>\n\n    <div class=\"col-md-12 bumper-30\">\n      <h3>Template</h3>\n      <div class=\"highlight\">\n        <pre class=\"prettyprint lang-html\">{{ember-table\n  hasHeader=true\n  hasFooter=false\n  numFixedColumns=0\n  rowHeight=30\n  columns=tableColumns\n  content=tableContent\n}}\n</pre>\n      </div>\n    </div>\n\n    <div class=\"col-md-12 bumper-30\">\n      <h3>Controller</h3>\n      <div class=\"highlight\">\n        <pre class=\"prettyprint lang-js\">import Ember from &#39;ember&#39;;\nimport ColumnDefinition from &#39;ember-table&#x2F;models&#x2F;column-definition&#39;;\n\nexport default Ember.Controller.extend({\n  tableColumns: Ember.computed(function() {\n    var columnNames = [&#39;open&#39;, &#39;close&#39;];\n    var dateColumn = ColumnDefinition.create({\n      savedWidth: 100,\n      headerCellName: &#39;Date&#39;,\n      tableCellViewClass: &#39;date-picker-table-cell&#39;,\n      getCellContent: function(row) {\n        return row.get(&#39;date&#39;).toString(&#39;yyyy-MM-dd&#39;);\n      },\n      setCellContent: function(row, value) {\n        return row.set(&#39;date&#39;, value);\n      }\n    });\n    var ratingColumn = ColumnDefinition.create({\n      savedWidth: 150,\n      headerCellName: &#39;Analyst Rating&#39;,\n      tableCellViewClass: &#39;rating-table-cell&#39;,\n      contentPath: &#39;rating&#39;,\n      setCellContent: function(row, value) {\n        return row.set(&#39;rating&#39;, value);\n      }\n    });\n    var columns = columnNames.map(function(key) {\n      var name;\n      name = key.charAt(0).toUpperCase() + key.slice(1);\n      return ColumnDefinition.create({\n        savedWidth: 100,\n        headerCellName: name,\n        tableCellViewClass: &#39;editable-table-cell&#39;,\n        getCellContent: function(row) {\n          return row.get(key).toFixed(2);\n        },\n        setCellContent: function(row, value) {\n          return row.set(key, +value);\n        }\n      });\n    });\n    columns.unshift(ratingColumn);\n    columns.unshift(dateColumn);\n    return columns;\n  }),\n\n  tableContent: Ember.computed(function() {\n    var content = [];\n    var date;\n    for (var i = 0; i &lt; 100; i++) {\n      date = new Date();\n      date.setDate(date.getDate() + i);\n      content.pushObject({\n        index: i,\n        date: date,\n        open: Math.random() * 100 - 50,\n        close: Math.random() * 100 - 50,\n        rating: Math.round(Math.random() * 4)\n      });\n    }\n    return content;\n  })\n});\n</pre>\n      </div>\n    </div>\n\n    <div class=\"col-md-12 bumper-30\">\n      <h3>views/editable_table_cell.js</h3>\n      <div class=\"highlight\">\n        <pre class=\"prettyprint lang-js\">import Ember from &#39;ember&#39;;\nimport TableCell from &#39;ember-table&#x2F;views&#x2F;table-cell&#39;;\n\nexport default TableCell.extend({\n  className: &#39;editable-table-cell&#39;,\n  templateName: &#39;editable-table&#x2F;editable-table-cell&#39;,\n  isEditing: false,\n  type: &#39;text&#39;,\n\n  innerTextField: Ember.TextField.extend({\n    typeBinding: &#39;parentView.type&#39;,\n    valueBinding: &#39;parentView.cellContent&#39;,\n    didInsertElement: function() {\n      this.$().focus();\n      &#x2F;&#x2F; TODO(azirbel): Call this._super()\n    },\n    focusOut: function() {\n      this.set(&#39;parentView.isEditing&#39;, false);\n    }\n  }),\n\n  onRowContentDidChange: Ember.observer(function() {\n    this.set(&#39;isEditing&#39;, false);\n  }, &#39;row.content&#39;),\n\n  click: function(event) {\n    this.set(&#39;isEditing&#39;, true);\n    event.stopPropagation();\n  }\n});\n</pre>\n      </div>\n    </div>\n\n    <div class=\"col-md-12 bumper-30\">\n      <h3>templates/editable-table/editable_table_cell.hbs</h3>\n      <div class=\"highlight\">\n        <pre class=\"prettyprint lang-html\">&lt;span class=&quot;ember-table-content&quot;&gt;\n  {{#if view.isEditing}}\n    {{view view.innerTextField}}\n  {{else}}\n    &lt;span class=&#39;content&#39;&gt;{{view.cellContent}}&lt;&#x2F;span&gt;\n  {{&#x2F;if}}\n&lt;&#x2F;span&gt;</pre>\n      </div>\n    </div>\n\n    <div class=\"col-md-12 bumper-30\">\n      <h3>templates/editable-table/rating_table_cell.hbs</h3>\n      <div class=\"highlight\">\n        <pre class=\"prettyprint lang-html\">&lt;div class=&quot;rating&quot;&gt;\n  &lt;span&gt;&lt;&#x2F;span&gt;&lt;span&gt;&lt;&#x2F;span&gt;&lt;span&gt;&lt;&#x2F;span&gt;&lt;span&gt;&lt;&#x2F;span&gt;&lt;span&gt;&lt;&#x2F;span&gt;\n&lt;&#x2F;div&gt;</pre>\n      </div>\n    </div>\n  </div>\n</div>\n");
-    return buffer;
-  },"useData":true});
+  exports['default'] = Ember.HTMLBars.template((function() {
+    return {
+      isHTMLBars: true,
+      blockParams: 0,
+      cachedFragment: null,
+      hasRendered: false,
+      build: function build(dom) {
+        var el0 = dom.createDocumentFragment();
+        var el1 = dom.createElement("div");
+        dom.setAttribute(el1,"class","col-md-10 col-md-offset-2 left-border main-content-container");
+        var el2 = dom.createTextNode("\n  ");
+        dom.appendChild(el1, el2);
+        var el2 = dom.createElement("h1");
+        var el3 = dom.createTextNode("Ember Table ");
+        dom.appendChild(el2, el3);
+        var el3 = dom.createElement("small");
+        var el4 = dom.createTextNode("Editable");
+        dom.appendChild(el3, el4);
+        dom.appendChild(el2, el3);
+        dom.appendChild(el1, el2);
+        var el2 = dom.createTextNode("\n\n  ");
+        dom.appendChild(el1, el2);
+        var el2 = dom.createElement("div");
+        dom.setAttribute(el2,"class","row");
+        var el3 = dom.createTextNode("\n    ");
+        dom.appendChild(el2, el3);
+        var el3 = dom.createElement("div");
+        dom.setAttribute(el3,"class","col-md-12");
+        var el4 = dom.createTextNode("\n      ");
+        dom.appendChild(el3, el4);
+        var el4 = dom.createElement("div");
+        dom.setAttribute(el4,"class","example-container");
+        var el5 = dom.createTextNode("\n        ");
+        dom.appendChild(el4, el5);
+        var el5 = dom.createElement("div");
+        dom.setAttribute(el5,"class","ember-table-example-container");
+        var el6 = dom.createTextNode("\n          ");
+        dom.appendChild(el5, el6);
+        var el6 = dom.createTextNode("\n        ");
+        dom.appendChild(el5, el6);
+        dom.appendChild(el4, el5);
+        var el5 = dom.createTextNode("\n      ");
+        dom.appendChild(el4, el5);
+        dom.appendChild(el3, el4);
+        var el4 = dom.createTextNode("\n    ");
+        dom.appendChild(el3, el4);
+        dom.appendChild(el2, el3);
+        var el3 = dom.createTextNode("\n\n    ");
+        dom.appendChild(el2, el3);
+        var el3 = dom.createElement("div");
+        dom.setAttribute(el3,"class","col-md-12 bumper-30");
+        var el4 = dom.createTextNode("\n      ");
+        dom.appendChild(el3, el4);
+        var el4 = dom.createElement("h3");
+        var el5 = dom.createTextNode("Template");
+        dom.appendChild(el4, el5);
+        dom.appendChild(el3, el4);
+        var el4 = dom.createTextNode("\n      ");
+        dom.appendChild(el3, el4);
+        var el4 = dom.createElement("div");
+        dom.setAttribute(el4,"class","highlight");
+        var el5 = dom.createTextNode("\n        ");
+        dom.appendChild(el4, el5);
+        var el5 = dom.createElement("pre");
+        dom.setAttribute(el5,"class","prettyprint lang-html");
+        var el6 = dom.createTextNode("{{ember-table\n  hasHeader=true\n  hasFooter=false\n  numFixedColumns=0\n  rowHeight=30\n  columns=tableColumns\n  content=tableContent\n}}\n");
+        dom.appendChild(el5, el6);
+        dom.appendChild(el4, el5);
+        var el5 = dom.createTextNode("\n      ");
+        dom.appendChild(el4, el5);
+        dom.appendChild(el3, el4);
+        var el4 = dom.createTextNode("\n    ");
+        dom.appendChild(el3, el4);
+        dom.appendChild(el2, el3);
+        var el3 = dom.createTextNode("\n\n    ");
+        dom.appendChild(el2, el3);
+        var el3 = dom.createElement("div");
+        dom.setAttribute(el3,"class","col-md-12 bumper-30");
+        var el4 = dom.createTextNode("\n      ");
+        dom.appendChild(el3, el4);
+        var el4 = dom.createElement("h3");
+        var el5 = dom.createTextNode("Controller");
+        dom.appendChild(el4, el5);
+        dom.appendChild(el3, el4);
+        var el4 = dom.createTextNode("\n      ");
+        dom.appendChild(el3, el4);
+        var el4 = dom.createElement("div");
+        dom.setAttribute(el4,"class","highlight");
+        var el5 = dom.createTextNode("\n        ");
+        dom.appendChild(el4, el5);
+        var el5 = dom.createElement("pre");
+        dom.setAttribute(el5,"class","prettyprint lang-js");
+        var el6 = dom.createTextNode("import Ember from &#39;ember&#39;;\nimport ColumnDefinition from &#39;ember-table&#x2F;models&#x2F;column-definition&#39;;\n\nexport default Ember.Controller.extend({\n  tableColumns: Ember.computed(function() {\n    var columnNames = [&#39;open&#39;, &#39;close&#39;];\n    var dateColumn = ColumnDefinition.create({\n      savedWidth: 100,\n      headerCellName: &#39;Date&#39;,\n      tableCellViewClass: &#39;date-picker-table-cell&#39;,\n      getCellContent: function(row) {\n        return row.get(&#39;date&#39;).toString(&#39;yyyy-MM-dd&#39;);\n      },\n      setCellContent: function(row, value) {\n        return row.set(&#39;date&#39;, value);\n      }\n    });\n    var ratingColumn = ColumnDefinition.create({\n      savedWidth: 150,\n      headerCellName: &#39;Analyst Rating&#39;,\n      tableCellViewClass: &#39;rating-table-cell&#39;,\n      contentPath: &#39;rating&#39;,\n      setCellContent: function(row, value) {\n        return row.set(&#39;rating&#39;, value);\n      }\n    });\n    var columns = columnNames.map(function(key) {\n      var name;\n      name = key.charAt(0).toUpperCase() + key.slice(1);\n      return ColumnDefinition.create({\n        savedWidth: 100,\n        headerCellName: name,\n        tableCellViewClass: &#39;editable-table-cell&#39;,\n        getCellContent: function(row) {\n          return row.get(key).toFixed(2);\n        },\n        setCellContent: function(row, value) {\n          return row.set(key, +value);\n        }\n      });\n    });\n    columns.unshift(ratingColumn);\n    columns.unshift(dateColumn);\n    return columns;\n  }),\n\n  tableContent: Ember.computed(function() {\n    var content = [];\n    var date;\n    for (var i = 0; i &lt; 100; i++) {\n      date = new Date();\n      date.setDate(date.getDate() + i);\n      content.pushObject({\n        index: i,\n        date: date,\n        open: Math.random() * 100 - 50,\n        close: Math.random() * 100 - 50,\n        rating: Math.round(Math.random() * 4)\n      });\n    }\n    return content;\n  })\n});\n");
+        dom.appendChild(el5, el6);
+        dom.appendChild(el4, el5);
+        var el5 = dom.createTextNode("\n      ");
+        dom.appendChild(el4, el5);
+        dom.appendChild(el3, el4);
+        var el4 = dom.createTextNode("\n    ");
+        dom.appendChild(el3, el4);
+        dom.appendChild(el2, el3);
+        var el3 = dom.createTextNode("\n\n    ");
+        dom.appendChild(el2, el3);
+        var el3 = dom.createElement("div");
+        dom.setAttribute(el3,"class","col-md-12 bumper-30");
+        var el4 = dom.createTextNode("\n      ");
+        dom.appendChild(el3, el4);
+        var el4 = dom.createElement("h3");
+        var el5 = dom.createTextNode("views/editable_table_cell.js");
+        dom.appendChild(el4, el5);
+        dom.appendChild(el3, el4);
+        var el4 = dom.createTextNode("\n      ");
+        dom.appendChild(el3, el4);
+        var el4 = dom.createElement("div");
+        dom.setAttribute(el4,"class","highlight");
+        var el5 = dom.createTextNode("\n        ");
+        dom.appendChild(el4, el5);
+        var el5 = dom.createElement("pre");
+        dom.setAttribute(el5,"class","prettyprint lang-js");
+        var el6 = dom.createTextNode("import Ember from &#39;ember&#39;;\nimport TableCell from &#39;ember-table&#x2F;views&#x2F;table-cell&#39;;\n\nexport default TableCell.extend({\n  className: &#39;editable-table-cell&#39;,\n  templateName: &#39;editable-table&#x2F;editable-table-cell&#39;,\n  isEditing: false,\n  type: &#39;text&#39;,\n\n  innerTextField: Ember.TextField.extend({\n    typeBinding: &#39;parentView.type&#39;,\n    valueBinding: &#39;parentView.cellContent&#39;,\n    didInsertElement: function() {\n      this.$().focus();\n      &#x2F;&#x2F; TODO(azirbel): Call this._super()\n    },\n    focusOut: function() {\n      this.set(&#39;parentView.isEditing&#39;, false);\n    }\n  }),\n\n  onRowContentDidChange: Ember.observer(function() {\n    this.set(&#39;isEditing&#39;, false);\n  }, &#39;row.content&#39;),\n\n  click: function(event) {\n    this.set(&#39;isEditing&#39;, true);\n    event.stopPropagation();\n  }\n});\n");
+        dom.appendChild(el5, el6);
+        dom.appendChild(el4, el5);
+        var el5 = dom.createTextNode("\n      ");
+        dom.appendChild(el4, el5);
+        dom.appendChild(el3, el4);
+        var el4 = dom.createTextNode("\n    ");
+        dom.appendChild(el3, el4);
+        dom.appendChild(el2, el3);
+        var el3 = dom.createTextNode("\n\n    ");
+        dom.appendChild(el2, el3);
+        var el3 = dom.createElement("div");
+        dom.setAttribute(el3,"class","col-md-12 bumper-30");
+        var el4 = dom.createTextNode("\n      ");
+        dom.appendChild(el3, el4);
+        var el4 = dom.createElement("h3");
+        var el5 = dom.createTextNode("templates/editable-table/editable_table_cell.hbs");
+        dom.appendChild(el4, el5);
+        dom.appendChild(el3, el4);
+        var el4 = dom.createTextNode("\n      ");
+        dom.appendChild(el3, el4);
+        var el4 = dom.createElement("div");
+        dom.setAttribute(el4,"class","highlight");
+        var el5 = dom.createTextNode("\n        ");
+        dom.appendChild(el4, el5);
+        var el5 = dom.createElement("pre");
+        dom.setAttribute(el5,"class","prettyprint lang-html");
+        var el6 = dom.createTextNode("&lt;span class=&quot;ember-table-content&quot;&gt;\n  {{#if view.isEditing}}\n    {{view view.innerTextField}}\n  {{else}}\n    &lt;span class=&#39;content&#39;&gt;{{view.cellContent}}&lt;&#x2F;span&gt;\n  {{&#x2F;if}}\n&lt;&#x2F;span&gt;");
+        dom.appendChild(el5, el6);
+        dom.appendChild(el4, el5);
+        var el5 = dom.createTextNode("\n      ");
+        dom.appendChild(el4, el5);
+        dom.appendChild(el3, el4);
+        var el4 = dom.createTextNode("\n    ");
+        dom.appendChild(el3, el4);
+        dom.appendChild(el2, el3);
+        var el3 = dom.createTextNode("\n\n    ");
+        dom.appendChild(el2, el3);
+        var el3 = dom.createElement("div");
+        dom.setAttribute(el3,"class","col-md-12 bumper-30");
+        var el4 = dom.createTextNode("\n      ");
+        dom.appendChild(el3, el4);
+        var el4 = dom.createElement("h3");
+        var el5 = dom.createTextNode("templates/editable-table/rating_table_cell.hbs");
+        dom.appendChild(el4, el5);
+        dom.appendChild(el3, el4);
+        var el4 = dom.createTextNode("\n      ");
+        dom.appendChild(el3, el4);
+        var el4 = dom.createElement("div");
+        dom.setAttribute(el4,"class","highlight");
+        var el5 = dom.createTextNode("\n        ");
+        dom.appendChild(el4, el5);
+        var el5 = dom.createElement("pre");
+        dom.setAttribute(el5,"class","prettyprint lang-html");
+        var el6 = dom.createTextNode("&lt;div class=&quot;rating&quot;&gt;\n  &lt;span&gt;&lt;&#x2F;span&gt;&lt;span&gt;&lt;&#x2F;span&gt;&lt;span&gt;&lt;&#x2F;span&gt;&lt;span&gt;&lt;&#x2F;span&gt;&lt;span&gt;&lt;&#x2F;span&gt;\n&lt;&#x2F;div&gt;");
+        dom.appendChild(el5, el6);
+        dom.appendChild(el4, el5);
+        var el5 = dom.createTextNode("\n      ");
+        dom.appendChild(el4, el5);
+        dom.appendChild(el3, el4);
+        var el4 = dom.createTextNode("\n    ");
+        dom.appendChild(el3, el4);
+        dom.appendChild(el2, el3);
+        var el3 = dom.createTextNode("\n  ");
+        dom.appendChild(el2, el3);
+        dom.appendChild(el1, el2);
+        var el2 = dom.createTextNode("\n");
+        dom.appendChild(el1, el2);
+        dom.appendChild(el0, el1);
+        var el1 = dom.createTextNode("\n");
+        dom.appendChild(el0, el1);
+        return el0;
+      },
+      render: function render(context, env, contextualElement) {
+        var dom = env.dom;
+        var hooks = env.hooks, inline = hooks.inline;
+        dom.detectNamespace(contextualElement);
+        var fragment;
+        if (env.useFragmentCache && dom.canClone) {
+          if (this.cachedFragment === null) {
+            fragment = this.build(dom);
+            if (this.hasRendered) {
+              this.cachedFragment = fragment;
+            } else {
+              this.hasRendered = true;
+            }
+          }
+          if (this.cachedFragment) {
+            fragment = dom.cloneNode(this.cachedFragment, true);
+          }
+        } else {
+          fragment = this.build(dom);
+        }
+        var morph0 = dom.createMorphAt(dom.childAt(fragment, [0, 3, 1, 1, 1]),0,1);
+        inline(env, morph0, context, "partial", ["editable-table/editable-table"], {});
+        return fragment;
+      }
+    };
+  }()));
 
 });
 define('dummy/templates/empty-cell', ['exports'], function (exports) {
 
   'use strict';
 
-  exports['default'] = Ember.Handlebars.template({"compiler":[6,">= 2.0.0-beta.1"],"main":function(depth0,helpers,partials,data) {
-    return "";
-  },"useData":true});
+  exports['default'] = Ember.HTMLBars.template((function() {
+    return {
+      isHTMLBars: true,
+      blockParams: 0,
+      cachedFragment: null,
+      hasRendered: false,
+      build: function build(dom) {
+        var el0 = dom.createDocumentFragment();
+        return el0;
+      },
+      render: function render(context, env, contextualElement) {
+        var dom = env.dom;
+        dom.detectNamespace(contextualElement);
+        var fragment;
+        if (env.useFragmentCache && dom.canClone) {
+          if (this.cachedFragment === null) {
+            fragment = this.build(dom);
+            if (this.hasRendered) {
+              this.cachedFragment = fragment;
+            } else {
+              this.hasRendered = true;
+            }
+          }
+          if (this.cachedFragment) {
+            fragment = dom.cloneNode(this.cachedFragment, true);
+          }
+        } else {
+          fragment = this.build(dom);
+        }
+        return fragment;
+      }
+    };
+  }()));
 
 });
 define('dummy/templates/financial-table/financial-table-cell', ['exports'], function (exports) {
 
   'use strict';
 
-  exports['default'] = Ember.Handlebars.template({"compiler":[6,">= 2.0.0-beta.1"],"main":function(depth0,helpers,partials,data) {
-    var stack1, buffer = '';
-    data.buffer.push("<div class=\"ember-table-cell-container\">\n  <span class=\"ember-table-content\">\n    ");
-    stack1 = helpers._triageMustache.call(depth0, "view.cellContent", {"name":"_triageMustache","hash":{},"hashTypes":{},"hashContexts":{},"types":["ID"],"contexts":[depth0],"data":data});
-    if (stack1 != null) { data.buffer.push(stack1); }
-    data.buffer.push("\n  </span>\n</div>");
-    return buffer;
-  },"useData":true});
+  exports['default'] = Ember.HTMLBars.template((function() {
+    return {
+      isHTMLBars: true,
+      blockParams: 0,
+      cachedFragment: null,
+      hasRendered: false,
+      build: function build(dom) {
+        var el0 = dom.createElement("div");
+        dom.setAttribute(el0,"class","ember-table-cell-container");
+        var el1 = dom.createTextNode("\n  ");
+        dom.appendChild(el0, el1);
+        var el1 = dom.createElement("span");
+        dom.setAttribute(el1,"class","ember-table-content");
+        var el2 = dom.createTextNode("\n    ");
+        dom.appendChild(el1, el2);
+        var el2 = dom.createTextNode("\n  ");
+        dom.appendChild(el1, el2);
+        dom.appendChild(el0, el1);
+        var el1 = dom.createTextNode("\n");
+        dom.appendChild(el0, el1);
+        return el0;
+      },
+      render: function render(context, env, contextualElement) {
+        var dom = env.dom;
+        var hooks = env.hooks, content = hooks.content;
+        dom.detectNamespace(contextualElement);
+        var fragment;
+        if (env.useFragmentCache && dom.canClone) {
+          if (this.cachedFragment === null) {
+            fragment = this.build(dom);
+            if (this.hasRendered) {
+              this.cachedFragment = fragment;
+            } else {
+              this.hasRendered = true;
+            }
+          }
+          if (this.cachedFragment) {
+            fragment = dom.cloneNode(this.cachedFragment, true);
+          }
+        } else {
+          fragment = this.build(dom);
+        }
+        var morph0 = dom.createMorphAt(dom.childAt(fragment, [1]),0,1);
+        content(env, morph0, context, "view.cellContent");
+        return fragment;
+      }
+    };
+  }()));
 
 });
 define('dummy/templates/financial-table/financial-table-header-cell', ['exports'], function (exports) {
 
   'use strict';
 
-  exports['default'] = Ember.Handlebars.template({"compiler":[6,">= 2.0.0-beta.1"],"main":function(depth0,helpers,partials,data) {
-    var stack1, buffer = '';
-    data.buffer.push("<div class=\"ember-table-cell-container\">\n  <div class=\"ember-table-header-content-container\">\n    <span class=\"ember-table-content\">\n      ");
-    stack1 = helpers._triageMustache.call(depth0, "view.content.headerCellName", {"name":"_triageMustache","hash":{},"hashTypes":{},"hashContexts":{},"types":["ID"],"contexts":[depth0],"data":data});
-    if (stack1 != null) { data.buffer.push(stack1); }
-    data.buffer.push("\n    </span>\n  </div>\n</div>");
-    return buffer;
-  },"useData":true});
+  exports['default'] = Ember.HTMLBars.template((function() {
+    return {
+      isHTMLBars: true,
+      blockParams: 0,
+      cachedFragment: null,
+      hasRendered: false,
+      build: function build(dom) {
+        var el0 = dom.createElement("div");
+        dom.setAttribute(el0,"class","ember-table-cell-container");
+        var el1 = dom.createTextNode("\n  ");
+        dom.appendChild(el0, el1);
+        var el1 = dom.createElement("div");
+        dom.setAttribute(el1,"class","ember-table-header-content-container");
+        var el2 = dom.createTextNode("\n    ");
+        dom.appendChild(el1, el2);
+        var el2 = dom.createElement("span");
+        dom.setAttribute(el2,"class","ember-table-content");
+        var el3 = dom.createTextNode("\n      ");
+        dom.appendChild(el2, el3);
+        var el3 = dom.createTextNode("\n    ");
+        dom.appendChild(el2, el3);
+        dom.appendChild(el1, el2);
+        var el2 = dom.createTextNode("\n  ");
+        dom.appendChild(el1, el2);
+        dom.appendChild(el0, el1);
+        var el1 = dom.createTextNode("\n");
+        dom.appendChild(el0, el1);
+        return el0;
+      },
+      render: function render(context, env, contextualElement) {
+        var dom = env.dom;
+        var hooks = env.hooks, content = hooks.content;
+        dom.detectNamespace(contextualElement);
+        var fragment;
+        if (env.useFragmentCache && dom.canClone) {
+          if (this.cachedFragment === null) {
+            fragment = this.build(dom);
+            if (this.hasRendered) {
+              this.cachedFragment = fragment;
+            } else {
+              this.hasRendered = true;
+            }
+          }
+          if (this.cachedFragment) {
+            fragment = dom.cloneNode(this.cachedFragment, true);
+          }
+        } else {
+          fragment = this.build(dom);
+        }
+        var morph0 = dom.createMorphAt(dom.childAt(fragment, [1, 1]),0,1);
+        content(env, morph0, context, "view.content.headerCellName");
+        return fragment;
+      }
+    };
+  }()));
 
 });
 define('dummy/templates/financial-table/financial-table-header-tree-cell', ['exports'], function (exports) {
 
   'use strict';
 
-  exports['default'] = Ember.Handlebars.template({"compiler":[6,">= 2.0.0-beta.1"],"main":function(depth0,helpers,partials,data) {
-    var stack1, escapeExpression=this.escapeExpression, helperMissing=helpers.helperMissing, buffer = '';
-    data.buffer.push("<div class=\"ember-table-cell-container\">\n  <span ");
-    data.buffer.push(escapeExpression(helpers['bind-attr'].call(depth0, {"name":"bind-attr","hash":{
-      'class': (":ember-table-toggle-span :ember-table-toggle\n      isCollapsed:ember-table-expand:ember-table-collapse")
-    },"hashTypes":{'class': "STRING"},"hashContexts":{'class': depth0},"types":[],"contexts":[],"data":data})));
-    data.buffer.push("\n      ");
-    data.buffer.push(escapeExpression(helpers.action.call(depth0, "toggleTableCollapse", {"name":"action","hash":{},"hashTypes":{},"hashContexts":{},"types":["STRING"],"contexts":[depth0],"data":data})));
-    data.buffer.push(">\n    ");
-    data.buffer.push(escapeExpression(((helpers['fa-icon'] || (depth0 && depth0['fa-icon']) || helperMissing).call(depth0, "caret-down", {"name":"fa-icon","hash":{
-      'classNames': ("ember-table-toggle-icon")
-    },"hashTypes":{'classNames': "STRING"},"hashContexts":{'classNames': depth0},"types":["STRING"],"contexts":[depth0],"data":data}))));
-    data.buffer.push("\n  </span>\n  <div class=\"ember-table-header-content-container\">\n    <span class=\"ember-table-content\">\n      ");
-    stack1 = helpers._triageMustache.call(depth0, "view.column.headerCellName", {"name":"_triageMustache","hash":{},"hashTypes":{},"hashContexts":{},"types":["ID"],"contexts":[depth0],"data":data});
-    if (stack1 != null) { data.buffer.push(stack1); }
-    data.buffer.push("\n    </span>\n  </div>\n</div>\n");
-    return buffer;
-  },"useData":true});
+  exports['default'] = Ember.HTMLBars.template((function() {
+    return {
+      isHTMLBars: true,
+      blockParams: 0,
+      cachedFragment: null,
+      hasRendered: false,
+      build: function build(dom) {
+        var el0 = dom.createDocumentFragment();
+        var el1 = dom.createElement("div");
+        dom.setAttribute(el1,"class","ember-table-cell-container");
+        var el2 = dom.createTextNode("\n  ");
+        dom.appendChild(el1, el2);
+        var el2 = dom.createElement("span");
+        var el3 = dom.createTextNode("\n    ");
+        dom.appendChild(el2, el3);
+        var el3 = dom.createTextNode("\n  ");
+        dom.appendChild(el2, el3);
+        dom.appendChild(el1, el2);
+        var el2 = dom.createTextNode("\n  ");
+        dom.appendChild(el1, el2);
+        var el2 = dom.createElement("div");
+        dom.setAttribute(el2,"class","ember-table-header-content-container");
+        var el3 = dom.createTextNode("\n    ");
+        dom.appendChild(el2, el3);
+        var el3 = dom.createElement("span");
+        dom.setAttribute(el3,"class","ember-table-content");
+        var el4 = dom.createTextNode("\n      ");
+        dom.appendChild(el3, el4);
+        var el4 = dom.createTextNode("\n    ");
+        dom.appendChild(el3, el4);
+        dom.appendChild(el2, el3);
+        var el3 = dom.createTextNode("\n  ");
+        dom.appendChild(el2, el3);
+        dom.appendChild(el1, el2);
+        var el2 = dom.createTextNode("\n");
+        dom.appendChild(el1, el2);
+        dom.appendChild(el0, el1);
+        var el1 = dom.createTextNode("\n");
+        dom.appendChild(el0, el1);
+        return el0;
+      },
+      render: function render(context, env, contextualElement) {
+        var dom = env.dom;
+        var hooks = env.hooks, element = hooks.element, inline = hooks.inline, content = hooks.content;
+        dom.detectNamespace(contextualElement);
+        var fragment;
+        if (env.useFragmentCache && dom.canClone) {
+          if (this.cachedFragment === null) {
+            fragment = this.build(dom);
+            if (this.hasRendered) {
+              this.cachedFragment = fragment;
+            } else {
+              this.hasRendered = true;
+            }
+          }
+          if (this.cachedFragment) {
+            fragment = dom.cloneNode(this.cachedFragment, true);
+          }
+        } else {
+          fragment = this.build(dom);
+        }
+        var element0 = dom.childAt(fragment, [0]);
+        var element1 = dom.childAt(element0, [1]);
+        var morph0 = dom.createMorphAt(element1,0,1);
+        var morph1 = dom.createMorphAt(dom.childAt(element0, [3, 1]),0,1);
+        element(env, element1, context, "bind-attr", [], {"class": ":ember-table-toggle-span :ember-table-toggle\n      isCollapsed:ember-table-expand:ember-table-collapse"});
+        element(env, element1, context, "action", ["toggleTableCollapse"], {});
+        inline(env, morph0, context, "fa-icon", ["caret-down"], {"classNames": "ember-table-toggle-icon"});
+        content(env, morph1, context, "view.column.headerCellName");
+        return fragment;
+      }
+    };
+  }()));
 
 });
 define('dummy/templates/financial-table/financial-table-tree-cell', ['exports'], function (exports) {
 
   'use strict';
 
-  exports['default'] = Ember.Handlebars.template({"compiler":[6,">= 2.0.0-beta.1"],"main":function(depth0,helpers,partials,data) {
-    var stack1, escapeExpression=this.escapeExpression, helperMissing=helpers.helperMissing, buffer = '';
-    data.buffer.push("<div class=\"ember-table-cell-container\" ");
-    data.buffer.push(escapeExpression(helpers['bind-attr'].call(depth0, {"name":"bind-attr","hash":{
-      'style': ("view.paddingStyle")
-    },"hashTypes":{'style': "STRING"},"hashContexts":{'style': depth0},"types":[],"contexts":[],"data":data})));
-    data.buffer.push(">\n  <span ");
-    data.buffer.push(escapeExpression(helpers['bind-attr'].call(depth0, {"name":"bind-attr","hash":{
-      'class': (":ember-table-toggle-span view.row.isLeaf::ember-table-toggle\n    view.row.isCollapsed:ember-table-expand:ember-table-collapse")
-    },"hashTypes":{'class': "STRING"},"hashContexts":{'class': depth0},"types":[],"contexts":[],"data":data})));
-    data.buffer.push("\n    ");
-    data.buffer.push(escapeExpression(helpers.action.call(depth0, "toggleCollapse", "view.row", {"name":"action","hash":{},"hashTypes":{},"hashContexts":{},"types":["STRING","ID"],"contexts":[depth0,depth0],"data":data})));
-    data.buffer.push(">\n    ");
-    data.buffer.push(escapeExpression(((helpers['fa-icon'] || (depth0 && depth0['fa-icon']) || helperMissing).call(depth0, "caret-down", {"name":"fa-icon","hash":{
-      'classNames': ("ember-table-toggle-icon")
-    },"hashTypes":{'classNames': "STRING"},"hashContexts":{'classNames': depth0},"types":["STRING"],"contexts":[depth0],"data":data}))));
-    data.buffer.push("\n  </span>\n  <span class=\"ember-table-content\">\n    ");
-    stack1 = helpers._triageMustache.call(depth0, "view.cellContent", {"name":"_triageMustache","hash":{},"hashTypes":{},"hashContexts":{},"types":["ID"],"contexts":[depth0],"data":data});
-    if (stack1 != null) { data.buffer.push(stack1); }
-    data.buffer.push("\n  </span>\n</div>\n");
-    return buffer;
-  },"useData":true});
+  exports['default'] = Ember.HTMLBars.template((function() {
+    return {
+      isHTMLBars: true,
+      blockParams: 0,
+      cachedFragment: null,
+      hasRendered: false,
+      build: function build(dom) {
+        var el0 = dom.createDocumentFragment();
+        var el1 = dom.createElement("div");
+        dom.setAttribute(el1,"class","ember-table-cell-container");
+        var el2 = dom.createTextNode("\n  ");
+        dom.appendChild(el1, el2);
+        var el2 = dom.createElement("span");
+        var el3 = dom.createTextNode("\n    ");
+        dom.appendChild(el2, el3);
+        var el3 = dom.createTextNode("\n  ");
+        dom.appendChild(el2, el3);
+        dom.appendChild(el1, el2);
+        var el2 = dom.createTextNode("\n  ");
+        dom.appendChild(el1, el2);
+        var el2 = dom.createElement("span");
+        dom.setAttribute(el2,"class","ember-table-content");
+        var el3 = dom.createTextNode("\n    ");
+        dom.appendChild(el2, el3);
+        var el3 = dom.createTextNode("\n  ");
+        dom.appendChild(el2, el3);
+        dom.appendChild(el1, el2);
+        var el2 = dom.createTextNode("\n");
+        dom.appendChild(el1, el2);
+        dom.appendChild(el0, el1);
+        var el1 = dom.createTextNode("\n");
+        dom.appendChild(el0, el1);
+        return el0;
+      },
+      render: function render(context, env, contextualElement) {
+        var dom = env.dom;
+        var hooks = env.hooks, element = hooks.element, get = hooks.get, inline = hooks.inline, content = hooks.content;
+        dom.detectNamespace(contextualElement);
+        var fragment;
+        if (env.useFragmentCache && dom.canClone) {
+          if (this.cachedFragment === null) {
+            fragment = this.build(dom);
+            if (this.hasRendered) {
+              this.cachedFragment = fragment;
+            } else {
+              this.hasRendered = true;
+            }
+          }
+          if (this.cachedFragment) {
+            fragment = dom.cloneNode(this.cachedFragment, true);
+          }
+        } else {
+          fragment = this.build(dom);
+        }
+        var element0 = dom.childAt(fragment, [0]);
+        var element1 = dom.childAt(element0, [1]);
+        var morph0 = dom.createMorphAt(element1,0,1);
+        var morph1 = dom.createMorphAt(dom.childAt(element0, [3]),0,1);
+        element(env, element0, context, "bind-attr", [], {"style": "view.paddingStyle"});
+        element(env, element1, context, "bind-attr", [], {"class": ":ember-table-toggle-span view.row.isLeaf::ember-table-toggle\n    view.row.isCollapsed:ember-table-expand:ember-table-collapse"});
+        element(env, element1, context, "action", ["toggleCollapse", get(env, context, "view.row")], {});
+        inline(env, morph0, context, "fa-icon", ["caret-down"], {"classNames": "ember-table-toggle-icon"});
+        content(env, morph1, context, "view.cellContent");
+        return fragment;
+      }
+    };
+  }()));
 
 });
 define('dummy/templates/financial-table/financial-table', ['exports'], function (exports) {
 
   'use strict';
 
-  exports['default'] = Ember.Handlebars.template({"compiler":[6,">= 2.0.0-beta.1"],"main":function(depth0,helpers,partials,data) {
-    var helperMissing=helpers.helperMissing, escapeExpression=this.escapeExpression, buffer = '';
-    data.buffer.push(escapeExpression(((helpers['financial-table'] || (depth0 && depth0['financial-table']) || helperMissing).call(depth0, {"name":"financial-table","hash":{
-      'data': ("data")
-    },"hashTypes":{'data': "ID"},"hashContexts":{'data': depth0},"types":[],"contexts":[],"data":data}))));
-    data.buffer.push("\n");
-    return buffer;
-  },"useData":true});
+  exports['default'] = Ember.HTMLBars.template((function() {
+    return {
+      isHTMLBars: true,
+      blockParams: 0,
+      cachedFragment: null,
+      hasRendered: false,
+      build: function build(dom) {
+        var el0 = dom.createDocumentFragment();
+        var el1 = dom.createTextNode("");
+        dom.appendChild(el0, el1);
+        var el1 = dom.createTextNode("\n");
+        dom.appendChild(el0, el1);
+        return el0;
+      },
+      render: function render(context, env, contextualElement) {
+        var dom = env.dom;
+        var hooks = env.hooks, get = hooks.get, inline = hooks.inline;
+        dom.detectNamespace(contextualElement);
+        var fragment;
+        if (env.useFragmentCache && dom.canClone) {
+          if (this.cachedFragment === null) {
+            fragment = this.build(dom);
+            if (this.hasRendered) {
+              this.cachedFragment = fragment;
+            } else {
+              this.hasRendered = true;
+            }
+          }
+          if (this.cachedFragment) {
+            fragment = dom.cloneNode(this.cachedFragment, true);
+          }
+        } else {
+          fragment = this.build(dom);
+        }
+        if (this.cachedFragment) { dom.repairClonedNode(fragment,[0]); }
+        var morph0 = dom.createMorphAt(fragment,0,1,contextualElement);
+        inline(env, morph0, context, "financial-table", [], {"data": get(env, context, "data")});
+        return fragment;
+      }
+    };
+  }()));
 
 });
 define('dummy/templates/financial', ['exports'], function (exports) {
 
   'use strict';
 
-  exports['default'] = Ember.Handlebars.template({"compiler":[6,">= 2.0.0-beta.1"],"main":function(depth0,helpers,partials,data) {
-    var helperMissing=helpers.helperMissing, escapeExpression=this.escapeExpression, buffer = '';
-    data.buffer.push("<div class=\"col-md-10 col-md-offset-2 left-border main-content-container\">\n  <h1>Ember Table <small>Financial Table</small></h1>\n\n  <div class=\"row\">\n    <div class=\"col-md-12\">\n      <div class=\"example-container\">\n        <div class=\"ember-table-example-container ember-table-financial\">\n          ");
-    data.buffer.push(escapeExpression(((helpers.partial || (depth0 && depth0.partial) || helperMissing).call(depth0, "financial-table/financial-table", {"name":"partial","hash":{},"hashTypes":{},"hashContexts":{},"types":["STRING"],"contexts":[depth0],"data":data}))));
-    data.buffer.push("\n        </div>\n      </div>\n    </div>\n\n    <div class=\"col-md-12 bumper-30\">\n      <h3>Template</h3>\n      <div class=\"highlight\">\n        <pre class=\"prettyprint lang-html\">{{financial-table\n  data=data\n}}\n</pre>\n      </div>\n    </div>\n\n    <div class=\"col-md-12 bumper-30\">\n      <h3>Controller</h3>\n      <div class=\"highlight\">\n        <pre class=\"prettyprint lang-js\">import Ember from &#39;ember&#39;;\nimport Treedata from &#39;..&#x2F;models&#x2F;treedata&#39;;\n\nexport default Ember.Controller.extend({\n  data: Ember.computed(function() {\n    return Treedata;\n  })\n});\n</pre>\n      </div>\n    </div>\n\n    <div class=\"col-md-12 bumper-30\">\n      <h3>components/financial-table.js</h3>\n      <div class=\"highlight\">\n        <pre class=\"prettyprint lang-js\">import Ember from &#39;ember&#39;;\nimport TableComponent from &#39;ember-table&#x2F;components&#x2F;ember-table&#39;;\nimport ColumnDefinition from &#39;ember-table&#x2F;models&#x2F;column-definition&#39;;\nimport FinancialTableTreeRow from &#39;..&#x2F;views&#x2F;financial-table-tree-row&#39;;\nimport NumberFormatHelpers from &#39;..&#x2F;utils&#x2F;number-format&#39;;\n\nexport default TableComponent.extend({\n  &#x2F;&#x2F; Overriding default properties\n  layoutName: &#39;components&#x2F;ember-table&#39;,\n  numFixedColumns: 1,\n  isCollapsed: false,\n  isHeaderHeightResizable: true,\n  rowHeight: 30,\n  hasHeader: true,\n  hasFooter: true,\n  headerHeight: 70,\n\n  &#x2F;&#x2F; Custom properties\n  sortAscending: false,\n  sortColumn: null,\n\n  &#x2F;&#x2F;&#x2F;&#x2F;&#x2F;&#x2F;&#x2F;&#x2F;&#x2F;&#x2F;&#x2F;&#x2F;&#x2F;&#x2F;&#x2F;&#x2F;&#x2F;&#x2F;&#x2F;&#x2F;&#x2F;&#x2F;&#x2F;&#x2F;&#x2F;&#x2F;&#x2F;&#x2F;&#x2F;&#x2F;&#x2F;&#x2F;&#x2F;&#x2F;&#x2F;&#x2F;&#x2F;&#x2F;&#x2F;&#x2F;&#x2F;&#x2F;&#x2F;&#x2F;&#x2F;&#x2F;&#x2F;&#x2F;&#x2F;&#x2F;&#x2F;&#x2F;&#x2F;&#x2F;&#x2F;&#x2F;&#x2F;&#x2F;&#x2F;&#x2F;&#x2F;&#x2F;&#x2F;&#x2F;&#x2F;&#x2F;&#x2F;&#x2F;&#x2F;&#x2F;&#x2F;&#x2F;&#x2F;&#x2F;&#x2F;&#x2F;&#x2F;\n  &#x2F;&#x2F; Data conversions\n  &#x2F;&#x2F;&#x2F;&#x2F;&#x2F;&#x2F;&#x2F;&#x2F;&#x2F;&#x2F;&#x2F;&#x2F;&#x2F;&#x2F;&#x2F;&#x2F;&#x2F;&#x2F;&#x2F;&#x2F;&#x2F;&#x2F;&#x2F;&#x2F;&#x2F;&#x2F;&#x2F;&#x2F;&#x2F;&#x2F;&#x2F;&#x2F;&#x2F;&#x2F;&#x2F;&#x2F;&#x2F;&#x2F;&#x2F;&#x2F;&#x2F;&#x2F;&#x2F;&#x2F;&#x2F;&#x2F;&#x2F;&#x2F;&#x2F;&#x2F;&#x2F;&#x2F;&#x2F;&#x2F;&#x2F;&#x2F;&#x2F;&#x2F;&#x2F;&#x2F;&#x2F;&#x2F;&#x2F;&#x2F;&#x2F;&#x2F;&#x2F;&#x2F;&#x2F;&#x2F;&#x2F;&#x2F;&#x2F;&#x2F;&#x2F;&#x2F;&#x2F;\n\n  data: null,\n\n  columns: Ember.computed(function() {\n    var data = this.get(&#39;data&#39;);\n    if (!data) {\n      return;\n    }\n    var names = this.get(&#39;data.value_factors&#39;).getEach(&#39;display_name&#39;);\n    var columns = names.map(function(name, index) {\n      return ColumnDefinition.create({\n        index: index,\n        headerCellName: name,\n        headerCellView: &#39;financial-table-header-cell&#39;,\n        tableCellView: &#39;financial-table-cell&#39;,\n        getCellContent: function(row) {\n          var object = row.get(&#39;values&#39;)[this.get(&#39;index&#39;)];\n          if (object.type === &#39;money&#39;) {\n            return NumberFormatHelpers.toCurrency(object.value);\n          }\n          if (object.type === &#39;percent&#39;) {\n            return NumberFormatHelpers.toPercent(object.value);\n          }\n          return &#39;-&#39;;\n        }\n      });\n    });\n    columns.unshiftObject(this.get(&#39;groupingColumn&#39;));\n    return columns;\n  }).property(&#39;data.valueFactors.@each&#39;, &#39;groupingColumn&#39;),\n\n  groupingColumn: Ember.computed(function() {\n    var groupingFactors = this.get(&#39;data.grouping_factors&#39;);\n    var name = groupingFactors.getEach(&#39;display_name&#39;).join(&#39; ▸ &#39;);\n    return ColumnDefinition.create({\n      headerCellName: name,\n      savedWidth: 400,\n      isTreeColumn: true,\n      isSortable: false,\n      textAlign: &#39;text-align-left&#39;,\n      headerCellView: &#39;financial-table-header-tree-cell&#39;,\n      tableCellView: &#39;financial-table-tree-cell&#39;,\n      contentPath: &#39;group_value&#39;\n    });\n  }).property(&#39;data.grouping_factors.@each&#39;),\n\n  root: Ember.computed(function() {\n    var data = this.get(&#39;data&#39;);\n    if (!data) {\n      return;\n    }\n    return this.createTree(null, data.root);\n  }).property(&#39;data&#39;, &#39;sortAscending&#39;, &#39;sortColumn&#39;),\n\n  rows: Ember.computed(function() {\n    var root = this.get(&#39;root&#39;);\n    if (!root) {\n      return Ember.A();\n    }\n    var rows = this.flattenTree(null, root, Ember.A());\n    this.computeStyles(null, root);\n    var maxGroupingLevel = Math.max.apply(rows.getEach(&#39;groupingLevel&#39;));\n    rows.forEach(function(row) {\n      return row.computeRowStyle(maxGroupingLevel);\n    });\n    return rows;\n  }).property(&#39;root&#39;),\n\n  &#x2F;&#x2F; OPTIMIZATION HACK\n  bodyContent: Ember.computed(function() {\n    var rows = this.get(&#39;rows&#39;);\n    if (!rows) {\n      return Ember.A();\n    }\n    rows = rows.slice(1, rows.get(&#39;length&#39;));\n    return rows.filterProperty(&#39;isShowing&#39;);\n  }).property(&#39;rows&#39;),\n\n  footerContent: Ember.computed(function() {\n    var rows = this.get(&#39;rows&#39;);\n    if (!rows) {\n      return Ember.A();\n    }\n    return rows.slice(0, 1);\n  }).property(&#39;rows&#39;),\n\n  orderBy: function(item1, item2) {\n    var sortColumn = this.get(&#39;sortColumn&#39;);\n    var sortAscending = this.get(&#39;sortAscending&#39;);\n    if (!sortColumn) {\n      return 1;\n    }\n    var value1 = sortColumn.getCellContent(item1.get(&#39;content&#39;));\n    var value2 = sortColumn.getCellContent(item2.get(&#39;content&#39;));\n    var result = Ember.compare(value1, value2);\n    if (sortAscending) {\n      return result;\n    } else {\n      return -result;\n    }\n  },\n\n  createTree: function(parent, node) {\n    var row = FinancialTableTreeRow.create({ parentController: this });\n    &#x2F;&#x2F; TODO(azirbel): better map function and _this use\n    var children = (node.children || []).map((function(_this) {\n      return function(child) {\n        return _this.createTree(row, child);\n      };\n    })(this));\n    &#x2F;&#x2F; TODO(Peter): Hack... only collapse table if it should collapseByDefault\n    &#x2F;&#x2F; and it is not the root. Currently the total row is the root, and if it\n    &#x2F;&#x2F; is collapse, it causes nothing to show in the table and there is no way\n    &#x2F;&#x2F; to get expand it.\n    row.setProperties({\n      isRoot: !parent,\n      isLeaf: Ember.isEmpty(children),\n      content: node,\n      parent: parent,\n      children: children,\n      groupName: node.group_name,\n      isCollapsed: false\n    });\n    return row;\n  },\n\n  &#x2F;&#x2F; TODO(azirbel): Don&#39;t use the word &#39;parent&#39;\n  flattenTree: function(parent, node, rows) {\n    rows.pushObject(node);\n    (node.children || []).forEach((function(_this) {\n      return function(child) {\n        return _this.flattenTree(node, child, rows);\n      };\n    })(this));\n    return rows;\n  },\n\n  computeStyles: function(parent, node) {\n    node.computeStyles(parent);\n    node.get(&#39;children&#39;).forEach((function(_this) {\n      return function(child) {\n        _this.computeStyles(node, child);\n      };\n    })(this));\n  },\n\n  actions: {\n    toggleTableCollapse: function() {\n      var isCollapsed = this.toggleProperty(&#39;isCollapsed&#39;);\n      var children = this.get(&#39;root.children&#39;);\n      if (!(children &amp;&amp; children.get(&#39;length&#39;) &gt; 0)) {\n        return;\n      }\n      children.forEach(function(child) {\n        return child.recursiveCollapse(isCollapsed);\n      });\n      return this.notifyPropertyChange(&#39;rows&#39;);\n    },\n\n    toggleCollapse: function(row) {\n      row.toggleProperty(&#39;isCollapsed&#39;);\n      Ember.run.next(this, function() {\n        this.notifyPropertyChange(&#39;rows&#39;);\n      });\n    }\n  },\n});\n</pre>\n      </div>\n    </div>\n\n    <div class=\"col-md-12 bumper-30\">\n      <h3>views/financial-table-cell.js</h3>\n      <div class=\"highlight\">\n        <pre class=\"prettyprint lang-js\">import TableCell from &#39;ember-table&#x2F;views&#x2F;table-cell&#39;;\n\nexport default TableCell.extend({\n  templateName: &#39;financial-table&#x2F;financial-table-cell&#39;\n});\n</pre>\n      </div>\n    </div>\n    \n    <div class=\"col-md-12 bumper-30\">\n      <h3>templates/financial-table/financial-table-cell.hbs</h3>\n      <div class=\"highlight\">\n        <pre class=\"prettyprint lang-html\">&lt;div class=&quot;ember-table-cell-container&quot;&gt;\n  &lt;span class=&quot;ember-table-content&quot;&gt;\n    {{view.cellContent}}\n  &lt;&#x2F;span&gt;\n&lt;&#x2F;div&gt;</pre>\n      </div>\n    </div>\n\n    <div class=\"col-md-12 bumper-30\">\n      <h3>views/financial-table-header-cell.js</h3>\n      <div class=\"highlight\">\n        <pre class=\"prettyprint lang-js\">import HeaderCell from &#39;ember-table&#x2F;views&#x2F;header-cell&#39;;\n\nexport default HeaderCell.extend({\n  templateName: &#39;financial-table&#x2F;financial-table-header-cell&#39;\n});\n</pre>\n      </div>\n    </div>\n\n    <div class=\"col-md-12 bumper-30\">\n      <h3>templates/financial-table/financial-table-tree-cell.hbs</h3>\n      <div class=\"highlight\">\n        <pre class=\"prettyprint lang-html\">&lt;div class=&quot;ember-table-cell-container&quot; {{bind-attr style=&quot;view.paddingStyle&quot;}}&gt;\n  &lt;span {{bind-attr class=&quot;:ember-table-toggle-span view.row.isLeaf::ember-table-toggle\n    view.row.isCollapsed:ember-table-expand:ember-table-collapse&quot;}}\n    {{action &#39;toggleCollapse&#39; view.row}}&gt;\n    {{fa-icon &quot;caret-down&quot; classNames=&quot;ember-table-toggle-icon&quot;}}\n  &lt;&#x2F;span&gt;\n  &lt;span class=&quot;ember-table-content&quot;&gt;\n    {{view.cellContent}}\n  &lt;&#x2F;span&gt;\n&lt;&#x2F;div&gt;\n</pre>\n      </div>\n    </div>\n\n    <div class=\"col-md-12 bumper-30\">\n      <h3>views/financial-table-header-tree-cell.js</h3>\n      <div class=\"highlight\">\n        <pre class=\"prettyprint lang-js\">import HeaderCell from &#39;ember-table&#x2F;views&#x2F;header-cell&#39;;\n\nexport default HeaderCell.extend({\n  templateName: &#39;financial-table&#x2F;financial-table-header-tree-cell&#39;,\n  classNames:   &#39;ember-table-table-header-tree-cell&#39;\n});\n</pre>\n      </div>\n    </div>\n\n    <div class=\"col-md-12 bumper-30\">\n      <h3>templates/financial-table/financial-table-header-cell.hbs</h3>\n      <div class=\"highlight\">\n        <pre class=\"prettyprint lang-html\">&lt;div class=&quot;ember-table-cell-container&quot;&gt;\n  &lt;div class=&quot;ember-table-header-content-container&quot;&gt;\n    &lt;span class=&quot;ember-table-content&quot;&gt;\n      {{view.content.headerCellName}}\n    &lt;&#x2F;span&gt;\n  &lt;&#x2F;div&gt;\n&lt;&#x2F;div&gt;</pre>\n      </div>\n    </div>\n\n    <div class=\"col-md-12 bumper-30\">\n      <h3>views/financial-table-tree-cell.js</h3>\n      <div class=\"highlight\">\n        <pre class=\"prettyprint lang-js\">import Ember from &#39;ember&#39;;\nimport TableCell from &#39;ember-table&#x2F;views&#x2F;table-cell&#39;;\n\nexport default TableCell.extend({\n  templateName: &#39;financial-table&#x2F;financial-table-tree-cell&#39;,\n  classNames: &#39;ember-table-table-tree-cell&#39;,\n\n  paddingStyle: Ember.computed(function() {\n    return &#39;padding-left:&#39; + (this.get(&#39;row.indentation&#39;)) + &#39;px;&#39;;\n  }).property(&#39;row.indentation&#39;)\n});\n</pre>\n      </div>\n    </div>\n\n    <div class=\"col-md-12 bumper-30\">\n      <h3>templates/financial-table/financial-table-header-tree-cell.hbs</h3>\n      <div class=\"highlight\">\n        <pre class=\"prettyprint lang-html\">&lt;div class=&quot;ember-table-cell-container&quot;&gt;\n  &lt;span {{bind-attr class=&quot;:ember-table-toggle-span :ember-table-toggle\n      isCollapsed:ember-table-expand:ember-table-collapse&quot;}}\n      {{action &#39;toggleTableCollapse&#39;}}&gt;\n    {{fa-icon &quot;caret-down&quot; classNames=&quot;ember-table-toggle-icon&quot;}}\n  &lt;&#x2F;span&gt;\n  &lt;div class=&quot;ember-table-header-content-container&quot;&gt;\n    &lt;span class=&quot;ember-table-content&quot;&gt;\n      {{view.column.headerCellName}}\n    &lt;&#x2F;span&gt;\n  &lt;&#x2F;div&gt;\n&lt;&#x2F;div&gt;\n</pre>\n      </div>\n    </div>\n\n    <div class=\"col-md-12 bumper-30\">\n      <h3>views/financial-table-tree-row.js</h3>\n      <div class=\"highlight\">\n        <pre class=\"prettyprint lang-js\">import Row from &#39;ember-table&#x2F;controllers&#x2F;row&#39;;\n\nexport default Row.extend({\n  content: null,\n  children: null,\n  parent: null,\n  isRoot: false,\n  isLeaf: false,\n  isCollapsed: false,\n  isShowing: true,\n  indentationSpacing: 20,\n  groupName: null,\n\n  computeStyles: function(parent) {\n    var groupingLevel, indentType, indentation, isShowing, pGroupingLevel, spacing;\n    groupingLevel = 0;\n    indentation = 0;\n    isShowing = true;\n    if (parent) {\n      isShowing = parent.get(&#39;isShowing&#39;) &amp;&amp; !parent.get(&#39;isCollapsed&#39;);\n      pGroupingLevel = parent.get(&#39;groupingLevel&#39;);\n      groupingLevel = pGroupingLevel;\n      if (parent.get(&#39;groupName&#39;) !== this.get(&#39;groupName&#39;)) {\n        groupingLevel += 1;\n      }\n      indentType = groupingLevel === pGroupingLevel ? &#39;half&#39; : &#39;full&#39;;\n      spacing = this.get(&#39;indentationSpacing&#39;);\n      if (!parent.get(&#39;isRoot&#39;)) {\n        indentation = parent.get(&#39;indentation&#39;);\n        indentation += (indentType === &#39;half&#39; ? spacing &#x2F; 2 : spacing);\n      }\n    }\n    this.set(&#39;groupingLevel&#39;, groupingLevel);\n    this.set(&#39;indentation&#39;, indentation);\n    this.set(&#39;isShowing&#39;, isShowing);\n  },\n\n  computeRowStyle: function(maxLevels) {\n    var level;\n    level = this.getFormattingLevel(this.get(&#39;groupingLevel&#39;), maxLevels);\n    this.set(&#39;rowStyle&#39;, &#39;ember-table-row-style-&#39; + level);\n  },\n\n  recursiveCollapse: function(isCollapsed) {\n    this.set(&#39;isCollapsed&#39;, isCollapsed);\n    this.get(&#39;children&#39;).forEach(function(child) {\n      child.recursiveCollapse(isCollapsed);\n    });\n  },\n\n  getFormattingLevel: function(level, maxLevels) {\n    switch (maxLevels) {\n      case 1:\n        return 5;\n      case 2:\n        if (level === 1) {\n          return 2;\n        }\n        return 5;\n      case 3:\n        if (level === 1) {\n          return 1;\n        }\n        if (level === 2) {\n          return 3;\n        }\n        return 5;\n      case 4:\n        if (level === 1) {\n          return 1;\n        }\n        if (level === 2) {\n          return 2;\n        }\n        if (level === 4) {\n          return 4;\n        }\n        return 5;\n      case 5:\n        return level;\n      default:\n        if (level === maxLevels) {\n          return 5;\n        }\n        return Math.min(level, 4);\n    }\n  }\n});\n</pre>\n      </div>\n    </div>\n  </div>\n</div>\n");
-    return buffer;
-  },"useData":true});
+  exports['default'] = Ember.HTMLBars.template((function() {
+    return {
+      isHTMLBars: true,
+      blockParams: 0,
+      cachedFragment: null,
+      hasRendered: false,
+      build: function build(dom) {
+        var el0 = dom.createDocumentFragment();
+        var el1 = dom.createElement("div");
+        dom.setAttribute(el1,"class","col-md-10 col-md-offset-2 left-border main-content-container");
+        var el2 = dom.createTextNode("\n  ");
+        dom.appendChild(el1, el2);
+        var el2 = dom.createElement("h1");
+        var el3 = dom.createTextNode("Ember Table ");
+        dom.appendChild(el2, el3);
+        var el3 = dom.createElement("small");
+        var el4 = dom.createTextNode("Financial Table");
+        dom.appendChild(el3, el4);
+        dom.appendChild(el2, el3);
+        dom.appendChild(el1, el2);
+        var el2 = dom.createTextNode("\n\n  ");
+        dom.appendChild(el1, el2);
+        var el2 = dom.createElement("div");
+        dom.setAttribute(el2,"class","row");
+        var el3 = dom.createTextNode("\n    ");
+        dom.appendChild(el2, el3);
+        var el3 = dom.createElement("div");
+        dom.setAttribute(el3,"class","col-md-12");
+        var el4 = dom.createTextNode("\n      ");
+        dom.appendChild(el3, el4);
+        var el4 = dom.createElement("div");
+        dom.setAttribute(el4,"class","example-container");
+        var el5 = dom.createTextNode("\n        ");
+        dom.appendChild(el4, el5);
+        var el5 = dom.createElement("div");
+        dom.setAttribute(el5,"class","ember-table-example-container ember-table-financial");
+        var el6 = dom.createTextNode("\n          ");
+        dom.appendChild(el5, el6);
+        var el6 = dom.createTextNode("\n        ");
+        dom.appendChild(el5, el6);
+        dom.appendChild(el4, el5);
+        var el5 = dom.createTextNode("\n      ");
+        dom.appendChild(el4, el5);
+        dom.appendChild(el3, el4);
+        var el4 = dom.createTextNode("\n    ");
+        dom.appendChild(el3, el4);
+        dom.appendChild(el2, el3);
+        var el3 = dom.createTextNode("\n\n    ");
+        dom.appendChild(el2, el3);
+        var el3 = dom.createElement("div");
+        dom.setAttribute(el3,"class","col-md-12 bumper-30");
+        var el4 = dom.createTextNode("\n      ");
+        dom.appendChild(el3, el4);
+        var el4 = dom.createElement("h3");
+        var el5 = dom.createTextNode("Template");
+        dom.appendChild(el4, el5);
+        dom.appendChild(el3, el4);
+        var el4 = dom.createTextNode("\n      ");
+        dom.appendChild(el3, el4);
+        var el4 = dom.createElement("div");
+        dom.setAttribute(el4,"class","highlight");
+        var el5 = dom.createTextNode("\n        ");
+        dom.appendChild(el4, el5);
+        var el5 = dom.createElement("pre");
+        dom.setAttribute(el5,"class","prettyprint lang-html");
+        var el6 = dom.createTextNode("{{financial-table\n  data=data\n}}\n");
+        dom.appendChild(el5, el6);
+        dom.appendChild(el4, el5);
+        var el5 = dom.createTextNode("\n      ");
+        dom.appendChild(el4, el5);
+        dom.appendChild(el3, el4);
+        var el4 = dom.createTextNode("\n    ");
+        dom.appendChild(el3, el4);
+        dom.appendChild(el2, el3);
+        var el3 = dom.createTextNode("\n\n    ");
+        dom.appendChild(el2, el3);
+        var el3 = dom.createElement("div");
+        dom.setAttribute(el3,"class","col-md-12 bumper-30");
+        var el4 = dom.createTextNode("\n      ");
+        dom.appendChild(el3, el4);
+        var el4 = dom.createElement("h3");
+        var el5 = dom.createTextNode("Controller");
+        dom.appendChild(el4, el5);
+        dom.appendChild(el3, el4);
+        var el4 = dom.createTextNode("\n      ");
+        dom.appendChild(el3, el4);
+        var el4 = dom.createElement("div");
+        dom.setAttribute(el4,"class","highlight");
+        var el5 = dom.createTextNode("\n        ");
+        dom.appendChild(el4, el5);
+        var el5 = dom.createElement("pre");
+        dom.setAttribute(el5,"class","prettyprint lang-js");
+        var el6 = dom.createTextNode("import Ember from &#39;ember&#39;;\nimport Treedata from &#39;..&#x2F;models&#x2F;treedata&#39;;\n\nexport default Ember.Controller.extend({\n  data: Ember.computed(function() {\n    return Treedata;\n  })\n});\n");
+        dom.appendChild(el5, el6);
+        dom.appendChild(el4, el5);
+        var el5 = dom.createTextNode("\n      ");
+        dom.appendChild(el4, el5);
+        dom.appendChild(el3, el4);
+        var el4 = dom.createTextNode("\n    ");
+        dom.appendChild(el3, el4);
+        dom.appendChild(el2, el3);
+        var el3 = dom.createTextNode("\n\n    ");
+        dom.appendChild(el2, el3);
+        var el3 = dom.createElement("div");
+        dom.setAttribute(el3,"class","col-md-12 bumper-30");
+        var el4 = dom.createTextNode("\n      ");
+        dom.appendChild(el3, el4);
+        var el4 = dom.createElement("h3");
+        var el5 = dom.createTextNode("components/financial-table.js");
+        dom.appendChild(el4, el5);
+        dom.appendChild(el3, el4);
+        var el4 = dom.createTextNode("\n      ");
+        dom.appendChild(el3, el4);
+        var el4 = dom.createElement("div");
+        dom.setAttribute(el4,"class","highlight");
+        var el5 = dom.createTextNode("\n        ");
+        dom.appendChild(el4, el5);
+        var el5 = dom.createElement("pre");
+        dom.setAttribute(el5,"class","prettyprint lang-js");
+        var el6 = dom.createTextNode("import Ember from &#39;ember&#39;;\nimport TableComponent from &#39;ember-table&#x2F;components&#x2F;ember-table&#39;;\nimport ColumnDefinition from &#39;ember-table&#x2F;models&#x2F;column-definition&#39;;\nimport FinancialTableTreeRow from &#39;..&#x2F;views&#x2F;financial-table-tree-row&#39;;\nimport NumberFormatHelpers from &#39;..&#x2F;utils&#x2F;number-format&#39;;\n\nexport default TableComponent.extend({\n  &#x2F;&#x2F; Overriding default properties\n  layoutName: &#39;components&#x2F;ember-table&#39;,\n  numFixedColumns: 1,\n  isCollapsed: false,\n  isHeaderHeightResizable: true,\n  rowHeight: 30,\n  hasHeader: true,\n  hasFooter: true,\n  headerHeight: 70,\n\n  &#x2F;&#x2F; Custom properties\n  sortAscending: false,\n  sortColumn: null,\n\n  &#x2F;&#x2F;&#x2F;&#x2F;&#x2F;&#x2F;&#x2F;&#x2F;&#x2F;&#x2F;&#x2F;&#x2F;&#x2F;&#x2F;&#x2F;&#x2F;&#x2F;&#x2F;&#x2F;&#x2F;&#x2F;&#x2F;&#x2F;&#x2F;&#x2F;&#x2F;&#x2F;&#x2F;&#x2F;&#x2F;&#x2F;&#x2F;&#x2F;&#x2F;&#x2F;&#x2F;&#x2F;&#x2F;&#x2F;&#x2F;&#x2F;&#x2F;&#x2F;&#x2F;&#x2F;&#x2F;&#x2F;&#x2F;&#x2F;&#x2F;&#x2F;&#x2F;&#x2F;&#x2F;&#x2F;&#x2F;&#x2F;&#x2F;&#x2F;&#x2F;&#x2F;&#x2F;&#x2F;&#x2F;&#x2F;&#x2F;&#x2F;&#x2F;&#x2F;&#x2F;&#x2F;&#x2F;&#x2F;&#x2F;&#x2F;&#x2F;&#x2F;\n  &#x2F;&#x2F; Data conversions\n  &#x2F;&#x2F;&#x2F;&#x2F;&#x2F;&#x2F;&#x2F;&#x2F;&#x2F;&#x2F;&#x2F;&#x2F;&#x2F;&#x2F;&#x2F;&#x2F;&#x2F;&#x2F;&#x2F;&#x2F;&#x2F;&#x2F;&#x2F;&#x2F;&#x2F;&#x2F;&#x2F;&#x2F;&#x2F;&#x2F;&#x2F;&#x2F;&#x2F;&#x2F;&#x2F;&#x2F;&#x2F;&#x2F;&#x2F;&#x2F;&#x2F;&#x2F;&#x2F;&#x2F;&#x2F;&#x2F;&#x2F;&#x2F;&#x2F;&#x2F;&#x2F;&#x2F;&#x2F;&#x2F;&#x2F;&#x2F;&#x2F;&#x2F;&#x2F;&#x2F;&#x2F;&#x2F;&#x2F;&#x2F;&#x2F;&#x2F;&#x2F;&#x2F;&#x2F;&#x2F;&#x2F;&#x2F;&#x2F;&#x2F;&#x2F;&#x2F;&#x2F;\n\n  data: null,\n\n  columns: Ember.computed(function() {\n    var data = this.get(&#39;data&#39;);\n    if (!data) {\n      return;\n    }\n    var names = this.get(&#39;data.value_factors&#39;).getEach(&#39;display_name&#39;);\n    var columns = names.map(function(name, index) {\n      return ColumnDefinition.create({\n        index: index,\n        headerCellName: name,\n        headerCellView: &#39;financial-table-header-cell&#39;,\n        tableCellView: &#39;financial-table-cell&#39;,\n        getCellContent: function(row) {\n          var object = row.get(&#39;values&#39;)[this.get(&#39;index&#39;)];\n          if (object.type === &#39;money&#39;) {\n            return NumberFormatHelpers.toCurrency(object.value);\n          }\n          if (object.type === &#39;percent&#39;) {\n            return NumberFormatHelpers.toPercent(object.value);\n          }\n          return &#39;-&#39;;\n        }\n      });\n    });\n    columns.unshiftObject(this.get(&#39;groupingColumn&#39;));\n    return columns;\n  }).property(&#39;data.valueFactors.@each&#39;, &#39;groupingColumn&#39;),\n\n  groupingColumn: Ember.computed(function() {\n    var groupingFactors = this.get(&#39;data.grouping_factors&#39;);\n    var name = groupingFactors.getEach(&#39;display_name&#39;).join(&#39; ▸ &#39;);\n    return ColumnDefinition.create({\n      headerCellName: name,\n      savedWidth: 400,\n      isTreeColumn: true,\n      isSortable: false,\n      textAlign: &#39;text-align-left&#39;,\n      headerCellView: &#39;financial-table-header-tree-cell&#39;,\n      tableCellView: &#39;financial-table-tree-cell&#39;,\n      contentPath: &#39;group_value&#39;\n    });\n  }).property(&#39;data.grouping_factors.@each&#39;),\n\n  root: Ember.computed(function() {\n    var data = this.get(&#39;data&#39;);\n    if (!data) {\n      return;\n    }\n    return this.createTree(null, data.root);\n  }).property(&#39;data&#39;, &#39;sortAscending&#39;, &#39;sortColumn&#39;),\n\n  rows: Ember.computed(function() {\n    var root = this.get(&#39;root&#39;);\n    if (!root) {\n      return Ember.A();\n    }\n    var rows = this.flattenTree(null, root, Ember.A());\n    this.computeStyles(null, root);\n    var maxGroupingLevel = Math.max.apply(rows.getEach(&#39;groupingLevel&#39;));\n    rows.forEach(function(row) {\n      return row.computeRowStyle(maxGroupingLevel);\n    });\n    return rows;\n  }).property(&#39;root&#39;),\n\n  &#x2F;&#x2F; OPTIMIZATION HACK\n  bodyContent: Ember.computed(function() {\n    var rows = this.get(&#39;rows&#39;);\n    if (!rows) {\n      return Ember.A();\n    }\n    rows = rows.slice(1, rows.get(&#39;length&#39;));\n    return rows.filterProperty(&#39;isShowing&#39;);\n  }).property(&#39;rows&#39;),\n\n  footerContent: Ember.computed(function() {\n    var rows = this.get(&#39;rows&#39;);\n    if (!rows) {\n      return Ember.A();\n    }\n    return rows.slice(0, 1);\n  }).property(&#39;rows&#39;),\n\n  orderBy: function(item1, item2) {\n    var sortColumn = this.get(&#39;sortColumn&#39;);\n    var sortAscending = this.get(&#39;sortAscending&#39;);\n    if (!sortColumn) {\n      return 1;\n    }\n    var value1 = sortColumn.getCellContent(item1.get(&#39;content&#39;));\n    var value2 = sortColumn.getCellContent(item2.get(&#39;content&#39;));\n    var result = Ember.compare(value1, value2);\n    if (sortAscending) {\n      return result;\n    } else {\n      return -result;\n    }\n  },\n\n  createTree: function(parent, node) {\n    var row = FinancialTableTreeRow.create({ parentController: this });\n    &#x2F;&#x2F; TODO(azirbel): better map function and _this use\n    var children = (node.children || []).map((function(_this) {\n      return function(child) {\n        return _this.createTree(row, child);\n      };\n    })(this));\n    &#x2F;&#x2F; TODO(Peter): Hack... only collapse table if it should collapseByDefault\n    &#x2F;&#x2F; and it is not the root. Currently the total row is the root, and if it\n    &#x2F;&#x2F; is collapse, it causes nothing to show in the table and there is no way\n    &#x2F;&#x2F; to get expand it.\n    row.setProperties({\n      isRoot: !parent,\n      isLeaf: Ember.isEmpty(children),\n      content: node,\n      parent: parent,\n      children: children,\n      groupName: node.group_name,\n      isCollapsed: false\n    });\n    return row;\n  },\n\n  &#x2F;&#x2F; TODO(azirbel): Don&#39;t use the word &#39;parent&#39;\n  flattenTree: function(parent, node, rows) {\n    rows.pushObject(node);\n    (node.children || []).forEach((function(_this) {\n      return function(child) {\n        return _this.flattenTree(node, child, rows);\n      };\n    })(this));\n    return rows;\n  },\n\n  computeStyles: function(parent, node) {\n    node.computeStyles(parent);\n    node.get(&#39;children&#39;).forEach((function(_this) {\n      return function(child) {\n        _this.computeStyles(node, child);\n      };\n    })(this));\n  },\n\n  actions: {\n    toggleTableCollapse: function() {\n      var isCollapsed = this.toggleProperty(&#39;isCollapsed&#39;);\n      var children = this.get(&#39;root.children&#39;);\n      if (!(children &amp;&amp; children.get(&#39;length&#39;) &gt; 0)) {\n        return;\n      }\n      children.forEach(function(child) {\n        return child.recursiveCollapse(isCollapsed);\n      });\n      return this.notifyPropertyChange(&#39;rows&#39;);\n    },\n\n    toggleCollapse: function(row) {\n      row.toggleProperty(&#39;isCollapsed&#39;);\n      Ember.run.next(this, function() {\n        this.notifyPropertyChange(&#39;rows&#39;);\n      });\n    }\n  },\n});\n");
+        dom.appendChild(el5, el6);
+        dom.appendChild(el4, el5);
+        var el5 = dom.createTextNode("\n      ");
+        dom.appendChild(el4, el5);
+        dom.appendChild(el3, el4);
+        var el4 = dom.createTextNode("\n    ");
+        dom.appendChild(el3, el4);
+        dom.appendChild(el2, el3);
+        var el3 = dom.createTextNode("\n\n    ");
+        dom.appendChild(el2, el3);
+        var el3 = dom.createElement("div");
+        dom.setAttribute(el3,"class","col-md-12 bumper-30");
+        var el4 = dom.createTextNode("\n      ");
+        dom.appendChild(el3, el4);
+        var el4 = dom.createElement("h3");
+        var el5 = dom.createTextNode("views/financial-table-cell.js");
+        dom.appendChild(el4, el5);
+        dom.appendChild(el3, el4);
+        var el4 = dom.createTextNode("\n      ");
+        dom.appendChild(el3, el4);
+        var el4 = dom.createElement("div");
+        dom.setAttribute(el4,"class","highlight");
+        var el5 = dom.createTextNode("\n        ");
+        dom.appendChild(el4, el5);
+        var el5 = dom.createElement("pre");
+        dom.setAttribute(el5,"class","prettyprint lang-js");
+        var el6 = dom.createTextNode("import TableCell from &#39;ember-table&#x2F;views&#x2F;table-cell&#39;;\n\nexport default TableCell.extend({\n  templateName: &#39;financial-table&#x2F;financial-table-cell&#39;\n});\n");
+        dom.appendChild(el5, el6);
+        dom.appendChild(el4, el5);
+        var el5 = dom.createTextNode("\n      ");
+        dom.appendChild(el4, el5);
+        dom.appendChild(el3, el4);
+        var el4 = dom.createTextNode("\n    ");
+        dom.appendChild(el3, el4);
+        dom.appendChild(el2, el3);
+        var el3 = dom.createTextNode("\n    \n    ");
+        dom.appendChild(el2, el3);
+        var el3 = dom.createElement("div");
+        dom.setAttribute(el3,"class","col-md-12 bumper-30");
+        var el4 = dom.createTextNode("\n      ");
+        dom.appendChild(el3, el4);
+        var el4 = dom.createElement("h3");
+        var el5 = dom.createTextNode("templates/financial-table/financial-table-cell.hbs");
+        dom.appendChild(el4, el5);
+        dom.appendChild(el3, el4);
+        var el4 = dom.createTextNode("\n      ");
+        dom.appendChild(el3, el4);
+        var el4 = dom.createElement("div");
+        dom.setAttribute(el4,"class","highlight");
+        var el5 = dom.createTextNode("\n        ");
+        dom.appendChild(el4, el5);
+        var el5 = dom.createElement("pre");
+        dom.setAttribute(el5,"class","prettyprint lang-html");
+        var el6 = dom.createTextNode("&lt;div class=&quot;ember-table-cell-container&quot;&gt;\n  &lt;span class=&quot;ember-table-content&quot;&gt;\n    {{view.cellContent}}\n  &lt;&#x2F;span&gt;\n&lt;&#x2F;div&gt;");
+        dom.appendChild(el5, el6);
+        dom.appendChild(el4, el5);
+        var el5 = dom.createTextNode("\n      ");
+        dom.appendChild(el4, el5);
+        dom.appendChild(el3, el4);
+        var el4 = dom.createTextNode("\n    ");
+        dom.appendChild(el3, el4);
+        dom.appendChild(el2, el3);
+        var el3 = dom.createTextNode("\n\n    ");
+        dom.appendChild(el2, el3);
+        var el3 = dom.createElement("div");
+        dom.setAttribute(el3,"class","col-md-12 bumper-30");
+        var el4 = dom.createTextNode("\n      ");
+        dom.appendChild(el3, el4);
+        var el4 = dom.createElement("h3");
+        var el5 = dom.createTextNode("views/financial-table-header-cell.js");
+        dom.appendChild(el4, el5);
+        dom.appendChild(el3, el4);
+        var el4 = dom.createTextNode("\n      ");
+        dom.appendChild(el3, el4);
+        var el4 = dom.createElement("div");
+        dom.setAttribute(el4,"class","highlight");
+        var el5 = dom.createTextNode("\n        ");
+        dom.appendChild(el4, el5);
+        var el5 = dom.createElement("pre");
+        dom.setAttribute(el5,"class","prettyprint lang-js");
+        var el6 = dom.createTextNode("import HeaderCell from &#39;ember-table&#x2F;views&#x2F;header-cell&#39;;\n\nexport default HeaderCell.extend({\n  templateName: &#39;financial-table&#x2F;financial-table-header-cell&#39;\n});\n");
+        dom.appendChild(el5, el6);
+        dom.appendChild(el4, el5);
+        var el5 = dom.createTextNode("\n      ");
+        dom.appendChild(el4, el5);
+        dom.appendChild(el3, el4);
+        var el4 = dom.createTextNode("\n    ");
+        dom.appendChild(el3, el4);
+        dom.appendChild(el2, el3);
+        var el3 = dom.createTextNode("\n\n    ");
+        dom.appendChild(el2, el3);
+        var el3 = dom.createElement("div");
+        dom.setAttribute(el3,"class","col-md-12 bumper-30");
+        var el4 = dom.createTextNode("\n      ");
+        dom.appendChild(el3, el4);
+        var el4 = dom.createElement("h3");
+        var el5 = dom.createTextNode("templates/financial-table/financial-table-tree-cell.hbs");
+        dom.appendChild(el4, el5);
+        dom.appendChild(el3, el4);
+        var el4 = dom.createTextNode("\n      ");
+        dom.appendChild(el3, el4);
+        var el4 = dom.createElement("div");
+        dom.setAttribute(el4,"class","highlight");
+        var el5 = dom.createTextNode("\n        ");
+        dom.appendChild(el4, el5);
+        var el5 = dom.createElement("pre");
+        dom.setAttribute(el5,"class","prettyprint lang-html");
+        var el6 = dom.createTextNode("&lt;div class=&quot;ember-table-cell-container&quot; {{bind-attr style=&quot;view.paddingStyle&quot;}}&gt;\n  &lt;span {{bind-attr class=&quot;:ember-table-toggle-span view.row.isLeaf::ember-table-toggle\n    view.row.isCollapsed:ember-table-expand:ember-table-collapse&quot;}}\n    {{action &#39;toggleCollapse&#39; view.row}}&gt;\n    {{fa-icon &quot;caret-down&quot; classNames=&quot;ember-table-toggle-icon&quot;}}\n  &lt;&#x2F;span&gt;\n  &lt;span class=&quot;ember-table-content&quot;&gt;\n    {{view.cellContent}}\n  &lt;&#x2F;span&gt;\n&lt;&#x2F;div&gt;\n");
+        dom.appendChild(el5, el6);
+        dom.appendChild(el4, el5);
+        var el5 = dom.createTextNode("\n      ");
+        dom.appendChild(el4, el5);
+        dom.appendChild(el3, el4);
+        var el4 = dom.createTextNode("\n    ");
+        dom.appendChild(el3, el4);
+        dom.appendChild(el2, el3);
+        var el3 = dom.createTextNode("\n\n    ");
+        dom.appendChild(el2, el3);
+        var el3 = dom.createElement("div");
+        dom.setAttribute(el3,"class","col-md-12 bumper-30");
+        var el4 = dom.createTextNode("\n      ");
+        dom.appendChild(el3, el4);
+        var el4 = dom.createElement("h3");
+        var el5 = dom.createTextNode("views/financial-table-header-tree-cell.js");
+        dom.appendChild(el4, el5);
+        dom.appendChild(el3, el4);
+        var el4 = dom.createTextNode("\n      ");
+        dom.appendChild(el3, el4);
+        var el4 = dom.createElement("div");
+        dom.setAttribute(el4,"class","highlight");
+        var el5 = dom.createTextNode("\n        ");
+        dom.appendChild(el4, el5);
+        var el5 = dom.createElement("pre");
+        dom.setAttribute(el5,"class","prettyprint lang-js");
+        var el6 = dom.createTextNode("import HeaderCell from &#39;ember-table&#x2F;views&#x2F;header-cell&#39;;\n\nexport default HeaderCell.extend({\n  templateName: &#39;financial-table&#x2F;financial-table-header-tree-cell&#39;,\n  classNames:   &#39;ember-table-table-header-tree-cell&#39;\n});\n");
+        dom.appendChild(el5, el6);
+        dom.appendChild(el4, el5);
+        var el5 = dom.createTextNode("\n      ");
+        dom.appendChild(el4, el5);
+        dom.appendChild(el3, el4);
+        var el4 = dom.createTextNode("\n    ");
+        dom.appendChild(el3, el4);
+        dom.appendChild(el2, el3);
+        var el3 = dom.createTextNode("\n\n    ");
+        dom.appendChild(el2, el3);
+        var el3 = dom.createElement("div");
+        dom.setAttribute(el3,"class","col-md-12 bumper-30");
+        var el4 = dom.createTextNode("\n      ");
+        dom.appendChild(el3, el4);
+        var el4 = dom.createElement("h3");
+        var el5 = dom.createTextNode("templates/financial-table/financial-table-header-cell.hbs");
+        dom.appendChild(el4, el5);
+        dom.appendChild(el3, el4);
+        var el4 = dom.createTextNode("\n      ");
+        dom.appendChild(el3, el4);
+        var el4 = dom.createElement("div");
+        dom.setAttribute(el4,"class","highlight");
+        var el5 = dom.createTextNode("\n        ");
+        dom.appendChild(el4, el5);
+        var el5 = dom.createElement("pre");
+        dom.setAttribute(el5,"class","prettyprint lang-html");
+        var el6 = dom.createTextNode("&lt;div class=&quot;ember-table-cell-container&quot;&gt;\n  &lt;div class=&quot;ember-table-header-content-container&quot;&gt;\n    &lt;span class=&quot;ember-table-content&quot;&gt;\n      {{view.content.headerCellName}}\n    &lt;&#x2F;span&gt;\n  &lt;&#x2F;div&gt;\n&lt;&#x2F;div&gt;");
+        dom.appendChild(el5, el6);
+        dom.appendChild(el4, el5);
+        var el5 = dom.createTextNode("\n      ");
+        dom.appendChild(el4, el5);
+        dom.appendChild(el3, el4);
+        var el4 = dom.createTextNode("\n    ");
+        dom.appendChild(el3, el4);
+        dom.appendChild(el2, el3);
+        var el3 = dom.createTextNode("\n\n    ");
+        dom.appendChild(el2, el3);
+        var el3 = dom.createElement("div");
+        dom.setAttribute(el3,"class","col-md-12 bumper-30");
+        var el4 = dom.createTextNode("\n      ");
+        dom.appendChild(el3, el4);
+        var el4 = dom.createElement("h3");
+        var el5 = dom.createTextNode("views/financial-table-tree-cell.js");
+        dom.appendChild(el4, el5);
+        dom.appendChild(el3, el4);
+        var el4 = dom.createTextNode("\n      ");
+        dom.appendChild(el3, el4);
+        var el4 = dom.createElement("div");
+        dom.setAttribute(el4,"class","highlight");
+        var el5 = dom.createTextNode("\n        ");
+        dom.appendChild(el4, el5);
+        var el5 = dom.createElement("pre");
+        dom.setAttribute(el5,"class","prettyprint lang-js");
+        var el6 = dom.createTextNode("import Ember from &#39;ember&#39;;\nimport TableCell from &#39;ember-table&#x2F;views&#x2F;table-cell&#39;;\n\nexport default TableCell.extend({\n  templateName: &#39;financial-table&#x2F;financial-table-tree-cell&#39;,\n  classNames: &#39;ember-table-table-tree-cell&#39;,\n\n  paddingStyle: Ember.computed(function() {\n    return &#39;padding-left:&#39; + (this.get(&#39;row.indentation&#39;)) + &#39;px;&#39;;\n  }).property(&#39;row.indentation&#39;)\n});\n");
+        dom.appendChild(el5, el6);
+        dom.appendChild(el4, el5);
+        var el5 = dom.createTextNode("\n      ");
+        dom.appendChild(el4, el5);
+        dom.appendChild(el3, el4);
+        var el4 = dom.createTextNode("\n    ");
+        dom.appendChild(el3, el4);
+        dom.appendChild(el2, el3);
+        var el3 = dom.createTextNode("\n\n    ");
+        dom.appendChild(el2, el3);
+        var el3 = dom.createElement("div");
+        dom.setAttribute(el3,"class","col-md-12 bumper-30");
+        var el4 = dom.createTextNode("\n      ");
+        dom.appendChild(el3, el4);
+        var el4 = dom.createElement("h3");
+        var el5 = dom.createTextNode("templates/financial-table/financial-table-header-tree-cell.hbs");
+        dom.appendChild(el4, el5);
+        dom.appendChild(el3, el4);
+        var el4 = dom.createTextNode("\n      ");
+        dom.appendChild(el3, el4);
+        var el4 = dom.createElement("div");
+        dom.setAttribute(el4,"class","highlight");
+        var el5 = dom.createTextNode("\n        ");
+        dom.appendChild(el4, el5);
+        var el5 = dom.createElement("pre");
+        dom.setAttribute(el5,"class","prettyprint lang-html");
+        var el6 = dom.createTextNode("&lt;div class=&quot;ember-table-cell-container&quot;&gt;\n  &lt;span {{bind-attr class=&quot;:ember-table-toggle-span :ember-table-toggle\n      isCollapsed:ember-table-expand:ember-table-collapse&quot;}}\n      {{action &#39;toggleTableCollapse&#39;}}&gt;\n    {{fa-icon &quot;caret-down&quot; classNames=&quot;ember-table-toggle-icon&quot;}}\n  &lt;&#x2F;span&gt;\n  &lt;div class=&quot;ember-table-header-content-container&quot;&gt;\n    &lt;span class=&quot;ember-table-content&quot;&gt;\n      {{view.column.headerCellName}}\n    &lt;&#x2F;span&gt;\n  &lt;&#x2F;div&gt;\n&lt;&#x2F;div&gt;\n");
+        dom.appendChild(el5, el6);
+        dom.appendChild(el4, el5);
+        var el5 = dom.createTextNode("\n      ");
+        dom.appendChild(el4, el5);
+        dom.appendChild(el3, el4);
+        var el4 = dom.createTextNode("\n    ");
+        dom.appendChild(el3, el4);
+        dom.appendChild(el2, el3);
+        var el3 = dom.createTextNode("\n\n    ");
+        dom.appendChild(el2, el3);
+        var el3 = dom.createElement("div");
+        dom.setAttribute(el3,"class","col-md-12 bumper-30");
+        var el4 = dom.createTextNode("\n      ");
+        dom.appendChild(el3, el4);
+        var el4 = dom.createElement("h3");
+        var el5 = dom.createTextNode("views/financial-table-tree-row.js");
+        dom.appendChild(el4, el5);
+        dom.appendChild(el3, el4);
+        var el4 = dom.createTextNode("\n      ");
+        dom.appendChild(el3, el4);
+        var el4 = dom.createElement("div");
+        dom.setAttribute(el4,"class","highlight");
+        var el5 = dom.createTextNode("\n        ");
+        dom.appendChild(el4, el5);
+        var el5 = dom.createElement("pre");
+        dom.setAttribute(el5,"class","prettyprint lang-js");
+        var el6 = dom.createTextNode("import Row from &#39;ember-table&#x2F;controllers&#x2F;row&#39;;\n\nexport default Row.extend({\n  content: null,\n  children: null,\n  parent: null,\n  isRoot: false,\n  isLeaf: false,\n  isCollapsed: false,\n  isShowing: true,\n  indentationSpacing: 20,\n  groupName: null,\n\n  computeStyles: function(parent) {\n    var groupingLevel, indentType, indentation, isShowing, pGroupingLevel, spacing;\n    groupingLevel = 0;\n    indentation = 0;\n    isShowing = true;\n    if (parent) {\n      isShowing = parent.get(&#39;isShowing&#39;) &amp;&amp; !parent.get(&#39;isCollapsed&#39;);\n      pGroupingLevel = parent.get(&#39;groupingLevel&#39;);\n      groupingLevel = pGroupingLevel;\n      if (parent.get(&#39;groupName&#39;) !== this.get(&#39;groupName&#39;)) {\n        groupingLevel += 1;\n      }\n      indentType = groupingLevel === pGroupingLevel ? &#39;half&#39; : &#39;full&#39;;\n      spacing = this.get(&#39;indentationSpacing&#39;);\n      if (!parent.get(&#39;isRoot&#39;)) {\n        indentation = parent.get(&#39;indentation&#39;);\n        indentation += (indentType === &#39;half&#39; ? spacing &#x2F; 2 : spacing);\n      }\n    }\n    this.set(&#39;groupingLevel&#39;, groupingLevel);\n    this.set(&#39;indentation&#39;, indentation);\n    this.set(&#39;isShowing&#39;, isShowing);\n  },\n\n  computeRowStyle: function(maxLevels) {\n    var level;\n    level = this.getFormattingLevel(this.get(&#39;groupingLevel&#39;), maxLevels);\n    this.set(&#39;rowStyle&#39;, &#39;ember-table-row-style-&#39; + level);\n  },\n\n  recursiveCollapse: function(isCollapsed) {\n    this.set(&#39;isCollapsed&#39;, isCollapsed);\n    this.get(&#39;children&#39;).forEach(function(child) {\n      child.recursiveCollapse(isCollapsed);\n    });\n  },\n\n  getFormattingLevel: function(level, maxLevels) {\n    switch (maxLevels) {\n      case 1:\n        return 5;\n      case 2:\n        if (level === 1) {\n          return 2;\n        }\n        return 5;\n      case 3:\n        if (level === 1) {\n          return 1;\n        }\n        if (level === 2) {\n          return 3;\n        }\n        return 5;\n      case 4:\n        if (level === 1) {\n          return 1;\n        }\n        if (level === 2) {\n          return 2;\n        }\n        if (level === 4) {\n          return 4;\n        }\n        return 5;\n      case 5:\n        return level;\n      default:\n        if (level === maxLevels) {\n          return 5;\n        }\n        return Math.min(level, 4);\n    }\n  }\n});\n");
+        dom.appendChild(el5, el6);
+        dom.appendChild(el4, el5);
+        var el5 = dom.createTextNode("\n      ");
+        dom.appendChild(el4, el5);
+        dom.appendChild(el3, el4);
+        var el4 = dom.createTextNode("\n    ");
+        dom.appendChild(el3, el4);
+        dom.appendChild(el2, el3);
+        var el3 = dom.createTextNode("\n  ");
+        dom.appendChild(el2, el3);
+        dom.appendChild(el1, el2);
+        var el2 = dom.createTextNode("\n");
+        dom.appendChild(el1, el2);
+        dom.appendChild(el0, el1);
+        var el1 = dom.createTextNode("\n");
+        dom.appendChild(el0, el1);
+        return el0;
+      },
+      render: function render(context, env, contextualElement) {
+        var dom = env.dom;
+        var hooks = env.hooks, inline = hooks.inline;
+        dom.detectNamespace(contextualElement);
+        var fragment;
+        if (env.useFragmentCache && dom.canClone) {
+          if (this.cachedFragment === null) {
+            fragment = this.build(dom);
+            if (this.hasRendered) {
+              this.cachedFragment = fragment;
+            } else {
+              this.hasRendered = true;
+            }
+          }
+          if (this.cachedFragment) {
+            fragment = dom.cloneNode(this.cachedFragment, true);
+          }
+        } else {
+          fragment = this.build(dom);
+        }
+        var morph0 = dom.createMorphAt(dom.childAt(fragment, [0, 3, 1, 1, 1]),0,1);
+        inline(env, morph0, context, "partial", ["financial-table/financial-table"], {});
+        return fragment;
+      }
+    };
+  }()));
 
 });
 define('dummy/templates/footer-table-container', ['exports'], function (exports) {
 
   'use strict';
 
-  exports['default'] = Ember.Handlebars.template({"1":function(depth0,helpers,partials,data) {
-    var escapeExpression=this.escapeExpression, buffer = '';
-    data.buffer.push("    ");
-    data.buffer.push(escapeExpression(helpers.view.call(depth0, "table-block", {"name":"view","hash":{
-      'height': ("footerHeight"),
-      'width': ("_fixedBlockWidth"),
-      'columns': ("fixedColumns"),
-      'content': ("footerContent"),
-      'classNames': ("ember-table-left-table-block")
-    },"hashTypes":{'height': "ID",'width': "ID",'columns': "ID",'content': "ID",'classNames': "STRING"},"hashContexts":{'height': depth0,'width': depth0,'columns': depth0,'content': depth0,'classNames': depth0},"types":["STRING"],"contexts":[depth0],"data":data})));
-    data.buffer.push("\n");
-    return buffer;
-  },"compiler":[6,">= 2.0.0-beta.1"],"main":function(depth0,helpers,partials,data) {
-    var stack1, escapeExpression=this.escapeExpression, buffer = '';
-    data.buffer.push("<div class=\"ember-table-table-fixed-wrapper\">\n");
-    stack1 = helpers['if'].call(depth0, "numFixedColumns", {"name":"if","hash":{},"hashTypes":{},"hashContexts":{},"fn":this.program(1, data),"inverse":this.noop,"types":["ID"],"contexts":[depth0],"data":data});
-    if (stack1 != null) { data.buffer.push(stack1); }
-    data.buffer.push("  ");
-    data.buffer.push(escapeExpression(helpers.view.call(depth0, "table-block", {"name":"view","hash":{
-      'height': ("footerHeight"),
-      'width': ("_tableBlockWidth"),
-      'scrollLeft': ("_tableScrollLeft"),
-      'columns': ("tableColumns"),
-      'content': ("footerContent"),
-      'classNames': ("ember-table-right-table-block")
-    },"hashTypes":{'height': "ID",'width': "ID",'scrollLeft': "ID",'columns': "ID",'content': "ID",'classNames': "STRING"},"hashContexts":{'height': depth0,'width': depth0,'scrollLeft': depth0,'columns': depth0,'content': depth0,'classNames': depth0},"types":["STRING"],"contexts":[depth0],"data":data})));
-    data.buffer.push("\n</div>\n");
-    return buffer;
-  },"useData":true});
+  exports['default'] = Ember.HTMLBars.template((function() {
+    var child0 = (function() {
+      return {
+        isHTMLBars: true,
+        blockParams: 0,
+        cachedFragment: null,
+        hasRendered: false,
+        build: function build(dom) {
+          var el0 = dom.createDocumentFragment();
+          var el1 = dom.createTextNode("    ");
+          dom.appendChild(el0, el1);
+          var el1 = dom.createTextNode("\n");
+          dom.appendChild(el0, el1);
+          return el0;
+        },
+        render: function render(context, env, contextualElement) {
+          var dom = env.dom;
+          var hooks = env.hooks, get = hooks.get, inline = hooks.inline;
+          dom.detectNamespace(contextualElement);
+          var fragment;
+          if (env.useFragmentCache && dom.canClone) {
+            if (this.cachedFragment === null) {
+              fragment = this.build(dom);
+              if (this.hasRendered) {
+                this.cachedFragment = fragment;
+              } else {
+                this.hasRendered = true;
+              }
+            }
+            if (this.cachedFragment) {
+              fragment = dom.cloneNode(this.cachedFragment, true);
+            }
+          } else {
+            fragment = this.build(dom);
+          }
+          var morph0 = dom.createMorphAt(fragment,0,1,contextualElement);
+          inline(env, morph0, context, "view", ["table-block"], {"classNames": "ember-table-left-table-block", "content": get(env, context, "footerContent"), "columns": get(env, context, "fixedColumns"), "width": get(env, context, "_fixedBlockWidth"), "height": get(env, context, "footerHeight")});
+          return fragment;
+        }
+      };
+    }());
+    return {
+      isHTMLBars: true,
+      blockParams: 0,
+      cachedFragment: null,
+      hasRendered: false,
+      build: function build(dom) {
+        var el0 = dom.createDocumentFragment();
+        var el1 = dom.createElement("div");
+        dom.setAttribute(el1,"class","ember-table-table-fixed-wrapper");
+        var el2 = dom.createTextNode("\n");
+        dom.appendChild(el1, el2);
+        var el2 = dom.createTextNode("  ");
+        dom.appendChild(el1, el2);
+        var el2 = dom.createTextNode("\n");
+        dom.appendChild(el1, el2);
+        dom.appendChild(el0, el1);
+        var el1 = dom.createTextNode("\n");
+        dom.appendChild(el0, el1);
+        return el0;
+      },
+      render: function render(context, env, contextualElement) {
+        var dom = env.dom;
+        var hooks = env.hooks, get = hooks.get, block = hooks.block, inline = hooks.inline;
+        dom.detectNamespace(contextualElement);
+        var fragment;
+        if (env.useFragmentCache && dom.canClone) {
+          if (this.cachedFragment === null) {
+            fragment = this.build(dom);
+            if (this.hasRendered) {
+              this.cachedFragment = fragment;
+            } else {
+              this.hasRendered = true;
+            }
+          }
+          if (this.cachedFragment) {
+            fragment = dom.cloneNode(this.cachedFragment, true);
+          }
+        } else {
+          fragment = this.build(dom);
+        }
+        var element0 = dom.childAt(fragment, [0]);
+        var morph0 = dom.createMorphAt(element0,0,1);
+        var morph1 = dom.createMorphAt(element0,1,2);
+        block(env, morph0, context, "if", [get(env, context, "numFixedColumns")], {}, child0, null);
+        inline(env, morph1, context, "view", ["table-block"], {"classNames": "ember-table-right-table-block", "content": get(env, context, "footerContent"), "columns": get(env, context, "tableColumns"), "scrollLeft": get(env, context, "_tableScrollLeft"), "width": get(env, context, "_tableBlockWidth"), "height": get(env, context, "footerHeight")});
+        return fragment;
+      }
+    };
+  }()));
 
 });
 define('dummy/templates/footer', ['exports'], function (exports) {
 
   'use strict';
 
-  exports['default'] = Ember.Handlebars.template({"1":function(depth0,helpers,partials,data) {
-    data.buffer.push("Overview &amp; Getting Started");
-    },"3":function(depth0,helpers,partials,data) {
-    data.buffer.push("API &amp; Documentation");
-    },"5":function(depth0,helpers,partials,data) {
-    data.buffer.push("Migration Guides");
-    },"7":function(depth0,helpers,partials,data) {
-    data.buffer.push("Community Examples");
-    },"9":function(depth0,helpers,partials,data) {
-    data.buffer.push("Hello World table");
-    },"11":function(depth0,helpers,partials,data) {
-    data.buffer.push("AJAX cells");
-    },"13":function(depth0,helpers,partials,data) {
-    data.buffer.push("Bar cells");
-    },"15":function(depth0,helpers,partials,data) {
-    data.buffer.push("Dynamic bar cells");
-    },"17":function(depth0,helpers,partials,data) {
-    data.buffer.push("Tree &amp; financial table");
-    },"19":function(depth0,helpers,partials,data) {
-    data.buffer.push("Editable cells");
-    },"21":function(depth0,helpers,partials,data) {
-    data.buffer.push("Sparkline cells");
-    },"23":function(depth0,helpers,partials,data) {
-    data.buffer.push("Horizon cells");
-    },"25":function(depth0,helpers,partials,data) {
-    data.buffer.push("Configurable columns");
-    },"27":function(depth0,helpers,partials,data) {
-    data.buffer.push("License");
-    },"compiler":[6,">= 2.0.0-beta.1"],"main":function(depth0,helpers,partials,data) {
-    var stack1, helperMissing=helpers.helperMissing, buffer = '';
-    data.buffer.push("<div class=\"footer\">\n  <div class=\"container\">\n    <div class=\"row\">\n      <div class=\"col-md-3\">\n        <ul class=\"list-unstyled\">\n          <li><h6>Ember Table</h6></li>\n          <li>");
-    stack1 = ((helpers['link-to'] || (depth0 && depth0['link-to']) || helperMissing).call(depth0, "overview", {"name":"link-to","hash":{},"hashTypes":{},"hashContexts":{},"fn":this.program(1, data),"inverse":this.noop,"types":["STRING"],"contexts":[depth0],"data":data}));
-    if (stack1 != null) { data.buffer.push(stack1); }
-    data.buffer.push("</li>\n          <li>");
-    stack1 = ((helpers['link-to'] || (depth0 && depth0['link-to']) || helperMissing).call(depth0, "documentation", {"name":"link-to","hash":{},"hashTypes":{},"hashContexts":{},"fn":this.program(3, data),"inverse":this.noop,"types":["STRING"],"contexts":[depth0],"data":data}));
-    if (stack1 != null) { data.buffer.push(stack1); }
-    data.buffer.push("</li>\n          <li>");
-    stack1 = ((helpers['link-to'] || (depth0 && depth0['link-to']) || helperMissing).call(depth0, "migration-guides", {"name":"link-to","hash":{},"hashTypes":{},"hashContexts":{},"fn":this.program(5, data),"inverse":this.noop,"types":["STRING"],"contexts":[depth0],"data":data}));
-    if (stack1 != null) { data.buffer.push(stack1); }
-    data.buffer.push("</li>\n          <li>");
-    stack1 = ((helpers['link-to'] || (depth0 && depth0['link-to']) || helperMissing).call(depth0, "community-examples", {"name":"link-to","hash":{},"hashTypes":{},"hashContexts":{},"fn":this.program(7, data),"inverse":this.noop,"types":["STRING"],"contexts":[depth0],"data":data}));
-    if (stack1 != null) { data.buffer.push(stack1); }
-    data.buffer.push("</li>\n        </ul>\n      </div>\n      <div class=\"col-md-3\">\n        <ul class=\"list-unstyled\">\n          <li><h6>Examples</h6></li>\n          <li>");
-    stack1 = ((helpers['link-to'] || (depth0 && depth0['link-to']) || helperMissing).call(depth0, "simple", {"name":"link-to","hash":{},"hashTypes":{},"hashContexts":{},"fn":this.program(9, data),"inverse":this.noop,"types":["STRING"],"contexts":[depth0],"data":data}));
-    if (stack1 != null) { data.buffer.push(stack1); }
-    data.buffer.push("</li>\n          <li>");
-    stack1 = ((helpers['link-to'] || (depth0 && depth0['link-to']) || helperMissing).call(depth0, "ajax", {"name":"link-to","hash":{},"hashTypes":{},"hashContexts":{},"fn":this.program(11, data),"inverse":this.noop,"types":["STRING"],"contexts":[depth0],"data":data}));
-    if (stack1 != null) { data.buffer.push(stack1); }
-    data.buffer.push("</li>\n          <li>");
-    stack1 = ((helpers['link-to'] || (depth0 && depth0['link-to']) || helperMissing).call(depth0, "bars", {"name":"link-to","hash":{},"hashTypes":{},"hashContexts":{},"fn":this.program(13, data),"inverse":this.noop,"types":["STRING"],"contexts":[depth0],"data":data}));
-    if (stack1 != null) { data.buffer.push(stack1); }
-    data.buffer.push("</li>\n          <li>");
-    stack1 = ((helpers['link-to'] || (depth0 && depth0['link-to']) || helperMissing).call(depth0, "dynamic-bars", {"name":"link-to","hash":{},"hashTypes":{},"hashContexts":{},"fn":this.program(15, data),"inverse":this.noop,"types":["STRING"],"contexts":[depth0],"data":data}));
-    if (stack1 != null) { data.buffer.push(stack1); }
-    data.buffer.push("</li>\n          <li>");
-    stack1 = ((helpers['link-to'] || (depth0 && depth0['link-to']) || helperMissing).call(depth0, "financial", {"name":"link-to","hash":{},"hashTypes":{},"hashContexts":{},"fn":this.program(17, data),"inverse":this.noop,"types":["STRING"],"contexts":[depth0],"data":data}));
-    if (stack1 != null) { data.buffer.push(stack1); }
-    data.buffer.push("</li>\n          <li>");
-    stack1 = ((helpers['link-to'] || (depth0 && depth0['link-to']) || helperMissing).call(depth0, "editable", {"name":"link-to","hash":{},"hashTypes":{},"hashContexts":{},"fn":this.program(19, data),"inverse":this.noop,"types":["STRING"],"contexts":[depth0],"data":data}));
-    if (stack1 != null) { data.buffer.push(stack1); }
-    data.buffer.push("</li>\n          <li>");
-    stack1 = ((helpers['link-to'] || (depth0 && depth0['link-to']) || helperMissing).call(depth0, "sparkline", {"name":"link-to","hash":{},"hashTypes":{},"hashContexts":{},"fn":this.program(21, data),"inverse":this.noop,"types":["STRING"],"contexts":[depth0],"data":data}));
-    if (stack1 != null) { data.buffer.push(stack1); }
-    data.buffer.push("</li>\n          <li>");
-    stack1 = ((helpers['link-to'] || (depth0 && depth0['link-to']) || helperMissing).call(depth0, "horizon", {"name":"link-to","hash":{},"hashTypes":{},"hashContexts":{},"fn":this.program(23, data),"inverse":this.noop,"types":["STRING"],"contexts":[depth0],"data":data}));
-    if (stack1 != null) { data.buffer.push(stack1); }
-    data.buffer.push("</li>\n          <li>");
-    stack1 = ((helpers['link-to'] || (depth0 && depth0['link-to']) || helperMissing).call(depth0, "configurable-columns", {"name":"link-to","hash":{},"hashTypes":{},"hashContexts":{},"fn":this.program(25, data),"inverse":this.noop,"types":["STRING"],"contexts":[depth0],"data":data}));
-    if (stack1 != null) { data.buffer.push(stack1); }
-    data.buffer.push("</li>\n        </ul>\n      </div>\n      <div class=\"col-md-3\">\n        <ul class=\"list-unstyled\">\n          <li><h6>Addepar Open Source</h6></li>\n          <li><a target=\"_BLANK\" href=\"http://addepar.github.io/\">Home</a></li>\n          <li>");
-    stack1 = ((helpers['link-to'] || (depth0 && depth0['link-to']) || helperMissing).call(depth0, "license", {"name":"link-to","hash":{},"hashTypes":{},"hashContexts":{},"fn":this.program(27, data),"inverse":this.noop,"types":["STRING"],"contexts":[depth0],"data":data}));
-    if (stack1 != null) { data.buffer.push(stack1); }
-    data.buffer.push("</li>\n        </ul>\n      </div>\n      <div class=\"col-md-3\">\n        <ul class=\"list-unstyled\">\n          <li><h6>About Addepar</h6></li>\n          <li><a target=\"_BLANK\" href=\"http://www.addepar.com\">www.addepar.com</a></li>\n          <li>\n            <address>\n              <br>\n              <a target=\"_BLANK\" href=\"http://goo.gl/maps/446ui\"><strong>Addepar HQ</strong><br>\n              1215 Terra Bella Ave<br>\n              Mountain View, CA 94043</a><br><br>\n\n              <a target=\"_BLANK\" href=\"http://goo.gl/maps/xEiCM\"><strong>Addepar NY</strong><br>\n              335 Madison Ave Suite 880<br>\n              New York, NY 10017</a><br>\n            </address>\n          </li>\n        </ul>\n      </div>\n    </div>\n    <div class=\"row\">\n      <div class=\"col-md-12 center-align\">\n        <p>&copy; 2013 Addepar, Inc.</p>\n      </div>\n    </div>\n  </div>\n</div>\n");
-    return buffer;
-  },"useData":true});
+  exports['default'] = Ember.HTMLBars.template((function() {
+    var child0 = (function() {
+      return {
+        isHTMLBars: true,
+        blockParams: 0,
+        cachedFragment: null,
+        hasRendered: false,
+        build: function build(dom) {
+          var el0 = dom.createTextNode("Overview & Getting Started");
+          return el0;
+        },
+        render: function render(context, env, contextualElement) {
+          var dom = env.dom;
+          dom.detectNamespace(contextualElement);
+          var fragment;
+          if (env.useFragmentCache && dom.canClone) {
+            if (this.cachedFragment === null) {
+              fragment = this.build(dom);
+              if (this.hasRendered) {
+                this.cachedFragment = fragment;
+              } else {
+                this.hasRendered = true;
+              }
+            }
+            if (this.cachedFragment) {
+              fragment = dom.cloneNode(this.cachedFragment, true);
+            }
+          } else {
+            fragment = this.build(dom);
+          }
+          return fragment;
+        }
+      };
+    }());
+    var child1 = (function() {
+      return {
+        isHTMLBars: true,
+        blockParams: 0,
+        cachedFragment: null,
+        hasRendered: false,
+        build: function build(dom) {
+          var el0 = dom.createTextNode("API & Documentation");
+          return el0;
+        },
+        render: function render(context, env, contextualElement) {
+          var dom = env.dom;
+          dom.detectNamespace(contextualElement);
+          var fragment;
+          if (env.useFragmentCache && dom.canClone) {
+            if (this.cachedFragment === null) {
+              fragment = this.build(dom);
+              if (this.hasRendered) {
+                this.cachedFragment = fragment;
+              } else {
+                this.hasRendered = true;
+              }
+            }
+            if (this.cachedFragment) {
+              fragment = dom.cloneNode(this.cachedFragment, true);
+            }
+          } else {
+            fragment = this.build(dom);
+          }
+          return fragment;
+        }
+      };
+    }());
+    var child2 = (function() {
+      return {
+        isHTMLBars: true,
+        blockParams: 0,
+        cachedFragment: null,
+        hasRendered: false,
+        build: function build(dom) {
+          var el0 = dom.createTextNode("Migration Guides");
+          return el0;
+        },
+        render: function render(context, env, contextualElement) {
+          var dom = env.dom;
+          dom.detectNamespace(contextualElement);
+          var fragment;
+          if (env.useFragmentCache && dom.canClone) {
+            if (this.cachedFragment === null) {
+              fragment = this.build(dom);
+              if (this.hasRendered) {
+                this.cachedFragment = fragment;
+              } else {
+                this.hasRendered = true;
+              }
+            }
+            if (this.cachedFragment) {
+              fragment = dom.cloneNode(this.cachedFragment, true);
+            }
+          } else {
+            fragment = this.build(dom);
+          }
+          return fragment;
+        }
+      };
+    }());
+    var child3 = (function() {
+      return {
+        isHTMLBars: true,
+        blockParams: 0,
+        cachedFragment: null,
+        hasRendered: false,
+        build: function build(dom) {
+          var el0 = dom.createTextNode("Community Examples");
+          return el0;
+        },
+        render: function render(context, env, contextualElement) {
+          var dom = env.dom;
+          dom.detectNamespace(contextualElement);
+          var fragment;
+          if (env.useFragmentCache && dom.canClone) {
+            if (this.cachedFragment === null) {
+              fragment = this.build(dom);
+              if (this.hasRendered) {
+                this.cachedFragment = fragment;
+              } else {
+                this.hasRendered = true;
+              }
+            }
+            if (this.cachedFragment) {
+              fragment = dom.cloneNode(this.cachedFragment, true);
+            }
+          } else {
+            fragment = this.build(dom);
+          }
+          return fragment;
+        }
+      };
+    }());
+    var child4 = (function() {
+      return {
+        isHTMLBars: true,
+        blockParams: 0,
+        cachedFragment: null,
+        hasRendered: false,
+        build: function build(dom) {
+          var el0 = dom.createTextNode("Hello World table");
+          return el0;
+        },
+        render: function render(context, env, contextualElement) {
+          var dom = env.dom;
+          dom.detectNamespace(contextualElement);
+          var fragment;
+          if (env.useFragmentCache && dom.canClone) {
+            if (this.cachedFragment === null) {
+              fragment = this.build(dom);
+              if (this.hasRendered) {
+                this.cachedFragment = fragment;
+              } else {
+                this.hasRendered = true;
+              }
+            }
+            if (this.cachedFragment) {
+              fragment = dom.cloneNode(this.cachedFragment, true);
+            }
+          } else {
+            fragment = this.build(dom);
+          }
+          return fragment;
+        }
+      };
+    }());
+    var child5 = (function() {
+      return {
+        isHTMLBars: true,
+        blockParams: 0,
+        cachedFragment: null,
+        hasRendered: false,
+        build: function build(dom) {
+          var el0 = dom.createTextNode("AJAX cells");
+          return el0;
+        },
+        render: function render(context, env, contextualElement) {
+          var dom = env.dom;
+          dom.detectNamespace(contextualElement);
+          var fragment;
+          if (env.useFragmentCache && dom.canClone) {
+            if (this.cachedFragment === null) {
+              fragment = this.build(dom);
+              if (this.hasRendered) {
+                this.cachedFragment = fragment;
+              } else {
+                this.hasRendered = true;
+              }
+            }
+            if (this.cachedFragment) {
+              fragment = dom.cloneNode(this.cachedFragment, true);
+            }
+          } else {
+            fragment = this.build(dom);
+          }
+          return fragment;
+        }
+      };
+    }());
+    var child6 = (function() {
+      return {
+        isHTMLBars: true,
+        blockParams: 0,
+        cachedFragment: null,
+        hasRendered: false,
+        build: function build(dom) {
+          var el0 = dom.createTextNode("Bar cells");
+          return el0;
+        },
+        render: function render(context, env, contextualElement) {
+          var dom = env.dom;
+          dom.detectNamespace(contextualElement);
+          var fragment;
+          if (env.useFragmentCache && dom.canClone) {
+            if (this.cachedFragment === null) {
+              fragment = this.build(dom);
+              if (this.hasRendered) {
+                this.cachedFragment = fragment;
+              } else {
+                this.hasRendered = true;
+              }
+            }
+            if (this.cachedFragment) {
+              fragment = dom.cloneNode(this.cachedFragment, true);
+            }
+          } else {
+            fragment = this.build(dom);
+          }
+          return fragment;
+        }
+      };
+    }());
+    var child7 = (function() {
+      return {
+        isHTMLBars: true,
+        blockParams: 0,
+        cachedFragment: null,
+        hasRendered: false,
+        build: function build(dom) {
+          var el0 = dom.createTextNode("Dynamic bar cells");
+          return el0;
+        },
+        render: function render(context, env, contextualElement) {
+          var dom = env.dom;
+          dom.detectNamespace(contextualElement);
+          var fragment;
+          if (env.useFragmentCache && dom.canClone) {
+            if (this.cachedFragment === null) {
+              fragment = this.build(dom);
+              if (this.hasRendered) {
+                this.cachedFragment = fragment;
+              } else {
+                this.hasRendered = true;
+              }
+            }
+            if (this.cachedFragment) {
+              fragment = dom.cloneNode(this.cachedFragment, true);
+            }
+          } else {
+            fragment = this.build(dom);
+          }
+          return fragment;
+        }
+      };
+    }());
+    var child8 = (function() {
+      return {
+        isHTMLBars: true,
+        blockParams: 0,
+        cachedFragment: null,
+        hasRendered: false,
+        build: function build(dom) {
+          var el0 = dom.createTextNode("Tree & financial table");
+          return el0;
+        },
+        render: function render(context, env, contextualElement) {
+          var dom = env.dom;
+          dom.detectNamespace(contextualElement);
+          var fragment;
+          if (env.useFragmentCache && dom.canClone) {
+            if (this.cachedFragment === null) {
+              fragment = this.build(dom);
+              if (this.hasRendered) {
+                this.cachedFragment = fragment;
+              } else {
+                this.hasRendered = true;
+              }
+            }
+            if (this.cachedFragment) {
+              fragment = dom.cloneNode(this.cachedFragment, true);
+            }
+          } else {
+            fragment = this.build(dom);
+          }
+          return fragment;
+        }
+      };
+    }());
+    var child9 = (function() {
+      return {
+        isHTMLBars: true,
+        blockParams: 0,
+        cachedFragment: null,
+        hasRendered: false,
+        build: function build(dom) {
+          var el0 = dom.createTextNode("Editable cells");
+          return el0;
+        },
+        render: function render(context, env, contextualElement) {
+          var dom = env.dom;
+          dom.detectNamespace(contextualElement);
+          var fragment;
+          if (env.useFragmentCache && dom.canClone) {
+            if (this.cachedFragment === null) {
+              fragment = this.build(dom);
+              if (this.hasRendered) {
+                this.cachedFragment = fragment;
+              } else {
+                this.hasRendered = true;
+              }
+            }
+            if (this.cachedFragment) {
+              fragment = dom.cloneNode(this.cachedFragment, true);
+            }
+          } else {
+            fragment = this.build(dom);
+          }
+          return fragment;
+        }
+      };
+    }());
+    var child10 = (function() {
+      return {
+        isHTMLBars: true,
+        blockParams: 0,
+        cachedFragment: null,
+        hasRendered: false,
+        build: function build(dom) {
+          var el0 = dom.createTextNode("Sparkline cells");
+          return el0;
+        },
+        render: function render(context, env, contextualElement) {
+          var dom = env.dom;
+          dom.detectNamespace(contextualElement);
+          var fragment;
+          if (env.useFragmentCache && dom.canClone) {
+            if (this.cachedFragment === null) {
+              fragment = this.build(dom);
+              if (this.hasRendered) {
+                this.cachedFragment = fragment;
+              } else {
+                this.hasRendered = true;
+              }
+            }
+            if (this.cachedFragment) {
+              fragment = dom.cloneNode(this.cachedFragment, true);
+            }
+          } else {
+            fragment = this.build(dom);
+          }
+          return fragment;
+        }
+      };
+    }());
+    var child11 = (function() {
+      return {
+        isHTMLBars: true,
+        blockParams: 0,
+        cachedFragment: null,
+        hasRendered: false,
+        build: function build(dom) {
+          var el0 = dom.createTextNode("Horizon cells");
+          return el0;
+        },
+        render: function render(context, env, contextualElement) {
+          var dom = env.dom;
+          dom.detectNamespace(contextualElement);
+          var fragment;
+          if (env.useFragmentCache && dom.canClone) {
+            if (this.cachedFragment === null) {
+              fragment = this.build(dom);
+              if (this.hasRendered) {
+                this.cachedFragment = fragment;
+              } else {
+                this.hasRendered = true;
+              }
+            }
+            if (this.cachedFragment) {
+              fragment = dom.cloneNode(this.cachedFragment, true);
+            }
+          } else {
+            fragment = this.build(dom);
+          }
+          return fragment;
+        }
+      };
+    }());
+    var child12 = (function() {
+      return {
+        isHTMLBars: true,
+        blockParams: 0,
+        cachedFragment: null,
+        hasRendered: false,
+        build: function build(dom) {
+          var el0 = dom.createTextNode("Configurable columns");
+          return el0;
+        },
+        render: function render(context, env, contextualElement) {
+          var dom = env.dom;
+          dom.detectNamespace(contextualElement);
+          var fragment;
+          if (env.useFragmentCache && dom.canClone) {
+            if (this.cachedFragment === null) {
+              fragment = this.build(dom);
+              if (this.hasRendered) {
+                this.cachedFragment = fragment;
+              } else {
+                this.hasRendered = true;
+              }
+            }
+            if (this.cachedFragment) {
+              fragment = dom.cloneNode(this.cachedFragment, true);
+            }
+          } else {
+            fragment = this.build(dom);
+          }
+          return fragment;
+        }
+      };
+    }());
+    var child13 = (function() {
+      return {
+        isHTMLBars: true,
+        blockParams: 0,
+        cachedFragment: null,
+        hasRendered: false,
+        build: function build(dom) {
+          var el0 = dom.createTextNode("License");
+          return el0;
+        },
+        render: function render(context, env, contextualElement) {
+          var dom = env.dom;
+          dom.detectNamespace(contextualElement);
+          var fragment;
+          if (env.useFragmentCache && dom.canClone) {
+            if (this.cachedFragment === null) {
+              fragment = this.build(dom);
+              if (this.hasRendered) {
+                this.cachedFragment = fragment;
+              } else {
+                this.hasRendered = true;
+              }
+            }
+            if (this.cachedFragment) {
+              fragment = dom.cloneNode(this.cachedFragment, true);
+            }
+          } else {
+            fragment = this.build(dom);
+          }
+          return fragment;
+        }
+      };
+    }());
+    return {
+      isHTMLBars: true,
+      blockParams: 0,
+      cachedFragment: null,
+      hasRendered: false,
+      build: function build(dom) {
+        var el0 = dom.createDocumentFragment();
+        var el1 = dom.createElement("div");
+        dom.setAttribute(el1,"class","footer");
+        var el2 = dom.createTextNode("\n  ");
+        dom.appendChild(el1, el2);
+        var el2 = dom.createElement("div");
+        dom.setAttribute(el2,"class","container");
+        var el3 = dom.createTextNode("\n    ");
+        dom.appendChild(el2, el3);
+        var el3 = dom.createElement("div");
+        dom.setAttribute(el3,"class","row");
+        var el4 = dom.createTextNode("\n      ");
+        dom.appendChild(el3, el4);
+        var el4 = dom.createElement("div");
+        dom.setAttribute(el4,"class","col-md-3");
+        var el5 = dom.createTextNode("\n        ");
+        dom.appendChild(el4, el5);
+        var el5 = dom.createElement("ul");
+        dom.setAttribute(el5,"class","list-unstyled");
+        var el6 = dom.createTextNode("\n          ");
+        dom.appendChild(el5, el6);
+        var el6 = dom.createElement("li");
+        var el7 = dom.createElement("h6");
+        var el8 = dom.createTextNode("Ember Table");
+        dom.appendChild(el7, el8);
+        dom.appendChild(el6, el7);
+        dom.appendChild(el5, el6);
+        var el6 = dom.createTextNode("\n          ");
+        dom.appendChild(el5, el6);
+        var el6 = dom.createElement("li");
+        dom.appendChild(el5, el6);
+        var el6 = dom.createTextNode("\n          ");
+        dom.appendChild(el5, el6);
+        var el6 = dom.createElement("li");
+        dom.appendChild(el5, el6);
+        var el6 = dom.createTextNode("\n          ");
+        dom.appendChild(el5, el6);
+        var el6 = dom.createElement("li");
+        dom.appendChild(el5, el6);
+        var el6 = dom.createTextNode("\n          ");
+        dom.appendChild(el5, el6);
+        var el6 = dom.createElement("li");
+        dom.appendChild(el5, el6);
+        var el6 = dom.createTextNode("\n        ");
+        dom.appendChild(el5, el6);
+        dom.appendChild(el4, el5);
+        var el5 = dom.createTextNode("\n      ");
+        dom.appendChild(el4, el5);
+        dom.appendChild(el3, el4);
+        var el4 = dom.createTextNode("\n      ");
+        dom.appendChild(el3, el4);
+        var el4 = dom.createElement("div");
+        dom.setAttribute(el4,"class","col-md-3");
+        var el5 = dom.createTextNode("\n        ");
+        dom.appendChild(el4, el5);
+        var el5 = dom.createElement("ul");
+        dom.setAttribute(el5,"class","list-unstyled");
+        var el6 = dom.createTextNode("\n          ");
+        dom.appendChild(el5, el6);
+        var el6 = dom.createElement("li");
+        var el7 = dom.createElement("h6");
+        var el8 = dom.createTextNode("Examples");
+        dom.appendChild(el7, el8);
+        dom.appendChild(el6, el7);
+        dom.appendChild(el5, el6);
+        var el6 = dom.createTextNode("\n          ");
+        dom.appendChild(el5, el6);
+        var el6 = dom.createElement("li");
+        dom.appendChild(el5, el6);
+        var el6 = dom.createTextNode("\n          ");
+        dom.appendChild(el5, el6);
+        var el6 = dom.createElement("li");
+        dom.appendChild(el5, el6);
+        var el6 = dom.createTextNode("\n          ");
+        dom.appendChild(el5, el6);
+        var el6 = dom.createElement("li");
+        dom.appendChild(el5, el6);
+        var el6 = dom.createTextNode("\n          ");
+        dom.appendChild(el5, el6);
+        var el6 = dom.createElement("li");
+        dom.appendChild(el5, el6);
+        var el6 = dom.createTextNode("\n          ");
+        dom.appendChild(el5, el6);
+        var el6 = dom.createElement("li");
+        dom.appendChild(el5, el6);
+        var el6 = dom.createTextNode("\n          ");
+        dom.appendChild(el5, el6);
+        var el6 = dom.createElement("li");
+        dom.appendChild(el5, el6);
+        var el6 = dom.createTextNode("\n          ");
+        dom.appendChild(el5, el6);
+        var el6 = dom.createElement("li");
+        dom.appendChild(el5, el6);
+        var el6 = dom.createTextNode("\n          ");
+        dom.appendChild(el5, el6);
+        var el6 = dom.createElement("li");
+        dom.appendChild(el5, el6);
+        var el6 = dom.createTextNode("\n          ");
+        dom.appendChild(el5, el6);
+        var el6 = dom.createElement("li");
+        dom.appendChild(el5, el6);
+        var el6 = dom.createTextNode("\n        ");
+        dom.appendChild(el5, el6);
+        dom.appendChild(el4, el5);
+        var el5 = dom.createTextNode("\n      ");
+        dom.appendChild(el4, el5);
+        dom.appendChild(el3, el4);
+        var el4 = dom.createTextNode("\n      ");
+        dom.appendChild(el3, el4);
+        var el4 = dom.createElement("div");
+        dom.setAttribute(el4,"class","col-md-3");
+        var el5 = dom.createTextNode("\n        ");
+        dom.appendChild(el4, el5);
+        var el5 = dom.createElement("ul");
+        dom.setAttribute(el5,"class","list-unstyled");
+        var el6 = dom.createTextNode("\n          ");
+        dom.appendChild(el5, el6);
+        var el6 = dom.createElement("li");
+        var el7 = dom.createElement("h6");
+        var el8 = dom.createTextNode("Addepar Open Source");
+        dom.appendChild(el7, el8);
+        dom.appendChild(el6, el7);
+        dom.appendChild(el5, el6);
+        var el6 = dom.createTextNode("\n          ");
+        dom.appendChild(el5, el6);
+        var el6 = dom.createElement("li");
+        var el7 = dom.createElement("a");
+        dom.setAttribute(el7,"target","_BLANK");
+        dom.setAttribute(el7,"href","http://addepar.github.io/");
+        var el8 = dom.createTextNode("Home");
+        dom.appendChild(el7, el8);
+        dom.appendChild(el6, el7);
+        dom.appendChild(el5, el6);
+        var el6 = dom.createTextNode("\n          ");
+        dom.appendChild(el5, el6);
+        var el6 = dom.createElement("li");
+        dom.appendChild(el5, el6);
+        var el6 = dom.createTextNode("\n        ");
+        dom.appendChild(el5, el6);
+        dom.appendChild(el4, el5);
+        var el5 = dom.createTextNode("\n      ");
+        dom.appendChild(el4, el5);
+        dom.appendChild(el3, el4);
+        var el4 = dom.createTextNode("\n      ");
+        dom.appendChild(el3, el4);
+        var el4 = dom.createElement("div");
+        dom.setAttribute(el4,"class","col-md-3");
+        var el5 = dom.createTextNode("\n        ");
+        dom.appendChild(el4, el5);
+        var el5 = dom.createElement("ul");
+        dom.setAttribute(el5,"class","list-unstyled");
+        var el6 = dom.createTextNode("\n          ");
+        dom.appendChild(el5, el6);
+        var el6 = dom.createElement("li");
+        var el7 = dom.createElement("h6");
+        var el8 = dom.createTextNode("About Addepar");
+        dom.appendChild(el7, el8);
+        dom.appendChild(el6, el7);
+        dom.appendChild(el5, el6);
+        var el6 = dom.createTextNode("\n          ");
+        dom.appendChild(el5, el6);
+        var el6 = dom.createElement("li");
+        var el7 = dom.createElement("a");
+        dom.setAttribute(el7,"target","_BLANK");
+        dom.setAttribute(el7,"href","http://www.addepar.com");
+        var el8 = dom.createTextNode("www.addepar.com");
+        dom.appendChild(el7, el8);
+        dom.appendChild(el6, el7);
+        dom.appendChild(el5, el6);
+        var el6 = dom.createTextNode("\n          ");
+        dom.appendChild(el5, el6);
+        var el6 = dom.createElement("li");
+        var el7 = dom.createTextNode("\n            ");
+        dom.appendChild(el6, el7);
+        var el7 = dom.createElement("address");
+        var el8 = dom.createTextNode("\n              ");
+        dom.appendChild(el7, el8);
+        var el8 = dom.createElement("br");
+        dom.appendChild(el7, el8);
+        var el8 = dom.createTextNode("\n              ");
+        dom.appendChild(el7, el8);
+        var el8 = dom.createElement("a");
+        dom.setAttribute(el8,"target","_BLANK");
+        dom.setAttribute(el8,"href","http://goo.gl/maps/446ui");
+        var el9 = dom.createElement("strong");
+        var el10 = dom.createTextNode("Addepar HQ");
+        dom.appendChild(el9, el10);
+        dom.appendChild(el8, el9);
+        var el9 = dom.createElement("br");
+        dom.appendChild(el8, el9);
+        var el9 = dom.createTextNode("\n              1215 Terra Bella Ave");
+        dom.appendChild(el8, el9);
+        var el9 = dom.createElement("br");
+        dom.appendChild(el8, el9);
+        var el9 = dom.createTextNode("\n              Mountain View, CA 94043");
+        dom.appendChild(el8, el9);
+        dom.appendChild(el7, el8);
+        var el8 = dom.createElement("br");
+        dom.appendChild(el7, el8);
+        var el8 = dom.createElement("br");
+        dom.appendChild(el7, el8);
+        var el8 = dom.createTextNode("\n\n              ");
+        dom.appendChild(el7, el8);
+        var el8 = dom.createElement("a");
+        dom.setAttribute(el8,"target","_BLANK");
+        dom.setAttribute(el8,"href","http://goo.gl/maps/xEiCM");
+        var el9 = dom.createElement("strong");
+        var el10 = dom.createTextNode("Addepar NY");
+        dom.appendChild(el9, el10);
+        dom.appendChild(el8, el9);
+        var el9 = dom.createElement("br");
+        dom.appendChild(el8, el9);
+        var el9 = dom.createTextNode("\n              335 Madison Ave Suite 880");
+        dom.appendChild(el8, el9);
+        var el9 = dom.createElement("br");
+        dom.appendChild(el8, el9);
+        var el9 = dom.createTextNode("\n              New York, NY 10017");
+        dom.appendChild(el8, el9);
+        dom.appendChild(el7, el8);
+        var el8 = dom.createElement("br");
+        dom.appendChild(el7, el8);
+        var el8 = dom.createTextNode("\n            ");
+        dom.appendChild(el7, el8);
+        dom.appendChild(el6, el7);
+        var el7 = dom.createTextNode("\n          ");
+        dom.appendChild(el6, el7);
+        dom.appendChild(el5, el6);
+        var el6 = dom.createTextNode("\n        ");
+        dom.appendChild(el5, el6);
+        dom.appendChild(el4, el5);
+        var el5 = dom.createTextNode("\n      ");
+        dom.appendChild(el4, el5);
+        dom.appendChild(el3, el4);
+        var el4 = dom.createTextNode("\n    ");
+        dom.appendChild(el3, el4);
+        dom.appendChild(el2, el3);
+        var el3 = dom.createTextNode("\n    ");
+        dom.appendChild(el2, el3);
+        var el3 = dom.createElement("div");
+        dom.setAttribute(el3,"class","row");
+        var el4 = dom.createTextNode("\n      ");
+        dom.appendChild(el3, el4);
+        var el4 = dom.createElement("div");
+        dom.setAttribute(el4,"class","col-md-12 center-align");
+        var el5 = dom.createTextNode("\n        ");
+        dom.appendChild(el4, el5);
+        var el5 = dom.createElement("p");
+        var el6 = dom.createTextNode("© 2013 Addepar, Inc.");
+        dom.appendChild(el5, el6);
+        dom.appendChild(el4, el5);
+        var el5 = dom.createTextNode("\n      ");
+        dom.appendChild(el4, el5);
+        dom.appendChild(el3, el4);
+        var el4 = dom.createTextNode("\n    ");
+        dom.appendChild(el3, el4);
+        dom.appendChild(el2, el3);
+        var el3 = dom.createTextNode("\n  ");
+        dom.appendChild(el2, el3);
+        dom.appendChild(el1, el2);
+        var el2 = dom.createTextNode("\n");
+        dom.appendChild(el1, el2);
+        dom.appendChild(el0, el1);
+        var el1 = dom.createTextNode("\n");
+        dom.appendChild(el0, el1);
+        return el0;
+      },
+      render: function render(context, env, contextualElement) {
+        var dom = env.dom;
+        var hooks = env.hooks, block = hooks.block;
+        dom.detectNamespace(contextualElement);
+        var fragment;
+        if (env.useFragmentCache && dom.canClone) {
+          if (this.cachedFragment === null) {
+            fragment = this.build(dom);
+            if (this.hasRendered) {
+              this.cachedFragment = fragment;
+            } else {
+              this.hasRendered = true;
+            }
+          }
+          if (this.cachedFragment) {
+            fragment = dom.cloneNode(this.cachedFragment, true);
+          }
+        } else {
+          fragment = this.build(dom);
+        }
+        var element0 = dom.childAt(fragment, [0, 1, 1]);
+        var element1 = dom.childAt(element0, [1, 1]);
+        var element2 = dom.childAt(element0, [3, 1]);
+        var morph0 = dom.createMorphAt(dom.childAt(element1, [3]),-1,-1);
+        var morph1 = dom.createMorphAt(dom.childAt(element1, [5]),-1,-1);
+        var morph2 = dom.createMorphAt(dom.childAt(element1, [7]),-1,-1);
+        var morph3 = dom.createMorphAt(dom.childAt(element1, [9]),-1,-1);
+        var morph4 = dom.createMorphAt(dom.childAt(element2, [3]),-1,-1);
+        var morph5 = dom.createMorphAt(dom.childAt(element2, [5]),-1,-1);
+        var morph6 = dom.createMorphAt(dom.childAt(element2, [7]),-1,-1);
+        var morph7 = dom.createMorphAt(dom.childAt(element2, [9]),-1,-1);
+        var morph8 = dom.createMorphAt(dom.childAt(element2, [11]),-1,-1);
+        var morph9 = dom.createMorphAt(dom.childAt(element2, [13]),-1,-1);
+        var morph10 = dom.createMorphAt(dom.childAt(element2, [15]),-1,-1);
+        var morph11 = dom.createMorphAt(dom.childAt(element2, [17]),-1,-1);
+        var morph12 = dom.createMorphAt(dom.childAt(element2, [19]),-1,-1);
+        var morph13 = dom.createMorphAt(dom.childAt(element0, [5, 1, 5]),-1,-1);
+        block(env, morph0, context, "link-to", ["overview"], {}, child0, null);
+        block(env, morph1, context, "link-to", ["documentation"], {}, child1, null);
+        block(env, morph2, context, "link-to", ["migration-guides"], {}, child2, null);
+        block(env, morph3, context, "link-to", ["community-examples"], {}, child3, null);
+        block(env, morph4, context, "link-to", ["simple"], {}, child4, null);
+        block(env, morph5, context, "link-to", ["ajax"], {}, child5, null);
+        block(env, morph6, context, "link-to", ["bars"], {}, child6, null);
+        block(env, morph7, context, "link-to", ["dynamic-bars"], {}, child7, null);
+        block(env, morph8, context, "link-to", ["financial"], {}, child8, null);
+        block(env, morph9, context, "link-to", ["editable"], {}, child9, null);
+        block(env, morph10, context, "link-to", ["sparkline"], {}, child10, null);
+        block(env, morph11, context, "link-to", ["horizon"], {}, child11, null);
+        block(env, morph12, context, "link-to", ["configurable-columns"], {}, child12, null);
+        block(env, morph13, context, "link-to", ["license"], {}, child13, null);
+        return fragment;
+      }
+    };
+  }()));
 
 });
 define('dummy/templates/header-cell', ['exports'], function (exports) {
 
   'use strict';
 
-  exports['default'] = Ember.Handlebars.template({"compiler":[6,">= 2.0.0-beta.1"],"main":function(depth0,helpers,partials,data) {
-    var stack1, escapeExpression=this.escapeExpression, buffer = '';
-    data.buffer.push("<div class=\"ember-table-content-container\" ");
-    data.buffer.push(escapeExpression(helpers.action.call(depth0, "sortByColumn", "view.content", {"name":"action","hash":{},"hashTypes":{},"hashContexts":{},"types":["STRING","ID"],"contexts":[depth0,depth0],"data":data})));
-    data.buffer.push(">\n  <span class=\"ember-table-content\">\n    ");
-    stack1 = helpers._triageMustache.call(depth0, "view.content.headerCellName", {"name":"_triageMustache","hash":{},"hashTypes":{},"hashContexts":{},"types":["ID"],"contexts":[depth0],"data":data});
-    if (stack1 != null) { data.buffer.push(stack1); }
-    data.buffer.push("\n  </span>\n</div>");
-    return buffer;
-  },"useData":true});
+  exports['default'] = Ember.HTMLBars.template((function() {
+    return {
+      isHTMLBars: true,
+      blockParams: 0,
+      cachedFragment: null,
+      hasRendered: false,
+      build: function build(dom) {
+        var el0 = dom.createElement("div");
+        dom.setAttribute(el0,"class","ember-table-content-container");
+        var el1 = dom.createTextNode("\n  ");
+        dom.appendChild(el0, el1);
+        var el1 = dom.createElement("span");
+        dom.setAttribute(el1,"class","ember-table-content");
+        var el2 = dom.createTextNode("\n    ");
+        dom.appendChild(el1, el2);
+        var el2 = dom.createTextNode("\n  ");
+        dom.appendChild(el1, el2);
+        dom.appendChild(el0, el1);
+        var el1 = dom.createTextNode("\n");
+        dom.appendChild(el0, el1);
+        return el0;
+      },
+      render: function render(context, env, contextualElement) {
+        var dom = env.dom;
+        var hooks = env.hooks, get = hooks.get, element = hooks.element, content = hooks.content;
+        dom.detectNamespace(contextualElement);
+        var fragment;
+        if (env.useFragmentCache && dom.canClone) {
+          if (this.cachedFragment === null) {
+            fragment = this.build(dom);
+            if (this.hasRendered) {
+              this.cachedFragment = fragment;
+            } else {
+              this.hasRendered = true;
+            }
+          }
+          if (this.cachedFragment) {
+            fragment = dom.cloneNode(this.cachedFragment, true);
+          }
+        } else {
+          fragment = this.build(dom);
+        }
+        var element0 = fragment;
+        var morph0 = dom.createMorphAt(dom.childAt(element0, [1]),0,1);
+        element(env, element0, context, "action", ["sortByColumn", get(env, context, "view.content")], {});
+        content(env, morph0, context, "view.content.headerCellName");
+        return fragment;
+      }
+    };
+  }()));
 
 });
 define('dummy/templates/header-row', ['exports'], function (exports) {
 
   'use strict';
 
-  exports['default'] = Ember.Handlebars.template({"compiler":[6,">= 2.0.0-beta.1"],"main":function(depth0,helpers,partials,data) {
-    var escapeExpression=this.escapeExpression, buffer = '';
-    data.buffer.push(escapeExpression(helpers.view.call(depth0, "multi-item-collection", {"name":"view","hash":{
-      'width': ("controller._tableColumnsWidth"),
-      'itemViewClassField': ("headerCellViewClass"),
-      'content': ("view.content")
-    },"hashTypes":{'width': "ID",'itemViewClassField': "STRING",'content': "ID"},"hashContexts":{'width': depth0,'itemViewClassField': depth0,'content': depth0},"types":["STRING"],"contexts":[depth0],"data":data})));
-    data.buffer.push("\n");
-    return buffer;
-  },"useData":true});
+  exports['default'] = Ember.HTMLBars.template((function() {
+    return {
+      isHTMLBars: true,
+      blockParams: 0,
+      cachedFragment: null,
+      hasRendered: false,
+      build: function build(dom) {
+        var el0 = dom.createDocumentFragment();
+        var el1 = dom.createTextNode("");
+        dom.appendChild(el0, el1);
+        var el1 = dom.createTextNode("\n");
+        dom.appendChild(el0, el1);
+        return el0;
+      },
+      render: function render(context, env, contextualElement) {
+        var dom = env.dom;
+        var hooks = env.hooks, get = hooks.get, inline = hooks.inline;
+        dom.detectNamespace(contextualElement);
+        var fragment;
+        if (env.useFragmentCache && dom.canClone) {
+          if (this.cachedFragment === null) {
+            fragment = this.build(dom);
+            if (this.hasRendered) {
+              this.cachedFragment = fragment;
+            } else {
+              this.hasRendered = true;
+            }
+          }
+          if (this.cachedFragment) {
+            fragment = dom.cloneNode(this.cachedFragment, true);
+          }
+        } else {
+          fragment = this.build(dom);
+        }
+        if (this.cachedFragment) { dom.repairClonedNode(fragment,[0]); }
+        var morph0 = dom.createMorphAt(fragment,0,1,contextualElement);
+        inline(env, morph0, context, "view", ["multi-item-collection"], {"content": get(env, context, "view.content"), "itemViewClassField": "headerCellViewClass", "width": get(env, context, "controller._tableColumnsWidth")});
+        return fragment;
+      }
+    };
+  }()));
 
 });
 define('dummy/templates/header-table-container', ['exports'], function (exports) {
 
   'use strict';
 
-  exports['default'] = Ember.Handlebars.template({"1":function(depth0,helpers,partials,data) {
-    var escapeExpression=this.escapeExpression, buffer = '';
-    data.buffer.push("    ");
-    data.buffer.push(escapeExpression(helpers.view.call(depth0, "header-block", {"name":"view","hash":{
-      'height': ("headerHeight"),
-      'width': ("_fixedBlockWidth"),
-      'columns': ("fixedColumns"),
-      'classNames': ("ember-table-left-table-block")
-    },"hashTypes":{'height': "ID",'width': "ID",'columns': "ID",'classNames': "STRING"},"hashContexts":{'height': depth0,'width': depth0,'columns': depth0,'classNames': depth0},"types":["STRING"],"contexts":[depth0],"data":data})));
-    data.buffer.push("\n");
-    return buffer;
-  },"compiler":[6,">= 2.0.0-beta.1"],"main":function(depth0,helpers,partials,data) {
-    var stack1, escapeExpression=this.escapeExpression, buffer = '';
-    data.buffer.push("<div class=\"ember-table-table-fixed-wrapper\">\n");
-    stack1 = helpers['if'].call(depth0, "controller.numFixedColumns", {"name":"if","hash":{},"hashTypes":{},"hashContexts":{},"fn":this.program(1, data),"inverse":this.noop,"types":["ID"],"contexts":[depth0],"data":data});
-    if (stack1 != null) { data.buffer.push(stack1); }
-    data.buffer.push("  ");
-    data.buffer.push(escapeExpression(helpers.view.call(depth0, "header-block", {"name":"view","hash":{
-      'height': ("headerHeight"),
-      'width': ("_tableBlockWidth"),
-      'scrollLeft': ("_tableScrollLeft"),
-      'columns': ("tableColumns"),
-      'classNames': ("ember-table-right-table-block")
-    },"hashTypes":{'height': "ID",'width': "ID",'scrollLeft': "ID",'columns': "ID",'classNames': "STRING"},"hashContexts":{'height': depth0,'width': depth0,'scrollLeft': depth0,'columns': depth0,'classNames': depth0},"types":["STRING"],"contexts":[depth0],"data":data})));
-    data.buffer.push("\n</div>\n");
-    return buffer;
-  },"useData":true});
+  exports['default'] = Ember.HTMLBars.template((function() {
+    var child0 = (function() {
+      return {
+        isHTMLBars: true,
+        blockParams: 0,
+        cachedFragment: null,
+        hasRendered: false,
+        build: function build(dom) {
+          var el0 = dom.createDocumentFragment();
+          var el1 = dom.createTextNode("    ");
+          dom.appendChild(el0, el1);
+          var el1 = dom.createTextNode("\n");
+          dom.appendChild(el0, el1);
+          return el0;
+        },
+        render: function render(context, env, contextualElement) {
+          var dom = env.dom;
+          var hooks = env.hooks, get = hooks.get, inline = hooks.inline;
+          dom.detectNamespace(contextualElement);
+          var fragment;
+          if (env.useFragmentCache && dom.canClone) {
+            if (this.cachedFragment === null) {
+              fragment = this.build(dom);
+              if (this.hasRendered) {
+                this.cachedFragment = fragment;
+              } else {
+                this.hasRendered = true;
+              }
+            }
+            if (this.cachedFragment) {
+              fragment = dom.cloneNode(this.cachedFragment, true);
+            }
+          } else {
+            fragment = this.build(dom);
+          }
+          var morph0 = dom.createMorphAt(fragment,0,1,contextualElement);
+          inline(env, morph0, context, "view", ["header-block"], {"classNames": "ember-table-left-table-block", "columns": get(env, context, "fixedColumns"), "width": get(env, context, "_fixedBlockWidth"), "height": get(env, context, "headerHeight")});
+          return fragment;
+        }
+      };
+    }());
+    return {
+      isHTMLBars: true,
+      blockParams: 0,
+      cachedFragment: null,
+      hasRendered: false,
+      build: function build(dom) {
+        var el0 = dom.createDocumentFragment();
+        var el1 = dom.createElement("div");
+        dom.setAttribute(el1,"class","ember-table-table-fixed-wrapper");
+        var el2 = dom.createTextNode("\n");
+        dom.appendChild(el1, el2);
+        var el2 = dom.createTextNode("  ");
+        dom.appendChild(el1, el2);
+        var el2 = dom.createTextNode("\n");
+        dom.appendChild(el1, el2);
+        dom.appendChild(el0, el1);
+        var el1 = dom.createTextNode("\n");
+        dom.appendChild(el0, el1);
+        return el0;
+      },
+      render: function render(context, env, contextualElement) {
+        var dom = env.dom;
+        var hooks = env.hooks, get = hooks.get, block = hooks.block, inline = hooks.inline;
+        dom.detectNamespace(contextualElement);
+        var fragment;
+        if (env.useFragmentCache && dom.canClone) {
+          if (this.cachedFragment === null) {
+            fragment = this.build(dom);
+            if (this.hasRendered) {
+              this.cachedFragment = fragment;
+            } else {
+              this.hasRendered = true;
+            }
+          }
+          if (this.cachedFragment) {
+            fragment = dom.cloneNode(this.cachedFragment, true);
+          }
+        } else {
+          fragment = this.build(dom);
+        }
+        var element0 = dom.childAt(fragment, [0]);
+        var morph0 = dom.createMorphAt(element0,0,1);
+        var morph1 = dom.createMorphAt(element0,1,2);
+        block(env, morph0, context, "if", [get(env, context, "controller.numFixedColumns")], {}, child0, null);
+        inline(env, morph1, context, "view", ["header-block"], {"classNames": "ember-table-right-table-block", "columns": get(env, context, "tableColumns"), "scrollLeft": get(env, context, "_tableScrollLeft"), "width": get(env, context, "_tableBlockWidth"), "height": get(env, context, "headerHeight")});
+        return fragment;
+      }
+    };
+  }()));
 
 });
 define('dummy/templates/horizon-table/horizon-table', ['exports'], function (exports) {
 
   'use strict';
 
-  exports['default'] = Ember.Handlebars.template({"compiler":[6,">= 2.0.0-beta.1"],"main":function(depth0,helpers,partials,data) {
-    var helperMissing=helpers.helperMissing, escapeExpression=this.escapeExpression, buffer = '';
-    data.buffer.push(escapeExpression(((helpers['ember-table'] || (depth0 && depth0['ember-table']) || helperMissing).call(depth0, {"name":"ember-table","hash":{
-      'content': ("tableContent"),
-      'columns': ("tableColumns"),
-      'rowHeight': (30),
-      'numFixedColumns': (0),
-      'hasFooter': (false),
-      'hasHeader': (true)
-    },"hashTypes":{'content': "ID",'columns': "ID",'rowHeight': "NUMBER",'numFixedColumns': "NUMBER",'hasFooter': "BOOLEAN",'hasHeader': "BOOLEAN"},"hashContexts":{'content': depth0,'columns': depth0,'rowHeight': depth0,'numFixedColumns': depth0,'hasFooter': depth0,'hasHeader': depth0},"types":[],"contexts":[],"data":data}))));
-    data.buffer.push("\n");
-    return buffer;
-  },"useData":true});
+  exports['default'] = Ember.HTMLBars.template((function() {
+    return {
+      isHTMLBars: true,
+      blockParams: 0,
+      cachedFragment: null,
+      hasRendered: false,
+      build: function build(dom) {
+        var el0 = dom.createDocumentFragment();
+        var el1 = dom.createTextNode("");
+        dom.appendChild(el0, el1);
+        var el1 = dom.createTextNode("\n");
+        dom.appendChild(el0, el1);
+        return el0;
+      },
+      render: function render(context, env, contextualElement) {
+        var dom = env.dom;
+        var hooks = env.hooks, get = hooks.get, inline = hooks.inline;
+        dom.detectNamespace(contextualElement);
+        var fragment;
+        if (env.useFragmentCache && dom.canClone) {
+          if (this.cachedFragment === null) {
+            fragment = this.build(dom);
+            if (this.hasRendered) {
+              this.cachedFragment = fragment;
+            } else {
+              this.hasRendered = true;
+            }
+          }
+          if (this.cachedFragment) {
+            fragment = dom.cloneNode(this.cachedFragment, true);
+          }
+        } else {
+          fragment = this.build(dom);
+        }
+        if (this.cachedFragment) { dom.repairClonedNode(fragment,[0]); }
+        var morph0 = dom.createMorphAt(fragment,0,1,contextualElement);
+        inline(env, morph0, context, "ember-table", [], {"hasHeader": true, "hasFooter": false, "numFixedColumns": 0, "rowHeight": 30, "columns": get(env, context, "tableColumns"), "content": get(env, context, "tableContent")});
+        return fragment;
+      }
+    };
+  }()));
 
 });
 define('dummy/templates/horizon', ['exports'], function (exports) {
 
   'use strict';
 
-  exports['default'] = Ember.Handlebars.template({"compiler":[6,">= 2.0.0-beta.1"],"main":function(depth0,helpers,partials,data) {
-    var helperMissing=helpers.helperMissing, escapeExpression=this.escapeExpression, buffer = '';
-    data.buffer.push("<div class=\"col-md-10 col-md-offset-2 left-border main-content-container\">\n  <h1>Ember Table <small>Horizon</small></h1>\n\n  <div class=\"row\">\n    <div class=\"col-md-12\">\n      <div class=\"example-container\">\n        <div class=\"ember-table-example-container\">\n          ");
-    data.buffer.push(escapeExpression(((helpers.partial || (depth0 && depth0.partial) || helperMissing).call(depth0, "horizon-table/horizon-table", {"name":"partial","hash":{},"hashTypes":{},"hashContexts":{},"types":["STRING"],"contexts":[depth0],"data":data}))));
-    data.buffer.push("\n        </div>\n      </div>\n    </div>\n\n    <div class=\"col-md-12 bumper-30\">\n      <h3>Template</h3>\n      <div class=\"highlight\">\n        <pre class=\"prettyprint lang-html\">{{ember-table\n  hasHeader=true\n  hasFooter=false\n  numFixedColumns=0\n  rowHeight=30\n  columns=tableColumns\n  content=tableContent\n}}\n</pre>\n      </div>\n    </div>\n\n    <div class=\"col-md-12 bumper-30\">\n      <h3>Controller</h3>\n      <div class=\"highlight\">\n        <pre class=\"prettyprint lang-js\">import Ember from &#39;ember&#39;;\nimport ColumnDefinition from &#39;ember-table&#x2F;models&#x2F;column-definition&#39;;\n\nexport default Ember.Controller.extend({\n  tableColumns: Ember.computed(function() {\n    var name = ColumnDefinition.create({\n      savedWidth: 100,\n      headerCellName: &#39;Name&#39;,\n      getCellContent: function(row) {\n        return &#39;Horizon &#39; + row.get(&#39;name&#39;);\n      }\n    });\n    var horizon = ColumnDefinition.create({\n      savedWidth: 600,\n      headerCellName: &#39;Horizon&#39;,\n      tableCellViewClass: &#39;horizon-table-cell&#39;,\n      getCellContent: Ember.K\n    });\n    return [name, horizon];\n  }),\n\n  tableContent: Ember.computed(function() {\n    var normal = d3.random.normal(1.5, 3);\n    var data;\n    var content = [];\n    for (var i = 0; i &lt; 100; i++) {\n      data = [];\n      for (var j = 0; j &lt; 100; j++) {\n        data.push([j, normal()]);\n      }\n      content.pushObject({\n        name: i,\n        data: data\n      });\n    }\n    return content;\n  })\n});\n</pre>\n      </div>\n    </div>\n\n    <div class=\"col-md-12 bumper-30\">\n      <h3>views/horizon-table-cell.js</h3>\n      <div class=\"highlight\">\n        <pre class=\"prettyprint lang-js\">import Ember from &#39;ember&#39;;\nimport TableCell from &#39;ember-table&#x2F;views&#x2F;table-cell&#39;;\nimport d3HorizonUtils from &#39;..&#x2F;utils&#x2F;horizon&#39;;\n\nexport default TableCell.extend({\n  templateName: &#39;empty-cell&#39;,\n  heightBinding: &#39;controller.rowHeight&#39;,\n\n  horizonContent: Ember.computed(function() {\n    var normal = d3.random.normal(1.5, 3);\n    var content = [];\n    for (var i = 0; i &lt; 100; i++) {\n      content.pushObject([i, normal()]);\n    }\n    return content;\n  }).property(),\n\n  onWidthDidChange: Ember.observer(function() {\n    this.$(&#39;svg&#39;).remove();\n    this.renderD3View();\n  }, &#39;width&#39;),\n\n  didInsertElement: function() {\n    this.onWidthDidChange();\n    &#x2F;&#x2F; TODO(azirbel): Add _this.super()\n  },\n\n  renderD3View: function() {\n    var chart, data, height, svg, width;\n    width = this.get(&#39;width&#39;);\n    height = this.get(&#39;height&#39;);\n    data = this.get(&#39;horizonContent&#39;);\n    chart = d3HorizonUtils.d3Horizon().width(width).height(height).bands(2).mode(&#39;mirror&#39;).interpolate(&#39;basis&#39;);\n    svg = d3.select(&#39;#&#39; + this.get(&#39;elementId&#39;)).append(&#39;svg&#39;).attr(&#39;width&#39;, width).attr(&#39;height&#39;, height);\n    svg.data([data]).call(chart);\n  }\n});\n\n</pre>\n      </div>\n    </div>\n\n  </div>\n</div>\n");
-    return buffer;
-  },"useData":true});
+  exports['default'] = Ember.HTMLBars.template((function() {
+    return {
+      isHTMLBars: true,
+      blockParams: 0,
+      cachedFragment: null,
+      hasRendered: false,
+      build: function build(dom) {
+        var el0 = dom.createDocumentFragment();
+        var el1 = dom.createElement("div");
+        dom.setAttribute(el1,"class","col-md-10 col-md-offset-2 left-border main-content-container");
+        var el2 = dom.createTextNode("\n  ");
+        dom.appendChild(el1, el2);
+        var el2 = dom.createElement("h1");
+        var el3 = dom.createTextNode("Ember Table ");
+        dom.appendChild(el2, el3);
+        var el3 = dom.createElement("small");
+        var el4 = dom.createTextNode("Horizon");
+        dom.appendChild(el3, el4);
+        dom.appendChild(el2, el3);
+        dom.appendChild(el1, el2);
+        var el2 = dom.createTextNode("\n\n  ");
+        dom.appendChild(el1, el2);
+        var el2 = dom.createElement("div");
+        dom.setAttribute(el2,"class","row");
+        var el3 = dom.createTextNode("\n    ");
+        dom.appendChild(el2, el3);
+        var el3 = dom.createElement("div");
+        dom.setAttribute(el3,"class","col-md-12");
+        var el4 = dom.createTextNode("\n      ");
+        dom.appendChild(el3, el4);
+        var el4 = dom.createElement("div");
+        dom.setAttribute(el4,"class","example-container");
+        var el5 = dom.createTextNode("\n        ");
+        dom.appendChild(el4, el5);
+        var el5 = dom.createElement("div");
+        dom.setAttribute(el5,"class","ember-table-example-container");
+        var el6 = dom.createTextNode("\n          ");
+        dom.appendChild(el5, el6);
+        var el6 = dom.createTextNode("\n        ");
+        dom.appendChild(el5, el6);
+        dom.appendChild(el4, el5);
+        var el5 = dom.createTextNode("\n      ");
+        dom.appendChild(el4, el5);
+        dom.appendChild(el3, el4);
+        var el4 = dom.createTextNode("\n    ");
+        dom.appendChild(el3, el4);
+        dom.appendChild(el2, el3);
+        var el3 = dom.createTextNode("\n\n    ");
+        dom.appendChild(el2, el3);
+        var el3 = dom.createElement("div");
+        dom.setAttribute(el3,"class","col-md-12 bumper-30");
+        var el4 = dom.createTextNode("\n      ");
+        dom.appendChild(el3, el4);
+        var el4 = dom.createElement("h3");
+        var el5 = dom.createTextNode("Template");
+        dom.appendChild(el4, el5);
+        dom.appendChild(el3, el4);
+        var el4 = dom.createTextNode("\n      ");
+        dom.appendChild(el3, el4);
+        var el4 = dom.createElement("div");
+        dom.setAttribute(el4,"class","highlight");
+        var el5 = dom.createTextNode("\n        ");
+        dom.appendChild(el4, el5);
+        var el5 = dom.createElement("pre");
+        dom.setAttribute(el5,"class","prettyprint lang-html");
+        var el6 = dom.createTextNode("{{ember-table\n  hasHeader=true\n  hasFooter=false\n  numFixedColumns=0\n  rowHeight=30\n  columns=tableColumns\n  content=tableContent\n}}\n");
+        dom.appendChild(el5, el6);
+        dom.appendChild(el4, el5);
+        var el5 = dom.createTextNode("\n      ");
+        dom.appendChild(el4, el5);
+        dom.appendChild(el3, el4);
+        var el4 = dom.createTextNode("\n    ");
+        dom.appendChild(el3, el4);
+        dom.appendChild(el2, el3);
+        var el3 = dom.createTextNode("\n\n    ");
+        dom.appendChild(el2, el3);
+        var el3 = dom.createElement("div");
+        dom.setAttribute(el3,"class","col-md-12 bumper-30");
+        var el4 = dom.createTextNode("\n      ");
+        dom.appendChild(el3, el4);
+        var el4 = dom.createElement("h3");
+        var el5 = dom.createTextNode("Controller");
+        dom.appendChild(el4, el5);
+        dom.appendChild(el3, el4);
+        var el4 = dom.createTextNode("\n      ");
+        dom.appendChild(el3, el4);
+        var el4 = dom.createElement("div");
+        dom.setAttribute(el4,"class","highlight");
+        var el5 = dom.createTextNode("\n        ");
+        dom.appendChild(el4, el5);
+        var el5 = dom.createElement("pre");
+        dom.setAttribute(el5,"class","prettyprint lang-js");
+        var el6 = dom.createTextNode("import Ember from &#39;ember&#39;;\nimport ColumnDefinition from &#39;ember-table&#x2F;models&#x2F;column-definition&#39;;\n\nexport default Ember.Controller.extend({\n  tableColumns: Ember.computed(function() {\n    var name = ColumnDefinition.create({\n      savedWidth: 100,\n      headerCellName: &#39;Name&#39;,\n      getCellContent: function(row) {\n        return &#39;Horizon &#39; + row.get(&#39;name&#39;);\n      }\n    });\n    var horizon = ColumnDefinition.create({\n      savedWidth: 600,\n      headerCellName: &#39;Horizon&#39;,\n      tableCellViewClass: &#39;horizon-table-cell&#39;,\n      getCellContent: Ember.K\n    });\n    return [name, horizon];\n  }),\n\n  tableContent: Ember.computed(function() {\n    var normal = d3.random.normal(1.5, 3);\n    var data;\n    var content = [];\n    for (var i = 0; i &lt; 100; i++) {\n      data = [];\n      for (var j = 0; j &lt; 100; j++) {\n        data.push([j, normal()]);\n      }\n      content.pushObject({\n        name: i,\n        data: data\n      });\n    }\n    return content;\n  })\n});\n");
+        dom.appendChild(el5, el6);
+        dom.appendChild(el4, el5);
+        var el5 = dom.createTextNode("\n      ");
+        dom.appendChild(el4, el5);
+        dom.appendChild(el3, el4);
+        var el4 = dom.createTextNode("\n    ");
+        dom.appendChild(el3, el4);
+        dom.appendChild(el2, el3);
+        var el3 = dom.createTextNode("\n\n    ");
+        dom.appendChild(el2, el3);
+        var el3 = dom.createElement("div");
+        dom.setAttribute(el3,"class","col-md-12 bumper-30");
+        var el4 = dom.createTextNode("\n      ");
+        dom.appendChild(el3, el4);
+        var el4 = dom.createElement("h3");
+        var el5 = dom.createTextNode("views/horizon-table-cell.js");
+        dom.appendChild(el4, el5);
+        dom.appendChild(el3, el4);
+        var el4 = dom.createTextNode("\n      ");
+        dom.appendChild(el3, el4);
+        var el4 = dom.createElement("div");
+        dom.setAttribute(el4,"class","highlight");
+        var el5 = dom.createTextNode("\n        ");
+        dom.appendChild(el4, el5);
+        var el5 = dom.createElement("pre");
+        dom.setAttribute(el5,"class","prettyprint lang-js");
+        var el6 = dom.createTextNode("import Ember from &#39;ember&#39;;\nimport TableCell from &#39;ember-table&#x2F;views&#x2F;table-cell&#39;;\nimport d3HorizonUtils from &#39;..&#x2F;utils&#x2F;horizon&#39;;\n\nexport default TableCell.extend({\n  templateName: &#39;empty-cell&#39;,\n  heightBinding: &#39;controller.rowHeight&#39;,\n\n  horizonContent: Ember.computed(function() {\n    var normal = d3.random.normal(1.5, 3);\n    var content = [];\n    for (var i = 0; i &lt; 100; i++) {\n      content.pushObject([i, normal()]);\n    }\n    return content;\n  }).property(),\n\n  onWidthDidChange: Ember.observer(function() {\n    this.$(&#39;svg&#39;).remove();\n    this.renderD3View();\n  }, &#39;width&#39;),\n\n  didInsertElement: function() {\n    this.onWidthDidChange();\n    &#x2F;&#x2F; TODO(azirbel): Add _this.super()\n  },\n\n  renderD3View: function() {\n    var chart, data, height, svg, width;\n    width = this.get(&#39;width&#39;);\n    height = this.get(&#39;height&#39;);\n    data = this.get(&#39;horizonContent&#39;);\n    chart = d3HorizonUtils.d3Horizon().width(width).height(height).bands(2).mode(&#39;mirror&#39;).interpolate(&#39;basis&#39;);\n    svg = d3.select(&#39;#&#39; + this.get(&#39;elementId&#39;)).append(&#39;svg&#39;).attr(&#39;width&#39;, width).attr(&#39;height&#39;, height);\n    svg.data([data]).call(chart);\n  }\n});\n\n");
+        dom.appendChild(el5, el6);
+        dom.appendChild(el4, el5);
+        var el5 = dom.createTextNode("\n      ");
+        dom.appendChild(el4, el5);
+        dom.appendChild(el3, el4);
+        var el4 = dom.createTextNode("\n    ");
+        dom.appendChild(el3, el4);
+        dom.appendChild(el2, el3);
+        var el3 = dom.createTextNode("\n\n  ");
+        dom.appendChild(el2, el3);
+        dom.appendChild(el1, el2);
+        var el2 = dom.createTextNode("\n");
+        dom.appendChild(el1, el2);
+        dom.appendChild(el0, el1);
+        var el1 = dom.createTextNode("\n");
+        dom.appendChild(el0, el1);
+        return el0;
+      },
+      render: function render(context, env, contextualElement) {
+        var dom = env.dom;
+        var hooks = env.hooks, inline = hooks.inline;
+        dom.detectNamespace(contextualElement);
+        var fragment;
+        if (env.useFragmentCache && dom.canClone) {
+          if (this.cachedFragment === null) {
+            fragment = this.build(dom);
+            if (this.hasRendered) {
+              this.cachedFragment = fragment;
+            } else {
+              this.hasRendered = true;
+            }
+          }
+          if (this.cachedFragment) {
+            fragment = dom.cloneNode(this.cachedFragment, true);
+          }
+        } else {
+          fragment = this.build(dom);
+        }
+        var morph0 = dom.createMorphAt(dom.childAt(fragment, [0, 3, 1, 1, 1]),0,1);
+        inline(env, morph0, context, "partial", ["horizon-table/horizon-table"], {});
+        return fragment;
+      }
+    };
+  }()));
 
 });
 define('dummy/templates/license', ['exports'], function (exports) {
 
   'use strict';
 
-  exports['default'] = Ember.Handlebars.template({"compiler":[6,">= 2.0.0-beta.1"],"main":function(depth0,helpers,partials,data) {
-    data.buffer.push("<div class=\"section\">\n  <div class=\"container main-content-container\">\n    <div class=\"row\">\n      <div class=\"col-md-6 col-md-offset-3 section-title\">\n        <h1>Code &amp; Documentation Licensing</h1>\n      </div>\n      <div class=\"col-md-6 col-md-offset-3\">\n        <p>The majority of open source software exclusively developed by Addepar is licensed under the liberal terms of the Apache License, Version 2.0. The documentation is generally available under the Creative Commons Attribution 3.0 Unported License. In the end, you are free to use, modify and distribute any documentation, source code or examples within our open source projects as long as you adhere to the licensing conditions present within the projects.</p>\n        <p>Also note that our engineers like to hack on their own open source projects in their free time. For code provided by our engineers outside of our official repositories on GitHub, Addepar does not grant any type of license, whether express or implied, to such code.</p>\n     </div>\n    </div>\n  </div>\n</div>\n");
-    },"useData":true});
+  exports['default'] = Ember.HTMLBars.template((function() {
+    return {
+      isHTMLBars: true,
+      blockParams: 0,
+      cachedFragment: null,
+      hasRendered: false,
+      build: function build(dom) {
+        var el0 = dom.createDocumentFragment();
+        var el1 = dom.createElement("div");
+        dom.setAttribute(el1,"class","section");
+        var el2 = dom.createTextNode("\n  ");
+        dom.appendChild(el1, el2);
+        var el2 = dom.createElement("div");
+        dom.setAttribute(el2,"class","container main-content-container");
+        var el3 = dom.createTextNode("\n    ");
+        dom.appendChild(el2, el3);
+        var el3 = dom.createElement("div");
+        dom.setAttribute(el3,"class","row");
+        var el4 = dom.createTextNode("\n      ");
+        dom.appendChild(el3, el4);
+        var el4 = dom.createElement("div");
+        dom.setAttribute(el4,"class","col-md-6 col-md-offset-3 section-title");
+        var el5 = dom.createTextNode("\n        ");
+        dom.appendChild(el4, el5);
+        var el5 = dom.createElement("h1");
+        var el6 = dom.createTextNode("Code & Documentation Licensing");
+        dom.appendChild(el5, el6);
+        dom.appendChild(el4, el5);
+        var el5 = dom.createTextNode("\n      ");
+        dom.appendChild(el4, el5);
+        dom.appendChild(el3, el4);
+        var el4 = dom.createTextNode("\n      ");
+        dom.appendChild(el3, el4);
+        var el4 = dom.createElement("div");
+        dom.setAttribute(el4,"class","col-md-6 col-md-offset-3");
+        var el5 = dom.createTextNode("\n        ");
+        dom.appendChild(el4, el5);
+        var el5 = dom.createElement("p");
+        var el6 = dom.createTextNode("The majority of open source software exclusively developed by Addepar is licensed under the liberal terms of the Apache License, Version 2.0. The documentation is generally available under the Creative Commons Attribution 3.0 Unported License. In the end, you are free to use, modify and distribute any documentation, source code or examples within our open source projects as long as you adhere to the licensing conditions present within the projects.");
+        dom.appendChild(el5, el6);
+        dom.appendChild(el4, el5);
+        var el5 = dom.createTextNode("\n        ");
+        dom.appendChild(el4, el5);
+        var el5 = dom.createElement("p");
+        var el6 = dom.createTextNode("Also note that our engineers like to hack on their own open source projects in their free time. For code provided by our engineers outside of our official repositories on GitHub, Addepar does not grant any type of license, whether express or implied, to such code.");
+        dom.appendChild(el5, el6);
+        dom.appendChild(el4, el5);
+        var el5 = dom.createTextNode("\n     ");
+        dom.appendChild(el4, el5);
+        dom.appendChild(el3, el4);
+        var el4 = dom.createTextNode("\n    ");
+        dom.appendChild(el3, el4);
+        dom.appendChild(el2, el3);
+        var el3 = dom.createTextNode("\n  ");
+        dom.appendChild(el2, el3);
+        dom.appendChild(el1, el2);
+        var el2 = dom.createTextNode("\n");
+        dom.appendChild(el1, el2);
+        dom.appendChild(el0, el1);
+        var el1 = dom.createTextNode("\n");
+        dom.appendChild(el0, el1);
+        return el0;
+      },
+      render: function render(context, env, contextualElement) {
+        var dom = env.dom;
+        dom.detectNamespace(contextualElement);
+        var fragment;
+        if (env.useFragmentCache && dom.canClone) {
+          if (this.cachedFragment === null) {
+            fragment = this.build(dom);
+            if (this.hasRendered) {
+              this.cachedFragment = fragment;
+            } else {
+              this.hasRendered = true;
+            }
+          }
+          if (this.cachedFragment) {
+            fragment = dom.cloneNode(this.cachedFragment, true);
+          }
+        } else {
+          fragment = this.build(dom);
+        }
+        return fragment;
+      }
+    };
+  }()));
 
 });
 define('dummy/templates/migration-guides', ['exports'], function (exports) {
 
   'use strict';
 
-  exports['default'] = Ember.Handlebars.template({"1":function(depth0,helpers,partials,data) {
-    data.buffer.push("configurable column demo.");
-    },"3":function(depth0,helpers,partials,data) {
-    data.buffer.push("here");
-    },"compiler":[6,">= 2.0.0-beta.1"],"main":function(depth0,helpers,partials,data) {
-    var stack1, helperMissing=helpers.helperMissing, buffer = '';
-    data.buffer.push("<div class=\"col-md-10 col-md-offset-2 left-border main-content-container\">\n  <h1>Migration Guides</h1>\n  <div class=\"row\">\n    <div class=\"col-md-9\">\n      <h2>Migrating to version 0.4.0</h2>\n      <p>\n        Version 0.4.0 contains major changes to column resizing.\n      </p>\n      <p>\n        In version 0.2, setting the table's <code>forceFillColumns</code>\n        property and configuring each column's <code>canAutoResize</code>\n        property let you configure the table to scale automatically when\n        rendered into containers of different sizes.\n      </p>\n      <p>\n        In version 0.4, the table-wide <code>forceFillColumns</code> setting\n        has been removed and each column defines its own resize behavior.  Use\n        <code>isResizable</code> to set whether the column can be resized at\n        all (manually or automatically), <code>canAutoResize</code> to set\n        whether the column will attempt to scale its width to different table\n        sizes, and <code>savedWidth</code> to set the column's initial width or\n        persist its width once resized.\n      </p>\n      <p>\n        It was previously possible to extend Ember Table so that it would\n        behave in a \"fluid\" way, meaning that resizing one column steals\n        width from its neighboring column. This is now supported in Ember Table\n        out of the box: just set <code>columnMode=\"fluid\"</code>.\n      </p>\n      <p>\n        To get a sense for the new column resizing changes, check out the\n        ");
-    stack1 = ((helpers['link-to'] || (depth0 && depth0['link-to']) || helperMissing).call(depth0, "configurable-columns", {"name":"link-to","hash":{},"hashTypes":{},"hashContexts":{},"fn":this.program(1, data),"inverse":this.noop,"types":["STRING"],"contexts":[depth0],"data":data}));
-    if (stack1 != null) { data.buffer.push(stack1); }
-    data.buffer.push("\n      </p>\n      <h3>API Changes</h3>\n      <ul class=\"styled\">\n        <li>Removed: <code>EmberTableComponent.forceFillColumns</code></li>\n        <li>Removed: <code>ColumnDefinition.columnWidth</code></li>\n        <li>Removed: <code>ColumnDefinition.defaultColumnWidth</code></li>\n        <li>Added: <code>EmberTableComponent.columnMode</code></li>\n        <li>Added: <code>ColumnDefinition.savedWidth</code></li>\n      </ul>\n      <h3>Upgrade steps</h3>\n      <ol class=\"styled styled-spacious\">\n        <li>\n          Replace <code>columnWidth</code> and\n          <code>defaultColumnWidth</code> with <code>savedWidth</code>. This\n          will set the column's initial width, and will change if the column is\n          manually resized. If you want to persist changes to column sizes,\n          simply bind to and persist <code>savedWidth</code>.\n        </li>\n        <li>\n          Do not use <code>forceFillColumns</code> as it no longer has any\n          effect. Columns will fill as before if their\n          <code>canAutoResize</code> property is <code>true</code>.\n        </li>\n        <li>\n          Make sure your columns have <code>canAutoResize</code> set correctly.\n          In version 0.2 this defaulted to <code>true</code>, but only made a\n          difference if <code>forceFillColumns</code> was enabled. Now it\n          defaults to <code>false</code>, but if a column sets it to\n          <code>true</code>, the force fill behavior is implicitly triggered.\n        </li>\n      </ol>\n\n      <h2>Migrating to version 0.3.0</h2>\n      <p>\n        Version 0.3.0 includes major column resizing changes, but with\n        <code>canAutoResize</code> defaulting to <code>true</code>.  We\n        recommend skipping this version and upgrading directly to 0.4.0; see\n        the 0.4.0 migration guide.\n      </p>\n\n      <h2>Migrating to version 0.2.0</h2>\n      <p>\n        A full migration step is not available for this version, but it\n        contains only minor API changes.\n      </p>\n      <p>\n        Version 0.2 uses row objects to wrap content in the table. Because of\n        this, change any accesses to row data (e.g. in\n        <code>getCellContent</code>) from <code>row['date']</code> to\n        <code>row.get('date')</code>.\n      </p>\n\n      <h2>Migrating from old versions to version 0.1.0</h2>\n      <p>\n        Version 0.1.0 of Ember Table is a bit of a restructure - we’re hoping\n        that the new organization will make it simpler and easier to set up,\n        but for existing users, you’ll have to make a few changes to upgrade to\n        the new Ember Table.\n      </p>\n      <h3>Upgrade steps</h3>\n      <ol class=\"styled styled-spacious\">\n        <li>\n          Upgrade <code>ember-table.js</code> and <code>ember-table.css</code>.\n          If you’re not on the latest version of <a target=\"_BLANK\"\n          href=\"http://emberjs.com/\">Ember.js</a>, now might be a good time to\n          upgrade that as well. This guide was written using Ember 1.0.0 and\n          Ember Table 0.1.0.\n        </li>\n        <li>\n          The major change is moving from separate table Views and Controllers\n          to a unified table Component. You can read up on Ember Components\n          <a target=\"_BLANK\"\n          href=\"http://emberjs.com/guides/components/\">here</a>. So instead of\n          having lines like this:\n          <div class=\"highlight\">\n<pre class=\"prettyprint lang-js\">App.MyTableController = Ember.Table.TableController.extend (...)\nApp.MyTableView = EmberTable.TableContainerView.extend (...)</pre>\n          </div>\n          You’ll have everything in one place:\n          <div class=\"highlight\">\n<pre class=\"prettyprint lang-js\">App.MyTableController = Ember.Controller.extend (...)</pre>\n          </div>\n          For starters, just change the type of your MyTableController from the old version to the new.\n        </li>\n        <li>\n          Update your handlebars file. Before, it might have looked like:\n          <br/>\n          <div class=\"highlight\">\n<pre class=\"prettyprint lang-html\">&#123;&#123;view Ember.Table.TablesContainer …&#125;&#125;</pre>\n          </div>\n          After the restructure, it should look like this:<br/>\n          <div class=\"highlight\">\n<pre class=\"prettyprint lang-html\">&#123;&#123;table-component …&#125;&#125;</pre>\n          </div>\n        </li>\n        <li>\n          While you’re modifying that handlebars file, you may want to make\n          sure it looks like the structure of the new Ember Table examples. You\n          can see one ");
-    stack1 = ((helpers['link-to'] || (depth0 && depth0['link-to']) || helperMissing).call(depth0, "simple", {"name":"link-to","hash":{},"hashTypes":{},"hashContexts":{},"fn":this.program(3, data),"inverse":this.noop,"types":["STRING"],"contexts":[depth0],"data":data}));
-    if (stack1 != null) { data.buffer.push(stack1); }
-    data.buffer.push(". In\n          particular, you might get errors if you don’t properly bind your\n          columns and content of the table, using <code>columns=</code>\n          and <code>content=</code>.\n          <br/><br/>\n          Both of these settings refer to variables in the corresponding\n          controller (which here should be <code>MyTableController</code>), such that if you\n          set <code>columns=exampleVariable</code>, then the columns will be bound\n          to <code>exampleVariable</code> in the controller. This gives you control over\n          the look and content of the table.\n          <br/><br/>\n          Before, you may have had\n          <code>controller=</code> here. You don’t need this any more: the\n          controller being used with this template will be used for the table\n          too, by default.\n        </li>\n        <li>\n          Move any properties you had defined in your\n          <code>TableContainerView</code> (if\n          you had one) into the controller. See the examples for more\n          information on how table properties should be set now.\n        </li>\n      </ol>\n      <h3>Troubleshooting</h3>\n      <ul class=\"styled styled-spacious\">\n        <li>\n          If you were using old Ember Table objects like the\n          <code>RowArrayProxy</code>,\n          take another look and consider whether you really need it. During my\n          migration I was able to remove it by changing the\n          <code>contentBinding=</code>\n          in my handlebars file to a more appropriate variable for content.\n        </li>\n        <li>\n          If you are having errors with template names not being found, it\n          may be due to a change with inferring names. For me, my old template\n          names used hyphens, and changing them to underscores automatically\n          connected them to the rest of my application.\n        </li>\n      </ul>\n    </div>\n  </div>\n</div>\n");
-    return buffer;
-  },"useData":true});
+  exports['default'] = Ember.HTMLBars.template((function() {
+    var child0 = (function() {
+      return {
+        isHTMLBars: true,
+        blockParams: 0,
+        cachedFragment: null,
+        hasRendered: false,
+        build: function build(dom) {
+          var el0 = dom.createTextNode("configurable column demo.");
+          return el0;
+        },
+        render: function render(context, env, contextualElement) {
+          var dom = env.dom;
+          dom.detectNamespace(contextualElement);
+          var fragment;
+          if (env.useFragmentCache && dom.canClone) {
+            if (this.cachedFragment === null) {
+              fragment = this.build(dom);
+              if (this.hasRendered) {
+                this.cachedFragment = fragment;
+              } else {
+                this.hasRendered = true;
+              }
+            }
+            if (this.cachedFragment) {
+              fragment = dom.cloneNode(this.cachedFragment, true);
+            }
+          } else {
+            fragment = this.build(dom);
+          }
+          return fragment;
+        }
+      };
+    }());
+    var child1 = (function() {
+      return {
+        isHTMLBars: true,
+        blockParams: 0,
+        cachedFragment: null,
+        hasRendered: false,
+        build: function build(dom) {
+          var el0 = dom.createTextNode("here");
+          return el0;
+        },
+        render: function render(context, env, contextualElement) {
+          var dom = env.dom;
+          dom.detectNamespace(contextualElement);
+          var fragment;
+          if (env.useFragmentCache && dom.canClone) {
+            if (this.cachedFragment === null) {
+              fragment = this.build(dom);
+              if (this.hasRendered) {
+                this.cachedFragment = fragment;
+              } else {
+                this.hasRendered = true;
+              }
+            }
+            if (this.cachedFragment) {
+              fragment = dom.cloneNode(this.cachedFragment, true);
+            }
+          } else {
+            fragment = this.build(dom);
+          }
+          return fragment;
+        }
+      };
+    }());
+    return {
+      isHTMLBars: true,
+      blockParams: 0,
+      cachedFragment: null,
+      hasRendered: false,
+      build: function build(dom) {
+        var el0 = dom.createDocumentFragment();
+        var el1 = dom.createElement("div");
+        dom.setAttribute(el1,"class","col-md-10 col-md-offset-2 left-border main-content-container");
+        var el2 = dom.createTextNode("\n  ");
+        dom.appendChild(el1, el2);
+        var el2 = dom.createElement("h1");
+        var el3 = dom.createTextNode("Migration Guides");
+        dom.appendChild(el2, el3);
+        dom.appendChild(el1, el2);
+        var el2 = dom.createTextNode("\n  ");
+        dom.appendChild(el1, el2);
+        var el2 = dom.createElement("div");
+        dom.setAttribute(el2,"class","row");
+        var el3 = dom.createTextNode("\n    ");
+        dom.appendChild(el2, el3);
+        var el3 = dom.createElement("div");
+        dom.setAttribute(el3,"class","col-md-9");
+        var el4 = dom.createTextNode("\n      ");
+        dom.appendChild(el3, el4);
+        var el4 = dom.createElement("h2");
+        var el5 = dom.createTextNode("Migrating to version 0.4.0");
+        dom.appendChild(el4, el5);
+        dom.appendChild(el3, el4);
+        var el4 = dom.createTextNode("\n      ");
+        dom.appendChild(el3, el4);
+        var el4 = dom.createElement("p");
+        var el5 = dom.createTextNode("\n        Version 0.4.0 contains major changes to column resizing.\n      ");
+        dom.appendChild(el4, el5);
+        dom.appendChild(el3, el4);
+        var el4 = dom.createTextNode("\n      ");
+        dom.appendChild(el3, el4);
+        var el4 = dom.createElement("p");
+        var el5 = dom.createTextNode("\n        In version 0.2, setting the table's ");
+        dom.appendChild(el4, el5);
+        var el5 = dom.createElement("code");
+        var el6 = dom.createTextNode("forceFillColumns");
+        dom.appendChild(el5, el6);
+        dom.appendChild(el4, el5);
+        var el5 = dom.createTextNode("\n        property and configuring each column's ");
+        dom.appendChild(el4, el5);
+        var el5 = dom.createElement("code");
+        var el6 = dom.createTextNode("canAutoResize");
+        dom.appendChild(el5, el6);
+        dom.appendChild(el4, el5);
+        var el5 = dom.createTextNode("\n        property let you configure the table to scale automatically when\n        rendered into containers of different sizes.\n      ");
+        dom.appendChild(el4, el5);
+        dom.appendChild(el3, el4);
+        var el4 = dom.createTextNode("\n      ");
+        dom.appendChild(el3, el4);
+        var el4 = dom.createElement("p");
+        var el5 = dom.createTextNode("\n        In version 0.4, the table-wide ");
+        dom.appendChild(el4, el5);
+        var el5 = dom.createElement("code");
+        var el6 = dom.createTextNode("forceFillColumns");
+        dom.appendChild(el5, el6);
+        dom.appendChild(el4, el5);
+        var el5 = dom.createTextNode(" setting\n        has been removed and each column defines its own resize behavior.  Use\n        ");
+        dom.appendChild(el4, el5);
+        var el5 = dom.createElement("code");
+        var el6 = dom.createTextNode("isResizable");
+        dom.appendChild(el5, el6);
+        dom.appendChild(el4, el5);
+        var el5 = dom.createTextNode(" to set whether the column can be resized at\n        all (manually or automatically), ");
+        dom.appendChild(el4, el5);
+        var el5 = dom.createElement("code");
+        var el6 = dom.createTextNode("canAutoResize");
+        dom.appendChild(el5, el6);
+        dom.appendChild(el4, el5);
+        var el5 = dom.createTextNode(" to set\n        whether the column will attempt to scale its width to different table\n        sizes, and ");
+        dom.appendChild(el4, el5);
+        var el5 = dom.createElement("code");
+        var el6 = dom.createTextNode("savedWidth");
+        dom.appendChild(el5, el6);
+        dom.appendChild(el4, el5);
+        var el5 = dom.createTextNode(" to set the column's initial width or\n        persist its width once resized.\n      ");
+        dom.appendChild(el4, el5);
+        dom.appendChild(el3, el4);
+        var el4 = dom.createTextNode("\n      ");
+        dom.appendChild(el3, el4);
+        var el4 = dom.createElement("p");
+        var el5 = dom.createTextNode("\n        It was previously possible to extend Ember Table so that it would\n        behave in a \"fluid\" way, meaning that resizing one column steals\n        width from its neighboring column. This is now supported in Ember Table\n        out of the box: just set ");
+        dom.appendChild(el4, el5);
+        var el5 = dom.createElement("code");
+        var el6 = dom.createTextNode("columnMode=\"fluid\"");
+        dom.appendChild(el5, el6);
+        dom.appendChild(el4, el5);
+        var el5 = dom.createTextNode(".\n      ");
+        dom.appendChild(el4, el5);
+        dom.appendChild(el3, el4);
+        var el4 = dom.createTextNode("\n      ");
+        dom.appendChild(el3, el4);
+        var el4 = dom.createElement("p");
+        var el5 = dom.createTextNode("\n        To get a sense for the new column resizing changes, check out the\n        ");
+        dom.appendChild(el4, el5);
+        var el5 = dom.createTextNode("\n      ");
+        dom.appendChild(el4, el5);
+        dom.appendChild(el3, el4);
+        var el4 = dom.createTextNode("\n      ");
+        dom.appendChild(el3, el4);
+        var el4 = dom.createElement("h3");
+        var el5 = dom.createTextNode("API Changes");
+        dom.appendChild(el4, el5);
+        dom.appendChild(el3, el4);
+        var el4 = dom.createTextNode("\n      ");
+        dom.appendChild(el3, el4);
+        var el4 = dom.createElement("ul");
+        dom.setAttribute(el4,"class","styled");
+        var el5 = dom.createTextNode("\n        ");
+        dom.appendChild(el4, el5);
+        var el5 = dom.createElement("li");
+        var el6 = dom.createTextNode("Removed: ");
+        dom.appendChild(el5, el6);
+        var el6 = dom.createElement("code");
+        var el7 = dom.createTextNode("EmberTableComponent.forceFillColumns");
+        dom.appendChild(el6, el7);
+        dom.appendChild(el5, el6);
+        dom.appendChild(el4, el5);
+        var el5 = dom.createTextNode("\n        ");
+        dom.appendChild(el4, el5);
+        var el5 = dom.createElement("li");
+        var el6 = dom.createTextNode("Removed: ");
+        dom.appendChild(el5, el6);
+        var el6 = dom.createElement("code");
+        var el7 = dom.createTextNode("ColumnDefinition.columnWidth");
+        dom.appendChild(el6, el7);
+        dom.appendChild(el5, el6);
+        dom.appendChild(el4, el5);
+        var el5 = dom.createTextNode("\n        ");
+        dom.appendChild(el4, el5);
+        var el5 = dom.createElement("li");
+        var el6 = dom.createTextNode("Removed: ");
+        dom.appendChild(el5, el6);
+        var el6 = dom.createElement("code");
+        var el7 = dom.createTextNode("ColumnDefinition.defaultColumnWidth");
+        dom.appendChild(el6, el7);
+        dom.appendChild(el5, el6);
+        dom.appendChild(el4, el5);
+        var el5 = dom.createTextNode("\n        ");
+        dom.appendChild(el4, el5);
+        var el5 = dom.createElement("li");
+        var el6 = dom.createTextNode("Added: ");
+        dom.appendChild(el5, el6);
+        var el6 = dom.createElement("code");
+        var el7 = dom.createTextNode("EmberTableComponent.columnMode");
+        dom.appendChild(el6, el7);
+        dom.appendChild(el5, el6);
+        dom.appendChild(el4, el5);
+        var el5 = dom.createTextNode("\n        ");
+        dom.appendChild(el4, el5);
+        var el5 = dom.createElement("li");
+        var el6 = dom.createTextNode("Added: ");
+        dom.appendChild(el5, el6);
+        var el6 = dom.createElement("code");
+        var el7 = dom.createTextNode("ColumnDefinition.savedWidth");
+        dom.appendChild(el6, el7);
+        dom.appendChild(el5, el6);
+        dom.appendChild(el4, el5);
+        var el5 = dom.createTextNode("\n      ");
+        dom.appendChild(el4, el5);
+        dom.appendChild(el3, el4);
+        var el4 = dom.createTextNode("\n      ");
+        dom.appendChild(el3, el4);
+        var el4 = dom.createElement("h3");
+        var el5 = dom.createTextNode("Upgrade steps");
+        dom.appendChild(el4, el5);
+        dom.appendChild(el3, el4);
+        var el4 = dom.createTextNode("\n      ");
+        dom.appendChild(el3, el4);
+        var el4 = dom.createElement("ol");
+        dom.setAttribute(el4,"class","styled styled-spacious");
+        var el5 = dom.createTextNode("\n        ");
+        dom.appendChild(el4, el5);
+        var el5 = dom.createElement("li");
+        var el6 = dom.createTextNode("\n          Replace ");
+        dom.appendChild(el5, el6);
+        var el6 = dom.createElement("code");
+        var el7 = dom.createTextNode("columnWidth");
+        dom.appendChild(el6, el7);
+        dom.appendChild(el5, el6);
+        var el6 = dom.createTextNode(" and\n          ");
+        dom.appendChild(el5, el6);
+        var el6 = dom.createElement("code");
+        var el7 = dom.createTextNode("defaultColumnWidth");
+        dom.appendChild(el6, el7);
+        dom.appendChild(el5, el6);
+        var el6 = dom.createTextNode(" with ");
+        dom.appendChild(el5, el6);
+        var el6 = dom.createElement("code");
+        var el7 = dom.createTextNode("savedWidth");
+        dom.appendChild(el6, el7);
+        dom.appendChild(el5, el6);
+        var el6 = dom.createTextNode(". This\n          will set the column's initial width, and will change if the column is\n          manually resized. If you want to persist changes to column sizes,\n          simply bind to and persist ");
+        dom.appendChild(el5, el6);
+        var el6 = dom.createElement("code");
+        var el7 = dom.createTextNode("savedWidth");
+        dom.appendChild(el6, el7);
+        dom.appendChild(el5, el6);
+        var el6 = dom.createTextNode(".\n        ");
+        dom.appendChild(el5, el6);
+        dom.appendChild(el4, el5);
+        var el5 = dom.createTextNode("\n        ");
+        dom.appendChild(el4, el5);
+        var el5 = dom.createElement("li");
+        var el6 = dom.createTextNode("\n          Do not use ");
+        dom.appendChild(el5, el6);
+        var el6 = dom.createElement("code");
+        var el7 = dom.createTextNode("forceFillColumns");
+        dom.appendChild(el6, el7);
+        dom.appendChild(el5, el6);
+        var el6 = dom.createTextNode(" as it no longer has any\n          effect. Columns will fill as before if their\n          ");
+        dom.appendChild(el5, el6);
+        var el6 = dom.createElement("code");
+        var el7 = dom.createTextNode("canAutoResize");
+        dom.appendChild(el6, el7);
+        dom.appendChild(el5, el6);
+        var el6 = dom.createTextNode(" property is ");
+        dom.appendChild(el5, el6);
+        var el6 = dom.createElement("code");
+        var el7 = dom.createTextNode("true");
+        dom.appendChild(el6, el7);
+        dom.appendChild(el5, el6);
+        var el6 = dom.createTextNode(".\n        ");
+        dom.appendChild(el5, el6);
+        dom.appendChild(el4, el5);
+        var el5 = dom.createTextNode("\n        ");
+        dom.appendChild(el4, el5);
+        var el5 = dom.createElement("li");
+        var el6 = dom.createTextNode("\n          Make sure your columns have ");
+        dom.appendChild(el5, el6);
+        var el6 = dom.createElement("code");
+        var el7 = dom.createTextNode("canAutoResize");
+        dom.appendChild(el6, el7);
+        dom.appendChild(el5, el6);
+        var el6 = dom.createTextNode(" set correctly.\n          In version 0.2 this defaulted to ");
+        dom.appendChild(el5, el6);
+        var el6 = dom.createElement("code");
+        var el7 = dom.createTextNode("true");
+        dom.appendChild(el6, el7);
+        dom.appendChild(el5, el6);
+        var el6 = dom.createTextNode(", but only made a\n          difference if ");
+        dom.appendChild(el5, el6);
+        var el6 = dom.createElement("code");
+        var el7 = dom.createTextNode("forceFillColumns");
+        dom.appendChild(el6, el7);
+        dom.appendChild(el5, el6);
+        var el6 = dom.createTextNode(" was enabled. Now it\n          defaults to ");
+        dom.appendChild(el5, el6);
+        var el6 = dom.createElement("code");
+        var el7 = dom.createTextNode("false");
+        dom.appendChild(el6, el7);
+        dom.appendChild(el5, el6);
+        var el6 = dom.createTextNode(", but if a column sets it to\n          ");
+        dom.appendChild(el5, el6);
+        var el6 = dom.createElement("code");
+        var el7 = dom.createTextNode("true");
+        dom.appendChild(el6, el7);
+        dom.appendChild(el5, el6);
+        var el6 = dom.createTextNode(", the force fill behavior is implicitly triggered.\n        ");
+        dom.appendChild(el5, el6);
+        dom.appendChild(el4, el5);
+        var el5 = dom.createTextNode("\n      ");
+        dom.appendChild(el4, el5);
+        dom.appendChild(el3, el4);
+        var el4 = dom.createTextNode("\n\n      ");
+        dom.appendChild(el3, el4);
+        var el4 = dom.createElement("h2");
+        var el5 = dom.createTextNode("Migrating to version 0.3.0");
+        dom.appendChild(el4, el5);
+        dom.appendChild(el3, el4);
+        var el4 = dom.createTextNode("\n      ");
+        dom.appendChild(el3, el4);
+        var el4 = dom.createElement("p");
+        var el5 = dom.createTextNode("\n        Version 0.3.0 includes major column resizing changes, but with\n        ");
+        dom.appendChild(el4, el5);
+        var el5 = dom.createElement("code");
+        var el6 = dom.createTextNode("canAutoResize");
+        dom.appendChild(el5, el6);
+        dom.appendChild(el4, el5);
+        var el5 = dom.createTextNode(" defaulting to ");
+        dom.appendChild(el4, el5);
+        var el5 = dom.createElement("code");
+        var el6 = dom.createTextNode("true");
+        dom.appendChild(el5, el6);
+        dom.appendChild(el4, el5);
+        var el5 = dom.createTextNode(".  We\n        recommend skipping this version and upgrading directly to 0.4.0; see\n        the 0.4.0 migration guide.\n      ");
+        dom.appendChild(el4, el5);
+        dom.appendChild(el3, el4);
+        var el4 = dom.createTextNode("\n\n      ");
+        dom.appendChild(el3, el4);
+        var el4 = dom.createElement("h2");
+        var el5 = dom.createTextNode("Migrating to version 0.2.0");
+        dom.appendChild(el4, el5);
+        dom.appendChild(el3, el4);
+        var el4 = dom.createTextNode("\n      ");
+        dom.appendChild(el3, el4);
+        var el4 = dom.createElement("p");
+        var el5 = dom.createTextNode("\n        A full migration step is not available for this version, but it\n        contains only minor API changes.\n      ");
+        dom.appendChild(el4, el5);
+        dom.appendChild(el3, el4);
+        var el4 = dom.createTextNode("\n      ");
+        dom.appendChild(el3, el4);
+        var el4 = dom.createElement("p");
+        var el5 = dom.createTextNode("\n        Version 0.2 uses row objects to wrap content in the table. Because of\n        this, change any accesses to row data (e.g. in\n        ");
+        dom.appendChild(el4, el5);
+        var el5 = dom.createElement("code");
+        var el6 = dom.createTextNode("getCellContent");
+        dom.appendChild(el5, el6);
+        dom.appendChild(el4, el5);
+        var el5 = dom.createTextNode(") from ");
+        dom.appendChild(el4, el5);
+        var el5 = dom.createElement("code");
+        var el6 = dom.createTextNode("row['date']");
+        dom.appendChild(el5, el6);
+        dom.appendChild(el4, el5);
+        var el5 = dom.createTextNode(" to\n        ");
+        dom.appendChild(el4, el5);
+        var el5 = dom.createElement("code");
+        var el6 = dom.createTextNode("row.get('date')");
+        dom.appendChild(el5, el6);
+        dom.appendChild(el4, el5);
+        var el5 = dom.createTextNode(".\n      ");
+        dom.appendChild(el4, el5);
+        dom.appendChild(el3, el4);
+        var el4 = dom.createTextNode("\n\n      ");
+        dom.appendChild(el3, el4);
+        var el4 = dom.createElement("h2");
+        var el5 = dom.createTextNode("Migrating from old versions to version 0.1.0");
+        dom.appendChild(el4, el5);
+        dom.appendChild(el3, el4);
+        var el4 = dom.createTextNode("\n      ");
+        dom.appendChild(el3, el4);
+        var el4 = dom.createElement("p");
+        var el5 = dom.createTextNode("\n        Version 0.1.0 of Ember Table is a bit of a restructure - we’re hoping\n        that the new organization will make it simpler and easier to set up,\n        but for existing users, you’ll have to make a few changes to upgrade to\n        the new Ember Table.\n      ");
+        dom.appendChild(el4, el5);
+        dom.appendChild(el3, el4);
+        var el4 = dom.createTextNode("\n      ");
+        dom.appendChild(el3, el4);
+        var el4 = dom.createElement("h3");
+        var el5 = dom.createTextNode("Upgrade steps");
+        dom.appendChild(el4, el5);
+        dom.appendChild(el3, el4);
+        var el4 = dom.createTextNode("\n      ");
+        dom.appendChild(el3, el4);
+        var el4 = dom.createElement("ol");
+        dom.setAttribute(el4,"class","styled styled-spacious");
+        var el5 = dom.createTextNode("\n        ");
+        dom.appendChild(el4, el5);
+        var el5 = dom.createElement("li");
+        var el6 = dom.createTextNode("\n          Upgrade ");
+        dom.appendChild(el5, el6);
+        var el6 = dom.createElement("code");
+        var el7 = dom.createTextNode("ember-table.js");
+        dom.appendChild(el6, el7);
+        dom.appendChild(el5, el6);
+        var el6 = dom.createTextNode(" and ");
+        dom.appendChild(el5, el6);
+        var el6 = dom.createElement("code");
+        var el7 = dom.createTextNode("ember-table.css");
+        dom.appendChild(el6, el7);
+        dom.appendChild(el5, el6);
+        var el6 = dom.createTextNode(".\n          If you’re not on the latest version of ");
+        dom.appendChild(el5, el6);
+        var el6 = dom.createElement("a");
+        dom.setAttribute(el6,"target","_BLANK");
+        dom.setAttribute(el6,"href","http://emberjs.com/");
+        var el7 = dom.createTextNode("Ember.js");
+        dom.appendChild(el6, el7);
+        dom.appendChild(el5, el6);
+        var el6 = dom.createTextNode(", now might be a good time to\n          upgrade that as well. This guide was written using Ember 1.0.0 and\n          Ember Table 0.1.0.\n        ");
+        dom.appendChild(el5, el6);
+        dom.appendChild(el4, el5);
+        var el5 = dom.createTextNode("\n        ");
+        dom.appendChild(el4, el5);
+        var el5 = dom.createElement("li");
+        var el6 = dom.createTextNode("\n          The major change is moving from separate table Views and Controllers\n          to a unified table Component. You can read up on Ember Components\n          ");
+        dom.appendChild(el5, el6);
+        var el6 = dom.createElement("a");
+        dom.setAttribute(el6,"target","_BLANK");
+        dom.setAttribute(el6,"href","http://emberjs.com/guides/components/");
+        var el7 = dom.createTextNode("here");
+        dom.appendChild(el6, el7);
+        dom.appendChild(el5, el6);
+        var el6 = dom.createTextNode(". So instead of\n          having lines like this:\n          ");
+        dom.appendChild(el5, el6);
+        var el6 = dom.createElement("div");
+        dom.setAttribute(el6,"class","highlight");
+        var el7 = dom.createTextNode("\n");
+        dom.appendChild(el6, el7);
+        var el7 = dom.createElement("pre");
+        dom.setAttribute(el7,"class","prettyprint lang-js");
+        var el8 = dom.createTextNode("App.MyTableController = Ember.Table.TableController.extend (...)\nApp.MyTableView = EmberTable.TableContainerView.extend (...)");
+        dom.appendChild(el7, el8);
+        dom.appendChild(el6, el7);
+        var el7 = dom.createTextNode("\n          ");
+        dom.appendChild(el6, el7);
+        dom.appendChild(el5, el6);
+        var el6 = dom.createTextNode("\n          You’ll have everything in one place:\n          ");
+        dom.appendChild(el5, el6);
+        var el6 = dom.createElement("div");
+        dom.setAttribute(el6,"class","highlight");
+        var el7 = dom.createTextNode("\n");
+        dom.appendChild(el6, el7);
+        var el7 = dom.createElement("pre");
+        dom.setAttribute(el7,"class","prettyprint lang-js");
+        var el8 = dom.createTextNode("App.MyTableController = Ember.Controller.extend (...)");
+        dom.appendChild(el7, el8);
+        dom.appendChild(el6, el7);
+        var el7 = dom.createTextNode("\n          ");
+        dom.appendChild(el6, el7);
+        dom.appendChild(el5, el6);
+        var el6 = dom.createTextNode("\n          For starters, just change the type of your MyTableController from the old version to the new.\n        ");
+        dom.appendChild(el5, el6);
+        dom.appendChild(el4, el5);
+        var el5 = dom.createTextNode("\n        ");
+        dom.appendChild(el4, el5);
+        var el5 = dom.createElement("li");
+        var el6 = dom.createTextNode("\n          Update your handlebars file. Before, it might have looked like:\n          ");
+        dom.appendChild(el5, el6);
+        var el6 = dom.createElement("br");
+        dom.appendChild(el5, el6);
+        var el6 = dom.createTextNode("\n          ");
+        dom.appendChild(el5, el6);
+        var el6 = dom.createElement("div");
+        dom.setAttribute(el6,"class","highlight");
+        var el7 = dom.createTextNode("\n");
+        dom.appendChild(el6, el7);
+        var el7 = dom.createElement("pre");
+        dom.setAttribute(el7,"class","prettyprint lang-html");
+        var el8 = dom.createTextNode("{{view Ember.Table.TablesContainer …}}");
+        dom.appendChild(el7, el8);
+        dom.appendChild(el6, el7);
+        var el7 = dom.createTextNode("\n          ");
+        dom.appendChild(el6, el7);
+        dom.appendChild(el5, el6);
+        var el6 = dom.createTextNode("\n          After the restructure, it should look like this:");
+        dom.appendChild(el5, el6);
+        var el6 = dom.createElement("br");
+        dom.appendChild(el5, el6);
+        var el6 = dom.createTextNode("\n          ");
+        dom.appendChild(el5, el6);
+        var el6 = dom.createElement("div");
+        dom.setAttribute(el6,"class","highlight");
+        var el7 = dom.createTextNode("\n");
+        dom.appendChild(el6, el7);
+        var el7 = dom.createElement("pre");
+        dom.setAttribute(el7,"class","prettyprint lang-html");
+        var el8 = dom.createTextNode("{{table-component …}}");
+        dom.appendChild(el7, el8);
+        dom.appendChild(el6, el7);
+        var el7 = dom.createTextNode("\n          ");
+        dom.appendChild(el6, el7);
+        dom.appendChild(el5, el6);
+        var el6 = dom.createTextNode("\n        ");
+        dom.appendChild(el5, el6);
+        dom.appendChild(el4, el5);
+        var el5 = dom.createTextNode("\n        ");
+        dom.appendChild(el4, el5);
+        var el5 = dom.createElement("li");
+        var el6 = dom.createTextNode("\n          While you’re modifying that handlebars file, you may want to make\n          sure it looks like the structure of the new Ember Table examples. You\n          can see one ");
+        dom.appendChild(el5, el6);
+        var el6 = dom.createTextNode(". In\n          particular, you might get errors if you don’t properly bind your\n          columns and content of the table, using ");
+        dom.appendChild(el5, el6);
+        var el6 = dom.createElement("code");
+        var el7 = dom.createTextNode("columns=");
+        dom.appendChild(el6, el7);
+        dom.appendChild(el5, el6);
+        var el6 = dom.createTextNode("\n          and ");
+        dom.appendChild(el5, el6);
+        var el6 = dom.createElement("code");
+        var el7 = dom.createTextNode("content=");
+        dom.appendChild(el6, el7);
+        dom.appendChild(el5, el6);
+        var el6 = dom.createTextNode(".\n          ");
+        dom.appendChild(el5, el6);
+        var el6 = dom.createElement("br");
+        dom.appendChild(el5, el6);
+        var el6 = dom.createElement("br");
+        dom.appendChild(el5, el6);
+        var el6 = dom.createTextNode("\n          Both of these settings refer to variables in the corresponding\n          controller (which here should be ");
+        dom.appendChild(el5, el6);
+        var el6 = dom.createElement("code");
+        var el7 = dom.createTextNode("MyTableController");
+        dom.appendChild(el6, el7);
+        dom.appendChild(el5, el6);
+        var el6 = dom.createTextNode("), such that if you\n          set ");
+        dom.appendChild(el5, el6);
+        var el6 = dom.createElement("code");
+        var el7 = dom.createTextNode("columns=exampleVariable");
+        dom.appendChild(el6, el7);
+        dom.appendChild(el5, el6);
+        var el6 = dom.createTextNode(", then the columns will be bound\n          to ");
+        dom.appendChild(el5, el6);
+        var el6 = dom.createElement("code");
+        var el7 = dom.createTextNode("exampleVariable");
+        dom.appendChild(el6, el7);
+        dom.appendChild(el5, el6);
+        var el6 = dom.createTextNode(" in the controller. This gives you control over\n          the look and content of the table.\n          ");
+        dom.appendChild(el5, el6);
+        var el6 = dom.createElement("br");
+        dom.appendChild(el5, el6);
+        var el6 = dom.createElement("br");
+        dom.appendChild(el5, el6);
+        var el6 = dom.createTextNode("\n          Before, you may have had\n          ");
+        dom.appendChild(el5, el6);
+        var el6 = dom.createElement("code");
+        var el7 = dom.createTextNode("controller=");
+        dom.appendChild(el6, el7);
+        dom.appendChild(el5, el6);
+        var el6 = dom.createTextNode(" here. You don’t need this any more: the\n          controller being used with this template will be used for the table\n          too, by default.\n        ");
+        dom.appendChild(el5, el6);
+        dom.appendChild(el4, el5);
+        var el5 = dom.createTextNode("\n        ");
+        dom.appendChild(el4, el5);
+        var el5 = dom.createElement("li");
+        var el6 = dom.createTextNode("\n          Move any properties you had defined in your\n          ");
+        dom.appendChild(el5, el6);
+        var el6 = dom.createElement("code");
+        var el7 = dom.createTextNode("TableContainerView");
+        dom.appendChild(el6, el7);
+        dom.appendChild(el5, el6);
+        var el6 = dom.createTextNode(" (if\n          you had one) into the controller. See the examples for more\n          information on how table properties should be set now.\n        ");
+        dom.appendChild(el5, el6);
+        dom.appendChild(el4, el5);
+        var el5 = dom.createTextNode("\n      ");
+        dom.appendChild(el4, el5);
+        dom.appendChild(el3, el4);
+        var el4 = dom.createTextNode("\n      ");
+        dom.appendChild(el3, el4);
+        var el4 = dom.createElement("h3");
+        var el5 = dom.createTextNode("Troubleshooting");
+        dom.appendChild(el4, el5);
+        dom.appendChild(el3, el4);
+        var el4 = dom.createTextNode("\n      ");
+        dom.appendChild(el3, el4);
+        var el4 = dom.createElement("ul");
+        dom.setAttribute(el4,"class","styled styled-spacious");
+        var el5 = dom.createTextNode("\n        ");
+        dom.appendChild(el4, el5);
+        var el5 = dom.createElement("li");
+        var el6 = dom.createTextNode("\n          If you were using old Ember Table objects like the\n          ");
+        dom.appendChild(el5, el6);
+        var el6 = dom.createElement("code");
+        var el7 = dom.createTextNode("RowArrayProxy");
+        dom.appendChild(el6, el7);
+        dom.appendChild(el5, el6);
+        var el6 = dom.createTextNode(",\n          take another look and consider whether you really need it. During my\n          migration I was able to remove it by changing the\n          ");
+        dom.appendChild(el5, el6);
+        var el6 = dom.createElement("code");
+        var el7 = dom.createTextNode("contentBinding=");
+        dom.appendChild(el6, el7);
+        dom.appendChild(el5, el6);
+        var el6 = dom.createTextNode("\n          in my handlebars file to a more appropriate variable for content.\n        ");
+        dom.appendChild(el5, el6);
+        dom.appendChild(el4, el5);
+        var el5 = dom.createTextNode("\n        ");
+        dom.appendChild(el4, el5);
+        var el5 = dom.createElement("li");
+        var el6 = dom.createTextNode("\n          If you are having errors with template names not being found, it\n          may be due to a change with inferring names. For me, my old template\n          names used hyphens, and changing them to underscores automatically\n          connected them to the rest of my application.\n        ");
+        dom.appendChild(el5, el6);
+        dom.appendChild(el4, el5);
+        var el5 = dom.createTextNode("\n      ");
+        dom.appendChild(el4, el5);
+        dom.appendChild(el3, el4);
+        var el4 = dom.createTextNode("\n    ");
+        dom.appendChild(el3, el4);
+        dom.appendChild(el2, el3);
+        var el3 = dom.createTextNode("\n  ");
+        dom.appendChild(el2, el3);
+        dom.appendChild(el1, el2);
+        var el2 = dom.createTextNode("\n");
+        dom.appendChild(el1, el2);
+        dom.appendChild(el0, el1);
+        var el1 = dom.createTextNode("\n");
+        dom.appendChild(el0, el1);
+        return el0;
+      },
+      render: function render(context, env, contextualElement) {
+        var dom = env.dom;
+        var hooks = env.hooks, block = hooks.block;
+        dom.detectNamespace(contextualElement);
+        var fragment;
+        if (env.useFragmentCache && dom.canClone) {
+          if (this.cachedFragment === null) {
+            fragment = this.build(dom);
+            if (this.hasRendered) {
+              this.cachedFragment = fragment;
+            } else {
+              this.hasRendered = true;
+            }
+          }
+          if (this.cachedFragment) {
+            fragment = dom.cloneNode(this.cachedFragment, true);
+          }
+        } else {
+          fragment = this.build(dom);
+        }
+        var element0 = dom.childAt(fragment, [0, 3, 1]);
+        var morph0 = dom.createMorphAt(dom.childAt(element0, [11]),0,1);
+        var morph1 = dom.createMorphAt(dom.childAt(element0, [37, 7]),0,1);
+        block(env, morph0, context, "link-to", ["configurable-columns"], {}, child0, null);
+        block(env, morph1, context, "link-to", ["simple"], {}, child1, null);
+        return fragment;
+      }
+    };
+  }()));
 
 });
 define('dummy/templates/navigation', ['exports'], function (exports) {
 
   'use strict';
 
-  exports['default'] = Ember.Handlebars.template({"compiler":[6,">= 2.0.0-beta.1"],"main":function(depth0,helpers,partials,data) {
-    var buffer = '';
-    data.buffer.push("<nav class=\"navbar navbar-transparent addepar-navbar\" role=\"navigation\">\n  <div class=\"navbar-header\">\n    <button type=\"button\" class=\"navbar-toggle\" data-toggle=\"collapse\" data-target=\".navbar-ex1-collapse\">\n      <span class=\"sr-only\">Toggle navigation</span>\n      <span class=\"icon-bar\"></span>\n      <span class=\"icon-bar\"></span>\n      <span class=\"icon-bar\"></span>\n    </button>\n    <a class=\"navbar-brand\" href=\"http://addepar.github.io/\">\n      <img id=\"logo_dark\" class=\"logo\" src=\"images/addepar_logo_light.png\" /><span class=\"navbar-title\">Open Source</span>\n    </a>\n  </div>\n\n  <div class=\"collapse navbar-collapse navbar-ex1-collapse\">\n    <ul class=\"nav navbar-nav navbar-right\">\n      <li><a href=\"#\">Ember Table</a></li>\n      <li><a href=\"http://addepar.github.io/ember-charts\">Ember Charts</a></li>\n      <li><a href=\"http://addepar.github.io/ember-widgets\">Ember Widgets</a></li>\n    </ul>\n  </div><!-- /.navbar-collapse -->\n</nav>\n");
-    return buffer;
-  },"useData":true});
+  exports['default'] = Ember.HTMLBars.template((function() {
+    return {
+      isHTMLBars: true,
+      blockParams: 0,
+      cachedFragment: null,
+      hasRendered: false,
+      build: function build(dom) {
+        var el0 = dom.createDocumentFragment();
+        var el1 = dom.createElement("nav");
+        dom.setAttribute(el1,"class","navbar navbar-transparent addepar-navbar");
+        dom.setAttribute(el1,"role","navigation");
+        var el2 = dom.createTextNode("\n  ");
+        dom.appendChild(el1, el2);
+        var el2 = dom.createElement("div");
+        dom.setAttribute(el2,"class","navbar-header");
+        var el3 = dom.createTextNode("\n    ");
+        dom.appendChild(el2, el3);
+        var el3 = dom.createElement("button");
+        dom.setAttribute(el3,"type","button");
+        dom.setAttribute(el3,"class","navbar-toggle");
+        dom.setAttribute(el3,"data-toggle","collapse");
+        dom.setAttribute(el3,"data-target",".navbar-ex1-collapse");
+        var el4 = dom.createTextNode("\n      ");
+        dom.appendChild(el3, el4);
+        var el4 = dom.createElement("span");
+        dom.setAttribute(el4,"class","sr-only");
+        var el5 = dom.createTextNode("Toggle navigation");
+        dom.appendChild(el4, el5);
+        dom.appendChild(el3, el4);
+        var el4 = dom.createTextNode("\n      ");
+        dom.appendChild(el3, el4);
+        var el4 = dom.createElement("span");
+        dom.setAttribute(el4,"class","icon-bar");
+        dom.appendChild(el3, el4);
+        var el4 = dom.createTextNode("\n      ");
+        dom.appendChild(el3, el4);
+        var el4 = dom.createElement("span");
+        dom.setAttribute(el4,"class","icon-bar");
+        dom.appendChild(el3, el4);
+        var el4 = dom.createTextNode("\n      ");
+        dom.appendChild(el3, el4);
+        var el4 = dom.createElement("span");
+        dom.setAttribute(el4,"class","icon-bar");
+        dom.appendChild(el3, el4);
+        var el4 = dom.createTextNode("\n    ");
+        dom.appendChild(el3, el4);
+        dom.appendChild(el2, el3);
+        var el3 = dom.createTextNode("\n    ");
+        dom.appendChild(el2, el3);
+        var el3 = dom.createElement("a");
+        dom.setAttribute(el3,"class","navbar-brand");
+        dom.setAttribute(el3,"href","http://addepar.github.io/");
+        var el4 = dom.createTextNode("\n      ");
+        dom.appendChild(el3, el4);
+        var el4 = dom.createElement("img");
+        dom.setAttribute(el4,"id","logo_dark");
+        dom.setAttribute(el4,"class","logo");
+        dom.setAttribute(el4,"src","images/addepar_logo_light.png");
+        dom.appendChild(el3, el4);
+        var el4 = dom.createElement("span");
+        dom.setAttribute(el4,"class","navbar-title");
+        var el5 = dom.createTextNode("Open Source");
+        dom.appendChild(el4, el5);
+        dom.appendChild(el3, el4);
+        var el4 = dom.createTextNode("\n    ");
+        dom.appendChild(el3, el4);
+        dom.appendChild(el2, el3);
+        var el3 = dom.createTextNode("\n  ");
+        dom.appendChild(el2, el3);
+        dom.appendChild(el1, el2);
+        var el2 = dom.createTextNode("\n\n  ");
+        dom.appendChild(el1, el2);
+        var el2 = dom.createElement("div");
+        dom.setAttribute(el2,"class","collapse navbar-collapse navbar-ex1-collapse");
+        var el3 = dom.createTextNode("\n    ");
+        dom.appendChild(el2, el3);
+        var el3 = dom.createElement("ul");
+        dom.setAttribute(el3,"class","nav navbar-nav navbar-right");
+        var el4 = dom.createTextNode("\n      ");
+        dom.appendChild(el3, el4);
+        var el4 = dom.createElement("li");
+        var el5 = dom.createElement("a");
+        dom.setAttribute(el5,"href","#");
+        var el6 = dom.createTextNode("Ember Table");
+        dom.appendChild(el5, el6);
+        dom.appendChild(el4, el5);
+        dom.appendChild(el3, el4);
+        var el4 = dom.createTextNode("\n      ");
+        dom.appendChild(el3, el4);
+        var el4 = dom.createElement("li");
+        var el5 = dom.createElement("a");
+        dom.setAttribute(el5,"href","http://addepar.github.io/ember-charts");
+        var el6 = dom.createTextNode("Ember Charts");
+        dom.appendChild(el5, el6);
+        dom.appendChild(el4, el5);
+        dom.appendChild(el3, el4);
+        var el4 = dom.createTextNode("\n      ");
+        dom.appendChild(el3, el4);
+        var el4 = dom.createElement("li");
+        var el5 = dom.createElement("a");
+        dom.setAttribute(el5,"href","http://addepar.github.io/ember-widgets");
+        var el6 = dom.createTextNode("Ember Widgets");
+        dom.appendChild(el5, el6);
+        dom.appendChild(el4, el5);
+        dom.appendChild(el3, el4);
+        var el4 = dom.createTextNode("\n    ");
+        dom.appendChild(el3, el4);
+        dom.appendChild(el2, el3);
+        var el3 = dom.createTextNode("\n  ");
+        dom.appendChild(el2, el3);
+        dom.appendChild(el1, el2);
+        var el2 = dom.createComment(" /.navbar-collapse ");
+        dom.appendChild(el1, el2);
+        var el2 = dom.createTextNode("\n");
+        dom.appendChild(el1, el2);
+        dom.appendChild(el0, el1);
+        var el1 = dom.createTextNode("\n");
+        dom.appendChild(el0, el1);
+        return el0;
+      },
+      render: function render(context, env, contextualElement) {
+        var dom = env.dom;
+        dom.detectNamespace(contextualElement);
+        var fragment;
+        if (env.useFragmentCache && dom.canClone) {
+          if (this.cachedFragment === null) {
+            fragment = this.build(dom);
+            if (this.hasRendered) {
+              this.cachedFragment = fragment;
+            } else {
+              this.hasRendered = true;
+            }
+          }
+          if (this.cachedFragment) {
+            fragment = dom.cloneNode(this.cachedFragment, true);
+          }
+        } else {
+          fragment = this.build(dom);
+        }
+        return fragment;
+      }
+    };
+  }()));
 
 });
 define('dummy/templates/overview', ['exports'], function (exports) {
 
   'use strict';
 
-  exports['default'] = Ember.Handlebars.template({"1":function(depth0,helpers,partials,data) {
-    data.buffer.push("          <div class=\"col-md-4\">\n            <h4>Hello World Table</h4>\n            <img class=\"preview-box\" src=\"images/preview_table_simple.png\" />\n          </div>\n");
-    },"3":function(depth0,helpers,partials,data) {
-    data.buffer.push("          <div class=\"col-md-4\">\n            <h4>AJAX cells</h4>\n            <img class=\"preview-box\" src=\"images/preview_table_ajax.png\" />\n          </div>\n");
-    },"5":function(depth0,helpers,partials,data) {
-    data.buffer.push("          <div class=\"col-md-4\">\n            <h4>Bar cells</h4>\n            <img class=\"preview-box\" src=\"images/preview_table_bars.png\" />\n          </div>\n");
-    },"7":function(depth0,helpers,partials,data) {
-    data.buffer.push("          <div class=\"col-md-4\">\n            <h4>Dynamic bar cells</h4>\n            <img class=\"preview-box\" src=\"images/preview_table_dynamic_bars.png\" />\n          </div>\n");
-    },"9":function(depth0,helpers,partials,data) {
-    data.buffer.push("          <div class=\"col-md-4\">\n            <h4>Tree & financial table</h4>\n            <img class=\"preview-box\" src=\"images/preview_table_financial.png\" />\n          </div>\n");
-    },"11":function(depth0,helpers,partials,data) {
-    data.buffer.push("          <div class=\"col-md-4\">\n            <h4>Editable cell</h4>\n            <img class=\"preview-box\" src=\"images/preview_table_editable.png\" />\n          </div>\n");
-    },"13":function(depth0,helpers,partials,data) {
-    data.buffer.push("          <div class=\"col-md-4\">\n            <h4>Sparkline cell using D3.js</h4>\n            <img class=\"preview-box\" src=\"images/preview_table_sparkline.png\" />\n          </div>\n");
-    },"15":function(depth0,helpers,partials,data) {
-    data.buffer.push("          <div class=\"col-md-4\">\n            <h4>Horizon cell using D3.js</h4>\n            <img class=\"preview-box\" src=\"images/preview_table_horizon.png\" />\n          </div>\n");
-    },"17":function(depth0,helpers,partials,data) {
-    data.buffer.push("          <div class=\"col-md-4\">\n            <h4>Configurable Column Demo</h4>\n            <img class=\"preview-box\" src=\"images/preview_table_simple.png\" />\n          </div>\n");
-    },"19":function(depth0,helpers,partials,data) {
-    data.buffer.push("Community Examples");
-    },"compiler":[6,">= 2.0.0-beta.1"],"main":function(depth0,helpers,partials,data) {
-    var stack1, helperMissing=helpers.helperMissing, escapeExpression=this.escapeExpression, buffer = '';
-    data.buffer.push("<div class=\"col-md-10 col-md-offset-2 left-border main-content-container\">\n  <div class=\"row\">\n    <div class=\"col-md-12\">\n      <h1>Ember Table</h1>\n      <p class=\"elevated\">Ember table allows you to render very\n      large data sets by only rendering the rows that are being\n      displayed.<br />It is written as an ember component with an API that is\n      easy to understand and extend.</p>\n\n      <div class=\"example-container\">\n        <div class=\"ember-table-example-container ember-table-financial\">\n          ");
-    data.buffer.push(escapeExpression(((helpers['financial-table'] || (depth0 && depth0['financial-table']) || helperMissing).call(depth0, {"name":"financial-table","hash":{
-      'data': ("data")
-    },"hashTypes":{'data': "ID"},"hashContexts":{'data': depth0},"types":[],"contexts":[],"data":data}))));
-    data.buffer.push("\n        </div>\n      </div>\n    </div>\n  </div>\n\n  <div class=\"row\">\n    <div class=\"col-md-6\">\n      <h3>Features</h3>\n      <ul class=\"styled\">\n        <li>Lazy rendering and support for millions of rows</li>\n        <li>Support for column resizing and reordering</li>\n        <li>Configurable, customizable, and extendable</li>\n      </ul>\n    </div>\n    <div class=\"col-md-6\">\n      <h3>Dependencies</h3>\n      <ul class=\"styled\">\n        <li><a target=\"_BLANK\" href=\"http://emberjs.com/\">ember</a></li>\n        <li><a target=\"_BLANK\" href=\"http://jqueryui.com/download/#!components=1110001010000000000000000000000000\">\n          jquery-ui</a>\n          <br>\n          <small>(only core, widget, mouse, resizable, and sortable modules required)</small>\n        </li>\n        <li><a target=\"_BLANK\" href=\"https://github.com/brandonaaron/jquery-mousewheel\">jquery.mousewheel</a></li>\n        <li><a target=\"_BLANK\" href=\"https://github.com/azirbel/antiscroll\">antiscroll</a></li>\n      </ul>\n    </div>\n  </div>\n\n  <div class=\"row\">\n    <div class=\"col-md-12\">\n      <hr>\n      <h1>Examples</h1>\n      <p class=\"elevated\">The examples below demonstrate how you can extend and customize the table.</p>\n      <div class=\"row ember-table-examples\">\n");
-    stack1 = ((helpers['link-to'] || (depth0 && depth0['link-to']) || helperMissing).call(depth0, "simple", {"name":"link-to","hash":{},"hashTypes":{},"hashContexts":{},"fn":this.program(1, data),"inverse":this.noop,"types":["STRING"],"contexts":[depth0],"data":data}));
-    if (stack1 != null) { data.buffer.push(stack1); }
-    stack1 = ((helpers['link-to'] || (depth0 && depth0['link-to']) || helperMissing).call(depth0, "ajax", {"name":"link-to","hash":{},"hashTypes":{},"hashContexts":{},"fn":this.program(3, data),"inverse":this.noop,"types":["STRING"],"contexts":[depth0],"data":data}));
-    if (stack1 != null) { data.buffer.push(stack1); }
-    stack1 = ((helpers['link-to'] || (depth0 && depth0['link-to']) || helperMissing).call(depth0, "bars", {"name":"link-to","hash":{},"hashTypes":{},"hashContexts":{},"fn":this.program(5, data),"inverse":this.noop,"types":["STRING"],"contexts":[depth0],"data":data}));
-    if (stack1 != null) { data.buffer.push(stack1); }
-    stack1 = ((helpers['link-to'] || (depth0 && depth0['link-to']) || helperMissing).call(depth0, "dynamic-bars", {"name":"link-to","hash":{},"hashTypes":{},"hashContexts":{},"fn":this.program(7, data),"inverse":this.noop,"types":["STRING"],"contexts":[depth0],"data":data}));
-    if (stack1 != null) { data.buffer.push(stack1); }
-    stack1 = ((helpers['link-to'] || (depth0 && depth0['link-to']) || helperMissing).call(depth0, "financial", {"name":"link-to","hash":{},"hashTypes":{},"hashContexts":{},"fn":this.program(9, data),"inverse":this.noop,"types":["STRING"],"contexts":[depth0],"data":data}));
-    if (stack1 != null) { data.buffer.push(stack1); }
-    stack1 = ((helpers['link-to'] || (depth0 && depth0['link-to']) || helperMissing).call(depth0, "editable", {"name":"link-to","hash":{},"hashTypes":{},"hashContexts":{},"fn":this.program(11, data),"inverse":this.noop,"types":["STRING"],"contexts":[depth0],"data":data}));
-    if (stack1 != null) { data.buffer.push(stack1); }
-    stack1 = ((helpers['link-to'] || (depth0 && depth0['link-to']) || helperMissing).call(depth0, "sparkline", {"name":"link-to","hash":{},"hashTypes":{},"hashContexts":{},"fn":this.program(13, data),"inverse":this.noop,"types":["STRING"],"contexts":[depth0],"data":data}));
-    if (stack1 != null) { data.buffer.push(stack1); }
-    stack1 = ((helpers['link-to'] || (depth0 && depth0['link-to']) || helperMissing).call(depth0, "horizon", {"name":"link-to","hash":{},"hashTypes":{},"hashContexts":{},"fn":this.program(15, data),"inverse":this.noop,"types":["STRING"],"contexts":[depth0],"data":data}));
-    if (stack1 != null) { data.buffer.push(stack1); }
-    stack1 = ((helpers['link-to'] || (depth0 && depth0['link-to']) || helperMissing).call(depth0, "configurable-columns", {"name":"link-to","hash":{},"hashTypes":{},"hashContexts":{},"fn":this.program(17, data),"inverse":this.noop,"types":["STRING"],"contexts":[depth0],"data":data}));
-    if (stack1 != null) { data.buffer.push(stack1); }
-    data.buffer.push("      </div>\n      <p>Looking for more ways to extend ember-table? Check out the ");
-    stack1 = ((helpers['link-to'] || (depth0 && depth0['link-to']) || helperMissing).call(depth0, "community-examples", {"name":"link-to","hash":{},"hashTypes":{},"hashContexts":{},"fn":this.program(19, data),"inverse":this.noop,"types":["STRING"],"contexts":[depth0],"data":data}));
-    if (stack1 != null) { data.buffer.push(stack1); }
-    data.buffer.push(".</p>\n    </div>\n  </div>\n\n  <div class=\"row\">\n    <div class=\"col-md-6\">\n      <hr>\n      <h1>Getting Started</h1>\n      <p>You will need <a target=\"_BLANK\" href=\"http://nodejs.org/\">node</a> installed as a development dependency.</p>\n      <p><a target=\"_BLANK\" href=\"https://github.com/Addepar/ember-table/\">Clone it from Github</a> or <a target=\"_BLANK\" href=\"https://github.com/Addepar/ember-table/releases\">download the ZIP repo</a></p>\n      <div class=\"highlight\">\n<pre><code>$ npm install -g grunt-cli\n$ npm install\n$ bower install\n$ ember serve</code></pre>\n      <p>Go to your browser and navigate to <a target=\"_BLANK\" href=\"http://localhost:4200\">localhost:4200</a></p>\n      </div>\n    </div>\n    <div class=\"col-md-6\">\n      <hr>\n      <h1>Contributing</h1>\n      <p>You can contribute to this project in one of two ways:</p>\n      <ul class=\"styled\">\n        <li>Browse the ember-table <a target=\"_BLANK\" href=\"https://github.com/Addepar/ember-table/issues?state=open\">issues</a> and report bugs</li>\n        <li>Clone the ember-table repo, make some changes according to our development guidelines and issue a pull-request with your changes.</li>\n      </ul>\n      <p>We keep the ember-table.js code to the minimum necessary, giving users as much control as possible.</p>\n    </div>\n  </div>\n\n  <div class=\"row\">\n    <div class=\"col-md-6\">\n      <hr>\n      <h1>Changelog</h1>\n      <p>The current version is 0.6.0.</p>\n      <p>For the full list of changes, please see <a target=\"_BLANK\" href=\"https://github.com/Addepar/ember-table/blob/master/CHANGELOG.md\">CHANGELOG.md</a>.</p>\n    </div>\n    <div class=\"col-md-6\">\n      <hr>\n      <h1>Acknowledgements</h1>\n      <p><a target=\"_BLANK\" href=\"https://github.com/Addepar/ember-table/graphs/contributors\">List of Contributors on Github</a></p>\n      <p>With lots of help from the Ember.js team</p>\n      <p><a target=\"_BLANK\" href=\"https://twitter.com/ebryn\">ebryn</a>, <a target=\"_BLANK\" href=\"https://twitter.com/tomdale\">tomdale</a>, <a target=\"_BLANK\" href=\"https://twitter.com/wycats\">wycats</a></p>\n      <p>The original idea for lazy rendering was inspired by Erik Bryn.</p>\n    </div>\n  </div>\n</div>\n");
-    return buffer;
-  },"useData":true});
+  exports['default'] = Ember.HTMLBars.template((function() {
+    var child0 = (function() {
+      return {
+        isHTMLBars: true,
+        blockParams: 0,
+        cachedFragment: null,
+        hasRendered: false,
+        build: function build(dom) {
+          var el0 = dom.createDocumentFragment();
+          var el1 = dom.createTextNode("          ");
+          dom.appendChild(el0, el1);
+          var el1 = dom.createElement("div");
+          dom.setAttribute(el1,"class","col-md-4");
+          var el2 = dom.createTextNode("\n            ");
+          dom.appendChild(el1, el2);
+          var el2 = dom.createElement("h4");
+          var el3 = dom.createTextNode("Hello World Table");
+          dom.appendChild(el2, el3);
+          dom.appendChild(el1, el2);
+          var el2 = dom.createTextNode("\n            ");
+          dom.appendChild(el1, el2);
+          var el2 = dom.createElement("img");
+          dom.setAttribute(el2,"class","preview-box");
+          dom.setAttribute(el2,"src","images/preview_table_simple.png");
+          dom.appendChild(el1, el2);
+          var el2 = dom.createTextNode("\n          ");
+          dom.appendChild(el1, el2);
+          dom.appendChild(el0, el1);
+          var el1 = dom.createTextNode("\n");
+          dom.appendChild(el0, el1);
+          return el0;
+        },
+        render: function render(context, env, contextualElement) {
+          var dom = env.dom;
+          dom.detectNamespace(contextualElement);
+          var fragment;
+          if (env.useFragmentCache && dom.canClone) {
+            if (this.cachedFragment === null) {
+              fragment = this.build(dom);
+              if (this.hasRendered) {
+                this.cachedFragment = fragment;
+              } else {
+                this.hasRendered = true;
+              }
+            }
+            if (this.cachedFragment) {
+              fragment = dom.cloneNode(this.cachedFragment, true);
+            }
+          } else {
+            fragment = this.build(dom);
+          }
+          return fragment;
+        }
+      };
+    }());
+    var child1 = (function() {
+      return {
+        isHTMLBars: true,
+        blockParams: 0,
+        cachedFragment: null,
+        hasRendered: false,
+        build: function build(dom) {
+          var el0 = dom.createDocumentFragment();
+          var el1 = dom.createTextNode("          ");
+          dom.appendChild(el0, el1);
+          var el1 = dom.createElement("div");
+          dom.setAttribute(el1,"class","col-md-4");
+          var el2 = dom.createTextNode("\n            ");
+          dom.appendChild(el1, el2);
+          var el2 = dom.createElement("h4");
+          var el3 = dom.createTextNode("AJAX cells");
+          dom.appendChild(el2, el3);
+          dom.appendChild(el1, el2);
+          var el2 = dom.createTextNode("\n            ");
+          dom.appendChild(el1, el2);
+          var el2 = dom.createElement("img");
+          dom.setAttribute(el2,"class","preview-box");
+          dom.setAttribute(el2,"src","images/preview_table_ajax.png");
+          dom.appendChild(el1, el2);
+          var el2 = dom.createTextNode("\n          ");
+          dom.appendChild(el1, el2);
+          dom.appendChild(el0, el1);
+          var el1 = dom.createTextNode("\n");
+          dom.appendChild(el0, el1);
+          return el0;
+        },
+        render: function render(context, env, contextualElement) {
+          var dom = env.dom;
+          dom.detectNamespace(contextualElement);
+          var fragment;
+          if (env.useFragmentCache && dom.canClone) {
+            if (this.cachedFragment === null) {
+              fragment = this.build(dom);
+              if (this.hasRendered) {
+                this.cachedFragment = fragment;
+              } else {
+                this.hasRendered = true;
+              }
+            }
+            if (this.cachedFragment) {
+              fragment = dom.cloneNode(this.cachedFragment, true);
+            }
+          } else {
+            fragment = this.build(dom);
+          }
+          return fragment;
+        }
+      };
+    }());
+    var child2 = (function() {
+      return {
+        isHTMLBars: true,
+        blockParams: 0,
+        cachedFragment: null,
+        hasRendered: false,
+        build: function build(dom) {
+          var el0 = dom.createDocumentFragment();
+          var el1 = dom.createTextNode("          ");
+          dom.appendChild(el0, el1);
+          var el1 = dom.createElement("div");
+          dom.setAttribute(el1,"class","col-md-4");
+          var el2 = dom.createTextNode("\n            ");
+          dom.appendChild(el1, el2);
+          var el2 = dom.createElement("h4");
+          var el3 = dom.createTextNode("Bar cells");
+          dom.appendChild(el2, el3);
+          dom.appendChild(el1, el2);
+          var el2 = dom.createTextNode("\n            ");
+          dom.appendChild(el1, el2);
+          var el2 = dom.createElement("img");
+          dom.setAttribute(el2,"class","preview-box");
+          dom.setAttribute(el2,"src","images/preview_table_bars.png");
+          dom.appendChild(el1, el2);
+          var el2 = dom.createTextNode("\n          ");
+          dom.appendChild(el1, el2);
+          dom.appendChild(el0, el1);
+          var el1 = dom.createTextNode("\n");
+          dom.appendChild(el0, el1);
+          return el0;
+        },
+        render: function render(context, env, contextualElement) {
+          var dom = env.dom;
+          dom.detectNamespace(contextualElement);
+          var fragment;
+          if (env.useFragmentCache && dom.canClone) {
+            if (this.cachedFragment === null) {
+              fragment = this.build(dom);
+              if (this.hasRendered) {
+                this.cachedFragment = fragment;
+              } else {
+                this.hasRendered = true;
+              }
+            }
+            if (this.cachedFragment) {
+              fragment = dom.cloneNode(this.cachedFragment, true);
+            }
+          } else {
+            fragment = this.build(dom);
+          }
+          return fragment;
+        }
+      };
+    }());
+    var child3 = (function() {
+      return {
+        isHTMLBars: true,
+        blockParams: 0,
+        cachedFragment: null,
+        hasRendered: false,
+        build: function build(dom) {
+          var el0 = dom.createDocumentFragment();
+          var el1 = dom.createTextNode("          ");
+          dom.appendChild(el0, el1);
+          var el1 = dom.createElement("div");
+          dom.setAttribute(el1,"class","col-md-4");
+          var el2 = dom.createTextNode("\n            ");
+          dom.appendChild(el1, el2);
+          var el2 = dom.createElement("h4");
+          var el3 = dom.createTextNode("Dynamic bar cells");
+          dom.appendChild(el2, el3);
+          dom.appendChild(el1, el2);
+          var el2 = dom.createTextNode("\n            ");
+          dom.appendChild(el1, el2);
+          var el2 = dom.createElement("img");
+          dom.setAttribute(el2,"class","preview-box");
+          dom.setAttribute(el2,"src","images/preview_table_dynamic_bars.png");
+          dom.appendChild(el1, el2);
+          var el2 = dom.createTextNode("\n          ");
+          dom.appendChild(el1, el2);
+          dom.appendChild(el0, el1);
+          var el1 = dom.createTextNode("\n");
+          dom.appendChild(el0, el1);
+          return el0;
+        },
+        render: function render(context, env, contextualElement) {
+          var dom = env.dom;
+          dom.detectNamespace(contextualElement);
+          var fragment;
+          if (env.useFragmentCache && dom.canClone) {
+            if (this.cachedFragment === null) {
+              fragment = this.build(dom);
+              if (this.hasRendered) {
+                this.cachedFragment = fragment;
+              } else {
+                this.hasRendered = true;
+              }
+            }
+            if (this.cachedFragment) {
+              fragment = dom.cloneNode(this.cachedFragment, true);
+            }
+          } else {
+            fragment = this.build(dom);
+          }
+          return fragment;
+        }
+      };
+    }());
+    var child4 = (function() {
+      return {
+        isHTMLBars: true,
+        blockParams: 0,
+        cachedFragment: null,
+        hasRendered: false,
+        build: function build(dom) {
+          var el0 = dom.createDocumentFragment();
+          var el1 = dom.createTextNode("          ");
+          dom.appendChild(el0, el1);
+          var el1 = dom.createElement("div");
+          dom.setAttribute(el1,"class","col-md-4");
+          var el2 = dom.createTextNode("\n            ");
+          dom.appendChild(el1, el2);
+          var el2 = dom.createElement("h4");
+          var el3 = dom.createTextNode("Tree & financial table");
+          dom.appendChild(el2, el3);
+          dom.appendChild(el1, el2);
+          var el2 = dom.createTextNode("\n            ");
+          dom.appendChild(el1, el2);
+          var el2 = dom.createElement("img");
+          dom.setAttribute(el2,"class","preview-box");
+          dom.setAttribute(el2,"src","images/preview_table_financial.png");
+          dom.appendChild(el1, el2);
+          var el2 = dom.createTextNode("\n          ");
+          dom.appendChild(el1, el2);
+          dom.appendChild(el0, el1);
+          var el1 = dom.createTextNode("\n");
+          dom.appendChild(el0, el1);
+          return el0;
+        },
+        render: function render(context, env, contextualElement) {
+          var dom = env.dom;
+          dom.detectNamespace(contextualElement);
+          var fragment;
+          if (env.useFragmentCache && dom.canClone) {
+            if (this.cachedFragment === null) {
+              fragment = this.build(dom);
+              if (this.hasRendered) {
+                this.cachedFragment = fragment;
+              } else {
+                this.hasRendered = true;
+              }
+            }
+            if (this.cachedFragment) {
+              fragment = dom.cloneNode(this.cachedFragment, true);
+            }
+          } else {
+            fragment = this.build(dom);
+          }
+          return fragment;
+        }
+      };
+    }());
+    var child5 = (function() {
+      return {
+        isHTMLBars: true,
+        blockParams: 0,
+        cachedFragment: null,
+        hasRendered: false,
+        build: function build(dom) {
+          var el0 = dom.createDocumentFragment();
+          var el1 = dom.createTextNode("          ");
+          dom.appendChild(el0, el1);
+          var el1 = dom.createElement("div");
+          dom.setAttribute(el1,"class","col-md-4");
+          var el2 = dom.createTextNode("\n            ");
+          dom.appendChild(el1, el2);
+          var el2 = dom.createElement("h4");
+          var el3 = dom.createTextNode("Editable cell");
+          dom.appendChild(el2, el3);
+          dom.appendChild(el1, el2);
+          var el2 = dom.createTextNode("\n            ");
+          dom.appendChild(el1, el2);
+          var el2 = dom.createElement("img");
+          dom.setAttribute(el2,"class","preview-box");
+          dom.setAttribute(el2,"src","images/preview_table_editable.png");
+          dom.appendChild(el1, el2);
+          var el2 = dom.createTextNode("\n          ");
+          dom.appendChild(el1, el2);
+          dom.appendChild(el0, el1);
+          var el1 = dom.createTextNode("\n");
+          dom.appendChild(el0, el1);
+          return el0;
+        },
+        render: function render(context, env, contextualElement) {
+          var dom = env.dom;
+          dom.detectNamespace(contextualElement);
+          var fragment;
+          if (env.useFragmentCache && dom.canClone) {
+            if (this.cachedFragment === null) {
+              fragment = this.build(dom);
+              if (this.hasRendered) {
+                this.cachedFragment = fragment;
+              } else {
+                this.hasRendered = true;
+              }
+            }
+            if (this.cachedFragment) {
+              fragment = dom.cloneNode(this.cachedFragment, true);
+            }
+          } else {
+            fragment = this.build(dom);
+          }
+          return fragment;
+        }
+      };
+    }());
+    var child6 = (function() {
+      return {
+        isHTMLBars: true,
+        blockParams: 0,
+        cachedFragment: null,
+        hasRendered: false,
+        build: function build(dom) {
+          var el0 = dom.createDocumentFragment();
+          var el1 = dom.createTextNode("          ");
+          dom.appendChild(el0, el1);
+          var el1 = dom.createElement("div");
+          dom.setAttribute(el1,"class","col-md-4");
+          var el2 = dom.createTextNode("\n            ");
+          dom.appendChild(el1, el2);
+          var el2 = dom.createElement("h4");
+          var el3 = dom.createTextNode("Sparkline cell using D3.js");
+          dom.appendChild(el2, el3);
+          dom.appendChild(el1, el2);
+          var el2 = dom.createTextNode("\n            ");
+          dom.appendChild(el1, el2);
+          var el2 = dom.createElement("img");
+          dom.setAttribute(el2,"class","preview-box");
+          dom.setAttribute(el2,"src","images/preview_table_sparkline.png");
+          dom.appendChild(el1, el2);
+          var el2 = dom.createTextNode("\n          ");
+          dom.appendChild(el1, el2);
+          dom.appendChild(el0, el1);
+          var el1 = dom.createTextNode("\n");
+          dom.appendChild(el0, el1);
+          return el0;
+        },
+        render: function render(context, env, contextualElement) {
+          var dom = env.dom;
+          dom.detectNamespace(contextualElement);
+          var fragment;
+          if (env.useFragmentCache && dom.canClone) {
+            if (this.cachedFragment === null) {
+              fragment = this.build(dom);
+              if (this.hasRendered) {
+                this.cachedFragment = fragment;
+              } else {
+                this.hasRendered = true;
+              }
+            }
+            if (this.cachedFragment) {
+              fragment = dom.cloneNode(this.cachedFragment, true);
+            }
+          } else {
+            fragment = this.build(dom);
+          }
+          return fragment;
+        }
+      };
+    }());
+    var child7 = (function() {
+      return {
+        isHTMLBars: true,
+        blockParams: 0,
+        cachedFragment: null,
+        hasRendered: false,
+        build: function build(dom) {
+          var el0 = dom.createDocumentFragment();
+          var el1 = dom.createTextNode("          ");
+          dom.appendChild(el0, el1);
+          var el1 = dom.createElement("div");
+          dom.setAttribute(el1,"class","col-md-4");
+          var el2 = dom.createTextNode("\n            ");
+          dom.appendChild(el1, el2);
+          var el2 = dom.createElement("h4");
+          var el3 = dom.createTextNode("Horizon cell using D3.js");
+          dom.appendChild(el2, el3);
+          dom.appendChild(el1, el2);
+          var el2 = dom.createTextNode("\n            ");
+          dom.appendChild(el1, el2);
+          var el2 = dom.createElement("img");
+          dom.setAttribute(el2,"class","preview-box");
+          dom.setAttribute(el2,"src","images/preview_table_horizon.png");
+          dom.appendChild(el1, el2);
+          var el2 = dom.createTextNode("\n          ");
+          dom.appendChild(el1, el2);
+          dom.appendChild(el0, el1);
+          var el1 = dom.createTextNode("\n");
+          dom.appendChild(el0, el1);
+          return el0;
+        },
+        render: function render(context, env, contextualElement) {
+          var dom = env.dom;
+          dom.detectNamespace(contextualElement);
+          var fragment;
+          if (env.useFragmentCache && dom.canClone) {
+            if (this.cachedFragment === null) {
+              fragment = this.build(dom);
+              if (this.hasRendered) {
+                this.cachedFragment = fragment;
+              } else {
+                this.hasRendered = true;
+              }
+            }
+            if (this.cachedFragment) {
+              fragment = dom.cloneNode(this.cachedFragment, true);
+            }
+          } else {
+            fragment = this.build(dom);
+          }
+          return fragment;
+        }
+      };
+    }());
+    var child8 = (function() {
+      return {
+        isHTMLBars: true,
+        blockParams: 0,
+        cachedFragment: null,
+        hasRendered: false,
+        build: function build(dom) {
+          var el0 = dom.createDocumentFragment();
+          var el1 = dom.createTextNode("          ");
+          dom.appendChild(el0, el1);
+          var el1 = dom.createElement("div");
+          dom.setAttribute(el1,"class","col-md-4");
+          var el2 = dom.createTextNode("\n            ");
+          dom.appendChild(el1, el2);
+          var el2 = dom.createElement("h4");
+          var el3 = dom.createTextNode("Configurable Column Demo");
+          dom.appendChild(el2, el3);
+          dom.appendChild(el1, el2);
+          var el2 = dom.createTextNode("\n            ");
+          dom.appendChild(el1, el2);
+          var el2 = dom.createElement("img");
+          dom.setAttribute(el2,"class","preview-box");
+          dom.setAttribute(el2,"src","images/preview_table_simple.png");
+          dom.appendChild(el1, el2);
+          var el2 = dom.createTextNode("\n          ");
+          dom.appendChild(el1, el2);
+          dom.appendChild(el0, el1);
+          var el1 = dom.createTextNode("\n");
+          dom.appendChild(el0, el1);
+          return el0;
+        },
+        render: function render(context, env, contextualElement) {
+          var dom = env.dom;
+          dom.detectNamespace(contextualElement);
+          var fragment;
+          if (env.useFragmentCache && dom.canClone) {
+            if (this.cachedFragment === null) {
+              fragment = this.build(dom);
+              if (this.hasRendered) {
+                this.cachedFragment = fragment;
+              } else {
+                this.hasRendered = true;
+              }
+            }
+            if (this.cachedFragment) {
+              fragment = dom.cloneNode(this.cachedFragment, true);
+            }
+          } else {
+            fragment = this.build(dom);
+          }
+          return fragment;
+        }
+      };
+    }());
+    var child9 = (function() {
+      return {
+        isHTMLBars: true,
+        blockParams: 0,
+        cachedFragment: null,
+        hasRendered: false,
+        build: function build(dom) {
+          var el0 = dom.createTextNode("Community Examples");
+          return el0;
+        },
+        render: function render(context, env, contextualElement) {
+          var dom = env.dom;
+          dom.detectNamespace(contextualElement);
+          var fragment;
+          if (env.useFragmentCache && dom.canClone) {
+            if (this.cachedFragment === null) {
+              fragment = this.build(dom);
+              if (this.hasRendered) {
+                this.cachedFragment = fragment;
+              } else {
+                this.hasRendered = true;
+              }
+            }
+            if (this.cachedFragment) {
+              fragment = dom.cloneNode(this.cachedFragment, true);
+            }
+          } else {
+            fragment = this.build(dom);
+          }
+          return fragment;
+        }
+      };
+    }());
+    return {
+      isHTMLBars: true,
+      blockParams: 0,
+      cachedFragment: null,
+      hasRendered: false,
+      build: function build(dom) {
+        var el0 = dom.createDocumentFragment();
+        var el1 = dom.createElement("div");
+        dom.setAttribute(el1,"class","col-md-10 col-md-offset-2 left-border main-content-container");
+        var el2 = dom.createTextNode("\n  ");
+        dom.appendChild(el1, el2);
+        var el2 = dom.createElement("div");
+        dom.setAttribute(el2,"class","row");
+        var el3 = dom.createTextNode("\n    ");
+        dom.appendChild(el2, el3);
+        var el3 = dom.createElement("div");
+        dom.setAttribute(el3,"class","col-md-12");
+        var el4 = dom.createTextNode("\n      ");
+        dom.appendChild(el3, el4);
+        var el4 = dom.createElement("h1");
+        var el5 = dom.createTextNode("Ember Table");
+        dom.appendChild(el4, el5);
+        dom.appendChild(el3, el4);
+        var el4 = dom.createTextNode("\n      ");
+        dom.appendChild(el3, el4);
+        var el4 = dom.createElement("p");
+        dom.setAttribute(el4,"class","elevated");
+        var el5 = dom.createTextNode("Ember table allows you to render very\n      large data sets by only rendering the rows that are being\n      displayed.");
+        dom.appendChild(el4, el5);
+        var el5 = dom.createElement("br");
+        dom.appendChild(el4, el5);
+        var el5 = dom.createTextNode("It is written as an ember component with an API that is\n      easy to understand and extend.");
+        dom.appendChild(el4, el5);
+        dom.appendChild(el3, el4);
+        var el4 = dom.createTextNode("\n\n      ");
+        dom.appendChild(el3, el4);
+        var el4 = dom.createElement("div");
+        dom.setAttribute(el4,"class","example-container");
+        var el5 = dom.createTextNode("\n        ");
+        dom.appendChild(el4, el5);
+        var el5 = dom.createElement("div");
+        dom.setAttribute(el5,"class","ember-table-example-container ember-table-financial");
+        var el6 = dom.createTextNode("\n          ");
+        dom.appendChild(el5, el6);
+        var el6 = dom.createTextNode("\n        ");
+        dom.appendChild(el5, el6);
+        dom.appendChild(el4, el5);
+        var el5 = dom.createTextNode("\n      ");
+        dom.appendChild(el4, el5);
+        dom.appendChild(el3, el4);
+        var el4 = dom.createTextNode("\n    ");
+        dom.appendChild(el3, el4);
+        dom.appendChild(el2, el3);
+        var el3 = dom.createTextNode("\n  ");
+        dom.appendChild(el2, el3);
+        dom.appendChild(el1, el2);
+        var el2 = dom.createTextNode("\n\n  ");
+        dom.appendChild(el1, el2);
+        var el2 = dom.createElement("div");
+        dom.setAttribute(el2,"class","row");
+        var el3 = dom.createTextNode("\n    ");
+        dom.appendChild(el2, el3);
+        var el3 = dom.createElement("div");
+        dom.setAttribute(el3,"class","col-md-6");
+        var el4 = dom.createTextNode("\n      ");
+        dom.appendChild(el3, el4);
+        var el4 = dom.createElement("h3");
+        var el5 = dom.createTextNode("Features");
+        dom.appendChild(el4, el5);
+        dom.appendChild(el3, el4);
+        var el4 = dom.createTextNode("\n      ");
+        dom.appendChild(el3, el4);
+        var el4 = dom.createElement("ul");
+        dom.setAttribute(el4,"class","styled");
+        var el5 = dom.createTextNode("\n        ");
+        dom.appendChild(el4, el5);
+        var el5 = dom.createElement("li");
+        var el6 = dom.createTextNode("Lazy rendering and support for millions of rows");
+        dom.appendChild(el5, el6);
+        dom.appendChild(el4, el5);
+        var el5 = dom.createTextNode("\n        ");
+        dom.appendChild(el4, el5);
+        var el5 = dom.createElement("li");
+        var el6 = dom.createTextNode("Support for column resizing and reordering");
+        dom.appendChild(el5, el6);
+        dom.appendChild(el4, el5);
+        var el5 = dom.createTextNode("\n        ");
+        dom.appendChild(el4, el5);
+        var el5 = dom.createElement("li");
+        var el6 = dom.createTextNode("Configurable, customizable, and extendable");
+        dom.appendChild(el5, el6);
+        dom.appendChild(el4, el5);
+        var el5 = dom.createTextNode("\n      ");
+        dom.appendChild(el4, el5);
+        dom.appendChild(el3, el4);
+        var el4 = dom.createTextNode("\n    ");
+        dom.appendChild(el3, el4);
+        dom.appendChild(el2, el3);
+        var el3 = dom.createTextNode("\n    ");
+        dom.appendChild(el2, el3);
+        var el3 = dom.createElement("div");
+        dom.setAttribute(el3,"class","col-md-6");
+        var el4 = dom.createTextNode("\n      ");
+        dom.appendChild(el3, el4);
+        var el4 = dom.createElement("h3");
+        var el5 = dom.createTextNode("Dependencies");
+        dom.appendChild(el4, el5);
+        dom.appendChild(el3, el4);
+        var el4 = dom.createTextNode("\n      ");
+        dom.appendChild(el3, el4);
+        var el4 = dom.createElement("ul");
+        dom.setAttribute(el4,"class","styled");
+        var el5 = dom.createTextNode("\n        ");
+        dom.appendChild(el4, el5);
+        var el5 = dom.createElement("li");
+        var el6 = dom.createElement("a");
+        dom.setAttribute(el6,"target","_BLANK");
+        dom.setAttribute(el6,"href","http://emberjs.com/");
+        var el7 = dom.createTextNode("ember");
+        dom.appendChild(el6, el7);
+        dom.appendChild(el5, el6);
+        dom.appendChild(el4, el5);
+        var el5 = dom.createTextNode("\n        ");
+        dom.appendChild(el4, el5);
+        var el5 = dom.createElement("li");
+        var el6 = dom.createElement("a");
+        dom.setAttribute(el6,"target","_BLANK");
+        dom.setAttribute(el6,"href","http://jqueryui.com/download/#!components=1110001010000000000000000000000000");
+        var el7 = dom.createTextNode("\n          jquery-ui");
+        dom.appendChild(el6, el7);
+        dom.appendChild(el5, el6);
+        var el6 = dom.createTextNode("\n          ");
+        dom.appendChild(el5, el6);
+        var el6 = dom.createElement("br");
+        dom.appendChild(el5, el6);
+        var el6 = dom.createTextNode("\n          ");
+        dom.appendChild(el5, el6);
+        var el6 = dom.createElement("small");
+        var el7 = dom.createTextNode("(only core, widget, mouse, resizable, and sortable modules required)");
+        dom.appendChild(el6, el7);
+        dom.appendChild(el5, el6);
+        var el6 = dom.createTextNode("\n        ");
+        dom.appendChild(el5, el6);
+        dom.appendChild(el4, el5);
+        var el5 = dom.createTextNode("\n        ");
+        dom.appendChild(el4, el5);
+        var el5 = dom.createElement("li");
+        var el6 = dom.createElement("a");
+        dom.setAttribute(el6,"target","_BLANK");
+        dom.setAttribute(el6,"href","https://github.com/brandonaaron/jquery-mousewheel");
+        var el7 = dom.createTextNode("jquery.mousewheel");
+        dom.appendChild(el6, el7);
+        dom.appendChild(el5, el6);
+        dom.appendChild(el4, el5);
+        var el5 = dom.createTextNode("\n        ");
+        dom.appendChild(el4, el5);
+        var el5 = dom.createElement("li");
+        var el6 = dom.createElement("a");
+        dom.setAttribute(el6,"target","_BLANK");
+        dom.setAttribute(el6,"href","https://github.com/azirbel/antiscroll");
+        var el7 = dom.createTextNode("antiscroll");
+        dom.appendChild(el6, el7);
+        dom.appendChild(el5, el6);
+        dom.appendChild(el4, el5);
+        var el5 = dom.createTextNode("\n      ");
+        dom.appendChild(el4, el5);
+        dom.appendChild(el3, el4);
+        var el4 = dom.createTextNode("\n    ");
+        dom.appendChild(el3, el4);
+        dom.appendChild(el2, el3);
+        var el3 = dom.createTextNode("\n  ");
+        dom.appendChild(el2, el3);
+        dom.appendChild(el1, el2);
+        var el2 = dom.createTextNode("\n\n  ");
+        dom.appendChild(el1, el2);
+        var el2 = dom.createElement("div");
+        dom.setAttribute(el2,"class","row");
+        var el3 = dom.createTextNode("\n    ");
+        dom.appendChild(el2, el3);
+        var el3 = dom.createElement("div");
+        dom.setAttribute(el3,"class","col-md-12");
+        var el4 = dom.createTextNode("\n      ");
+        dom.appendChild(el3, el4);
+        var el4 = dom.createElement("hr");
+        dom.appendChild(el3, el4);
+        var el4 = dom.createTextNode("\n      ");
+        dom.appendChild(el3, el4);
+        var el4 = dom.createElement("h1");
+        var el5 = dom.createTextNode("Examples");
+        dom.appendChild(el4, el5);
+        dom.appendChild(el3, el4);
+        var el4 = dom.createTextNode("\n      ");
+        dom.appendChild(el3, el4);
+        var el4 = dom.createElement("p");
+        dom.setAttribute(el4,"class","elevated");
+        var el5 = dom.createTextNode("The examples below demonstrate how you can extend and customize the table.");
+        dom.appendChild(el4, el5);
+        dom.appendChild(el3, el4);
+        var el4 = dom.createTextNode("\n      ");
+        dom.appendChild(el3, el4);
+        var el4 = dom.createElement("div");
+        dom.setAttribute(el4,"class","row ember-table-examples");
+        var el5 = dom.createTextNode("\n");
+        dom.appendChild(el4, el5);
+        var el5 = dom.createTextNode("");
+        dom.appendChild(el4, el5);
+        var el5 = dom.createTextNode("");
+        dom.appendChild(el4, el5);
+        var el5 = dom.createTextNode("");
+        dom.appendChild(el4, el5);
+        var el5 = dom.createTextNode("");
+        dom.appendChild(el4, el5);
+        var el5 = dom.createTextNode("");
+        dom.appendChild(el4, el5);
+        var el5 = dom.createTextNode("");
+        dom.appendChild(el4, el5);
+        var el5 = dom.createTextNode("");
+        dom.appendChild(el4, el5);
+        var el5 = dom.createTextNode("");
+        dom.appendChild(el4, el5);
+        var el5 = dom.createTextNode("      ");
+        dom.appendChild(el4, el5);
+        dom.appendChild(el3, el4);
+        var el4 = dom.createTextNode("\n      ");
+        dom.appendChild(el3, el4);
+        var el4 = dom.createElement("p");
+        var el5 = dom.createTextNode("Looking for more ways to extend ember-table? Check out the ");
+        dom.appendChild(el4, el5);
+        var el5 = dom.createTextNode(".");
+        dom.appendChild(el4, el5);
+        dom.appendChild(el3, el4);
+        var el4 = dom.createTextNode("\n    ");
+        dom.appendChild(el3, el4);
+        dom.appendChild(el2, el3);
+        var el3 = dom.createTextNode("\n  ");
+        dom.appendChild(el2, el3);
+        dom.appendChild(el1, el2);
+        var el2 = dom.createTextNode("\n\n  ");
+        dom.appendChild(el1, el2);
+        var el2 = dom.createElement("div");
+        dom.setAttribute(el2,"class","row");
+        var el3 = dom.createTextNode("\n    ");
+        dom.appendChild(el2, el3);
+        var el3 = dom.createElement("div");
+        dom.setAttribute(el3,"class","col-md-6");
+        var el4 = dom.createTextNode("\n      ");
+        dom.appendChild(el3, el4);
+        var el4 = dom.createElement("hr");
+        dom.appendChild(el3, el4);
+        var el4 = dom.createTextNode("\n      ");
+        dom.appendChild(el3, el4);
+        var el4 = dom.createElement("h1");
+        var el5 = dom.createTextNode("Getting Started");
+        dom.appendChild(el4, el5);
+        dom.appendChild(el3, el4);
+        var el4 = dom.createTextNode("\n      ");
+        dom.appendChild(el3, el4);
+        var el4 = dom.createElement("p");
+        var el5 = dom.createTextNode("You will need ");
+        dom.appendChild(el4, el5);
+        var el5 = dom.createElement("a");
+        dom.setAttribute(el5,"target","_BLANK");
+        dom.setAttribute(el5,"href","http://nodejs.org/");
+        var el6 = dom.createTextNode("node");
+        dom.appendChild(el5, el6);
+        dom.appendChild(el4, el5);
+        var el5 = dom.createTextNode(" installed as a development dependency.");
+        dom.appendChild(el4, el5);
+        dom.appendChild(el3, el4);
+        var el4 = dom.createTextNode("\n      ");
+        dom.appendChild(el3, el4);
+        var el4 = dom.createElement("p");
+        var el5 = dom.createElement("a");
+        dom.setAttribute(el5,"target","_BLANK");
+        dom.setAttribute(el5,"href","https://github.com/Addepar/ember-table/");
+        var el6 = dom.createTextNode("Clone it from Github");
+        dom.appendChild(el5, el6);
+        dom.appendChild(el4, el5);
+        var el5 = dom.createTextNode(" or ");
+        dom.appendChild(el4, el5);
+        var el5 = dom.createElement("a");
+        dom.setAttribute(el5,"target","_BLANK");
+        dom.setAttribute(el5,"href","https://github.com/Addepar/ember-table/releases");
+        var el6 = dom.createTextNode("download the ZIP repo");
+        dom.appendChild(el5, el6);
+        dom.appendChild(el4, el5);
+        dom.appendChild(el3, el4);
+        var el4 = dom.createTextNode("\n      ");
+        dom.appendChild(el3, el4);
+        var el4 = dom.createElement("div");
+        dom.setAttribute(el4,"class","highlight");
+        var el5 = dom.createTextNode("\n");
+        dom.appendChild(el4, el5);
+        var el5 = dom.createElement("pre");
+        var el6 = dom.createElement("code");
+        var el7 = dom.createTextNode("$ npm install -g grunt-cli\n$ npm install\n$ bower install\n$ ember serve");
+        dom.appendChild(el6, el7);
+        dom.appendChild(el5, el6);
+        dom.appendChild(el4, el5);
+        var el5 = dom.createTextNode("\n      ");
+        dom.appendChild(el4, el5);
+        var el5 = dom.createElement("p");
+        var el6 = dom.createTextNode("Go to your browser and navigate to ");
+        dom.appendChild(el5, el6);
+        var el6 = dom.createElement("a");
+        dom.setAttribute(el6,"target","_BLANK");
+        dom.setAttribute(el6,"href","http://localhost:4200");
+        var el7 = dom.createTextNode("localhost:4200");
+        dom.appendChild(el6, el7);
+        dom.appendChild(el5, el6);
+        dom.appendChild(el4, el5);
+        var el5 = dom.createTextNode("\n      ");
+        dom.appendChild(el4, el5);
+        dom.appendChild(el3, el4);
+        var el4 = dom.createTextNode("\n    ");
+        dom.appendChild(el3, el4);
+        dom.appendChild(el2, el3);
+        var el3 = dom.createTextNode("\n    ");
+        dom.appendChild(el2, el3);
+        var el3 = dom.createElement("div");
+        dom.setAttribute(el3,"class","col-md-6");
+        var el4 = dom.createTextNode("\n      ");
+        dom.appendChild(el3, el4);
+        var el4 = dom.createElement("hr");
+        dom.appendChild(el3, el4);
+        var el4 = dom.createTextNode("\n      ");
+        dom.appendChild(el3, el4);
+        var el4 = dom.createElement("h1");
+        var el5 = dom.createTextNode("Contributing");
+        dom.appendChild(el4, el5);
+        dom.appendChild(el3, el4);
+        var el4 = dom.createTextNode("\n      ");
+        dom.appendChild(el3, el4);
+        var el4 = dom.createElement("p");
+        var el5 = dom.createTextNode("You can contribute to this project in one of two ways:");
+        dom.appendChild(el4, el5);
+        dom.appendChild(el3, el4);
+        var el4 = dom.createTextNode("\n      ");
+        dom.appendChild(el3, el4);
+        var el4 = dom.createElement("ul");
+        dom.setAttribute(el4,"class","styled");
+        var el5 = dom.createTextNode("\n        ");
+        dom.appendChild(el4, el5);
+        var el5 = dom.createElement("li");
+        var el6 = dom.createTextNode("Browse the ember-table ");
+        dom.appendChild(el5, el6);
+        var el6 = dom.createElement("a");
+        dom.setAttribute(el6,"target","_BLANK");
+        dom.setAttribute(el6,"href","https://github.com/Addepar/ember-table/issues?state=open");
+        var el7 = dom.createTextNode("issues");
+        dom.appendChild(el6, el7);
+        dom.appendChild(el5, el6);
+        var el6 = dom.createTextNode(" and report bugs");
+        dom.appendChild(el5, el6);
+        dom.appendChild(el4, el5);
+        var el5 = dom.createTextNode("\n        ");
+        dom.appendChild(el4, el5);
+        var el5 = dom.createElement("li");
+        var el6 = dom.createTextNode("Clone the ember-table repo, make some changes according to our development guidelines and issue a pull-request with your changes.");
+        dom.appendChild(el5, el6);
+        dom.appendChild(el4, el5);
+        var el5 = dom.createTextNode("\n      ");
+        dom.appendChild(el4, el5);
+        dom.appendChild(el3, el4);
+        var el4 = dom.createTextNode("\n      ");
+        dom.appendChild(el3, el4);
+        var el4 = dom.createElement("p");
+        var el5 = dom.createTextNode("We keep the ember-table.js code to the minimum necessary, giving users as much control as possible.");
+        dom.appendChild(el4, el5);
+        dom.appendChild(el3, el4);
+        var el4 = dom.createTextNode("\n    ");
+        dom.appendChild(el3, el4);
+        dom.appendChild(el2, el3);
+        var el3 = dom.createTextNode("\n  ");
+        dom.appendChild(el2, el3);
+        dom.appendChild(el1, el2);
+        var el2 = dom.createTextNode("\n\n  ");
+        dom.appendChild(el1, el2);
+        var el2 = dom.createElement("div");
+        dom.setAttribute(el2,"class","row");
+        var el3 = dom.createTextNode("\n    ");
+        dom.appendChild(el2, el3);
+        var el3 = dom.createElement("div");
+        dom.setAttribute(el3,"class","col-md-6");
+        var el4 = dom.createTextNode("\n      ");
+        dom.appendChild(el3, el4);
+        var el4 = dom.createElement("hr");
+        dom.appendChild(el3, el4);
+        var el4 = dom.createTextNode("\n      ");
+        dom.appendChild(el3, el4);
+        var el4 = dom.createElement("h1");
+        var el5 = dom.createTextNode("Changelog");
+        dom.appendChild(el4, el5);
+        dom.appendChild(el3, el4);
+        var el4 = dom.createTextNode("\n      ");
+        dom.appendChild(el3, el4);
+        var el4 = dom.createElement("p");
+        var el5 = dom.createTextNode("The current version is 0.7.0.");
+        dom.appendChild(el4, el5);
+        dom.appendChild(el3, el4);
+        var el4 = dom.createTextNode("\n      ");
+        dom.appendChild(el3, el4);
+        var el4 = dom.createElement("p");
+        var el5 = dom.createTextNode("For the full list of changes, please see ");
+        dom.appendChild(el4, el5);
+        var el5 = dom.createElement("a");
+        dom.setAttribute(el5,"target","_BLANK");
+        dom.setAttribute(el5,"href","https://github.com/Addepar/ember-table/blob/master/CHANGELOG.md");
+        var el6 = dom.createTextNode("CHANGELOG.md");
+        dom.appendChild(el5, el6);
+        dom.appendChild(el4, el5);
+        var el5 = dom.createTextNode(".");
+        dom.appendChild(el4, el5);
+        dom.appendChild(el3, el4);
+        var el4 = dom.createTextNode("\n    ");
+        dom.appendChild(el3, el4);
+        dom.appendChild(el2, el3);
+        var el3 = dom.createTextNode("\n    ");
+        dom.appendChild(el2, el3);
+        var el3 = dom.createElement("div");
+        dom.setAttribute(el3,"class","col-md-6");
+        var el4 = dom.createTextNode("\n      ");
+        dom.appendChild(el3, el4);
+        var el4 = dom.createElement("hr");
+        dom.appendChild(el3, el4);
+        var el4 = dom.createTextNode("\n      ");
+        dom.appendChild(el3, el4);
+        var el4 = dom.createElement("h1");
+        var el5 = dom.createTextNode("Acknowledgements");
+        dom.appendChild(el4, el5);
+        dom.appendChild(el3, el4);
+        var el4 = dom.createTextNode("\n      ");
+        dom.appendChild(el3, el4);
+        var el4 = dom.createElement("p");
+        var el5 = dom.createElement("a");
+        dom.setAttribute(el5,"target","_BLANK");
+        dom.setAttribute(el5,"href","https://github.com/Addepar/ember-table/graphs/contributors");
+        var el6 = dom.createTextNode("List of Contributors on Github");
+        dom.appendChild(el5, el6);
+        dom.appendChild(el4, el5);
+        dom.appendChild(el3, el4);
+        var el4 = dom.createTextNode("\n      ");
+        dom.appendChild(el3, el4);
+        var el4 = dom.createElement("p");
+        var el5 = dom.createTextNode("With lots of help from the Ember.js team");
+        dom.appendChild(el4, el5);
+        dom.appendChild(el3, el4);
+        var el4 = dom.createTextNode("\n      ");
+        dom.appendChild(el3, el4);
+        var el4 = dom.createElement("p");
+        var el5 = dom.createElement("a");
+        dom.setAttribute(el5,"target","_BLANK");
+        dom.setAttribute(el5,"href","https://twitter.com/ebryn");
+        var el6 = dom.createTextNode("ebryn");
+        dom.appendChild(el5, el6);
+        dom.appendChild(el4, el5);
+        var el5 = dom.createTextNode(", ");
+        dom.appendChild(el4, el5);
+        var el5 = dom.createElement("a");
+        dom.setAttribute(el5,"target","_BLANK");
+        dom.setAttribute(el5,"href","https://twitter.com/tomdale");
+        var el6 = dom.createTextNode("tomdale");
+        dom.appendChild(el5, el6);
+        dom.appendChild(el4, el5);
+        var el5 = dom.createTextNode(", ");
+        dom.appendChild(el4, el5);
+        var el5 = dom.createElement("a");
+        dom.setAttribute(el5,"target","_BLANK");
+        dom.setAttribute(el5,"href","https://twitter.com/wycats");
+        var el6 = dom.createTextNode("wycats");
+        dom.appendChild(el5, el6);
+        dom.appendChild(el4, el5);
+        dom.appendChild(el3, el4);
+        var el4 = dom.createTextNode("\n      ");
+        dom.appendChild(el3, el4);
+        var el4 = dom.createElement("p");
+        var el5 = dom.createTextNode("The original idea for lazy rendering was inspired by Erik Bryn.");
+        dom.appendChild(el4, el5);
+        dom.appendChild(el3, el4);
+        var el4 = dom.createTextNode("\n    ");
+        dom.appendChild(el3, el4);
+        dom.appendChild(el2, el3);
+        var el3 = dom.createTextNode("\n  ");
+        dom.appendChild(el2, el3);
+        dom.appendChild(el1, el2);
+        var el2 = dom.createTextNode("\n");
+        dom.appendChild(el1, el2);
+        dom.appendChild(el0, el1);
+        var el1 = dom.createTextNode("\n");
+        dom.appendChild(el0, el1);
+        return el0;
+      },
+      render: function render(context, env, contextualElement) {
+        var dom = env.dom;
+        var hooks = env.hooks, get = hooks.get, inline = hooks.inline, block = hooks.block;
+        dom.detectNamespace(contextualElement);
+        var fragment;
+        if (env.useFragmentCache && dom.canClone) {
+          if (this.cachedFragment === null) {
+            fragment = this.build(dom);
+            if (this.hasRendered) {
+              this.cachedFragment = fragment;
+            } else {
+              this.hasRendered = true;
+            }
+          }
+          if (this.cachedFragment) {
+            fragment = dom.cloneNode(this.cachedFragment, true);
+          }
+        } else {
+          fragment = this.build(dom);
+        }
+        var element0 = dom.childAt(fragment, [0]);
+        var element1 = dom.childAt(element0, [5, 1]);
+        var element2 = dom.childAt(element1, [7]);
+        if (this.cachedFragment) { dom.repairClonedNode(element2,[1,2,3,4,5,6,7,8]); }
+        var morph0 = dom.createMorphAt(dom.childAt(element0, [1, 1, 5, 1]),0,1);
+        var morph1 = dom.createMorphAt(element2,0,1);
+        var morph2 = dom.createMorphAt(element2,1,2);
+        var morph3 = dom.createMorphAt(element2,2,3);
+        var morph4 = dom.createMorphAt(element2,3,4);
+        var morph5 = dom.createMorphAt(element2,4,5);
+        var morph6 = dom.createMorphAt(element2,5,6);
+        var morph7 = dom.createMorphAt(element2,6,7);
+        var morph8 = dom.createMorphAt(element2,7,8);
+        var morph9 = dom.createMorphAt(element2,8,9);
+        var morph10 = dom.createMorphAt(dom.childAt(element1, [9]),0,1);
+        inline(env, morph0, context, "financial-table", [], {"data": get(env, context, "data")});
+        block(env, morph1, context, "link-to", ["simple"], {}, child0, null);
+        block(env, morph2, context, "link-to", ["ajax"], {}, child1, null);
+        block(env, morph3, context, "link-to", ["bars"], {}, child2, null);
+        block(env, morph4, context, "link-to", ["dynamic-bars"], {}, child3, null);
+        block(env, morph5, context, "link-to", ["financial"], {}, child4, null);
+        block(env, morph6, context, "link-to", ["editable"], {}, child5, null);
+        block(env, morph7, context, "link-to", ["sparkline"], {}, child6, null);
+        block(env, morph8, context, "link-to", ["horizon"], {}, child7, null);
+        block(env, morph9, context, "link-to", ["configurable-columns"], {}, child8, null);
+        block(env, morph10, context, "link-to", ["community-examples"], {}, child9, null);
+        return fragment;
+      }
+    };
+  }()));
 
 });
 define('dummy/templates/scroll-container', ['exports'], function (exports) {
 
   'use strict';
 
-  exports['default'] = Ember.Handlebars.template({"compiler":[6,">= 2.0.0-beta.1"],"main":function(depth0,helpers,partials,data) {
-    var escapeExpression=this.escapeExpression, buffer = '';
-    data.buffer.push("<div class=\"antiscroll-wrap\">\n  <div class=\"antiscroll-inner\">\n    ");
-    data.buffer.push(escapeExpression(helpers.view.call(depth0, "scroll-panel", {"name":"view","hash":{},"hashTypes":{},"hashContexts":{},"types":["STRING"],"contexts":[depth0],"data":data})));
-    data.buffer.push("\n  </div>\n</div>\n");
-    return buffer;
-  },"useData":true});
+  exports['default'] = Ember.HTMLBars.template((function() {
+    return {
+      isHTMLBars: true,
+      blockParams: 0,
+      cachedFragment: null,
+      hasRendered: false,
+      build: function build(dom) {
+        var el0 = dom.createDocumentFragment();
+        var el1 = dom.createElement("div");
+        dom.setAttribute(el1,"class","antiscroll-wrap");
+        var el2 = dom.createTextNode("\n  ");
+        dom.appendChild(el1, el2);
+        var el2 = dom.createElement("div");
+        dom.setAttribute(el2,"class","antiscroll-inner");
+        var el3 = dom.createTextNode("\n    ");
+        dom.appendChild(el2, el3);
+        var el3 = dom.createTextNode("\n  ");
+        dom.appendChild(el2, el3);
+        dom.appendChild(el1, el2);
+        var el2 = dom.createTextNode("\n");
+        dom.appendChild(el1, el2);
+        dom.appendChild(el0, el1);
+        var el1 = dom.createTextNode("\n");
+        dom.appendChild(el0, el1);
+        return el0;
+      },
+      render: function render(context, env, contextualElement) {
+        var dom = env.dom;
+        var hooks = env.hooks, inline = hooks.inline;
+        dom.detectNamespace(contextualElement);
+        var fragment;
+        if (env.useFragmentCache && dom.canClone) {
+          if (this.cachedFragment === null) {
+            fragment = this.build(dom);
+            if (this.hasRendered) {
+              this.cachedFragment = fragment;
+            } else {
+              this.hasRendered = true;
+            }
+          }
+          if (this.cachedFragment) {
+            fragment = dom.cloneNode(this.cachedFragment, true);
+          }
+        } else {
+          fragment = this.build(dom);
+        }
+        var morph0 = dom.createMorphAt(dom.childAt(fragment, [0, 1]),0,1);
+        inline(env, morph0, context, "view", ["scroll-panel"], {});
+        return fragment;
+      }
+    };
+  }()));
 
 });
 define('dummy/templates/simple-table/simple-table', ['exports'], function (exports) {
 
   'use strict';
 
-  exports['default'] = Ember.Handlebars.template({"compiler":[6,">= 2.0.0-beta.1"],"main":function(depth0,helpers,partials,data) {
-    var helperMissing=helpers.helperMissing, escapeExpression=this.escapeExpression, buffer = '';
-    data.buffer.push(escapeExpression(((helpers['ember-table'] || (depth0 && depth0['ember-table']) || helperMissing).call(depth0, {"name":"ember-table","hash":{
-      'content': ("tableContent"),
-      'columns': ("tableColumns"),
-      'hasFooter': (false)
-    },"hashTypes":{'content': "ID",'columns': "ID",'hasFooter': "BOOLEAN"},"hashContexts":{'content': depth0,'columns': depth0,'hasFooter': depth0},"types":[],"contexts":[],"data":data}))));
-    data.buffer.push("\n");
-    return buffer;
-  },"useData":true});
+  exports['default'] = Ember.HTMLBars.template((function() {
+    return {
+      isHTMLBars: true,
+      blockParams: 0,
+      cachedFragment: null,
+      hasRendered: false,
+      build: function build(dom) {
+        var el0 = dom.createDocumentFragment();
+        var el1 = dom.createTextNode("");
+        dom.appendChild(el0, el1);
+        var el1 = dom.createTextNode("\n");
+        dom.appendChild(el0, el1);
+        return el0;
+      },
+      render: function render(context, env, contextualElement) {
+        var dom = env.dom;
+        var hooks = env.hooks, get = hooks.get, inline = hooks.inline;
+        dom.detectNamespace(contextualElement);
+        var fragment;
+        if (env.useFragmentCache && dom.canClone) {
+          if (this.cachedFragment === null) {
+            fragment = this.build(dom);
+            if (this.hasRendered) {
+              this.cachedFragment = fragment;
+            } else {
+              this.hasRendered = true;
+            }
+          }
+          if (this.cachedFragment) {
+            fragment = dom.cloneNode(this.cachedFragment, true);
+          }
+        } else {
+          fragment = this.build(dom);
+        }
+        if (this.cachedFragment) { dom.repairClonedNode(fragment,[0]); }
+        var morph0 = dom.createMorphAt(fragment,0,1,contextualElement);
+        inline(env, morph0, context, "ember-table", [], {"hasFooter": false, "columns": get(env, context, "tableColumns"), "content": get(env, context, "tableContent")});
+        return fragment;
+      }
+    };
+  }()));
 
 });
 define('dummy/templates/simple', ['exports'], function (exports) {
 
   'use strict';
 
-  exports['default'] = Ember.Handlebars.template({"compiler":[6,">= 2.0.0-beta.1"],"main":function(depth0,helpers,partials,data) {
-    var helperMissing=helpers.helperMissing, escapeExpression=this.escapeExpression, buffer = '';
-    data.buffer.push("<div class=\"col-md-10 col-md-offset-2 left-border main-content-container\">\n  <h1>Ember Table <small>Simple</small></h1>\n\n  <div class=\"row\">\n    <div class=\"col-md-12\">\n      <div class=\"example-container\">\n        <div class=\"ember-table-example-container\">\n          ");
-    data.buffer.push(escapeExpression(((helpers.partial || (depth0 && depth0.partial) || helperMissing).call(depth0, "simple-table/simple-table", {"name":"partial","hash":{},"hashTypes":{},"hashContexts":{},"types":["STRING"],"contexts":[depth0],"data":data}))));
-    data.buffer.push("\n        </div>\n      </div>\n    </div>\n\n    <div class=\"col-md-12 bumper-30\">\n      <h3>Template</h3>\n      <div class=\"highlight\">\n        <pre class=\"prettyprint lang-html\">{{ember-table\n  hasFooter=false\n  columns=tableColumns\n  content=tableContent\n}}\n</pre>\n      </div>\n    </div>\n\n    <div class=\"col-md-12 bumper-30\">\n      <h3>Controller</h3>\n      <div class=\"highlight\">\n        <pre class=\"prettyprint lang-js\">import Ember from &#39;ember&#39;;\nimport ColumnDefinition from &#39;ember-table&#x2F;models&#x2F;column-definition&#39;;\n\nexport default Ember.Controller.extend({\n  tableColumns: Ember.computed(function() {\n    var dateColumn = ColumnDefinition.create({\n      savedWidth: 150,\n      textAlign: &#39;text-align-left&#39;,\n      headerCellName: &#39;Date&#39;,\n      getCellContent: function(row) {\n        return row.get(&#39;date&#39;).toDateString();\n      }\n    });\n    var openColumn = ColumnDefinition.create({\n      savedWidth: 100,\n      headerCellName: &#39;Open&#39;,\n      getCellContent: function(row) {\n        return row.get(&#39;open&#39;).toFixed(2);\n      }\n    });\n    var highColumn = ColumnDefinition.create({\n      savedWidth: 100,\n      headerCellName: &#39;High&#39;,\n      getCellContent: function(row) {\n        return row.get(&#39;high&#39;).toFixed(2);\n      }\n    });\n    var lowColumn = ColumnDefinition.create({\n      savedWidth: 100,\n      headerCellName: &#39;Low&#39;,\n      getCellContent: function(row) {\n        return row.get(&#39;low&#39;).toFixed(2);\n      }\n    });\n    var closeColumn = ColumnDefinition.create({\n      savedWidth: 100,\n      headerCellName: &#39;Close&#39;,\n      getCellContent: function(row) {\n        return row.get(&#39;close&#39;).toFixed(2);\n      }\n    });\n    return [dateColumn, openColumn, highColumn, lowColumn, closeColumn];\n  }),\n\n  tableContent: Ember.computed(function() {\n    var content = [];\n    var date;\n    for (var i = 0; i &lt; 100; i++) {\n      date = new Date();\n      date.setDate(date.getDate() + i);\n      content.pushObject({\n        date: date,\n        open: Math.random() * 100 - 50,\n        high: Math.random() * 100 - 50,\n        low: Math.random() * 100 - 50,\n        close: Math.random() * 100 - 50,\n        volume: Math.random() * 1000000\n      });\n    }\n    return content;\n  })\n});\n</pre>\n      </div>\n    </div>\n  </div>\n</div>\n");
-    return buffer;
-  },"useData":true});
+  exports['default'] = Ember.HTMLBars.template((function() {
+    return {
+      isHTMLBars: true,
+      blockParams: 0,
+      cachedFragment: null,
+      hasRendered: false,
+      build: function build(dom) {
+        var el0 = dom.createDocumentFragment();
+        var el1 = dom.createElement("div");
+        dom.setAttribute(el1,"class","col-md-10 col-md-offset-2 left-border main-content-container");
+        var el2 = dom.createTextNode("\n  ");
+        dom.appendChild(el1, el2);
+        var el2 = dom.createElement("h1");
+        var el3 = dom.createTextNode("Ember Table ");
+        dom.appendChild(el2, el3);
+        var el3 = dom.createElement("small");
+        var el4 = dom.createTextNode("Simple");
+        dom.appendChild(el3, el4);
+        dom.appendChild(el2, el3);
+        dom.appendChild(el1, el2);
+        var el2 = dom.createTextNode("\n\n  ");
+        dom.appendChild(el1, el2);
+        var el2 = dom.createElement("div");
+        dom.setAttribute(el2,"class","row");
+        var el3 = dom.createTextNode("\n    ");
+        dom.appendChild(el2, el3);
+        var el3 = dom.createElement("div");
+        dom.setAttribute(el3,"class","col-md-12");
+        var el4 = dom.createTextNode("\n      ");
+        dom.appendChild(el3, el4);
+        var el4 = dom.createElement("div");
+        dom.setAttribute(el4,"class","example-container");
+        var el5 = dom.createTextNode("\n        ");
+        dom.appendChild(el4, el5);
+        var el5 = dom.createElement("div");
+        dom.setAttribute(el5,"class","ember-table-example-container");
+        var el6 = dom.createTextNode("\n          ");
+        dom.appendChild(el5, el6);
+        var el6 = dom.createTextNode("\n        ");
+        dom.appendChild(el5, el6);
+        dom.appendChild(el4, el5);
+        var el5 = dom.createTextNode("\n      ");
+        dom.appendChild(el4, el5);
+        dom.appendChild(el3, el4);
+        var el4 = dom.createTextNode("\n    ");
+        dom.appendChild(el3, el4);
+        dom.appendChild(el2, el3);
+        var el3 = dom.createTextNode("\n\n    ");
+        dom.appendChild(el2, el3);
+        var el3 = dom.createElement("div");
+        dom.setAttribute(el3,"class","col-md-12 bumper-30");
+        var el4 = dom.createTextNode("\n      ");
+        dom.appendChild(el3, el4);
+        var el4 = dom.createElement("h3");
+        var el5 = dom.createTextNode("Template");
+        dom.appendChild(el4, el5);
+        dom.appendChild(el3, el4);
+        var el4 = dom.createTextNode("\n      ");
+        dom.appendChild(el3, el4);
+        var el4 = dom.createElement("div");
+        dom.setAttribute(el4,"class","highlight");
+        var el5 = dom.createTextNode("\n        ");
+        dom.appendChild(el4, el5);
+        var el5 = dom.createElement("pre");
+        dom.setAttribute(el5,"class","prettyprint lang-html");
+        var el6 = dom.createTextNode("{{ember-table\n  hasFooter=false\n  columns=tableColumns\n  content=tableContent\n}}\n");
+        dom.appendChild(el5, el6);
+        dom.appendChild(el4, el5);
+        var el5 = dom.createTextNode("\n      ");
+        dom.appendChild(el4, el5);
+        dom.appendChild(el3, el4);
+        var el4 = dom.createTextNode("\n    ");
+        dom.appendChild(el3, el4);
+        dom.appendChild(el2, el3);
+        var el3 = dom.createTextNode("\n\n    ");
+        dom.appendChild(el2, el3);
+        var el3 = dom.createElement("div");
+        dom.setAttribute(el3,"class","col-md-12 bumper-30");
+        var el4 = dom.createTextNode("\n      ");
+        dom.appendChild(el3, el4);
+        var el4 = dom.createElement("h3");
+        var el5 = dom.createTextNode("Controller");
+        dom.appendChild(el4, el5);
+        dom.appendChild(el3, el4);
+        var el4 = dom.createTextNode("\n      ");
+        dom.appendChild(el3, el4);
+        var el4 = dom.createElement("div");
+        dom.setAttribute(el4,"class","highlight");
+        var el5 = dom.createTextNode("\n        ");
+        dom.appendChild(el4, el5);
+        var el5 = dom.createElement("pre");
+        dom.setAttribute(el5,"class","prettyprint lang-js");
+        var el6 = dom.createTextNode("import Ember from &#39;ember&#39;;\nimport ColumnDefinition from &#39;ember-table&#x2F;models&#x2F;column-definition&#39;;\n\nexport default Ember.Controller.extend({\n  tableColumns: Ember.computed(function() {\n    var dateColumn = ColumnDefinition.create({\n      savedWidth: 150,\n      textAlign: &#39;text-align-left&#39;,\n      headerCellName: &#39;Date&#39;,\n      getCellContent: function(row) {\n        return row.get(&#39;date&#39;).toDateString();\n      }\n    });\n    var openColumn = ColumnDefinition.create({\n      savedWidth: 100,\n      headerCellName: &#39;Open&#39;,\n      getCellContent: function(row) {\n        return row.get(&#39;open&#39;).toFixed(2);\n      }\n    });\n    var highColumn = ColumnDefinition.create({\n      savedWidth: 100,\n      headerCellName: &#39;High&#39;,\n      getCellContent: function(row) {\n        return row.get(&#39;high&#39;).toFixed(2);\n      }\n    });\n    var lowColumn = ColumnDefinition.create({\n      savedWidth: 100,\n      headerCellName: &#39;Low&#39;,\n      getCellContent: function(row) {\n        return row.get(&#39;low&#39;).toFixed(2);\n      }\n    });\n    var closeColumn = ColumnDefinition.create({\n      savedWidth: 100,\n      headerCellName: &#39;Close&#39;,\n      getCellContent: function(row) {\n        return row.get(&#39;close&#39;).toFixed(2);\n      }\n    });\n    return [dateColumn, openColumn, highColumn, lowColumn, closeColumn];\n  }),\n\n  tableContent: Ember.computed(function() {\n    var content = [];\n    var date;\n    for (var i = 0; i &lt; 100; i++) {\n      date = new Date();\n      date.setDate(date.getDate() + i);\n      content.pushObject({\n        date: date,\n        open: Math.random() * 100 - 50,\n        high: Math.random() * 100 - 50,\n        low: Math.random() * 100 - 50,\n        close: Math.random() * 100 - 50,\n        volume: Math.random() * 1000000\n      });\n    }\n    return content;\n  })\n});\n");
+        dom.appendChild(el5, el6);
+        dom.appendChild(el4, el5);
+        var el5 = dom.createTextNode("\n      ");
+        dom.appendChild(el4, el5);
+        dom.appendChild(el3, el4);
+        var el4 = dom.createTextNode("\n    ");
+        dom.appendChild(el3, el4);
+        dom.appendChild(el2, el3);
+        var el3 = dom.createTextNode("\n  ");
+        dom.appendChild(el2, el3);
+        dom.appendChild(el1, el2);
+        var el2 = dom.createTextNode("\n");
+        dom.appendChild(el1, el2);
+        dom.appendChild(el0, el1);
+        var el1 = dom.createTextNode("\n");
+        dom.appendChild(el0, el1);
+        return el0;
+      },
+      render: function render(context, env, contextualElement) {
+        var dom = env.dom;
+        var hooks = env.hooks, inline = hooks.inline;
+        dom.detectNamespace(contextualElement);
+        var fragment;
+        if (env.useFragmentCache && dom.canClone) {
+          if (this.cachedFragment === null) {
+            fragment = this.build(dom);
+            if (this.hasRendered) {
+              this.cachedFragment = fragment;
+            } else {
+              this.hasRendered = true;
+            }
+          }
+          if (this.cachedFragment) {
+            fragment = dom.cloneNode(this.cachedFragment, true);
+          }
+        } else {
+          fragment = this.build(dom);
+        }
+        var morph0 = dom.createMorphAt(dom.childAt(fragment, [0, 3, 1, 1, 1]),0,1);
+        inline(env, morph0, context, "partial", ["simple-table/simple-table"], {});
+        return fragment;
+      }
+    };
+  }()));
 
 });
 define('dummy/templates/sparkline-table/sparkline-table', ['exports'], function (exports) {
 
   'use strict';
 
-  exports['default'] = Ember.Handlebars.template({"compiler":[6,">= 2.0.0-beta.1"],"main":function(depth0,helpers,partials,data) {
-    var helperMissing=helpers.helperMissing, escapeExpression=this.escapeExpression, buffer = '';
-    data.buffer.push(escapeExpression(((helpers['ember-table'] || (depth0 && depth0['ember-table']) || helperMissing).call(depth0, {"name":"ember-table","hash":{
-      'content': ("tableContent"),
-      'columns': ("tableColumns"),
-      'rowHeight': (30),
-      'numFixedColumns': (1),
-      'hasFooter': (false),
-      'hasHeader': (true)
-    },"hashTypes":{'content': "ID",'columns': "ID",'rowHeight': "NUMBER",'numFixedColumns': "NUMBER",'hasFooter': "BOOLEAN",'hasHeader': "BOOLEAN"},"hashContexts":{'content': depth0,'columns': depth0,'rowHeight': depth0,'numFixedColumns': depth0,'hasFooter': depth0,'hasHeader': depth0},"types":[],"contexts":[],"data":data}))));
-    data.buffer.push("\n");
-    return buffer;
-  },"useData":true});
+  exports['default'] = Ember.HTMLBars.template((function() {
+    return {
+      isHTMLBars: true,
+      blockParams: 0,
+      cachedFragment: null,
+      hasRendered: false,
+      build: function build(dom) {
+        var el0 = dom.createDocumentFragment();
+        var el1 = dom.createTextNode("");
+        dom.appendChild(el0, el1);
+        var el1 = dom.createTextNode("\n");
+        dom.appendChild(el0, el1);
+        return el0;
+      },
+      render: function render(context, env, contextualElement) {
+        var dom = env.dom;
+        var hooks = env.hooks, get = hooks.get, inline = hooks.inline;
+        dom.detectNamespace(contextualElement);
+        var fragment;
+        if (env.useFragmentCache && dom.canClone) {
+          if (this.cachedFragment === null) {
+            fragment = this.build(dom);
+            if (this.hasRendered) {
+              this.cachedFragment = fragment;
+            } else {
+              this.hasRendered = true;
+            }
+          }
+          if (this.cachedFragment) {
+            fragment = dom.cloneNode(this.cachedFragment, true);
+          }
+        } else {
+          fragment = this.build(dom);
+        }
+        if (this.cachedFragment) { dom.repairClonedNode(fragment,[0]); }
+        var morph0 = dom.createMorphAt(fragment,0,1,contextualElement);
+        inline(env, morph0, context, "ember-table", [], {"hasHeader": true, "hasFooter": false, "numFixedColumns": 1, "rowHeight": 30, "columns": get(env, context, "tableColumns"), "content": get(env, context, "tableContent")});
+        return fragment;
+      }
+    };
+  }()));
 
 });
 define('dummy/templates/sparkline', ['exports'], function (exports) {
 
   'use strict';
 
-  exports['default'] = Ember.Handlebars.template({"compiler":[6,">= 2.0.0-beta.1"],"main":function(depth0,helpers,partials,data) {
-    var helperMissing=helpers.helperMissing, escapeExpression=this.escapeExpression, buffer = '';
-    data.buffer.push("<div class=\"col-md-10 col-md-offset-2 left-border main-content-container\">\n  <h1>Ember Table <small>Sparkline</small></h1>\n\n  <div class=\"row\">\n    <div class=\"col-md-12\">\n      <div class=\"example-container\">\n        <div class=\"ember-table-example-container\">\n          ");
-    data.buffer.push(escapeExpression(((helpers.partial || (depth0 && depth0.partial) || helperMissing).call(depth0, "sparkline-table/sparkline-table", {"name":"partial","hash":{},"hashTypes":{},"hashContexts":{},"types":["STRING"],"contexts":[depth0],"data":data}))));
-    data.buffer.push("\n        </div>\n      </div>\n    </div>\n\n    <div class=\"col-md-12 bumper-30\">\n      <h3>Template</h3>\n      <div class=\"highlight\">\n        <pre class=\"prettyprint lang-html\">{{ember-table\n  hasHeader=true\n  hasFooter=false\n  numFixedColumns=1\n  rowHeight=30\n  columns=tableColumns\n  content=tableContent\n}}\n</pre>\n      </div>\n    </div>\n\n    <div class=\"col-md-12 bumper-30\">\n      <h3>Controller</h3>\n      <div class=\"highlight\">\n        <pre class=\"prettyprint lang-js\">import Ember from &#39;ember&#39;;\nimport ColumnDefinition from &#39;ember-table&#x2F;models&#x2F;column-definition&#39;;\n\nexport default Ember.Controller.extend({\n  tableColumns: Ember.computed(function() {\n    var name = ColumnDefinition.create({\n      savedWidth: 100,\n      headerCellName: &#39;Name&#39;,\n      getCellContent: function(row) {\n        return &#39;Asset &#39; + row.get(&#39;name&#39;);\n      }\n    });\n    var open = ColumnDefinition.create({\n      savedWidth: 100,\n      headerCellName: &#39;Open&#39;,\n      getCellContent: function(row) {\n        return row.get(&#39;open&#39;).toFixed(2);\n      }\n    });\n    var spark = ColumnDefinition.create({\n      savedWidth: 200,\n      headerCellName: &#39;Sparkline&#39;,\n      tableCellViewClass: &#39;sparkline-table-cell&#39;,\n      contentPath: &#39;timeseries&#39;\n    });\n    var close = ColumnDefinition.create({\n      savedWidth: 100,\n      headerCellName: &#39;Close&#39;,\n      getCellContent: function(row) {\n        return row.get(&#39;close&#39;).toFixed(2);\n      }\n    });\n    var low = ColumnDefinition.create({\n      savedWidth: 100,\n      headerCellName: &#39;Low&#39;,\n      getCellContent: function(row) {\n        return row.get(&#39;low&#39;).toFixed(2);\n      }\n    });\n    var high = ColumnDefinition.create({\n      savedWidth: 100,\n      headerCellName: &#39;High&#39;,\n      getCellContent: function(row) {\n        return row.get(&#39;high&#39;).toFixed(2);\n      }\n    });\n    return [name, open, spark, close, low, high];\n  }),\n\n  tableContent: Ember.computed(function() {\n    var randomWalk = function(numSteps) {\n      var lastValue = 0;\n      var walk = [];\n      for (var i = 0; i &lt; numSteps; i++) {\n        lastValue = lastValue + d3.random.normal()();\n        walk.push(lastValue);\n      }\n      return walk;\n    };\n    var content = [];\n    var data;\n    for (var i = 0; i &lt; 100; i++) {\n      data = randomWalk(100);\n      content.pushObject({\n        name: i,\n        timeseries: data,\n        open: data[0],\n        close: data[99],\n        low: Math.min.apply(null, data),\n        high: Math.max.apply(null, data)\n      });\n    }\n    return content;\n  })\n});\n</pre>\n      </div>\n    </div>\n\n    <div class=\"col-md-12 bumper-30\">\n      <h3>views/sparkline_table_cell.js</h3>\n      <div class=\"highlight\">\n        <pre class=\"prettyprint lang-js\">import Ember from &#39;ember&#39;;\nimport TableCell from &#39;ember-table&#x2F;views&#x2F;table-cell&#39;;\n\nexport default TableCell.extend({\n  templateName: &#39;empty-cell&#39;,\n  heightBinding: &#39;controller.rowHeight&#39;,\n\n  onContentOrSizeDidChange: Ember.observer(function() {\n    this.$(&#39;svg&#39;).remove();\n    this.renderD3View();\n  }, &#39;row&#39;, &#39;width&#39;),\n\n  didInsertElement: function() {\n    this.renderD3View();\n    &#x2F;&#x2F; TODO(azirbel): Add _this.super()\n  },\n\n  renderD3View: function() {\n    var data = this.get(&#39;row.timeseries&#39;);\n    if (!data) {\n      return;\n    }\n    var h = this.get(&#39;height&#39;);\n    var w = this.get(&#39;width&#39;);\n    var p = 2;\n    var min = Math.min.apply(null, data);\n    var max = Math.max.apply(null, data);\n    var len = data.length;\n    var fill = d3.scale.category10();\n    var xscale = d3.scale.linear().domain([0, len]).range([p, w - p]);\n    var yscale = d3.scale.linear().domain([min, max]).range([h - p, p]);\n    var line = d3.svg.line().x(function(d, i) {\n      return xscale(i);\n    }).y(function(d) {\n      return yscale(d);\n    });\n    var svg = d3.select(&#39;#&#39; + (this.get(&#39;elementId&#39;))).append(&#39;svg:svg&#39;).attr(&#39;height&#39;, h).attr(&#39;width&#39;, w);\n    var g = svg.append(&#39;svg:g&#39;);\n    g.append(&#39;svg:path&#39;).attr(&#39;d&#39;, line(data)).attr(&#39;stroke&#39;, function() {\n      return fill(Math.round(Math.random()) * 10);\n    }).attr(&#39;fill&#39;, &#39;none&#39;);\n  }\n});\n</pre>\n      </div>\n    </div>\n  </div>\n</div>\n");
-    return buffer;
-  },"useData":true});
+  exports['default'] = Ember.HTMLBars.template((function() {
+    return {
+      isHTMLBars: true,
+      blockParams: 0,
+      cachedFragment: null,
+      hasRendered: false,
+      build: function build(dom) {
+        var el0 = dom.createDocumentFragment();
+        var el1 = dom.createElement("div");
+        dom.setAttribute(el1,"class","col-md-10 col-md-offset-2 left-border main-content-container");
+        var el2 = dom.createTextNode("\n  ");
+        dom.appendChild(el1, el2);
+        var el2 = dom.createElement("h1");
+        var el3 = dom.createTextNode("Ember Table ");
+        dom.appendChild(el2, el3);
+        var el3 = dom.createElement("small");
+        var el4 = dom.createTextNode("Sparkline");
+        dom.appendChild(el3, el4);
+        dom.appendChild(el2, el3);
+        dom.appendChild(el1, el2);
+        var el2 = dom.createTextNode("\n\n  ");
+        dom.appendChild(el1, el2);
+        var el2 = dom.createElement("div");
+        dom.setAttribute(el2,"class","row");
+        var el3 = dom.createTextNode("\n    ");
+        dom.appendChild(el2, el3);
+        var el3 = dom.createElement("div");
+        dom.setAttribute(el3,"class","col-md-12");
+        var el4 = dom.createTextNode("\n      ");
+        dom.appendChild(el3, el4);
+        var el4 = dom.createElement("div");
+        dom.setAttribute(el4,"class","example-container");
+        var el5 = dom.createTextNode("\n        ");
+        dom.appendChild(el4, el5);
+        var el5 = dom.createElement("div");
+        dom.setAttribute(el5,"class","ember-table-example-container");
+        var el6 = dom.createTextNode("\n          ");
+        dom.appendChild(el5, el6);
+        var el6 = dom.createTextNode("\n        ");
+        dom.appendChild(el5, el6);
+        dom.appendChild(el4, el5);
+        var el5 = dom.createTextNode("\n      ");
+        dom.appendChild(el4, el5);
+        dom.appendChild(el3, el4);
+        var el4 = dom.createTextNode("\n    ");
+        dom.appendChild(el3, el4);
+        dom.appendChild(el2, el3);
+        var el3 = dom.createTextNode("\n\n    ");
+        dom.appendChild(el2, el3);
+        var el3 = dom.createElement("div");
+        dom.setAttribute(el3,"class","col-md-12 bumper-30");
+        var el4 = dom.createTextNode("\n      ");
+        dom.appendChild(el3, el4);
+        var el4 = dom.createElement("h3");
+        var el5 = dom.createTextNode("Template");
+        dom.appendChild(el4, el5);
+        dom.appendChild(el3, el4);
+        var el4 = dom.createTextNode("\n      ");
+        dom.appendChild(el3, el4);
+        var el4 = dom.createElement("div");
+        dom.setAttribute(el4,"class","highlight");
+        var el5 = dom.createTextNode("\n        ");
+        dom.appendChild(el4, el5);
+        var el5 = dom.createElement("pre");
+        dom.setAttribute(el5,"class","prettyprint lang-html");
+        var el6 = dom.createTextNode("{{ember-table\n  hasHeader=true\n  hasFooter=false\n  numFixedColumns=1\n  rowHeight=30\n  columns=tableColumns\n  content=tableContent\n}}\n");
+        dom.appendChild(el5, el6);
+        dom.appendChild(el4, el5);
+        var el5 = dom.createTextNode("\n      ");
+        dom.appendChild(el4, el5);
+        dom.appendChild(el3, el4);
+        var el4 = dom.createTextNode("\n    ");
+        dom.appendChild(el3, el4);
+        dom.appendChild(el2, el3);
+        var el3 = dom.createTextNode("\n\n    ");
+        dom.appendChild(el2, el3);
+        var el3 = dom.createElement("div");
+        dom.setAttribute(el3,"class","col-md-12 bumper-30");
+        var el4 = dom.createTextNode("\n      ");
+        dom.appendChild(el3, el4);
+        var el4 = dom.createElement("h3");
+        var el5 = dom.createTextNode("Controller");
+        dom.appendChild(el4, el5);
+        dom.appendChild(el3, el4);
+        var el4 = dom.createTextNode("\n      ");
+        dom.appendChild(el3, el4);
+        var el4 = dom.createElement("div");
+        dom.setAttribute(el4,"class","highlight");
+        var el5 = dom.createTextNode("\n        ");
+        dom.appendChild(el4, el5);
+        var el5 = dom.createElement("pre");
+        dom.setAttribute(el5,"class","prettyprint lang-js");
+        var el6 = dom.createTextNode("import Ember from &#39;ember&#39;;\nimport ColumnDefinition from &#39;ember-table&#x2F;models&#x2F;column-definition&#39;;\n\nexport default Ember.Controller.extend({\n  tableColumns: Ember.computed(function() {\n    var name = ColumnDefinition.create({\n      savedWidth: 100,\n      headerCellName: &#39;Name&#39;,\n      getCellContent: function(row) {\n        return &#39;Asset &#39; + row.get(&#39;name&#39;);\n      }\n    });\n    var open = ColumnDefinition.create({\n      savedWidth: 100,\n      headerCellName: &#39;Open&#39;,\n      getCellContent: function(row) {\n        return row.get(&#39;open&#39;).toFixed(2);\n      }\n    });\n    var spark = ColumnDefinition.create({\n      savedWidth: 200,\n      headerCellName: &#39;Sparkline&#39;,\n      tableCellViewClass: &#39;sparkline-table-cell&#39;,\n      contentPath: &#39;timeseries&#39;\n    });\n    var close = ColumnDefinition.create({\n      savedWidth: 100,\n      headerCellName: &#39;Close&#39;,\n      getCellContent: function(row) {\n        return row.get(&#39;close&#39;).toFixed(2);\n      }\n    });\n    var low = ColumnDefinition.create({\n      savedWidth: 100,\n      headerCellName: &#39;Low&#39;,\n      getCellContent: function(row) {\n        return row.get(&#39;low&#39;).toFixed(2);\n      }\n    });\n    var high = ColumnDefinition.create({\n      savedWidth: 100,\n      headerCellName: &#39;High&#39;,\n      getCellContent: function(row) {\n        return row.get(&#39;high&#39;).toFixed(2);\n      }\n    });\n    return [name, open, spark, close, low, high];\n  }),\n\n  tableContent: Ember.computed(function() {\n    var randomWalk = function(numSteps) {\n      var lastValue = 0;\n      var walk = [];\n      for (var i = 0; i &lt; numSteps; i++) {\n        lastValue = lastValue + d3.random.normal()();\n        walk.push(lastValue);\n      }\n      return walk;\n    };\n    var content = [];\n    var data;\n    for (var i = 0; i &lt; 100; i++) {\n      data = randomWalk(100);\n      content.pushObject({\n        name: i,\n        timeseries: data,\n        open: data[0],\n        close: data[99],\n        low: Math.min.apply(null, data),\n        high: Math.max.apply(null, data)\n      });\n    }\n    return content;\n  })\n});\n");
+        dom.appendChild(el5, el6);
+        dom.appendChild(el4, el5);
+        var el5 = dom.createTextNode("\n      ");
+        dom.appendChild(el4, el5);
+        dom.appendChild(el3, el4);
+        var el4 = dom.createTextNode("\n    ");
+        dom.appendChild(el3, el4);
+        dom.appendChild(el2, el3);
+        var el3 = dom.createTextNode("\n\n    ");
+        dom.appendChild(el2, el3);
+        var el3 = dom.createElement("div");
+        dom.setAttribute(el3,"class","col-md-12 bumper-30");
+        var el4 = dom.createTextNode("\n      ");
+        dom.appendChild(el3, el4);
+        var el4 = dom.createElement("h3");
+        var el5 = dom.createTextNode("views/sparkline_table_cell.js");
+        dom.appendChild(el4, el5);
+        dom.appendChild(el3, el4);
+        var el4 = dom.createTextNode("\n      ");
+        dom.appendChild(el3, el4);
+        var el4 = dom.createElement("div");
+        dom.setAttribute(el4,"class","highlight");
+        var el5 = dom.createTextNode("\n        ");
+        dom.appendChild(el4, el5);
+        var el5 = dom.createElement("pre");
+        dom.setAttribute(el5,"class","prettyprint lang-js");
+        var el6 = dom.createTextNode("import Ember from &#39;ember&#39;;\nimport TableCell from &#39;ember-table&#x2F;views&#x2F;table-cell&#39;;\n\nexport default TableCell.extend({\n  templateName: &#39;empty-cell&#39;,\n  heightBinding: &#39;controller.rowHeight&#39;,\n\n  onContentOrSizeDidChange: Ember.observer(function() {\n    this.$(&#39;svg&#39;).remove();\n    this.renderD3View();\n  }, &#39;row&#39;, &#39;width&#39;),\n\n  didInsertElement: function() {\n    this.renderD3View();\n    &#x2F;&#x2F; TODO(azirbel): Add _this.super()\n  },\n\n  renderD3View: function() {\n    var data = this.get(&#39;row.timeseries&#39;);\n    if (!data) {\n      return;\n    }\n    var h = this.get(&#39;height&#39;);\n    var w = this.get(&#39;width&#39;);\n    var p = 2;\n    var min = Math.min.apply(null, data);\n    var max = Math.max.apply(null, data);\n    var len = data.length;\n    var fill = d3.scale.category10();\n    var xscale = d3.scale.linear().domain([0, len]).range([p, w - p]);\n    var yscale = d3.scale.linear().domain([min, max]).range([h - p, p]);\n    var line = d3.svg.line().x(function(d, i) {\n      return xscale(i);\n    }).y(function(d) {\n      return yscale(d);\n    });\n    var svg = d3.select(&#39;#&#39; + (this.get(&#39;elementId&#39;))).append(&#39;svg:svg&#39;).attr(&#39;height&#39;, h).attr(&#39;width&#39;, w);\n    var g = svg.append(&#39;svg:g&#39;);\n    g.append(&#39;svg:path&#39;).attr(&#39;d&#39;, line(data)).attr(&#39;stroke&#39;, function() {\n      return fill(Math.round(Math.random()) * 10);\n    }).attr(&#39;fill&#39;, &#39;none&#39;);\n  }\n});\n");
+        dom.appendChild(el5, el6);
+        dom.appendChild(el4, el5);
+        var el5 = dom.createTextNode("\n      ");
+        dom.appendChild(el4, el5);
+        dom.appendChild(el3, el4);
+        var el4 = dom.createTextNode("\n    ");
+        dom.appendChild(el3, el4);
+        dom.appendChild(el2, el3);
+        var el3 = dom.createTextNode("\n  ");
+        dom.appendChild(el2, el3);
+        dom.appendChild(el1, el2);
+        var el2 = dom.createTextNode("\n");
+        dom.appendChild(el1, el2);
+        dom.appendChild(el0, el1);
+        var el1 = dom.createTextNode("\n");
+        dom.appendChild(el0, el1);
+        return el0;
+      },
+      render: function render(context, env, contextualElement) {
+        var dom = env.dom;
+        var hooks = env.hooks, inline = hooks.inline;
+        dom.detectNamespace(contextualElement);
+        var fragment;
+        if (env.useFragmentCache && dom.canClone) {
+          if (this.cachedFragment === null) {
+            fragment = this.build(dom);
+            if (this.hasRendered) {
+              this.cachedFragment = fragment;
+            } else {
+              this.hasRendered = true;
+            }
+          }
+          if (this.cachedFragment) {
+            fragment = dom.cloneNode(this.cachedFragment, true);
+          }
+        } else {
+          fragment = this.build(dom);
+        }
+        var morph0 = dom.createMorphAt(dom.childAt(fragment, [0, 3, 1, 1, 1]),0,1);
+        inline(env, morph0, context, "partial", ["sparkline-table/sparkline-table"], {});
+        return fragment;
+      }
+    };
+  }()));
 
 });
 define('dummy/templates/sub-navigation', ['exports'], function (exports) {
 
   'use strict';
 
-  exports['default'] = Ember.Handlebars.template({"1":function(depth0,helpers,partials,data) {
-    data.buffer.push("Overview &amp; Getting Started");
-    },"3":function(depth0,helpers,partials,data) {
-    data.buffer.push("API &amp; Documentation");
-    },"5":function(depth0,helpers,partials,data) {
-    data.buffer.push("Migration Guides");
-    },"7":function(depth0,helpers,partials,data) {
-    data.buffer.push("Hello World table");
-    },"9":function(depth0,helpers,partials,data) {
-    data.buffer.push("AJAX cells");
-    },"11":function(depth0,helpers,partials,data) {
-    data.buffer.push("Bar cells");
-    },"13":function(depth0,helpers,partials,data) {
-    data.buffer.push("Dynamic bar cells");
-    },"15":function(depth0,helpers,partials,data) {
-    data.buffer.push("Tree &amp; financial table");
-    },"17":function(depth0,helpers,partials,data) {
-    data.buffer.push("Editable cells");
-    },"19":function(depth0,helpers,partials,data) {
-    data.buffer.push("Sparkline cells");
-    },"21":function(depth0,helpers,partials,data) {
-    data.buffer.push("Horizon cells");
-    },"23":function(depth0,helpers,partials,data) {
-    data.buffer.push("Configurable columns");
-    },"25":function(depth0,helpers,partials,data) {
-    data.buffer.push("    <ul class=\"list-unstyled project-navigation\">\n      <li class=\"sub-title\">Community Examples</li>\n    </ul>\n");
-    },"compiler":[6,">= 2.0.0-beta.1"],"main":function(depth0,helpers,partials,data) {
-    var stack1, helperMissing=helpers.helperMissing, buffer = '';
-    data.buffer.push("<div class=\"col-md-2 sub-navigation-sidebar\">\n  <ul class=\"list-unstyled github-navigation\">\n    <li>\n      <a class=\"btn btn-default\" target=\"_BLANK\" href=\"https://github.com/addepar/ember-table\">\n        <i class=\"icon-github\"></i> View on GitHub\n      </a>\n    </li>\n    <li>\n      <iframe src=\"http://ghbtns.com/github-btn.html?user=addepar&amp;repo=ember-table&amp;type=watch&amp;count=true\" allowtransparency=\"true\" frameborder=\"0\" scrolling=\"0\" width=\"130\" height=\"30\"></iframe>\n    </li>\n  </ul>\n  <hr>\n  <ul class=\"list-unstyled project-navigation\">\n    <li class=\"sub-title\">Ember Table</li>\n    <li>");
-    stack1 = ((helpers['link-to'] || (depth0 && depth0['link-to']) || helperMissing).call(depth0, "overview", {"name":"link-to","hash":{},"hashTypes":{},"hashContexts":{},"fn":this.program(1, data),"inverse":this.noop,"types":["STRING"],"contexts":[depth0],"data":data}));
-    if (stack1 != null) { data.buffer.push(stack1); }
-    data.buffer.push("</li>\n    <li>");
-    stack1 = ((helpers['link-to'] || (depth0 && depth0['link-to']) || helperMissing).call(depth0, "documentation", {"name":"link-to","hash":{},"hashTypes":{},"hashContexts":{},"fn":this.program(3, data),"inverse":this.noop,"types":["STRING"],"contexts":[depth0],"data":data}));
-    if (stack1 != null) { data.buffer.push(stack1); }
-    data.buffer.push("</li>\n    <li>");
-    stack1 = ((helpers['link-to'] || (depth0 && depth0['link-to']) || helperMissing).call(depth0, "migration-guides", {"name":"link-to","hash":{},"hashTypes":{},"hashContexts":{},"fn":this.program(5, data),"inverse":this.noop,"types":["STRING"],"contexts":[depth0],"data":data}));
-    if (stack1 != null) { data.buffer.push(stack1); }
-    data.buffer.push("</li>\n  </ul>\n  <hr>\n  <ul class=\"list-unstyled project-navigation\">\n    <li class=\"sub-title\">Examples</li>\n    <li>");
-    stack1 = ((helpers['link-to'] || (depth0 && depth0['link-to']) || helperMissing).call(depth0, "simple", {"name":"link-to","hash":{},"hashTypes":{},"hashContexts":{},"fn":this.program(7, data),"inverse":this.noop,"types":["STRING"],"contexts":[depth0],"data":data}));
-    if (stack1 != null) { data.buffer.push(stack1); }
-    data.buffer.push("</li>\n    <li>");
-    stack1 = ((helpers['link-to'] || (depth0 && depth0['link-to']) || helperMissing).call(depth0, "ajax", {"name":"link-to","hash":{},"hashTypes":{},"hashContexts":{},"fn":this.program(9, data),"inverse":this.noop,"types":["STRING"],"contexts":[depth0],"data":data}));
-    if (stack1 != null) { data.buffer.push(stack1); }
-    data.buffer.push("</li>\n    <li>");
-    stack1 = ((helpers['link-to'] || (depth0 && depth0['link-to']) || helperMissing).call(depth0, "bars", {"name":"link-to","hash":{},"hashTypes":{},"hashContexts":{},"fn":this.program(11, data),"inverse":this.noop,"types":["STRING"],"contexts":[depth0],"data":data}));
-    if (stack1 != null) { data.buffer.push(stack1); }
-    data.buffer.push("</li>\n    <li>");
-    stack1 = ((helpers['link-to'] || (depth0 && depth0['link-to']) || helperMissing).call(depth0, "dynamic-bars", {"name":"link-to","hash":{},"hashTypes":{},"hashContexts":{},"fn":this.program(13, data),"inverse":this.noop,"types":["STRING"],"contexts":[depth0],"data":data}));
-    if (stack1 != null) { data.buffer.push(stack1); }
-    data.buffer.push("</li>\n    <li>");
-    stack1 = ((helpers['link-to'] || (depth0 && depth0['link-to']) || helperMissing).call(depth0, "financial", {"name":"link-to","hash":{},"hashTypes":{},"hashContexts":{},"fn":this.program(15, data),"inverse":this.noop,"types":["STRING"],"contexts":[depth0],"data":data}));
-    if (stack1 != null) { data.buffer.push(stack1); }
-    data.buffer.push("</li>\n    <li>");
-    stack1 = ((helpers['link-to'] || (depth0 && depth0['link-to']) || helperMissing).call(depth0, "editable", {"name":"link-to","hash":{},"hashTypes":{},"hashContexts":{},"fn":this.program(17, data),"inverse":this.noop,"types":["STRING"],"contexts":[depth0],"data":data}));
-    if (stack1 != null) { data.buffer.push(stack1); }
-    data.buffer.push("</li>\n    <li>");
-    stack1 = ((helpers['link-to'] || (depth0 && depth0['link-to']) || helperMissing).call(depth0, "sparkline", {"name":"link-to","hash":{},"hashTypes":{},"hashContexts":{},"fn":this.program(19, data),"inverse":this.noop,"types":["STRING"],"contexts":[depth0],"data":data}));
-    if (stack1 != null) { data.buffer.push(stack1); }
-    data.buffer.push("</li>\n    <li>");
-    stack1 = ((helpers['link-to'] || (depth0 && depth0['link-to']) || helperMissing).call(depth0, "horizon", {"name":"link-to","hash":{},"hashTypes":{},"hashContexts":{},"fn":this.program(21, data),"inverse":this.noop,"types":["STRING"],"contexts":[depth0],"data":data}));
-    if (stack1 != null) { data.buffer.push(stack1); }
-    data.buffer.push("</li>\n    <li>");
-    stack1 = ((helpers['link-to'] || (depth0 && depth0['link-to']) || helperMissing).call(depth0, "configurable-columns", {"name":"link-to","hash":{},"hashTypes":{},"hashContexts":{},"fn":this.program(23, data),"inverse":this.noop,"types":["STRING"],"contexts":[depth0],"data":data}));
-    if (stack1 != null) { data.buffer.push(stack1); }
-    data.buffer.push("</li>\n  </ul>\n  <hr>\n");
-    stack1 = ((helpers['link-to'] || (depth0 && depth0['link-to']) || helperMissing).call(depth0, "community-examples", {"name":"link-to","hash":{},"hashTypes":{},"hashContexts":{},"fn":this.program(25, data),"inverse":this.noop,"types":["STRING"],"contexts":[depth0],"data":data}));
-    if (stack1 != null) { data.buffer.push(stack1); }
-    data.buffer.push("</div>\n");
-    return buffer;
-  },"useData":true});
+  exports['default'] = Ember.HTMLBars.template((function() {
+    var child0 = (function() {
+      return {
+        isHTMLBars: true,
+        blockParams: 0,
+        cachedFragment: null,
+        hasRendered: false,
+        build: function build(dom) {
+          var el0 = dom.createTextNode("Overview & Getting Started");
+          return el0;
+        },
+        render: function render(context, env, contextualElement) {
+          var dom = env.dom;
+          dom.detectNamespace(contextualElement);
+          var fragment;
+          if (env.useFragmentCache && dom.canClone) {
+            if (this.cachedFragment === null) {
+              fragment = this.build(dom);
+              if (this.hasRendered) {
+                this.cachedFragment = fragment;
+              } else {
+                this.hasRendered = true;
+              }
+            }
+            if (this.cachedFragment) {
+              fragment = dom.cloneNode(this.cachedFragment, true);
+            }
+          } else {
+            fragment = this.build(dom);
+          }
+          return fragment;
+        }
+      };
+    }());
+    var child1 = (function() {
+      return {
+        isHTMLBars: true,
+        blockParams: 0,
+        cachedFragment: null,
+        hasRendered: false,
+        build: function build(dom) {
+          var el0 = dom.createTextNode("API & Documentation");
+          return el0;
+        },
+        render: function render(context, env, contextualElement) {
+          var dom = env.dom;
+          dom.detectNamespace(contextualElement);
+          var fragment;
+          if (env.useFragmentCache && dom.canClone) {
+            if (this.cachedFragment === null) {
+              fragment = this.build(dom);
+              if (this.hasRendered) {
+                this.cachedFragment = fragment;
+              } else {
+                this.hasRendered = true;
+              }
+            }
+            if (this.cachedFragment) {
+              fragment = dom.cloneNode(this.cachedFragment, true);
+            }
+          } else {
+            fragment = this.build(dom);
+          }
+          return fragment;
+        }
+      };
+    }());
+    var child2 = (function() {
+      return {
+        isHTMLBars: true,
+        blockParams: 0,
+        cachedFragment: null,
+        hasRendered: false,
+        build: function build(dom) {
+          var el0 = dom.createTextNode("Migration Guides");
+          return el0;
+        },
+        render: function render(context, env, contextualElement) {
+          var dom = env.dom;
+          dom.detectNamespace(contextualElement);
+          var fragment;
+          if (env.useFragmentCache && dom.canClone) {
+            if (this.cachedFragment === null) {
+              fragment = this.build(dom);
+              if (this.hasRendered) {
+                this.cachedFragment = fragment;
+              } else {
+                this.hasRendered = true;
+              }
+            }
+            if (this.cachedFragment) {
+              fragment = dom.cloneNode(this.cachedFragment, true);
+            }
+          } else {
+            fragment = this.build(dom);
+          }
+          return fragment;
+        }
+      };
+    }());
+    var child3 = (function() {
+      return {
+        isHTMLBars: true,
+        blockParams: 0,
+        cachedFragment: null,
+        hasRendered: false,
+        build: function build(dom) {
+          var el0 = dom.createTextNode("Hello World table");
+          return el0;
+        },
+        render: function render(context, env, contextualElement) {
+          var dom = env.dom;
+          dom.detectNamespace(contextualElement);
+          var fragment;
+          if (env.useFragmentCache && dom.canClone) {
+            if (this.cachedFragment === null) {
+              fragment = this.build(dom);
+              if (this.hasRendered) {
+                this.cachedFragment = fragment;
+              } else {
+                this.hasRendered = true;
+              }
+            }
+            if (this.cachedFragment) {
+              fragment = dom.cloneNode(this.cachedFragment, true);
+            }
+          } else {
+            fragment = this.build(dom);
+          }
+          return fragment;
+        }
+      };
+    }());
+    var child4 = (function() {
+      return {
+        isHTMLBars: true,
+        blockParams: 0,
+        cachedFragment: null,
+        hasRendered: false,
+        build: function build(dom) {
+          var el0 = dom.createTextNode("AJAX cells");
+          return el0;
+        },
+        render: function render(context, env, contextualElement) {
+          var dom = env.dom;
+          dom.detectNamespace(contextualElement);
+          var fragment;
+          if (env.useFragmentCache && dom.canClone) {
+            if (this.cachedFragment === null) {
+              fragment = this.build(dom);
+              if (this.hasRendered) {
+                this.cachedFragment = fragment;
+              } else {
+                this.hasRendered = true;
+              }
+            }
+            if (this.cachedFragment) {
+              fragment = dom.cloneNode(this.cachedFragment, true);
+            }
+          } else {
+            fragment = this.build(dom);
+          }
+          return fragment;
+        }
+      };
+    }());
+    var child5 = (function() {
+      return {
+        isHTMLBars: true,
+        blockParams: 0,
+        cachedFragment: null,
+        hasRendered: false,
+        build: function build(dom) {
+          var el0 = dom.createTextNode("Bar cells");
+          return el0;
+        },
+        render: function render(context, env, contextualElement) {
+          var dom = env.dom;
+          dom.detectNamespace(contextualElement);
+          var fragment;
+          if (env.useFragmentCache && dom.canClone) {
+            if (this.cachedFragment === null) {
+              fragment = this.build(dom);
+              if (this.hasRendered) {
+                this.cachedFragment = fragment;
+              } else {
+                this.hasRendered = true;
+              }
+            }
+            if (this.cachedFragment) {
+              fragment = dom.cloneNode(this.cachedFragment, true);
+            }
+          } else {
+            fragment = this.build(dom);
+          }
+          return fragment;
+        }
+      };
+    }());
+    var child6 = (function() {
+      return {
+        isHTMLBars: true,
+        blockParams: 0,
+        cachedFragment: null,
+        hasRendered: false,
+        build: function build(dom) {
+          var el0 = dom.createTextNode("Dynamic bar cells");
+          return el0;
+        },
+        render: function render(context, env, contextualElement) {
+          var dom = env.dom;
+          dom.detectNamespace(contextualElement);
+          var fragment;
+          if (env.useFragmentCache && dom.canClone) {
+            if (this.cachedFragment === null) {
+              fragment = this.build(dom);
+              if (this.hasRendered) {
+                this.cachedFragment = fragment;
+              } else {
+                this.hasRendered = true;
+              }
+            }
+            if (this.cachedFragment) {
+              fragment = dom.cloneNode(this.cachedFragment, true);
+            }
+          } else {
+            fragment = this.build(dom);
+          }
+          return fragment;
+        }
+      };
+    }());
+    var child7 = (function() {
+      return {
+        isHTMLBars: true,
+        blockParams: 0,
+        cachedFragment: null,
+        hasRendered: false,
+        build: function build(dom) {
+          var el0 = dom.createTextNode("Tree & financial table");
+          return el0;
+        },
+        render: function render(context, env, contextualElement) {
+          var dom = env.dom;
+          dom.detectNamespace(contextualElement);
+          var fragment;
+          if (env.useFragmentCache && dom.canClone) {
+            if (this.cachedFragment === null) {
+              fragment = this.build(dom);
+              if (this.hasRendered) {
+                this.cachedFragment = fragment;
+              } else {
+                this.hasRendered = true;
+              }
+            }
+            if (this.cachedFragment) {
+              fragment = dom.cloneNode(this.cachedFragment, true);
+            }
+          } else {
+            fragment = this.build(dom);
+          }
+          return fragment;
+        }
+      };
+    }());
+    var child8 = (function() {
+      return {
+        isHTMLBars: true,
+        blockParams: 0,
+        cachedFragment: null,
+        hasRendered: false,
+        build: function build(dom) {
+          var el0 = dom.createTextNode("Editable cells");
+          return el0;
+        },
+        render: function render(context, env, contextualElement) {
+          var dom = env.dom;
+          dom.detectNamespace(contextualElement);
+          var fragment;
+          if (env.useFragmentCache && dom.canClone) {
+            if (this.cachedFragment === null) {
+              fragment = this.build(dom);
+              if (this.hasRendered) {
+                this.cachedFragment = fragment;
+              } else {
+                this.hasRendered = true;
+              }
+            }
+            if (this.cachedFragment) {
+              fragment = dom.cloneNode(this.cachedFragment, true);
+            }
+          } else {
+            fragment = this.build(dom);
+          }
+          return fragment;
+        }
+      };
+    }());
+    var child9 = (function() {
+      return {
+        isHTMLBars: true,
+        blockParams: 0,
+        cachedFragment: null,
+        hasRendered: false,
+        build: function build(dom) {
+          var el0 = dom.createTextNode("Sparkline cells");
+          return el0;
+        },
+        render: function render(context, env, contextualElement) {
+          var dom = env.dom;
+          dom.detectNamespace(contextualElement);
+          var fragment;
+          if (env.useFragmentCache && dom.canClone) {
+            if (this.cachedFragment === null) {
+              fragment = this.build(dom);
+              if (this.hasRendered) {
+                this.cachedFragment = fragment;
+              } else {
+                this.hasRendered = true;
+              }
+            }
+            if (this.cachedFragment) {
+              fragment = dom.cloneNode(this.cachedFragment, true);
+            }
+          } else {
+            fragment = this.build(dom);
+          }
+          return fragment;
+        }
+      };
+    }());
+    var child10 = (function() {
+      return {
+        isHTMLBars: true,
+        blockParams: 0,
+        cachedFragment: null,
+        hasRendered: false,
+        build: function build(dom) {
+          var el0 = dom.createTextNode("Horizon cells");
+          return el0;
+        },
+        render: function render(context, env, contextualElement) {
+          var dom = env.dom;
+          dom.detectNamespace(contextualElement);
+          var fragment;
+          if (env.useFragmentCache && dom.canClone) {
+            if (this.cachedFragment === null) {
+              fragment = this.build(dom);
+              if (this.hasRendered) {
+                this.cachedFragment = fragment;
+              } else {
+                this.hasRendered = true;
+              }
+            }
+            if (this.cachedFragment) {
+              fragment = dom.cloneNode(this.cachedFragment, true);
+            }
+          } else {
+            fragment = this.build(dom);
+          }
+          return fragment;
+        }
+      };
+    }());
+    var child11 = (function() {
+      return {
+        isHTMLBars: true,
+        blockParams: 0,
+        cachedFragment: null,
+        hasRendered: false,
+        build: function build(dom) {
+          var el0 = dom.createTextNode("Configurable columns");
+          return el0;
+        },
+        render: function render(context, env, contextualElement) {
+          var dom = env.dom;
+          dom.detectNamespace(contextualElement);
+          var fragment;
+          if (env.useFragmentCache && dom.canClone) {
+            if (this.cachedFragment === null) {
+              fragment = this.build(dom);
+              if (this.hasRendered) {
+                this.cachedFragment = fragment;
+              } else {
+                this.hasRendered = true;
+              }
+            }
+            if (this.cachedFragment) {
+              fragment = dom.cloneNode(this.cachedFragment, true);
+            }
+          } else {
+            fragment = this.build(dom);
+          }
+          return fragment;
+        }
+      };
+    }());
+    var child12 = (function() {
+      return {
+        isHTMLBars: true,
+        blockParams: 0,
+        cachedFragment: null,
+        hasRendered: false,
+        build: function build(dom) {
+          var el0 = dom.createDocumentFragment();
+          var el1 = dom.createTextNode("    ");
+          dom.appendChild(el0, el1);
+          var el1 = dom.createElement("ul");
+          dom.setAttribute(el1,"class","list-unstyled project-navigation");
+          var el2 = dom.createTextNode("\n      ");
+          dom.appendChild(el1, el2);
+          var el2 = dom.createElement("li");
+          dom.setAttribute(el2,"class","sub-title");
+          var el3 = dom.createTextNode("Community Examples");
+          dom.appendChild(el2, el3);
+          dom.appendChild(el1, el2);
+          var el2 = dom.createTextNode("\n    ");
+          dom.appendChild(el1, el2);
+          dom.appendChild(el0, el1);
+          var el1 = dom.createTextNode("\n");
+          dom.appendChild(el0, el1);
+          return el0;
+        },
+        render: function render(context, env, contextualElement) {
+          var dom = env.dom;
+          dom.detectNamespace(contextualElement);
+          var fragment;
+          if (env.useFragmentCache && dom.canClone) {
+            if (this.cachedFragment === null) {
+              fragment = this.build(dom);
+              if (this.hasRendered) {
+                this.cachedFragment = fragment;
+              } else {
+                this.hasRendered = true;
+              }
+            }
+            if (this.cachedFragment) {
+              fragment = dom.cloneNode(this.cachedFragment, true);
+            }
+          } else {
+            fragment = this.build(dom);
+          }
+          return fragment;
+        }
+      };
+    }());
+    return {
+      isHTMLBars: true,
+      blockParams: 0,
+      cachedFragment: null,
+      hasRendered: false,
+      build: function build(dom) {
+        var el0 = dom.createDocumentFragment();
+        var el1 = dom.createElement("div");
+        dom.setAttribute(el1,"class","col-md-2 sub-navigation-sidebar");
+        var el2 = dom.createTextNode("\n  ");
+        dom.appendChild(el1, el2);
+        var el2 = dom.createElement("ul");
+        dom.setAttribute(el2,"class","list-unstyled github-navigation");
+        var el3 = dom.createTextNode("\n    ");
+        dom.appendChild(el2, el3);
+        var el3 = dom.createElement("li");
+        var el4 = dom.createTextNode("\n      ");
+        dom.appendChild(el3, el4);
+        var el4 = dom.createElement("a");
+        dom.setAttribute(el4,"class","btn btn-default");
+        dom.setAttribute(el4,"target","_BLANK");
+        dom.setAttribute(el4,"href","https://github.com/addepar/ember-table");
+        var el5 = dom.createTextNode("\n        ");
+        dom.appendChild(el4, el5);
+        var el5 = dom.createElement("i");
+        dom.setAttribute(el5,"class","icon-github");
+        dom.appendChild(el4, el5);
+        var el5 = dom.createTextNode(" View on GitHub\n      ");
+        dom.appendChild(el4, el5);
+        dom.appendChild(el3, el4);
+        var el4 = dom.createTextNode("\n    ");
+        dom.appendChild(el3, el4);
+        dom.appendChild(el2, el3);
+        var el3 = dom.createTextNode("\n    ");
+        dom.appendChild(el2, el3);
+        var el3 = dom.createElement("li");
+        var el4 = dom.createTextNode("\n      ");
+        dom.appendChild(el3, el4);
+        var el4 = dom.createElement("iframe");
+        dom.setAttribute(el4,"src","http://ghbtns.com/github-btn.html?user=addepar&repo=ember-table&type=watch&count=true");
+        dom.setAttribute(el4,"allowtransparency","true");
+        dom.setAttribute(el4,"frameborder","0");
+        dom.setAttribute(el4,"scrolling","0");
+        dom.setAttribute(el4,"width","130");
+        dom.setAttribute(el4,"height","30");
+        dom.appendChild(el3, el4);
+        var el4 = dom.createTextNode("\n    ");
+        dom.appendChild(el3, el4);
+        dom.appendChild(el2, el3);
+        var el3 = dom.createTextNode("\n  ");
+        dom.appendChild(el2, el3);
+        dom.appendChild(el1, el2);
+        var el2 = dom.createTextNode("\n  ");
+        dom.appendChild(el1, el2);
+        var el2 = dom.createElement("hr");
+        dom.appendChild(el1, el2);
+        var el2 = dom.createTextNode("\n  ");
+        dom.appendChild(el1, el2);
+        var el2 = dom.createElement("ul");
+        dom.setAttribute(el2,"class","list-unstyled project-navigation");
+        var el3 = dom.createTextNode("\n    ");
+        dom.appendChild(el2, el3);
+        var el3 = dom.createElement("li");
+        dom.setAttribute(el3,"class","sub-title");
+        var el4 = dom.createTextNode("Ember Table");
+        dom.appendChild(el3, el4);
+        dom.appendChild(el2, el3);
+        var el3 = dom.createTextNode("\n    ");
+        dom.appendChild(el2, el3);
+        var el3 = dom.createElement("li");
+        dom.appendChild(el2, el3);
+        var el3 = dom.createTextNode("\n    ");
+        dom.appendChild(el2, el3);
+        var el3 = dom.createElement("li");
+        dom.appendChild(el2, el3);
+        var el3 = dom.createTextNode("\n    ");
+        dom.appendChild(el2, el3);
+        var el3 = dom.createElement("li");
+        dom.appendChild(el2, el3);
+        var el3 = dom.createTextNode("\n  ");
+        dom.appendChild(el2, el3);
+        dom.appendChild(el1, el2);
+        var el2 = dom.createTextNode("\n  ");
+        dom.appendChild(el1, el2);
+        var el2 = dom.createElement("hr");
+        dom.appendChild(el1, el2);
+        var el2 = dom.createTextNode("\n  ");
+        dom.appendChild(el1, el2);
+        var el2 = dom.createElement("ul");
+        dom.setAttribute(el2,"class","list-unstyled project-navigation");
+        var el3 = dom.createTextNode("\n    ");
+        dom.appendChild(el2, el3);
+        var el3 = dom.createElement("li");
+        dom.setAttribute(el3,"class","sub-title");
+        var el4 = dom.createTextNode("Examples");
+        dom.appendChild(el3, el4);
+        dom.appendChild(el2, el3);
+        var el3 = dom.createTextNode("\n    ");
+        dom.appendChild(el2, el3);
+        var el3 = dom.createElement("li");
+        dom.appendChild(el2, el3);
+        var el3 = dom.createTextNode("\n    ");
+        dom.appendChild(el2, el3);
+        var el3 = dom.createElement("li");
+        dom.appendChild(el2, el3);
+        var el3 = dom.createTextNode("\n    ");
+        dom.appendChild(el2, el3);
+        var el3 = dom.createElement("li");
+        dom.appendChild(el2, el3);
+        var el3 = dom.createTextNode("\n    ");
+        dom.appendChild(el2, el3);
+        var el3 = dom.createElement("li");
+        dom.appendChild(el2, el3);
+        var el3 = dom.createTextNode("\n    ");
+        dom.appendChild(el2, el3);
+        var el3 = dom.createElement("li");
+        dom.appendChild(el2, el3);
+        var el3 = dom.createTextNode("\n    ");
+        dom.appendChild(el2, el3);
+        var el3 = dom.createElement("li");
+        dom.appendChild(el2, el3);
+        var el3 = dom.createTextNode("\n    ");
+        dom.appendChild(el2, el3);
+        var el3 = dom.createElement("li");
+        dom.appendChild(el2, el3);
+        var el3 = dom.createTextNode("\n    ");
+        dom.appendChild(el2, el3);
+        var el3 = dom.createElement("li");
+        dom.appendChild(el2, el3);
+        var el3 = dom.createTextNode("\n    ");
+        dom.appendChild(el2, el3);
+        var el3 = dom.createElement("li");
+        dom.appendChild(el2, el3);
+        var el3 = dom.createTextNode("\n  ");
+        dom.appendChild(el2, el3);
+        dom.appendChild(el1, el2);
+        var el2 = dom.createTextNode("\n  ");
+        dom.appendChild(el1, el2);
+        var el2 = dom.createElement("hr");
+        dom.appendChild(el1, el2);
+        var el2 = dom.createTextNode("\n");
+        dom.appendChild(el1, el2);
+        dom.appendChild(el0, el1);
+        var el1 = dom.createTextNode("\n");
+        dom.appendChild(el0, el1);
+        return el0;
+      },
+      render: function render(context, env, contextualElement) {
+        var dom = env.dom;
+        var hooks = env.hooks, block = hooks.block;
+        dom.detectNamespace(contextualElement);
+        var fragment;
+        if (env.useFragmentCache && dom.canClone) {
+          if (this.cachedFragment === null) {
+            fragment = this.build(dom);
+            if (this.hasRendered) {
+              this.cachedFragment = fragment;
+            } else {
+              this.hasRendered = true;
+            }
+          }
+          if (this.cachedFragment) {
+            fragment = dom.cloneNode(this.cachedFragment, true);
+          }
+        } else {
+          fragment = this.build(dom);
+        }
+        var element0 = dom.childAt(fragment, [0]);
+        var element1 = dom.childAt(element0, [5]);
+        var element2 = dom.childAt(element0, [9]);
+        var morph0 = dom.createMorphAt(dom.childAt(element1, [3]),-1,-1);
+        var morph1 = dom.createMorphAt(dom.childAt(element1, [5]),-1,-1);
+        var morph2 = dom.createMorphAt(dom.childAt(element1, [7]),-1,-1);
+        var morph3 = dom.createMorphAt(dom.childAt(element2, [3]),-1,-1);
+        var morph4 = dom.createMorphAt(dom.childAt(element2, [5]),-1,-1);
+        var morph5 = dom.createMorphAt(dom.childAt(element2, [7]),-1,-1);
+        var morph6 = dom.createMorphAt(dom.childAt(element2, [9]),-1,-1);
+        var morph7 = dom.createMorphAt(dom.childAt(element2, [11]),-1,-1);
+        var morph8 = dom.createMorphAt(dom.childAt(element2, [13]),-1,-1);
+        var morph9 = dom.createMorphAt(dom.childAt(element2, [15]),-1,-1);
+        var morph10 = dom.createMorphAt(dom.childAt(element2, [17]),-1,-1);
+        var morph11 = dom.createMorphAt(dom.childAt(element2, [19]),-1,-1);
+        var morph12 = dom.createMorphAt(element0,12,-1);
+        block(env, morph0, context, "link-to", ["overview"], {}, child0, null);
+        block(env, morph1, context, "link-to", ["documentation"], {}, child1, null);
+        block(env, morph2, context, "link-to", ["migration-guides"], {}, child2, null);
+        block(env, morph3, context, "link-to", ["simple"], {}, child3, null);
+        block(env, morph4, context, "link-to", ["ajax"], {}, child4, null);
+        block(env, morph5, context, "link-to", ["bars"], {}, child5, null);
+        block(env, morph6, context, "link-to", ["dynamic-bars"], {}, child6, null);
+        block(env, morph7, context, "link-to", ["financial"], {}, child7, null);
+        block(env, morph8, context, "link-to", ["editable"], {}, child8, null);
+        block(env, morph9, context, "link-to", ["sparkline"], {}, child9, null);
+        block(env, morph10, context, "link-to", ["horizon"], {}, child10, null);
+        block(env, morph11, context, "link-to", ["configurable-columns"], {}, child11, null);
+        block(env, morph12, context, "link-to", ["community-examples"], {}, child12, null);
+        return fragment;
+      }
+    };
+  }()));
 
 });
 define('dummy/templates/table-cell', ['exports'], function (exports) {
 
   'use strict';
 
-  exports['default'] = Ember.Handlebars.template({"compiler":[6,">= 2.0.0-beta.1"],"main":function(depth0,helpers,partials,data) {
-    var stack1, buffer = '';
-    data.buffer.push("<span class=\"ember-table-content\">\n  ");
-    stack1 = helpers._triageMustache.call(depth0, "view.cellContent", {"name":"_triageMustache","hash":{},"hashTypes":{},"hashContexts":{},"types":["ID"],"contexts":[depth0],"data":data});
-    if (stack1 != null) { data.buffer.push(stack1); }
-    data.buffer.push("\n</span>");
-    return buffer;
-  },"useData":true});
+  exports['default'] = Ember.HTMLBars.template((function() {
+    return {
+      isHTMLBars: true,
+      blockParams: 0,
+      cachedFragment: null,
+      hasRendered: false,
+      build: function build(dom) {
+        var el0 = dom.createElement("span");
+        dom.setAttribute(el0,"class","ember-table-content");
+        var el1 = dom.createTextNode("\n  ");
+        dom.appendChild(el0, el1);
+        var el1 = dom.createTextNode("\n");
+        dom.appendChild(el0, el1);
+        return el0;
+      },
+      render: function render(context, env, contextualElement) {
+        var dom = env.dom;
+        var hooks = env.hooks, content = hooks.content;
+        dom.detectNamespace(contextualElement);
+        var fragment;
+        if (env.useFragmentCache && dom.canClone) {
+          if (this.cachedFragment === null) {
+            fragment = this.build(dom);
+            if (this.hasRendered) {
+              this.cachedFragment = fragment;
+            } else {
+              this.hasRendered = true;
+            }
+          }
+          if (this.cachedFragment) {
+            fragment = dom.cloneNode(this.cachedFragment, true);
+          }
+        } else {
+          fragment = this.build(dom);
+        }
+        var morph0 = dom.createMorphAt(fragment,0,1);
+        content(env, morph0, context, "view.cellContent");
+        return fragment;
+      }
+    };
+  }()));
 
 });
 define('dummy/templates/table-row', ['exports'], function (exports) {
 
   'use strict';
 
-  exports['default'] = Ember.Handlebars.template({"compiler":[6,">= 2.0.0-beta.1"],"main":function(depth0,helpers,partials,data) {
-    var escapeExpression=this.escapeExpression, buffer = '';
-    data.buffer.push(escapeExpression(helpers.view.call(depth0, "multi-item-collection", {"name":"view","hash":{
-      'width': ("controller._tableColumnsWidth"),
-      'itemViewClassField': ("tableCellViewClass"),
-      'content': ("view.columns"),
-      'row': ("view.row")
-    },"hashTypes":{'width': "ID",'itemViewClassField': "STRING",'content': "ID",'row': "ID"},"hashContexts":{'width': depth0,'itemViewClassField': depth0,'content': depth0,'row': depth0},"types":["STRING"],"contexts":[depth0],"data":data})));
-    data.buffer.push("\n");
-    return buffer;
-  },"useData":true});
+  exports['default'] = Ember.HTMLBars.template((function() {
+    return {
+      isHTMLBars: true,
+      blockParams: 0,
+      cachedFragment: null,
+      hasRendered: false,
+      build: function build(dom) {
+        var el0 = dom.createDocumentFragment();
+        var el1 = dom.createTextNode("");
+        dom.appendChild(el0, el1);
+        var el1 = dom.createTextNode("\n");
+        dom.appendChild(el0, el1);
+        return el0;
+      },
+      render: function render(context, env, contextualElement) {
+        var dom = env.dom;
+        var hooks = env.hooks, get = hooks.get, inline = hooks.inline;
+        dom.detectNamespace(contextualElement);
+        var fragment;
+        if (env.useFragmentCache && dom.canClone) {
+          if (this.cachedFragment === null) {
+            fragment = this.build(dom);
+            if (this.hasRendered) {
+              this.cachedFragment = fragment;
+            } else {
+              this.hasRendered = true;
+            }
+          }
+          if (this.cachedFragment) {
+            fragment = dom.cloneNode(this.cachedFragment, true);
+          }
+        } else {
+          fragment = this.build(dom);
+        }
+        if (this.cachedFragment) { dom.repairClonedNode(fragment,[0]); }
+        var morph0 = dom.createMorphAt(fragment,0,1,contextualElement);
+        inline(env, morph0, context, "view", ["multi-item-collection"], {"row": get(env, context, "view.row"), "content": get(env, context, "view.columns"), "itemViewClassField": "tableCellViewClass", "width": get(env, context, "controller._tableColumnsWidth")});
+        return fragment;
+      }
+    };
+  }()));
 
 });
 define('dummy/templates/tree_table/table_header_cell', ['exports'], function (exports) {
 
   'use strict';
 
-  exports['default'] = Ember.Handlebars.template({"compiler":[6,">= 2.0.0-beta.1"],"main":function(depth0,helpers,partials,data) {
-    var stack1, escapeExpression=this.escapeExpression, buffer = '';
-    data.buffer.push("<div class=\"ember-table-content-container\" ");
-    data.buffer.push(escapeExpression(helpers.action.call(depth0, "sortByColumn", "view.content", {"name":"action","hash":{},"hashTypes":{},"hashContexts":{},"types":["STRING","ID"],"contexts":[depth0,depth0],"data":data})));
-    data.buffer.push(">\n  <span class=\"ember-table-content\">\n    ");
-    stack1 = helpers._triageMustache.call(depth0, "view.content.headerCellName", {"name":"_triageMustache","hash":{},"hashTypes":{},"hashContexts":{},"types":["ID"],"contexts":[depth0],"data":data});
-    if (stack1 != null) { data.buffer.push(stack1); }
-    data.buffer.push("\n  </span>\n</div>\n");
-    return buffer;
-  },"useData":true});
+  exports['default'] = Ember.HTMLBars.template((function() {
+    return {
+      isHTMLBars: true,
+      blockParams: 0,
+      cachedFragment: null,
+      hasRendered: false,
+      build: function build(dom) {
+        var el0 = dom.createDocumentFragment();
+        var el1 = dom.createElement("div");
+        dom.setAttribute(el1,"class","ember-table-content-container");
+        var el2 = dom.createTextNode("\n  ");
+        dom.appendChild(el1, el2);
+        var el2 = dom.createElement("span");
+        dom.setAttribute(el2,"class","ember-table-content");
+        var el3 = dom.createTextNode("\n    ");
+        dom.appendChild(el2, el3);
+        var el3 = dom.createTextNode("\n  ");
+        dom.appendChild(el2, el3);
+        dom.appendChild(el1, el2);
+        var el2 = dom.createTextNode("\n");
+        dom.appendChild(el1, el2);
+        dom.appendChild(el0, el1);
+        var el1 = dom.createTextNode("\n");
+        dom.appendChild(el0, el1);
+        return el0;
+      },
+      render: function render(context, env, contextualElement) {
+        var dom = env.dom;
+        var hooks = env.hooks, get = hooks.get, element = hooks.element, content = hooks.content;
+        dom.detectNamespace(contextualElement);
+        var fragment;
+        if (env.useFragmentCache && dom.canClone) {
+          if (this.cachedFragment === null) {
+            fragment = this.build(dom);
+            if (this.hasRendered) {
+              this.cachedFragment = fragment;
+            } else {
+              this.hasRendered = true;
+            }
+          }
+          if (this.cachedFragment) {
+            fragment = dom.cloneNode(this.cachedFragment, true);
+          }
+        } else {
+          fragment = this.build(dom);
+        }
+        var element0 = dom.childAt(fragment, [0]);
+        var morph0 = dom.createMorphAt(dom.childAt(element0, [1]),0,1);
+        element(env, element0, context, "action", ["sortByColumn", get(env, context, "view.content")], {});
+        content(env, morph0, context, "view.content.headerCellName");
+        return fragment;
+      }
+    };
+  }()));
 
 });
 define('dummy/templates/tree_table/table_header_tree_cell', ['exports'], function (exports) {
 
   'use strict';
 
-  exports['default'] = Ember.Handlebars.template({"compiler":[6,">= 2.0.0-beta.1"],"main":function(depth0,helpers,partials,data) {
-    var stack1, escapeExpression=this.escapeExpression, helperMissing=helpers.helperMissing, buffer = '';
-    data.buffer.push("<span ");
-    data.buffer.push(escapeExpression(helpers['bind-attr'].call(depth0, {"name":"bind-attr","hash":{
-      'class': (":ember-table-toggle-span view.row.isLeaf::ember-table-toggle\n    view.row.isCollapsed:ember-table-expand:ember-table-collapse")
-    },"hashTypes":{'class': "STRING"},"hashContexts":{'class': depth0},"types":[],"contexts":[],"data":data})));
-    data.buffer.push("\n    ");
-    data.buffer.push(escapeExpression(helpers.action.call(depth0, "toggleCollapse", "view.row", {"name":"action","hash":{},"hashTypes":{},"hashContexts":{},"types":["STRING","ID"],"contexts":[depth0,depth0],"data":data})));
-    data.buffer.push(">\n  ");
-    data.buffer.push(escapeExpression(((helpers['fa-icon'] || (depth0 && depth0['fa-icon']) || helperMissing).call(depth0, "caret-down", {"name":"fa-icon","hash":{
-      'classNames': ("ember-table-toggle-icon")
-    },"hashTypes":{'classNames': "STRING"},"hashContexts":{'classNames': depth0},"types":["STRING"],"contexts":[depth0],"data":data}))));
-    data.buffer.push("\n</span>\n<div class=\"ember-table-content-container\" ");
-    data.buffer.push(escapeExpression(helpers.action.call(depth0, "sortByColumn", "view.column", {"name":"action","hash":{},"hashTypes":{},"hashContexts":{},"types":["STRING","ID"],"contexts":[depth0,depth0],"data":data})));
-    data.buffer.push(">\n  <span class=\"ember-table-content\">\n    ");
-    stack1 = helpers._triageMustache.call(depth0, "view.column.headerCellName", {"name":"_triageMustache","hash":{},"hashTypes":{},"hashContexts":{},"types":["ID"],"contexts":[depth0],"data":data});
-    if (stack1 != null) { data.buffer.push(stack1); }
-    data.buffer.push("\n  </span>\n</div>\n");
-    return buffer;
-  },"useData":true});
+  exports['default'] = Ember.HTMLBars.template((function() {
+    return {
+      isHTMLBars: true,
+      blockParams: 0,
+      cachedFragment: null,
+      hasRendered: false,
+      build: function build(dom) {
+        var el0 = dom.createDocumentFragment();
+        var el1 = dom.createElement("span");
+        var el2 = dom.createTextNode("\n  ");
+        dom.appendChild(el1, el2);
+        var el2 = dom.createTextNode("\n");
+        dom.appendChild(el1, el2);
+        dom.appendChild(el0, el1);
+        var el1 = dom.createTextNode("\n");
+        dom.appendChild(el0, el1);
+        var el1 = dom.createElement("div");
+        dom.setAttribute(el1,"class","ember-table-content-container");
+        var el2 = dom.createTextNode("\n  ");
+        dom.appendChild(el1, el2);
+        var el2 = dom.createElement("span");
+        dom.setAttribute(el2,"class","ember-table-content");
+        var el3 = dom.createTextNode("\n    ");
+        dom.appendChild(el2, el3);
+        var el3 = dom.createTextNode("\n  ");
+        dom.appendChild(el2, el3);
+        dom.appendChild(el1, el2);
+        var el2 = dom.createTextNode("\n");
+        dom.appendChild(el1, el2);
+        dom.appendChild(el0, el1);
+        var el1 = dom.createTextNode("\n");
+        dom.appendChild(el0, el1);
+        return el0;
+      },
+      render: function render(context, env, contextualElement) {
+        var dom = env.dom;
+        var hooks = env.hooks, element = hooks.element, get = hooks.get, inline = hooks.inline, content = hooks.content;
+        dom.detectNamespace(contextualElement);
+        var fragment;
+        if (env.useFragmentCache && dom.canClone) {
+          if (this.cachedFragment === null) {
+            fragment = this.build(dom);
+            if (this.hasRendered) {
+              this.cachedFragment = fragment;
+            } else {
+              this.hasRendered = true;
+            }
+          }
+          if (this.cachedFragment) {
+            fragment = dom.cloneNode(this.cachedFragment, true);
+          }
+        } else {
+          fragment = this.build(dom);
+        }
+        var element0 = dom.childAt(fragment, [0]);
+        var element1 = dom.childAt(fragment, [2]);
+        var morph0 = dom.createMorphAt(element0,0,1);
+        var morph1 = dom.createMorphAt(dom.childAt(element1, [1]),0,1);
+        element(env, element0, context, "bind-attr", [], {"class": ":ember-table-toggle-span view.row.isLeaf::ember-table-toggle\n    view.row.isCollapsed:ember-table-expand:ember-table-collapse"});
+        element(env, element0, context, "action", ["toggleCollapse", get(env, context, "view.row")], {});
+        inline(env, morph0, context, "fa-icon", ["caret-down"], {"classNames": "ember-table-toggle-icon"});
+        element(env, element1, context, "action", ["sortByColumn", get(env, context, "view.column")], {});
+        content(env, morph1, context, "view.column.headerCellName");
+        return fragment;
+      }
+    };
+  }()));
 
 });
 define('dummy/templates/tree_table/table_tree_cell', ['exports'], function (exports) {
 
   'use strict';
 
-  exports['default'] = Ember.Handlebars.template({"compiler":[6,">= 2.0.0-beta.1"],"main":function(depth0,helpers,partials,data) {
-    var stack1, escapeExpression=this.escapeExpression, helperMissing=helpers.helperMissing, buffer = '';
-    data.buffer.push("<span ");
-    data.buffer.push(escapeExpression(helpers['bind-attr'].call(depth0, {"name":"bind-attr","hash":{
-      'class': (":ember-table-toggle-span view.row.isLeaf::ember-table-toggle\n    view.row.isCollapsed:ember-table-expand:ember-table-collapse")
-    },"hashTypes":{'class': "STRING"},"hashContexts":{'class': depth0},"types":[],"contexts":[],"data":data})));
-    data.buffer.push("\n    ");
-    data.buffer.push(escapeExpression(helpers.action.call(depth0, "toggleCollapse", "view.row", {"name":"action","hash":{},"hashTypes":{},"hashContexts":{},"types":["STRING","ID"],"contexts":[depth0,depth0],"data":data})));
-    data.buffer.push(">\n  ");
-    data.buffer.push(escapeExpression(((helpers['fa-icon'] || (depth0 && depth0['fa-icon']) || helperMissing).call(depth0, "caret-down", {"name":"fa-icon","hash":{
-      'classNames': ("ember-table-toggle-icon")
-    },"hashTypes":{'classNames': "STRING"},"hashContexts":{'classNames': depth0},"types":["STRING"],"contexts":[depth0],"data":data}))));
-    data.buffer.push("\n</span>\n<span class=\"ember-table-content\">\n  ");
-    stack1 = helpers._triageMustache.call(depth0, "view.cellContent", {"name":"_triageMustache","hash":{},"hashTypes":{},"hashContexts":{},"types":["ID"],"contexts":[depth0],"data":data});
-    if (stack1 != null) { data.buffer.push(stack1); }
-    data.buffer.push("\n</span>\n");
-    return buffer;
-  },"useData":true});
+  exports['default'] = Ember.HTMLBars.template((function() {
+    return {
+      isHTMLBars: true,
+      blockParams: 0,
+      cachedFragment: null,
+      hasRendered: false,
+      build: function build(dom) {
+        var el0 = dom.createDocumentFragment();
+        var el1 = dom.createElement("span");
+        var el2 = dom.createTextNode("\n  ");
+        dom.appendChild(el1, el2);
+        var el2 = dom.createTextNode("\n");
+        dom.appendChild(el1, el2);
+        dom.appendChild(el0, el1);
+        var el1 = dom.createTextNode("\n");
+        dom.appendChild(el0, el1);
+        var el1 = dom.createElement("span");
+        dom.setAttribute(el1,"class","ember-table-content");
+        var el2 = dom.createTextNode("\n  ");
+        dom.appendChild(el1, el2);
+        var el2 = dom.createTextNode("\n");
+        dom.appendChild(el1, el2);
+        dom.appendChild(el0, el1);
+        var el1 = dom.createTextNode("\n");
+        dom.appendChild(el0, el1);
+        return el0;
+      },
+      render: function render(context, env, contextualElement) {
+        var dom = env.dom;
+        var hooks = env.hooks, element = hooks.element, get = hooks.get, inline = hooks.inline, content = hooks.content;
+        dom.detectNamespace(contextualElement);
+        var fragment;
+        if (env.useFragmentCache && dom.canClone) {
+          if (this.cachedFragment === null) {
+            fragment = this.build(dom);
+            if (this.hasRendered) {
+              this.cachedFragment = fragment;
+            } else {
+              this.hasRendered = true;
+            }
+          }
+          if (this.cachedFragment) {
+            fragment = dom.cloneNode(this.cachedFragment, true);
+          }
+        } else {
+          fragment = this.build(dom);
+        }
+        var element0 = dom.childAt(fragment, [0]);
+        var morph0 = dom.createMorphAt(element0,0,1);
+        var morph1 = dom.createMorphAt(dom.childAt(fragment, [2]),0,1);
+        element(env, element0, context, "bind-attr", [], {"class": ":ember-table-toggle-span view.row.isLeaf::ember-table-toggle\n    view.row.isCollapsed:ember-table-expand:ember-table-collapse"});
+        element(env, element0, context, "action", ["toggleCollapse", get(env, context, "view.row")], {});
+        inline(env, morph0, context, "fa-icon", ["caret-down"], {"classNames": "ember-table-toggle-icon"});
+        content(env, morph1, context, "view.cellContent");
+        return fragment;
+      }
+    };
+  }()));
 
 });
 define('dummy/tests/app.jshint', function () {
@@ -6109,7 +14448,7 @@ catch(err) {
 if (runningTests) {
   require("dummy/tests/test-helper");
 } else {
-  require("dummy/app")["default"].create({"name":"ember-table","version":"0.6.0.88f3921a"});
+  require("dummy/app")["default"].create({"name":"ember-table","version":"0.7.0.b88b75f0"});
 }
 
 /* jshint ignore:end */
