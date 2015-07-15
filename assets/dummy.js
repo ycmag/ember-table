@@ -24,10 +24,10 @@ define('dummy/components/configurable-table', ['exports', 'ember', 'ember-table/
   'use strict';
 
   exports['default'] = TableComponent['default'].extend({
-    layoutName: "components/ember-table",
+    layoutName: 'components/ember-table',
     parentWidthObserver: Ember['default'].observer(function () {
       return this.onResizeEnd();
-    }, "parentWidth")
+    }, 'parentWidth')
   });
 
 });
@@ -44,7 +44,7 @@ define('dummy/components/financial-table', ['exports', 'ember', 'ember-table/com
 
   exports['default'] = TableComponent['default'].extend({
     // Overriding default properties
-    layoutName: "components/ember-table",
+    layoutName: 'components/ember-table',
     numFixedColumns: 1,
     isCollapsed: false,
     isHeaderHeightResizable: true,
@@ -64,96 +64,96 @@ define('dummy/components/financial-table', ['exports', 'ember', 'ember-table/com
     data: null,
 
     columns: Ember['default'].computed(function () {
-      var data = this.get("data");
+      var data = this.get('data');
       if (!data) {
         return;
       }
-      var names = this.get("data.value_factors").getEach("display_name");
+      var names = this.get('data.value_factors').getEach('display_name');
       var columns = names.map(function (name, index) {
         return ColumnDefinition['default'].create({
           index: index,
           headerCellName: name,
-          headerCellView: "financial-table-header-cell",
-          tableCellView: "financial-table-cell",
-          getCellContent: function (row) {
-            var object = row.get("values")[this.get("index")];
-            if (object.type === "money") {
+          headerCellView: 'financial-table-header-cell',
+          tableCellView: 'financial-table-cell',
+          getCellContent: function getCellContent(row) {
+            var object = row.get('values')[this.get('index')];
+            if (object.type === 'money') {
               return NumberFormatHelpers['default'].toCurrency(object.value);
             }
-            if (object.type === "percent") {
+            if (object.type === 'percent') {
               return NumberFormatHelpers['default'].toPercent(object.value);
             }
-            return "-";
+            return '-';
           }
         });
       });
-      columns.unshiftObject(this.get("groupingColumn"));
+      columns.unshiftObject(this.get('groupingColumn'));
       return columns;
-    }).property("data.valueFactors.@each", "groupingColumn"),
+    }).property('data.valueFactors.@each', 'groupingColumn'),
 
     groupingColumn: Ember['default'].computed(function () {
-      var groupingFactors = this.get("data.grouping_factors");
-      var name = groupingFactors.getEach("display_name").join(" ▸ ");
+      var groupingFactors = this.get('data.grouping_factors');
+      var name = groupingFactors.getEach('display_name').join(' ▸ ');
       return ColumnDefinition['default'].create({
         headerCellName: name,
         savedWidth: 400,
         isTreeColumn: true,
         isSortable: false,
-        textAlign: "text-align-left",
-        headerCellView: "financial-table-header-tree-cell",
-        tableCellView: "financial-table-tree-cell",
-        contentPath: "group_value"
+        textAlign: 'text-align-left',
+        headerCellView: 'financial-table-header-tree-cell',
+        tableCellView: 'financial-table-tree-cell',
+        contentPath: 'group_value'
       });
-    }).property("data.grouping_factors.@each"),
+    }).property('data.grouping_factors.@each'),
 
     root: Ember['default'].computed(function () {
-      var data = this.get("data");
+      var data = this.get('data');
       if (!data) {
         return;
       }
       return this.createTree(null, data.root);
-    }).property("data", "sortAscending", "sortColumn"),
+    }).property('data', 'sortAscending', 'sortColumn'),
 
     rows: Ember['default'].computed(function () {
-      var root = this.get("root");
+      var root = this.get('root');
       if (!root) {
         return Ember['default'].A();
       }
       var rows = this.flattenTree(null, root, Ember['default'].A());
       this.computeStyles(null, root);
-      var maxGroupingLevel = Math.max.apply(rows.getEach("groupingLevel"));
+      var maxGroupingLevel = Math.max.apply(rows.getEach('groupingLevel'));
       rows.forEach(function (row) {
         return row.computeRowStyle(maxGroupingLevel);
       });
       return rows;
-    }).property("root"),
+    }).property('root'),
 
     // OPTIMIZATION HACK
     bodyContent: Ember['default'].computed(function () {
-      var rows = this.get("rows");
+      var rows = this.get('rows');
       if (!rows) {
         return Ember['default'].A();
       }
-      rows = rows.slice(1, rows.get("length"));
-      return rows.filterProperty("isShowing");
-    }).property("rows"),
+      rows = rows.slice(1, rows.get('length'));
+      return rows.filterProperty('isShowing');
+    }).property('rows'),
 
     footerContent: Ember['default'].computed(function () {
-      var rows = this.get("rows");
+      var rows = this.get('rows');
       if (!rows) {
         return Ember['default'].A();
       }
       return rows.slice(0, 1);
-    }).property("rows"),
+    }).property('rows'),
 
-    orderBy: function (item1, item2) {
-      var sortColumn = this.get("sortColumn");
-      var sortAscending = this.get("sortAscending");
+    orderBy: function orderBy(item1, item2) {
+      var sortColumn = this.get('sortColumn');
+      var sortAscending = this.get('sortAscending');
       if (!sortColumn) {
         return 1;
       }
-      var value1 = sortColumn.getCellContent(item1.get("content"));
-      var value2 = sortColumn.getCellContent(item2.get("content"));
+      var value1 = sortColumn.getCellContent(item1.get('content'));
+      var value2 = sortColumn.getCellContent(item2.get('content'));
       var result = Ember['default'].compare(value1, value2);
       if (sortAscending) {
         return result;
@@ -162,7 +162,7 @@ define('dummy/components/financial-table', ['exports', 'ember', 'ember-table/com
       }
     },
 
-    createTree: function (parent, node) {
+    createTree: function createTree(parent, node) {
       var row = FinancialTableTreeRow['default'].create({ parentController: this });
       // TODO(azirbel): better map function and _this use
       var children = (node.children || []).map((function (_this) {
@@ -187,7 +187,7 @@ define('dummy/components/financial-table', ['exports', 'ember', 'ember-table/com
     },
 
     // TODO(azirbel): Don't use the word 'parent'
-    flattenTree: function (parent, node, rows) {
+    flattenTree: function flattenTree(parent, node, rows) {
       rows.pushObject(node);
       (node.children || []).forEach((function (_this) {
         return function (child) {
@@ -197,9 +197,9 @@ define('dummy/components/financial-table', ['exports', 'ember', 'ember-table/com
       return rows;
     },
 
-    computeStyles: function (parent, node) {
+    computeStyles: function computeStyles(parent, node) {
       node.computeStyles(parent);
-      node.get("children").forEach((function (_this) {
+      node.get('children').forEach((function (_this) {
         return function (child) {
           _this.computeStyles(node, child);
         };
@@ -207,25 +207,26 @@ define('dummy/components/financial-table', ['exports', 'ember', 'ember-table/com
     },
 
     actions: {
-      toggleTableCollapse: function () {
-        var isCollapsed = this.toggleProperty("isCollapsed");
-        var children = this.get("root.children");
-        if (!(children && children.get("length") > 0)) {
+      toggleTableCollapse: function toggleTableCollapse() {
+        var isCollapsed = this.toggleProperty('isCollapsed');
+        var children = this.get('root.children');
+        if (!(children && children.get('length') > 0)) {
           return;
         }
         children.forEach(function (child) {
           return child.recursiveCollapse(isCollapsed);
         });
-        return this.notifyPropertyChange("rows");
+        return this.notifyPropertyChange('rows');
       },
 
-      toggleCollapse: function (row) {
-        row.toggleProperty("isCollapsed");
+      toggleCollapse: function toggleCollapse(row) {
+        row.toggleProperty('isCollapsed');
         Ember['default'].run.next(this, function () {
-          this.notifyPropertyChange("rows");
+          this.notifyPropertyChange('rows');
         });
       }
-    } });
+    }
+  });
 
 });
 define('dummy/controllers/ajax', ['exports', 'ember', 'ember-table/models/column-definition', 'dummy/views/ajax-table-lazy-data-source'], function (exports, Ember, ColumnDefinition, AjaxTableLazyDataSource) {
@@ -236,11 +237,11 @@ define('dummy/controllers/ajax', ['exports', 'ember', 'ember-table/models/column
     tableColumns: Ember['default'].computed(function () {
       var avatar = ColumnDefinition['default'].create({
         savedWidth: 80,
-        headerCellName: "avatar",
-        tableCellViewClass: "ajax-image-table-cell",
-        contentPath: "avatar"
+        headerCellName: 'avatar',
+        tableCellViewClass: 'ajax-image-table-cell',
+        contentPath: 'avatar'
       });
-      var columnNames = ["login", "type", "createdAt"];
+      var columnNames = ['login', 'type', 'createdAt'];
       var columns = columnNames.map(function (key) {
         return ColumnDefinition['default'].create({
           savedWidth: 150,
@@ -260,24 +261,31 @@ define('dummy/controllers/ajax', ['exports', 'ember', 'ember-table/models/column
   });
 
 });
+define('dummy/controllers/array', ['exports', 'ember'], function (exports, Ember) {
+
+	'use strict';
+
+	exports['default'] = Ember['default'].Controller;
+
+});
 define('dummy/controllers/bars', ['exports', 'ember', 'ember-table/models/column-definition'], function (exports, Ember, ColumnDefinition) {
 
   'use strict';
 
   exports['default'] = Ember['default'].Controller.extend({
     tableColumns: Ember['default'].computed(function () {
-      var colors = ["blue", "teal", "green", "yellow", "orange"];
+      var colors = ['blue', 'teal', 'green', 'yellow', 'orange'];
       var firstColumn = ColumnDefinition['default'].create({
         savedWidth: 50,
-        headerCellName: "Name",
-        contentPath: "key"
+        headerCellName: 'Name',
+        contentPath: 'key'
       });
       var columns = colors.map(function (color, index) {
         return ColumnDefinition['default'].create({
           color: color,
-          headerCellName: "Bar",
-          tableCellViewClass: "bar-table-cell",
-          contentPath: "value" + (index + 1)
+          headerCellName: 'Bar',
+          tableCellViewClass: 'bar-table-cell',
+          contentPath: 'value' + (index + 1)
         });
       });
       columns.unshift(firstColumn);
@@ -317,48 +325,48 @@ define('dummy/controllers/configurable-columns', ['exports', 'ember', 'dummy/vie
     demoTableWidth: null,
 
     columnMode: (function () {
-      if (this.get("isFluid")) {
-        return "fluid";
+      if (this.get('isFluid')) {
+        return 'fluid';
       } else {
-        return "standard";
+        return 'standard';
       }
-    }).property("isFluid"),
+    }).property('isFluid'),
 
-    updateDemoTableWidth: function (newWidth) {
-      this.set("demoTableWidth", newWidth);
+    updateDemoTableWidth: function updateDemoTableWidth(newWidth) {
+      this.set('demoTableWidth', newWidth);
     },
 
     columns: Ember['default'].computed(function () {
       var dateColumn = ConfigurableColumnDefinition['default'].create({
-        textAlign: "text-align-left",
-        headerCellName: "Date",
+        textAlign: 'text-align-left',
+        headerCellName: 'Date',
         minWidth: 150,
-        getCellContent: function (row) {
-          return row.get("date").toDateString();
+        getCellContent: function getCellContent(row) {
+          return row.get('date').toDateString();
         }
       });
       var openColumn = ConfigurableColumnDefinition['default'].create({
-        headerCellName: "Open",
-        getCellContent: function (row) {
-          return row.get("open").toFixed(2);
+        headerCellName: 'Open',
+        getCellContent: function getCellContent(row) {
+          return row.get('open').toFixed(2);
         }
       });
       var highColumn = ConfigurableColumnDefinition['default'].create({
-        headerCellName: "High",
-        getCellContent: function (row) {
-          return row.get("high").toFixed(2);
+        headerCellName: 'High',
+        getCellContent: function getCellContent(row) {
+          return row.get('high').toFixed(2);
         }
       });
       var lowColumn = ConfigurableColumnDefinition['default'].create({
-        headerCellName: "Low",
-        getCellContent: function (row) {
-          return row.get("low").toFixed(2);
+        headerCellName: 'Low',
+        getCellContent: function getCellContent(row) {
+          return row.get('low').toFixed(2);
         }
       });
       var closeColumn = ConfigurableColumnDefinition['default'].create({
-        headerCellName: "Close",
-        getCellContent: function (row) {
-          return row.get("close").toFixed(2);
+        headerCellName: 'Close',
+        getCellContent: function getCellContent(row) {
+          return row.get('close').toFixed(2);
         }
       });
       return [dateColumn, openColumn, highColumn, lowColumn, closeColumn];
@@ -384,11 +392,11 @@ define('dummy/controllers/configurable-columns', ['exports', 'ember', 'dummy/vie
 
     actions: {
       // Pulls the table out of and back into the DOM
-      refreshTable: function () {
+      refreshTable: function refreshTable() {
         var _this = this;
-        this.set("showTable", false);
+        this.set('showTable', false);
         Ember['default'].run.next(function () {
-          _this.set("showTable", true);
+          _this.set('showTable', true);
         });
       }
     }
@@ -401,21 +409,21 @@ define('dummy/controllers/dynamic-bars', ['exports', 'ember', 'ember-table/model
 
   exports['default'] = Ember['default'].Controller.extend({
     // TODO(azirbel): Don't use setInterval in an Ember application
-    init: function () {
+    init: function init() {
       // TODO(azirbel): Call this._super()
       var _this = this;
       setInterval(function () {
-        _this.get("tableContent").forEach(function (item) {
-          item.set("value1", _this.getNextValue(item.get("value1")));
-          item.set("value2", _this.getNextValue(item.get("value2")));
-          item.set("value3", _this.getNextValue(item.get("value3")));
-          item.set("value4", _this.getNextValue(item.get("value4")));
-          item.set("value5", _this.getNextValue(item.get("value5")));
+        _this.get('tableContent').forEach(function (item) {
+          item.set('value1', _this.getNextValue(item.get('value1')));
+          item.set('value2', _this.getNextValue(item.get('value2')));
+          item.set('value3', _this.getNextValue(item.get('value3')));
+          item.set('value4', _this.getNextValue(item.get('value4')));
+          item.set('value5', _this.getNextValue(item.get('value5')));
         });
       }, 1500);
     },
 
-    getNextValue: function (current) {
+    getNextValue: function getNextValue(current) {
       current = current + (Math.random() * 10 - 5);
       current = Math.min(100, current);
       current = Math.max(0, current);
@@ -423,18 +431,18 @@ define('dummy/controllers/dynamic-bars', ['exports', 'ember', 'ember-table/model
     },
 
     tableColumns: Ember['default'].computed(function () {
-      var colors = ["blue", "teal", "green", "yellow", "orange"];
+      var colors = ['blue', 'teal', 'green', 'yellow', 'orange'];
       var firstColumn = ColumnDefinition['default'].create({
         savedWidth: 50,
-        headerCellName: "Name",
-        contentPath: "key"
+        headerCellName: 'Name',
+        contentPath: 'key'
       });
       var columns = colors.map(function (color, index) {
         return ColumnDefinition['default'].create({
           color: color,
-          headerCellName: "Bar",
-          tableCellViewClass: "bar-table-cell",
-          contentPath: "value" + (index + 1)
+          headerCellName: 'Bar',
+          tableCellViewClass: 'bar-table-cell',
+          contentPath: 'value' + (index + 1)
         });
       });
       columns.unshift(firstColumn);
@@ -464,25 +472,25 @@ define('dummy/controllers/editable', ['exports', 'ember', 'ember-table/models/co
 
   exports['default'] = Ember['default'].Controller.extend({
     tableColumns: Ember['default'].computed(function () {
-      var columnNames = ["open", "close"];
+      var columnNames = ['open', 'close'];
       var dateColumn = ColumnDefinition['default'].create({
         savedWidth: 100,
-        headerCellName: "Date",
-        tableCellViewClass: "date-picker-table-cell",
-        getCellContent: function (row) {
-          return row.get("date").toString("yyyy-MM-dd");
+        headerCellName: 'Date',
+        tableCellViewClass: 'date-picker-table-cell',
+        getCellContent: function getCellContent(row) {
+          return row.get('date').toString('yyyy-MM-dd');
         },
-        setCellContent: function (row, value) {
-          return row.set("date", value);
+        setCellContent: function setCellContent(row, value) {
+          return row.set('date', value);
         }
       });
       var ratingColumn = ColumnDefinition['default'].create({
         savedWidth: 150,
-        headerCellName: "Analyst Rating",
-        tableCellViewClass: "rating-table-cell",
-        contentPath: "rating",
-        setCellContent: function (row, value) {
-          return row.set("rating", value);
+        headerCellName: 'Analyst Rating',
+        tableCellViewClass: 'rating-table-cell',
+        contentPath: 'rating',
+        setCellContent: function setCellContent(row, value) {
+          return row.set('rating', value);
         }
       });
       var columns = columnNames.map(function (key) {
@@ -491,11 +499,11 @@ define('dummy/controllers/editable', ['exports', 'ember', 'ember-table/models/co
         return ColumnDefinition['default'].create({
           savedWidth: 100,
           headerCellName: name,
-          tableCellViewClass: "editable-table-cell",
-          getCellContent: function (row) {
+          tableCellViewClass: 'editable-table-cell',
+          getCellContent: function getCellContent(row) {
             return row.get(key).toFixed(2);
           },
-          setCellContent: function (row, value) {
+          setCellContent: function setCellContent(row, value) {
             return row.set(key, +value);
           }
         });
@@ -543,15 +551,15 @@ define('dummy/controllers/horizon', ['exports', 'ember', 'ember-table/models/col
     tableColumns: Ember['default'].computed(function () {
       var name = ColumnDefinition['default'].create({
         savedWidth: 100,
-        headerCellName: "Name",
-        getCellContent: function (row) {
-          return "Horizon " + row.get("name");
+        headerCellName: 'Name',
+        getCellContent: function getCellContent(row) {
+          return 'Horizon ' + row.get('name');
         }
       });
       var horizon = ColumnDefinition['default'].create({
         savedWidth: 600,
-        headerCellName: "Horizon",
-        tableCellViewClass: "horizon-table-cell",
+        headerCellName: 'Horizon',
+        tableCellViewClass: 'horizon-table-cell',
         getCellContent: Ember['default'].K
       });
       return [name, horizon];
@@ -576,6 +584,13 @@ define('dummy/controllers/horizon', ['exports', 'ember', 'ember-table/models/col
   });
 
 });
+define('dummy/controllers/object', ['exports', 'ember'], function (exports, Ember) {
+
+	'use strict';
+
+	exports['default'] = Ember['default'].Controller;
+
+});
 define('dummy/controllers/overview', ['exports', 'ember', 'dummy/models/treedata'], function (exports, Ember, Treedata) {
 
   'use strict';
@@ -595,38 +610,38 @@ define('dummy/controllers/simple', ['exports', 'ember', 'ember-table/models/colu
     tableColumns: Ember['default'].computed(function () {
       var dateColumn = ColumnDefinition['default'].create({
         savedWidth: 150,
-        textAlign: "text-align-left",
-        headerCellName: "Date",
-        getCellContent: function (row) {
-          return row.get("date").toDateString();
+        textAlign: 'text-align-left',
+        headerCellName: 'Date',
+        getCellContent: function getCellContent(row) {
+          return row.get('date').toDateString();
         }
       });
       var openColumn = ColumnDefinition['default'].create({
         savedWidth: 100,
-        headerCellName: "Open",
-        getCellContent: function (row) {
-          return row.get("open").toFixed(2);
+        headerCellName: 'Open',
+        getCellContent: function getCellContent(row) {
+          return row.get('open').toFixed(2);
         }
       });
       var highColumn = ColumnDefinition['default'].create({
         savedWidth: 100,
-        headerCellName: "High",
-        getCellContent: function (row) {
-          return row.get("high").toFixed(2);
+        headerCellName: 'High',
+        getCellContent: function getCellContent(row) {
+          return row.get('high').toFixed(2);
         }
       });
       var lowColumn = ColumnDefinition['default'].create({
         savedWidth: 100,
-        headerCellName: "Low",
-        getCellContent: function (row) {
-          return row.get("low").toFixed(2);
+        headerCellName: 'Low',
+        getCellContent: function getCellContent(row) {
+          return row.get('low').toFixed(2);
         }
       });
       var closeColumn = ColumnDefinition['default'].create({
         savedWidth: 100,
-        headerCellName: "Close",
-        getCellContent: function (row) {
-          return row.get("close").toFixed(2);
+        headerCellName: 'Close',
+        getCellContent: function getCellContent(row) {
+          return row.get('close').toFixed(2);
         }
       });
       return [dateColumn, openColumn, highColumn, lowColumn, closeColumn];
@@ -660,50 +675,50 @@ define('dummy/controllers/sparkline', ['exports', 'ember', 'ember-table/models/c
     tableColumns: Ember['default'].computed(function () {
       var name = ColumnDefinition['default'].create({
         savedWidth: 100,
-        headerCellName: "Name",
-        getCellContent: function (row) {
-          return "Asset " + row.get("name");
+        headerCellName: 'Name',
+        getCellContent: function getCellContent(row) {
+          return 'Asset ' + row.get('name');
         }
       });
       var open = ColumnDefinition['default'].create({
         savedWidth: 100,
-        headerCellName: "Open",
-        getCellContent: function (row) {
-          return row.get("open").toFixed(2);
+        headerCellName: 'Open',
+        getCellContent: function getCellContent(row) {
+          return row.get('open').toFixed(2);
         }
       });
       var spark = ColumnDefinition['default'].create({
         savedWidth: 200,
-        headerCellName: "Sparkline",
-        tableCellViewClass: "sparkline-table-cell",
-        contentPath: "timeseries"
+        headerCellName: 'Sparkline',
+        tableCellViewClass: 'sparkline-table-cell',
+        contentPath: 'timeseries'
       });
       var close = ColumnDefinition['default'].create({
         savedWidth: 100,
-        headerCellName: "Close",
-        getCellContent: function (row) {
-          return row.get("close").toFixed(2);
+        headerCellName: 'Close',
+        getCellContent: function getCellContent(row) {
+          return row.get('close').toFixed(2);
         }
       });
       var low = ColumnDefinition['default'].create({
         savedWidth: 100,
-        headerCellName: "Low",
-        getCellContent: function (row) {
-          return row.get("low").toFixed(2);
+        headerCellName: 'Low',
+        getCellContent: function getCellContent(row) {
+          return row.get('low').toFixed(2);
         }
       });
       var high = ColumnDefinition['default'].create({
         savedWidth: 100,
-        headerCellName: "High",
-        getCellContent: function (row) {
-          return row.get("high").toFixed(2);
+        headerCellName: 'High',
+        getCellContent: function getCellContent(row) {
+          return row.get('high').toFixed(2);
         }
       });
       return [name, open, spark, close, low, high];
     }),
 
     tableContent: Ember['default'].computed(function () {
-      var randomWalk = function (numSteps) {
+      var randomWalk = function randomWalk(numSteps) {
         var lastValue = 0;
         var walk = [];
         for (var i = 0; i < numSteps; i++) {
@@ -734,9 +749,9 @@ define('dummy/ember-table/tests/modules/ember-table/components/ember-table.jshin
 
   'use strict';
 
-  module("JSHint - modules/ember-table/components");
-  test("modules/ember-table/components/ember-table.js should pass jshint", function () {
-    ok(true, "modules/ember-table/components/ember-table.js should pass jshint.");
+  module('JSHint - modules/ember-table/components');
+  test('modules/ember-table/components/ember-table.js should pass jshint', function () {
+    ok(true, 'modules/ember-table/components/ember-table.js should pass jshint.');
   });
 
 });
@@ -744,9 +759,9 @@ define('dummy/ember-table/tests/modules/ember-table/controllers/row-array.jshint
 
   'use strict';
 
-  module("JSHint - modules/ember-table/controllers");
-  test("modules/ember-table/controllers/row-array.js should pass jshint", function () {
-    ok(true, "modules/ember-table/controllers/row-array.js should pass jshint.");
+  module('JSHint - modules/ember-table/controllers');
+  test('modules/ember-table/controllers/row-array.js should pass jshint', function () {
+    ok(true, 'modules/ember-table/controllers/row-array.js should pass jshint.');
   });
 
 });
@@ -754,9 +769,9 @@ define('dummy/ember-table/tests/modules/ember-table/controllers/row.jshint', fun
 
   'use strict';
 
-  module("JSHint - modules/ember-table/controllers");
-  test("modules/ember-table/controllers/row.js should pass jshint", function () {
-    ok(true, "modules/ember-table/controllers/row.js should pass jshint.");
+  module('JSHint - modules/ember-table/controllers');
+  test('modules/ember-table/controllers/row.js should pass jshint', function () {
+    ok(true, 'modules/ember-table/controllers/row.js should pass jshint.');
   });
 
 });
@@ -764,9 +779,9 @@ define('dummy/ember-table/tests/modules/ember-table/mixins/mouse-wheel-handler.j
 
   'use strict';
 
-  module("JSHint - modules/ember-table/mixins");
-  test("modules/ember-table/mixins/mouse-wheel-handler.js should pass jshint", function () {
-    ok(true, "modules/ember-table/mixins/mouse-wheel-handler.js should pass jshint.");
+  module('JSHint - modules/ember-table/mixins');
+  test('modules/ember-table/mixins/mouse-wheel-handler.js should pass jshint', function () {
+    ok(true, 'modules/ember-table/mixins/mouse-wheel-handler.js should pass jshint.');
   });
 
 });
@@ -774,9 +789,9 @@ define('dummy/ember-table/tests/modules/ember-table/mixins/register-table-compon
 
   'use strict';
 
-  module("JSHint - modules/ember-table/mixins");
-  test("modules/ember-table/mixins/register-table-component.js should pass jshint", function () {
-    ok(true, "modules/ember-table/mixins/register-table-component.js should pass jshint.");
+  module('JSHint - modules/ember-table/mixins');
+  test('modules/ember-table/mixins/register-table-component.js should pass jshint', function () {
+    ok(true, 'modules/ember-table/mixins/register-table-component.js should pass jshint.');
   });
 
 });
@@ -784,9 +799,9 @@ define('dummy/ember-table/tests/modules/ember-table/mixins/resize-handler.jshint
 
   'use strict';
 
-  module("JSHint - modules/ember-table/mixins");
-  test("modules/ember-table/mixins/resize-handler.js should pass jshint", function () {
-    ok(true, "modules/ember-table/mixins/resize-handler.js should pass jshint.");
+  module('JSHint - modules/ember-table/mixins');
+  test('modules/ember-table/mixins/resize-handler.js should pass jshint', function () {
+    ok(true, 'modules/ember-table/mixins/resize-handler.js should pass jshint.');
   });
 
 });
@@ -794,9 +809,9 @@ define('dummy/ember-table/tests/modules/ember-table/mixins/scroll-handler.jshint
 
   'use strict';
 
-  module("JSHint - modules/ember-table/mixins");
-  test("modules/ember-table/mixins/scroll-handler.js should pass jshint", function () {
-    ok(true, "modules/ember-table/mixins/scroll-handler.js should pass jshint.");
+  module('JSHint - modules/ember-table/mixins');
+  test('modules/ember-table/mixins/scroll-handler.js should pass jshint', function () {
+    ok(true, 'modules/ember-table/mixins/scroll-handler.js should pass jshint.');
   });
 
 });
@@ -804,9 +819,9 @@ define('dummy/ember-table/tests/modules/ember-table/mixins/show-horizontal-scrol
 
   'use strict';
 
-  module("JSHint - modules/ember-table/mixins");
-  test("modules/ember-table/mixins/show-horizontal-scroll.js should pass jshint", function () {
-    ok(true, "modules/ember-table/mixins/show-horizontal-scroll.js should pass jshint.");
+  module('JSHint - modules/ember-table/mixins');
+  test('modules/ember-table/mixins/show-horizontal-scroll.js should pass jshint', function () {
+    ok(true, 'modules/ember-table/mixins/show-horizontal-scroll.js should pass jshint.');
   });
 
 });
@@ -814,9 +829,9 @@ define('dummy/ember-table/tests/modules/ember-table/mixins/style-bindings.jshint
 
   'use strict';
 
-  module("JSHint - modules/ember-table/mixins");
-  test("modules/ember-table/mixins/style-bindings.js should pass jshint", function () {
-    ok(true, "modules/ember-table/mixins/style-bindings.js should pass jshint.");
+  module('JSHint - modules/ember-table/mixins');
+  test('modules/ember-table/mixins/style-bindings.js should pass jshint', function () {
+    ok(true, 'modules/ember-table/mixins/style-bindings.js should pass jshint.');
   });
 
 });
@@ -824,9 +839,9 @@ define('dummy/ember-table/tests/modules/ember-table/mixins/touch-move-handler.js
 
   'use strict';
 
-  module("JSHint - modules/ember-table/mixins");
-  test("modules/ember-table/mixins/touch-move-handler.js should pass jshint", function () {
-    ok(true, "modules/ember-table/mixins/touch-move-handler.js should pass jshint.");
+  module('JSHint - modules/ember-table/mixins');
+  test('modules/ember-table/mixins/touch-move-handler.js should pass jshint', function () {
+    ok(true, 'modules/ember-table/mixins/touch-move-handler.js should pass jshint.');
   });
 
 });
@@ -834,9 +849,9 @@ define('dummy/ember-table/tests/modules/ember-table/models/column-definition.jsh
 
   'use strict';
 
-  module("JSHint - modules/ember-table/models");
-  test("modules/ember-table/models/column-definition.js should pass jshint", function () {
-    ok(true, "modules/ember-table/models/column-definition.js should pass jshint.");
+  module('JSHint - modules/ember-table/models');
+  test('modules/ember-table/models/column-definition.js should pass jshint', function () {
+    ok(true, 'modules/ember-table/models/column-definition.js should pass jshint.');
   });
 
 });
@@ -844,9 +859,9 @@ define('dummy/ember-table/tests/modules/ember-table/views/body-table-container.j
 
   'use strict';
 
-  module("JSHint - modules/ember-table/views");
-  test("modules/ember-table/views/body-table-container.js should pass jshint", function () {
-    ok(true, "modules/ember-table/views/body-table-container.js should pass jshint.");
+  module('JSHint - modules/ember-table/views');
+  test('modules/ember-table/views/body-table-container.js should pass jshint', function () {
+    ok(true, 'modules/ember-table/views/body-table-container.js should pass jshint.');
   });
 
 });
@@ -854,9 +869,9 @@ define('dummy/ember-table/tests/modules/ember-table/views/column-sortable-indica
 
   'use strict';
 
-  module("JSHint - modules/ember-table/views");
-  test("modules/ember-table/views/column-sortable-indicator.js should pass jshint", function () {
-    ok(true, "modules/ember-table/views/column-sortable-indicator.js should pass jshint.");
+  module('JSHint - modules/ember-table/views');
+  test('modules/ember-table/views/column-sortable-indicator.js should pass jshint', function () {
+    ok(true, 'modules/ember-table/views/column-sortable-indicator.js should pass jshint.');
   });
 
 });
@@ -864,9 +879,9 @@ define('dummy/ember-table/tests/modules/ember-table/views/footer-table-container
 
   'use strict';
 
-  module("JSHint - modules/ember-table/views");
-  test("modules/ember-table/views/footer-table-container.js should pass jshint", function () {
-    ok(true, "modules/ember-table/views/footer-table-container.js should pass jshint.");
+  module('JSHint - modules/ember-table/views');
+  test('modules/ember-table/views/footer-table-container.js should pass jshint', function () {
+    ok(true, 'modules/ember-table/views/footer-table-container.js should pass jshint.');
   });
 
 });
@@ -874,9 +889,9 @@ define('dummy/ember-table/tests/modules/ember-table/views/header-block.jshint', 
 
   'use strict';
 
-  module("JSHint - modules/ember-table/views");
-  test("modules/ember-table/views/header-block.js should pass jshint", function () {
-    ok(true, "modules/ember-table/views/header-block.js should pass jshint.");
+  module('JSHint - modules/ember-table/views');
+  test('modules/ember-table/views/header-block.js should pass jshint', function () {
+    ok(true, 'modules/ember-table/views/header-block.js should pass jshint.');
   });
 
 });
@@ -884,9 +899,9 @@ define('dummy/ember-table/tests/modules/ember-table/views/header-cell.jshint', f
 
   'use strict';
 
-  module("JSHint - modules/ember-table/views");
-  test("modules/ember-table/views/header-cell.js should pass jshint", function () {
-    ok(true, "modules/ember-table/views/header-cell.js should pass jshint.");
+  module('JSHint - modules/ember-table/views');
+  test('modules/ember-table/views/header-cell.js should pass jshint', function () {
+    ok(true, 'modules/ember-table/views/header-cell.js should pass jshint.');
   });
 
 });
@@ -894,9 +909,9 @@ define('dummy/ember-table/tests/modules/ember-table/views/header-row.jshint', fu
 
   'use strict';
 
-  module("JSHint - modules/ember-table/views");
-  test("modules/ember-table/views/header-row.js should pass jshint", function () {
-    ok(true, "modules/ember-table/views/header-row.js should pass jshint.");
+  module('JSHint - modules/ember-table/views');
+  test('modules/ember-table/views/header-row.js should pass jshint', function () {
+    ok(true, 'modules/ember-table/views/header-row.js should pass jshint.');
   });
 
 });
@@ -904,9 +919,9 @@ define('dummy/ember-table/tests/modules/ember-table/views/header-table-container
 
   'use strict';
 
-  module("JSHint - modules/ember-table/views");
-  test("modules/ember-table/views/header-table-container.js should pass jshint", function () {
-    ok(true, "modules/ember-table/views/header-table-container.js should pass jshint.");
+  module('JSHint - modules/ember-table/views');
+  test('modules/ember-table/views/header-table-container.js should pass jshint', function () {
+    ok(true, 'modules/ember-table/views/header-table-container.js should pass jshint.');
   });
 
 });
@@ -914,9 +929,9 @@ define('dummy/ember-table/tests/modules/ember-table/views/lazy-container.jshint'
 
   'use strict';
 
-  module("JSHint - modules/ember-table/views");
-  test("modules/ember-table/views/lazy-container.js should pass jshint", function () {
-    ok(true, "modules/ember-table/views/lazy-container.js should pass jshint.");
+  module('JSHint - modules/ember-table/views');
+  test('modules/ember-table/views/lazy-container.js should pass jshint', function () {
+    ok(true, 'modules/ember-table/views/lazy-container.js should pass jshint.');
   });
 
 });
@@ -924,9 +939,9 @@ define('dummy/ember-table/tests/modules/ember-table/views/lazy-item.jshint', fun
 
   'use strict';
 
-  module("JSHint - modules/ember-table/views");
-  test("modules/ember-table/views/lazy-item.js should pass jshint", function () {
-    ok(true, "modules/ember-table/views/lazy-item.js should pass jshint.");
+  module('JSHint - modules/ember-table/views');
+  test('modules/ember-table/views/lazy-item.js should pass jshint', function () {
+    ok(true, 'modules/ember-table/views/lazy-item.js should pass jshint.');
   });
 
 });
@@ -934,9 +949,9 @@ define('dummy/ember-table/tests/modules/ember-table/views/lazy-table-block.jshin
 
   'use strict';
 
-  module("JSHint - modules/ember-table/views");
-  test("modules/ember-table/views/lazy-table-block.js should pass jshint", function () {
-    ok(true, "modules/ember-table/views/lazy-table-block.js should pass jshint.");
+  module('JSHint - modules/ember-table/views');
+  test('modules/ember-table/views/lazy-table-block.js should pass jshint', function () {
+    ok(true, 'modules/ember-table/views/lazy-table-block.js should pass jshint.');
   });
 
 });
@@ -944,9 +959,9 @@ define('dummy/ember-table/tests/modules/ember-table/views/multi-item-collection.
 
   'use strict';
 
-  module("JSHint - modules/ember-table/views");
-  test("modules/ember-table/views/multi-item-collection.js should pass jshint", function () {
-    ok(true, "modules/ember-table/views/multi-item-collection.js should pass jshint.");
+  module('JSHint - modules/ember-table/views');
+  test('modules/ember-table/views/multi-item-collection.js should pass jshint', function () {
+    ok(true, 'modules/ember-table/views/multi-item-collection.js should pass jshint.');
   });
 
 });
@@ -954,9 +969,9 @@ define('dummy/ember-table/tests/modules/ember-table/views/scroll-container.jshin
 
   'use strict';
 
-  module("JSHint - modules/ember-table/views");
-  test("modules/ember-table/views/scroll-container.js should pass jshint", function () {
-    ok(true, "modules/ember-table/views/scroll-container.js should pass jshint.");
+  module('JSHint - modules/ember-table/views');
+  test('modules/ember-table/views/scroll-container.js should pass jshint', function () {
+    ok(true, 'modules/ember-table/views/scroll-container.js should pass jshint.');
   });
 
 });
@@ -964,9 +979,9 @@ define('dummy/ember-table/tests/modules/ember-table/views/scroll-panel.jshint', 
 
   'use strict';
 
-  module("JSHint - modules/ember-table/views");
-  test("modules/ember-table/views/scroll-panel.js should pass jshint", function () {
-    ok(true, "modules/ember-table/views/scroll-panel.js should pass jshint.");
+  module('JSHint - modules/ember-table/views');
+  test('modules/ember-table/views/scroll-panel.js should pass jshint', function () {
+    ok(true, 'modules/ember-table/views/scroll-panel.js should pass jshint.');
   });
 
 });
@@ -974,9 +989,9 @@ define('dummy/ember-table/tests/modules/ember-table/views/table-block.jshint', f
 
   'use strict';
 
-  module("JSHint - modules/ember-table/views");
-  test("modules/ember-table/views/table-block.js should pass jshint", function () {
-    ok(true, "modules/ember-table/views/table-block.js should pass jshint.");
+  module('JSHint - modules/ember-table/views');
+  test('modules/ember-table/views/table-block.js should pass jshint', function () {
+    ok(true, 'modules/ember-table/views/table-block.js should pass jshint.');
   });
 
 });
@@ -984,9 +999,9 @@ define('dummy/ember-table/tests/modules/ember-table/views/table-cell.jshint', fu
 
   'use strict';
 
-  module("JSHint - modules/ember-table/views");
-  test("modules/ember-table/views/table-cell.js should pass jshint", function () {
-    ok(true, "modules/ember-table/views/table-cell.js should pass jshint.");
+  module('JSHint - modules/ember-table/views');
+  test('modules/ember-table/views/table-cell.js should pass jshint', function () {
+    ok(true, 'modules/ember-table/views/table-cell.js should pass jshint.');
   });
 
 });
@@ -994,9 +1009,9 @@ define('dummy/ember-table/tests/modules/ember-table/views/table-container.jshint
 
   'use strict';
 
-  module("JSHint - modules/ember-table/views");
-  test("modules/ember-table/views/table-container.js should pass jshint", function () {
-    ok(true, "modules/ember-table/views/table-container.js should pass jshint.");
+  module('JSHint - modules/ember-table/views');
+  test('modules/ember-table/views/table-container.js should pass jshint', function () {
+    ok(true, 'modules/ember-table/views/table-container.js should pass jshint.');
   });
 
 });
@@ -1004,9 +1019,9 @@ define('dummy/ember-table/tests/modules/ember-table/views/table-row.jshint', fun
 
   'use strict';
 
-  module("JSHint - modules/ember-table/views");
-  test("modules/ember-table/views/table-row.js should pass jshint", function () {
-    ok(true, "modules/ember-table/views/table-row.js should pass jshint.");
+  module('JSHint - modules/ember-table/views');
+  test('modules/ember-table/views/table-row.js should pass jshint', function () {
+    ok(true, 'modules/ember-table/views/table-row.js should pass jshint.');
   });
 
 });
@@ -1026,60 +1041,60 @@ define('dummy/helpers/fa-icon', ['exports', 'ember'], function (exports, Ember) 
    * @param  {Object} options Options passed to helper.
    * @return {Ember.Handlebars.SafeString} The HTML markup.
    */
-  var faIcon = function (name, options) {
-    if (Ember['default'].typeOf(name) !== "string") {
-      var message = "fa-icon: no icon specified";
+  var faIcon = function faIcon(name, options) {
+    if (Ember['default'].typeOf(name) !== 'string') {
+      var message = 'fa-icon: no icon specified';
       warn(message);
       return Ember['default'].String.htmlSafe(message);
     }
 
     var params = options.hash,
         classNames = [],
-        html = "";
+        html = '';
 
-    classNames.push("fa");
+    classNames.push('fa');
     if (!name.match(FA_PREFIX)) {
-      name = "fa-" + name;
+      name = 'fa-' + name;
     }
     classNames.push(name);
     if (params.spin) {
-      classNames.push("fa-spin");
+      classNames.push('fa-spin');
     }
     if (params.flip) {
-      classNames.push("fa-flip-" + params.flip);
+      classNames.push('fa-flip-' + params.flip);
     }
     if (params.rotate) {
-      classNames.push("fa-rotate-" + params.rotate);
+      classNames.push('fa-rotate-' + params.rotate);
     }
     if (params.lg) {
-      warn("fa-icon: the 'lg' parameter is deprecated. Use 'size' instead. I.e. {{fa-icon size=\"lg\"}}");
-      classNames.push("fa-lg");
+      warn('fa-icon: the \'lg\' parameter is deprecated. Use \'size\' instead. I.e. {{fa-icon size="lg"}}');
+      classNames.push('fa-lg');
     }
     if (params.x) {
-      warn("fa-icon: the 'x' parameter is deprecated. Use 'size' instead. I.e. {{fa-icon size=\"" + params.x + "\"}}");
-      classNames.push("fa-" + params.x + "x");
+      warn('fa-icon: the \'x\' parameter is deprecated. Use \'size\' instead. I.e. {{fa-icon size="' + params.x + '"}}');
+      classNames.push('fa-' + params.x + 'x');
     }
     if (params.size) {
-      if (Ember['default'].typeOf(params.size) === "string" && params.size.match(/\d+/)) {
+      if (Ember['default'].typeOf(params.size) === 'string' && params.size.match(/\d+/)) {
         params.size = Number(params.size);
       }
-      if (Ember['default'].typeOf(params.size) === "number") {
-        classNames.push("fa-" + params.size + "x");
+      if (Ember['default'].typeOf(params.size) === 'number') {
+        classNames.push('fa-' + params.size + 'x');
       } else {
-        classNames.push("fa-" + params.size);
+        classNames.push('fa-' + params.size);
       }
     }
     if (params.fixedWidth) {
-      classNames.push("fa-fw");
+      classNames.push('fa-fw');
     }
     if (params.listItem) {
-      classNames.push("fa-li");
+      classNames.push('fa-li');
     }
     if (params.pull) {
-      classNames.push("pull-" + params.pull);
+      classNames.push('pull-' + params.pull);
     }
     if (params.border) {
-      classNames.push("fa-border");
+      classNames.push('fa-border');
     }
     if (params.classNames && !Ember['default'].isArray(params.classNames)) {
       params.classNames = [params.classNames];
@@ -1088,39 +1103,23 @@ define('dummy/helpers/fa-icon', ['exports', 'ember'], function (exports, Ember) 
       Array.prototype.push.apply(classNames, params.classNames);
     }
 
-
-    html += "<";
-    var tagName = params.tagName || "i";
+    html += '<';
+    var tagName = params.tagName || 'i';
     html += tagName;
-    html += " class='" + classNames.join(" ") + "'";
+    html += ' class=\'' + classNames.join(' ') + '\'';
     if (params.title) {
-      html += " title='" + params.title + "'";
+      html += ' title=\'' + params.title + '\'';
     }
     if (params.ariaHidden === undefined || params.ariaHidden) {
-      html += " aria-hidden=\"true\"";
+      html += ' aria-hidden="true"';
     }
-    html += "></" + tagName + ">";
+    html += '></' + tagName + '>';
     return Ember['default'].String.htmlSafe(html);
   };
 
   exports['default'] = Ember['default'].Handlebars.makeBoundHelper(faIcon);
 
   exports.faIcon = faIcon;
-
-});
-define('dummy/initializers/app-version', ['exports', 'dummy/config/environment', 'ember'], function (exports, config, Ember) {
-
-  'use strict';
-
-  var classify = Ember['default'].String.classify;
-
-  exports['default'] = {
-    name: "App Version",
-    initialize: function (container, application) {
-      var appName = classify(application.toString());
-      Ember['default'].libraries.register(appName, config['default'].APP.version);
-    }
-  };
 
 });
 define('dummy/initializers/export-application-global', ['exports', 'ember', 'dummy/config/environment'], function (exports, Ember, config) {
@@ -1135,2589 +1134,41 @@ define('dummy/initializers/export-application-global', ['exports', 'ember', 'dum
     if (config['default'].exportApplicationGlobal && !window[classifiedName]) {
       window[classifiedName] = application;
     }
-  };
+  }
+
+  ;
 
   exports['default'] = {
-    name: "export-application-global",
+    name: 'export-application-global',
 
     initialize: initialize
   };
 
 });
-define('dummy/models/treedata', ['exports'], function (exports) {
+define('dummy/instance-initializers/app-version', ['exports', 'dummy/config/environment', 'ember'], function (exports, config, Ember) {
 
   'use strict';
 
+  var classify = Ember['default'].String.classify;
+  var registered = false;
+
   exports['default'] = {
-    root: {
-      group_value: "Total",
-      level: 0,
-      values: [{
-        type: "money",
-        value: 60269996.24879856,
-        currency: "USD"
-      }, {
-        type: "money",
-        value: 61494836.611845456,
-        currency: "USD"
-      }, {
-        type: "money",
-        value: 60816540.19589533,
-        currency: "USD"
-      }, {
-        type: "money",
-        value: -1039739.6313347403,
-        currency: "USD"
-      }, {
-        type: "percent",
-        value: -0.016858920950260137
-      }, {
-        type: "percent",
-        value: -0.01685892095026014
-      }],
-      children: [{
-        group_name: "Owner (Down)",
-        group_value: "Uncle Money Penny",
-        level: 1,
-        values: [{
-          type: "money",
-          value: 60269996.248798564,
-          currency: "USD"
-        }, {
-          type: "money",
-          value: 61494836.61184546,
-          currency: "USD"
-        }, {
-          type: "money",
-          value: 60816540.19589534,
-          currency: "USD"
-        }, {
-          type: "money",
-          value: -1039739.6313347424,
-          currency: "USD"
-        }, {
-          type: "percent",
-          value: -0.016858920950260176
-        }, {
-          type: "percent",
-          value: -0.01685892095026018
-        }],
-        children: [{
-          group_name: "Owner (Down)",
-          group_value: "The Money Penny Trust",
-          level: 2,
-          values: [{
-            type: "money",
-            value: 18241432.089211173,
-            currency: "USD"
-          }, {
-            type: "money",
-            value: 19049191.44150407,
-            currency: "USD"
-          }, {
-            type: "money",
-            value: 18480088.281079322,
-            currency: "USD"
-          }, {
-            type: "money",
-            value: -549006.9566043427,
-            currency: "USD"
-          }, {
-            type: "percent",
-            value: -0.028841927979075494
-          }, {
-            type: "percent",
-            value: -0.00890190640386938
-          }],
-          children: [{
-            group_name: "Owner (Down)",
-            group_value: "Sterling Holdings, LLC",
-            level: 3,
-            values: [{
-              type: "money",
-              value: 6828594.139080001,
-              currency: "USD"
-            }, {
-              type: "money",
-              value: 6840053.28,
-              currency: "USD"
-            }, {
-              type: "money",
-              value: 6841431,
-              currency: "USD"
-            }, {
-              type: "money",
-              value: 8502.119999999879,
-              currency: "USD"
-            }, {
-              type: "percent",
-              value: 0.0012440650800411423
-            }, {
-              type: "percent",
-              value: 0.00013785813743159806
-            }],
-            children: [{
-              group_name: "Holding Status",
-              group_value: "Current Holding",
-              level: 4,
-              values: [{
-                type: "money",
-                value: 6828594.139080001,
-                currency: "USD"
-              }, {
-                type: "money",
-                value: 6840053.28,
-                currency: "USD"
-              }, {
-                type: "money",
-                value: 6841431,
-                currency: "USD"
-              }, {
-                type: "money",
-                value: 8502.119999999879,
-                currency: "USD"
-              }, {
-                type: "percent",
-                value: 0.0012440650800411423
-              }, {
-                type: "percent",
-                value: 0.00013785813743159806
-              }],
-              children: [{
-                group_name: "Asset Class",
-                group_value: "Fixed Income",
-                level: 5,
-                values: [{
-                  type: "money",
-                  value: 6828594.139080001,
-                  currency: "USD"
-                }, {
-                  type: "money",
-                  value: 6840053.28,
-                  currency: "USD"
-                }, {
-                  type: "money",
-                  value: 6841431,
-                  currency: "USD"
-                }, {
-                  type: "money",
-                  value: 8502.119999999879,
-                  currency: "USD"
-                }, {
-                  type: "percent",
-                  value: 0.0012440650800411423
-                }, {
-                  type: "percent",
-                  value: 0.00013785813743159806
-                }],
-                children: [{
-                  group_name: "Security",
-                  group_value: "Bay Area Toll Auth Calif Toll Rev BDS 3.50 % Due Apr 1, 2019",
-                  level: 6,
-                  values: [{
-                    type: "money",
-                    value: 38471.4,
-                    currency: "USD"
-                  }, {
-                    type: "money",
-                    value: 38232.00000000001,
-                    currency: "USD"
-                  }, {
-                    type: "money",
-                    value: 38656.8,
-                    currency: "USD"
-                  }, {
-                    type: "money",
-                    value: 424.79999999999563,
-                    currency: "USD"
-                  }, {
-                    type: "percent",
-                    value: 0.011111111111110995
-                  }, {
-                    type: "percent",
-                    value: 0.000006887945216127635
-                  }]
-                }, {
-                  group_name: "Security",
-                  group_value: "Bay Area Toll Auth Calif Toll Toll Bridge Rev 3.90 % Due Apr 1, 2014",
-                  level: 6,
-                  values: [{
-                    type: "money",
-                    value: 38471.4,
-                    currency: "USD"
-                  }, {
-                    type: "money",
-                    value: 38232.00000000001,
-                    currency: "USD"
-                  }, {
-                    type: "money",
-                    value: 38656.8,
-                    currency: "USD"
-                  }, {
-                    type: "money",
-                    value: 424.79999999999563,
-                    currency: "USD"
-                  }, {
-                    type: "percent",
-                    value: 0.011111111111110995
-                  }, {
-                    type: "percent",
-                    value: 0.000006887945216127635
-                  }]
-                }, {
-                  group_name: "Security",
-                  group_value: "Berkshire Hathaway Inc 3.20 % Due Feb 11, 2015",
-                  level: 6,
-                  values: [{
-                    type: "money",
-                    value: 38063.16,
-                    currency: "USD"
-                  }, {
-                    type: "money",
-                    value: 38147.04,
-                    currency: "USD"
-                  }, {
-                    type: "money",
-                    value: 37989.36000000001,
-                    currency: "USD"
-                  }, {
-                    type: "money",
-                    value: -157.67999999999302,
-                    currency: "USD"
-                  }, {
-                    type: "percent",
-                    value: -0.0041334792948546735
-                  }, {
-                    type: "percent",
-                    value: -0.0000025567118683591537
-                  }]
-                }, {
-                  group_name: "Security",
-                  group_value: "Burlington Northern Santa Fe CP 4.30 % Due Jul 1, 2013",
-                  level: 6,
-                  values: [{
-                    type: "money",
-                    value: 37758.600000000006,
-                    currency: "USD"
-                  }, {
-                    type: "money",
-                    value: 38019.96000000001,
-                    currency: "USD"
-                  }, {
-                    type: "money",
-                    value: 37260.00000000001,
-                    currency: "USD"
-                  }, {
-                    type: "money",
-                    value: -759.9599999999991,
-                    currency: "USD"
-                  }, {
-                    type: "percent",
-                    value: -0.019988448173012256
-                  }, {
-                    type: "percent",
-                    value: -0.000012322417246818278
-                  }]
-                }, {
-                  group_name: "Security",
-                  group_value: "Burlington Northern Santa Fe CP 4.70 % Due Oct 1, 2019",
-                  level: 6,
-                  values: [{
-                    type: "money",
-                    value: 39441.600000000006,
-                    currency: "USD"
-                  }, {
-                    type: "money",
-                    value: 40383.00000000001,
-                    currency: "USD"
-                  }, {
-                    type: "money",
-                    value: 40011.840000000004,
-                    currency: "USD"
-                  }, {
-                    type: "money",
-                    value: -371.1600000000035,
-                    currency: "USD"
-                  }, {
-                    type: "percent",
-                    value: -0.009190996211277107
-                  }, {
-                    type: "percent",
-                    value: -0.000006018196201548924
-                  }]
-                }, {
-                  group_name: "Security",
-                  group_value: "CA CNTY Calif Tob Sec Asset Backed BDS 5.00 % Due Jun 1, 2036",
-                  level: 6,
-                  values: [{
-                    type: "money",
-                    value: 1423656.0000000002,
-                    currency: "USD"
-                  }, {
-                    type: "money",
-                    value: 1467460.8000000003,
-                    currency: "USD"
-                  }, {
-                    type: "money",
-                    value: 1468519.2,
-                    currency: "USD"
-                  }, {
-                    type: "money",
-                    value: 1058.399999999674,
-                    currency: "USD"
-                  }, {
-                    type: "percent",
-                    value: 0.0007212458417967103
-                  }, {
-                    type: "percent",
-                    value: 0.000017161490623228148
-                  }]
-                }, {
-                  group_name: "Security",
-                  group_value: "Canadian Natl RY Co 7.62 % Due May 15, 2023",
-                  level: 6,
-                  values: [{
-                    type: "money",
-                    value: 48960.00000000001,
-                    currency: "USD"
-                  }, {
-                    type: "money",
-                    value: 50580.00000000001,
-                    currency: "USD"
-                  }, {
-                    type: "money",
-                    value: 49207.50000000001,
-                    currency: "USD"
-                  }, {
-                    type: "money",
-                    value: 0,
-                    currency: "USD"
-                  }, {
-                    type: "percent",
-                    value: 0
-                  }, {
-                    type: "percent",
-                    value: 0
-                  }]
-                }, {
-                  group_name: "Security",
-                  group_value: "Comcast Corp 6.50 % Due Jan 15, 2015",
-                  level: 6,
-                  values: [{
-                    type: "money",
-                    value: 40730.4,
-                    currency: "USD"
-                  }, {
-                    type: "money",
-                    value: 41179.32000000001,
-                    currency: "USD"
-                  }, {
-                    type: "money",
-                    value: 40817.520000000004,
-                    currency: "USD"
-                  }, {
-                    type: "money",
-                    value: -361.8000000000029,
-                    currency: "USD"
-                  }, {
-                    type: "percent",
-                    value: -0.008785963439901456
-                  }, {
-                    type: "percent",
-                    value: -0.000005866427917125762
-                  }]
-                }, {
-                  group_name: "Security",
-                  group_value: "CSX Corp 5.75 % Due Mar 15, 2013",
-                  level: 6,
-                  values: [{
-                    type: "money",
-                    value: 38115.36000000001,
-                    currency: "USD"
-                  }, {
-                    type: "money",
-                    value: 38282.4,
-                    currency: "USD"
-                  }, {
-                    type: "money",
-                    value: 38055.96000000001,
-                    currency: "USD"
-                  }, {
-                    type: "money",
-                    value: -226.43999999999505,
-                    currency: "USD"
-                  }, {
-                    type: "percent",
-                    value: -0.005914989655820822
-                  }, {
-                    type: "percent",
-                    value: -0.0000036716250346985016
-                  }]
-                }, {
-                  group_name: "Security",
-                  group_value: "Dell Inc 1.40 % Due Sep 10, 2013",
-                  level: 6,
-                  values: [{
-                    type: "money",
-                    value: 36448.560000000005,
-                    currency: "USD"
-                  }, {
-                    type: "money",
-                    value: 36234.00000000001,
-                    currency: "USD"
-                  }, {
-                    type: "money",
-                    value: 36241.560000000005,
-                    currency: "USD"
-                  }, {
-                    type: "money",
-                    value: 7.559999999997672,
-                    currency: "USD"
-                  }, {
-                    type: "percent",
-                    value: 0.00020864381520112796
-                  }, {
-                    type: "percent",
-                    value: 1.2258207588020108e-7
-                  }]
-                }, {
-                  group_name: "Security",
-                  group_value: "Du Pont E I De Nemours & Co 3.25 % Due Jan 15, 2015",
-                  level: 6,
-                  values: [{
-                    type: "money",
-                    value: 38441.16,
-                    currency: "USD"
-                  }, {
-                    type: "money",
-                    value: 38532.600000000006,
-                    currency: "USD"
-                  }, {
-                    type: "money",
-                    value: 38362.68000000001,
-                    currency: "USD"
-                  }, {
-                    type: "money",
-                    value: -169.91999999999825,
-                    currency: "USD"
-                  }, {
-                    type: "percent",
-                    value: -0.004409772504320971
-                  }, {
-                    type: "percent",
-                    value: -0.0000027551780864510538
-                  }]
-                }, {
-                  group_name: "Security",
-                  group_value: "Duke Energy 3.95 % Due Sep 15, 2014",
-                  level: 6,
-                  values: [{
-                    type: "money",
-                    value: 38405.520000000004,
-                    currency: "USD"
-                  }, {
-                    type: "money",
-                    value: 38570.04000000001,
-                    currency: "USD"
-                  }, {
-                    type: "money",
-                    value: 38552.04000000001,
-                    currency: "USD"
-                  }, {
-                    type: "money",
-                    value: -18,
-                    currency: "USD"
-                  }, {
-                    type: "percent",
-                    value: -0.00046668346727148834
-                  }, {
-                    type: "percent",
-                    value: -2.9186208542914004e-7
-                  }]
-                }, {
-                  group_name: "Security",
-                  group_value: "Golden ST Tob Sec C Tobacco Settlement 5.12 % Due May 31, 2047",
-                  level: 6,
-                  values: [{
-                    type: "money",
-                    value: 1350000.0000000002,
-                    currency: "USD"
-                  }, {
-                    type: "money",
-                    value: 1333087.2000000002,
-                    currency: "USD"
-                  }, {
-                    type: "money",
-                    value: 1326240.0000000002,
-                    currency: "USD"
-                  }, {
-                    type: "money",
-                    value: -6847.199999999953,
-                    currency: "USD"
-                  }, {
-                    type: "percent",
-                    value: -0.005136348169872123
-                  }, {
-                    type: "percent",
-                    value: -0.00011102433729724412
-                  }]
-                }, {
-                  group_name: "Security",
-                  group_value: "Golden ST Tob Sec C Tobacco Settlement 5.75 % Due Jun 1, 2047",
-                  level: 6,
-                  values: [{
-                    type: "money",
-                    value: 1260000.0000000002,
-                    currency: "USD"
-                  }, {
-                    type: "money",
-                    value: 1243800,
-                    currency: "USD"
-                  }, {
-                    type: "money",
-                    value: 1256778.0000000002,
-                    currency: "USD"
-                  }, {
-                    type: "money",
-                    value: 12978.000000000233,
-                    currency: "USD"
-                  }, {
-                    type: "percent",
-                    value: 0.010434153400868494
-                  }, {
-                    type: "percent",
-                    value: 0.00021043256359441374
-                  }]
-                }, {
-                  group_name: "Security",
-                  group_value: "Long Beach Calif HBR Rev Rev BDS 4.00 % Due May 15, 2019",
-                  level: 6,
-                  values: [{
-                    type: "money",
-                    value: 40452.840000000004,
-                    currency: "USD"
-                  }, {
-                    type: "money",
-                    value: 38716.560000000005,
-                    currency: "USD"
-                  }, {
-                    type: "money",
-                    value: 40452.840000000004,
-                    currency: "USD"
-                  }, {
-                    type: "money",
-                    value: 2456.279999999999,
-                    currency: "USD"
-                  }, {
-                    type: "percent",
-                    value: 0.06402791155277268
-                  }, {
-                    type: "percent",
-                    value: 0.00003982750017766043
-                  }]
-                }, {
-                  group_name: "Security",
-                  group_value: "Menlo PK Calif City SCH Dist Go BDS 0.00 % Due Jul 1, 2040",
-                  level: 6,
-                  values: [{
-                    type: "money",
-                    value: 1752192.0000000002,
-                    currency: "USD"
-                  }, {
-                    type: "money",
-                    value: 1752192.0000000002,
-                    currency: "USD"
-                  }, {
-                    type: "money",
-                    value: 1752192.0000000002,
-                    currency: "USD"
-                  }, {
-                    type: "money",
-                    value: 0,
-                    currency: "USD"
-                  }, {
-                    type: "percent",
-                    value: 0
-                  }, {
-                    type: "percent",
-                    value: 0
-                  }]
-                }, {
-                  group_name: "Security",
-                  group_value: "Midamerican Energy Co 5.30 % Due Mar 15, 2018",
-                  level: 6,
-                  values: [{
-                    type: "money",
-                    value: 41422.339080000005,
-                    currency: "USD"
-                  }, {
-                    type: "money",
-                    value: 41973.840000000004,
-                    currency: "USD"
-                  }, {
-                    type: "money",
-                    value: 41568.12,
-                    currency: "USD"
-                  }, {
-                    type: "money",
-                    value: -405.72000000000116,
-                    currency: "USD"
-                  }, {
-                    type: "percent",
-                    value: -0.009666020549942563
-                  }, {
-                    type: "percent",
-                    value: -0.000006578571405572836
-                  }]
-                }, {
-                  group_name: "Security",
-                  group_value: "Napa Calif Santn Dist CTFS Par Cops 5.00 % Due Aug 1, 2013",
-                  level: 6,
-                  values: [{
-                    type: "money",
-                    value: 38045.16,
-                    currency: "USD"
-                  }, {
-                    type: "money",
-                    value: 38592.72,
-                    currency: "USD"
-                  }, {
-                    type: "money",
-                    value: 38131.560000000005,
-                    currency: "USD"
-                  }, {
-                    type: "money",
-                    value: -461.1599999999962,
-                    currency: "USD"
-                  }, {
-                    type: "percent",
-                    value: -0.011949403929031077
-                  }, {
-                    type: "percent",
-                    value: -0.000007477506628694506
-                  }]
-                }, {
-                  group_name: "Security",
-                  group_value: "National Grid PLC 6.30 % Due Aug 1, 2016",
-                  level: 6,
-                  values: [{
-                    type: "money",
-                    value: 41097.600000000006,
-                    currency: "USD"
-                  }, {
-                    type: "money",
-                    value: 41767.920000000006,
-                    currency: "USD"
-                  }, {
-                    type: "money",
-                    value: 41082.48,
-                    currency: "USD"
-                  }, {
-                    type: "money",
-                    value: -685.4400000000023,
-                    currency: "USD"
-                  }, {
-                    type: "percent",
-                    value: -0.01641068073296449
-                  }, {
-                    type: "percent",
-                    value: -0.000011114108213141692
-                  }]
-                }, {
-                  group_name: "Security",
-                  group_value: "Norfolk Southern Corp 7.05 % Due May 1, 2037",
-                  level: 6,
-                  values: [{
-                    type: "money",
-                    value: 46945.44,
-                    currency: "USD"
-                  }, {
-                    type: "money",
-                    value: 46945.44,
-                    currency: "USD"
-                  }, {
-                    type: "money",
-                    value: 45684.54000000001,
-                    currency: "USD"
-                  }, {
-                    type: "money",
-                    value: 7.275957614183426e-12,
-                    currency: "USD"
-                  }, {
-                    type: "percent",
-                    value: 0
-                  }, {
-                    type: "percent",
-                    value: 0
-                  }]
-                }, {
-                  group_name: "Security",
-                  group_value: "Pacific Gas & Elec Co 3.25 % Due Sep 15, 2021",
-                  level: 6,
-                  values: [{
-                    type: "money",
-                    value: 36443.520000000004,
-                    currency: "USD"
-                  }, {
-                    type: "money",
-                    value: 36476.280000000006,
-                    currency: "USD"
-                  }, {
-                    type: "money",
-                    value: 36115.920000000006,
-                    currency: "USD"
-                  }, {
-                    type: "money",
-                    value: -360.3600000000006,
-                    currency: "USD"
-                  }, {
-                    type: "percent",
-                    value: -0.00987929690198673
-                  }, {
-                    type: "percent",
-                    value: -0.000005843078950291393
-                  }]
-                }, {
-                  group_name: "Security",
-                  group_value: "Pepsico Inc 3.75 % Due Mar 1, 2014",
-                  level: 6,
-                  values: [{
-                    type: "money",
-                    value: 38118.96000000001,
-                    currency: "USD"
-                  }, {
-                    type: "money",
-                    value: 38498.4,
-                    currency: "USD"
-                  }, {
-                    type: "money",
-                    value: 38247.12,
-                    currency: "USD"
-                  }, {
-                    type: "money",
-                    value: -251.27999999999884,
-                    currency: "USD"
-                  }, {
-                    type: "percent",
-                    value: -0.006527024499719439
-                  }, {
-                    type: "percent",
-                    value: -0.0000040743947125907765
-                  }]
-                }, {
-                  group_name: "Security",
-                  group_value: "Port Oakland CA Rev Inter Lien Rev Ref BDS 5.00 % Due Nov 1, 2017",
-                  level: 6,
-                  values: [{
-                    type: "money",
-                    value: 41180.04000000001,
-                    currency: "USD"
-                  }, {
-                    type: "money",
-                    value: 39441.600000000006,
-                    currency: "USD"
-                  }, {
-                    type: "money",
-                    value: 39902.76,
-                    currency: "USD"
-                  }, {
-                    type: "money",
-                    value: 1361.1599999999962,
-                    currency: "USD"
-                  }, {
-                    type: "percent",
-                    value: 0.035288714560572254
-                  }, {
-                    type: "percent",
-                    value: 0.000022070610900151507
-                  }]
-                }, {
-                  group_name: "Security",
-                  group_value: "Reynolds R J Tob HLDGS Inc 9.25 % Due Aug 15, 2013",
-                  level: 6,
-                  values: [{
-                    type: "money",
-                    value: 39547.8,
-                    currency: "USD"
-                  }, {
-                    type: "money",
-                    value: 41373.72000000001,
-                    currency: "USD"
-                  }, {
-                    type: "money",
-                    value: 39009.600000000006,
-                    currency: "USD"
-                  }, {
-                    type: "money",
-                    value: -2364.1200000000026,
-                    currency: "USD"
-                  }, {
-                    type: "percent",
-                    value: -0.05714061969772121
-                  }, {
-                    type: "percent",
-                    value: -0.000038333166300263294
-                  }]
-                }, {
-                  group_name: "Security",
-                  group_value: "Sac Calif City Fing Aut Ref Rev BDS 5.00 % Due Dec 1, 2014",
-                  level: 6,
-                  values: [{
-                    type: "money",
-                    value: 39448.8,
-                    currency: "USD"
-                  }, {
-                    type: "money",
-                    value: 39307.32000000001,
-                    currency: "USD"
-                  }, {
-                    type: "money",
-                    value: 39448.8,
-                    currency: "USD"
-                  }, {
-                    type: "money",
-                    value: 141.47999999999593,
-                    currency: "USD"
-                  }, {
-                    type: "percent",
-                    value: 0.0035993295905189134
-                  }, {
-                    type: "percent",
-                    value: 0.000002294035991472975
-                  }]
-                }, {
-                  group_name: "Security",
-                  group_value: "SD CNTY Calif WTR Auth Water Rev BDS 4.00 % Due May 1, 2014",
-                  level: 6,
-                  values: [{
-                    type: "money",
-                    value: 38529.36000000001,
-                    currency: "USD"
-                  }, {
-                    type: "money",
-                    value: 38528.280000000006,
-                    currency: "USD"
-                  }, {
-                    type: "money",
-                    value: 38529.36000000001,
-                    currency: "USD"
-                  }, {
-                    type: "money",
-                    value: 721.0800000000017,
-                    currency: "USD"
-                  }, {
-                    type: "percent",
-                    value: 0.01905993068485019
-                  }, {
-                    type: "percent",
-                    value: 0.000011691995142291378
-                  }]
-                }, {
-                  group_name: "Security",
-                  group_value: "SF Calif City & CNT Lease Rev BDS 5.00 % Due Jun 15, 2022",
-                  level: 6,
-                  values: [{
-                    type: "money",
-                    value: 40270.32000000001,
-                    currency: "USD"
-                  }, {
-                    type: "money",
-                    value: 39305.520000000004,
-                    currency: "USD"
-                  }, {
-                    type: "money",
-                    value: 40270.32000000001,
-                    currency: "USD"
-                  }, {
-                    type: "money",
-                    value: 964.8000000000029,
-                    currency: "USD"
-                  }, {
-                    type: "percent",
-                    value: 0.024546170614203878
-                  }, {
-                    type: "percent",
-                    value: 0.000015643807779001955
-                  }]
-                }, {
-                  group_name: "Security",
-                  group_value: "SF Calif City & CNT Second Series 5.73 % Due Jun 11, 2031",
-                  level: 6,
-                  values: [{
-                    type: "money",
-                    value: 39948.48,
-                    currency: "USD"
-                  }, {
-                    type: "money",
-                    value: 39053.880000000005,
-                    currency: "USD"
-                  }, {
-                    type: "money",
-                    value: 39825.00000000001,
-                    currency: "USD"
-                  }, {
-                    type: "money",
-                    value: 771.1200000000026,
-                    currency: "USD"
-                  }, {
-                    type: "percent",
-                    value: 0.01974502917507819
-                  }, {
-                    type: "percent",
-                    value: 0.000012503371739784402
-                  }]
-                }, {
-                  group_name: "Security",
-                  group_value: "SF Calif City & CNT WTR Rev BDS 5.00 % Due Nov 1, 2015",
-                  level: 6,
-                  values: [{
-                    type: "money",
-                    value: 41299.920000000006,
-                    currency: "USD"
-                  }, {
-                    type: "money",
-                    value: 41536.44,
-                    currency: "USD"
-                  }, {
-                    type: "money",
-                    value: 41269.32000000001,
-                    currency: "USD"
-                  }, {
-                    type: "money",
-                    value: 632.8800000000047,
-                    currency: "USD"
-                  }, {
-                    type: "percent",
-                    value: 0.0155627256171805
-                  }, {
-                    type: "percent",
-                    value: 0.00001026187092368864
-                  }]
-                }, {
-                  group_name: "Security",
-                  group_value: "SF Calif City & CNT WTR Rev BDS 6.95 % Due Nov 1, 2050",
-                  level: 6,
-                  values: [{
-                    type: "money",
-                    value: 46688.40000000001,
-                    currency: "USD"
-                  }, {
-                    type: "money",
-                    value: 45603.00000000001,
-                    currency: "USD"
-                  }, {
-                    type: "money",
-                    value: 44352.00000000001,
-                    currency: "USD"
-                  }, {
-                    type: "money",
-                    value: 0,
-                    currency: "USD"
-                  }, {
-                    type: "percent",
-                    value: 0
-                  }, {
-                    type: "percent",
-                    value: 0
-                  }]
-                }]
-              }]
-            }]
-          }, {
-            group_name: "Owner (Down)",
-            group_value: "Directly Owned",
-            level: 3,
-            values: [{
-              type: "money",
-              value: 11412837.950131172,
-              currency: "USD"
-            }, {
-              type: "money",
-              value: 12209138.16150407,
-              currency: "USD"
-            }, {
-              type: "money",
-              value: 11638657.281079324,
-              currency: "USD"
-            }, {
-              type: "money",
-              value: -557509.0766043423,
-              currency: "USD"
-            }, {
-              type: "percent",
-              value: -0.04569464814997896
-            }, {
-              type: "percent",
-              value: -0.009039764541300975
-            }],
-            children: [{
-              group_name: "Holding Status",
-              group_value: "Current Holding",
-              level: 4,
-              values: [{
-                type: "money",
-                value: 11412837.950131172,
-                currency: "USD"
-              }, {
-                type: "money",
-                value: 12209138.16150407,
-                currency: "USD"
-              }, {
-                type: "money",
-                value: 11638657.281079324,
-                currency: "USD"
-              }, {
-                type: "money",
-                value: -557509.0766043423,
-                currency: "USD"
-              }, {
-                type: "percent",
-                value: -0.04569464814997896
-              }, {
-                type: "percent",
-                value: -0.009039764541300975
-              }],
-              children: [{
-                group_name: "Asset Class",
-                group_value: "Equity",
-                level: 5,
-                values: [{
-                  type: "money",
-                  value: 10752798.650131172,
-                  currency: "USD"
-                }, {
-                  type: "money",
-                  value: 11545886.761504069,
-                  currency: "USD"
-                }, {
-                  type: "money",
-                  value: 10982219.781079324,
-                  currency: "USD"
-                }, {
-                  type: "money",
-                  value: -550695.1766043424,
-                  currency: "USD"
-                }, {
-                  type: "percent",
-                  value: -0.04773083747756965
-                }, {
-                  type: "percent",
-                  value: -0.008929280148861775
-                }],
-                children: [{
-                  group_name: "Security",
-                  group_value: "Aflac, Inc",
-                  level: 6,
-                  values: [{
-                    type: "money",
-                    value: 773996.2160337,
-                    currency: "USD"
-                  }, {
-                    type: "money",
-                    value: 853079.6719863001,
-                    currency: "USD"
-                  }, {
-                    type: "money",
-                    value: 821862.5183208,
-                    currency: "USD"
-                  }, {
-                    type: "money",
-                    value: -24973.72293150006,
-                    currency: "USD"
-                  }, {
-                    type: "percent",
-                    value: -0.02939034020252622
-                  }, {
-                    type: "percent",
-                    value: -0.00040493793642873026
-                  }]
-                }, {
-                  group_name: "Security",
-                  group_value: "Amazon.Com, Inc",
-                  level: 6,
-                  values: [{
-                    type: "money",
-                    value: 1218327.10971093,
-                    currency: "USD"
-                  }, {
-                    type: "money",
-                    value: 1435093.353163305,
-                    currency: "USD"
-                  }, {
-                    type: "money",
-                    value: 1292464.525688595,
-                    currency: "USD"
-                  }, {
-                    type: "money",
-                    value: -142628.82747471007,
-                    currency: "USD"
-                  }, {
-                    type: "percent",
-                    value: -0.09938644559973776
-                  }, {
-                    type: "percent",
-                    value: -0.0023126637238378837
-                  }]
-                }, {
-                  group_name: "Security",
-                  group_value: "Apple, Inc.",
-                  level: 6,
-                  values: [{
-                    type: "money",
-                    value: 1602345.684855546,
-                    currency: "USD"
-                  }, {
-                    type: "money",
-                    value: 1702266.249319794,
-                    currency: "USD"
-                  }, {
-                    type: "money",
-                    value: 1607308.06979106,
-                    currency: "USD"
-                  }, {
-                    type: "money",
-                    value: -94958.17952873395,
-                    currency: "USD"
-                  }, {
-                    type: "percent",
-                    value: -0.05578338850733729
-                  }, {
-                    type: "percent",
-                    value: -0.0015397051281006093
-                  }]
-                }, {
-                  group_name: "Security",
-                  group_value: "Baidu, Inc",
-                  level: 6,
-                  values: [{
-                    type: "money",
-                    value: 251366.97313778396,
-                    currency: "USD"
-                  }, {
-                    type: "money",
-                    value: 307689.681229956,
-                    currency: "USD"
-                  }, {
-                    type: "money",
-                    value: 287517.98647675803,
-                    currency: "USD"
-                  }, {
-                    type: "money",
-                    value: -20171.694753197953,
-                    currency: "USD"
-                  }, {
-                    type: "percent",
-                    value: -0.06555856755599929
-                  }, {
-                    type: "percent",
-                    value: -0.0003270751609615776
-                  }]
-                }, {
-                  group_name: "Security",
-                  group_value: "Berkshire Hathaway Inc",
-                  level: 6,
-                  values: [{
-                    type: "money",
-                    value: 1014984.9394992001,
-                    currency: "USD"
-                  }, {
-                    type: "money",
-                    value: 1056777.1081632,
-                    currency: "USD"
-                  }, {
-                    type: "money",
-                    value: 1070783.132256,
-                    currency: "USD"
-                  }, {
-                    type: "money",
-                    value: 14006.024092799984,
-                    currency: "USD"
-                  }, {
-                    type: "percent",
-                    value: 0.013253527148353981
-                  }, {
-                    type: "percent",
-                    value: 0.00022710152223863236
-                  }]
-                }, {
-                  group_name: "Security",
-                  group_value: "Boeing Co.",
-                  level: 6,
-                  values: [{
-                    type: "money",
-                    value: 1137575.6496792,
-                    currency: "USD"
-                  }, {
-                    type: "money",
-                    value: 1053951.5841768002,
-                    currency: "USD"
-                  }, {
-                    type: "money",
-                    value: 1100409.3983448,
-                    currency: "USD"
-                  }, {
-                    type: "money",
-                    value: 53186.187254399876,
-                    currency: "USD"
-                  }, {
-                    type: "percent",
-                    value: 0.0506990429849482
-                  }, {
-                    type: "percent",
-                    value: 0.0008623906404496608
-                  }]
-                }, {
-                  group_name: "Security",
-                  group_value: "Chipotle Mexican Grill, Inc",
-                  level: 6,
-                  values: [{
-                    type: "money",
-                    value: 3262295.080584,
-                    currency: "USD"
-                  }, {
-                    type: "money",
-                    value: 3443852.4575562007,
-                    currency: "USD"
-                  }, {
-                    type: "money",
-                    value: 3294672.1297506006,
-                    currency: "USD"
-                  }, {
-                    type: "money",
-                    value: -149180.32780560013,
-                    currency: "USD"
-                  }, {
-                    type: "percent",
-                    value: -0.04331786266809476
-                  }, {
-                    type: "percent",
-                    value: -0.0024188934210191766
-                  }]
-                }, {
-                  group_name: "Security",
-                  group_value: "General Electric Company",
-                  level: 6,
-                  values: [{
-                    type: "money",
-                    value: 990873.7863488102,
-                    currency: "USD"
-                  }, {
-                    type: "money",
-                    value: 973398.0581945102,
-                    currency: "USD"
-                  }, {
-                    type: "money",
-                    value: 926796.1164497101,
-                    currency: "USD"
-                  }, {
-                    type: "money",
-                    value: -46601.941744800075,
-                    currency: "USD"
-                  }, {
-                    type: "percent",
-                    value: -0.04787552363853986
-                  }, {
-                    type: "percent",
-                    value: -0.0007556299945935915
-                  }]
-                }, {
-                  group_name: "Security",
-                  group_value: "Green Mountain Coffee Roasters",
-                  level: 6,
-                  values: [{
-                    type: "money",
-                    value: 501033.210282,
-                    currency: "USD"
-                  }, {
-                    type: "money",
-                    value: 719778.5977139999,
-                    currency: "USD"
-                  }, {
-                    type: "money",
-                    value: 580405.904001,
-                    currency: "USD"
-                  }, {
-                    type: "money",
-                    value: -139372.69371299993,
-                    currency: "USD"
-                  }, {
-                    type: "percent",
-                    value: -0.19363272839126414
-                  }, {
-                    type: "percent",
-                    value: -0.0022598669466084974
-                  }]
-                }]
-              }, {
-                group_name: "Asset Class",
-                group_value: "Fixed Income",
-                level: 5,
-                values: [{
-                  type: "money",
-                  value: 660039.3,
-                  currency: "USD"
-                }, {
-                  type: "money",
-                  value: 663251.4,
-                  currency: "USD"
-                }, {
-                  type: "money",
-                  value: 656437.5000000001,
-                  currency: "USD"
-                }, {
-                  type: "money",
-                  value: -6813.900000000023,
-                  currency: "USD"
-                }, {
-                  type: "percent",
-                  value: -0.01027348001074709
-                }, {
-                  type: "percent",
-                  value: -0.00011048439243920134
-                }],
-                children: [{
-                  group_name: "Security",
-                  group_value: "American Express Co 4.88 % Due Jul 15, 2013",
-                  level: 6,
-                  values: [{
-                    type: "money",
-                    value: 94106.7,
-                    currency: "USD"
-                  }, {
-                    type: "money",
-                    value: 94784.40000000001,
-                    currency: "USD"
-                  }, {
-                    type: "money",
-                    value: 94344.3,
-                    currency: "USD"
-                  }, {
-                    type: "money",
-                    value: -440.1000000000058,
-                    currency: "USD"
-                  }, {
-                    type: "percent",
-                    value: -0.0046431691290972545
-                  }, {
-                    type: "percent",
-                    value: -0.000007136027988742569
-                  }]
-                }, {
-                  group_name: "Security",
-                  group_value: "East Bay Calif Mun Util Dist W Rev BDS 4.00 % Due Jun 1, 2014",
-                  level: 6,
-                  values: [{
-                    type: "money",
-                    value: 96615,
-                    currency: "USD"
-                  }, {
-                    type: "money",
-                    value: 95378.40000000001,
-                    currency: "USD"
-                  }, {
-                    type: "money",
-                    value: 95378.40000000001,
-                    currency: "USD"
-                  }, {
-                    type: "money",
-                    value: 0,
-                    currency: "USD"
-                  }, {
-                    type: "percent",
-                    value: 0
-                  }, {
-                    type: "percent",
-                    value: 0
-                  }]
-                }, {
-                  group_name: "Security",
-                  group_value: "FPL Group Cap Inc 5.35 % Due Jun 15, 2013",
-                  level: 6,
-                  values: [{
-                    type: "money",
-                    value: 95578.2,
-                    currency: "USD"
-                  }, {
-                    type: "money",
-                    value: 95585.40000000001,
-                    currency: "USD"
-                  }, {
-                    type: "money",
-                    value: 95625,
-                    currency: "USD"
-                  }, {
-                    type: "money",
-                    value: 39.59999999999127,
-                    currency: "USD"
-                  }, {
-                    type: "percent",
-                    value: 0.00041428921153221376
-                  }, {
-                    type: "percent",
-                    value: 6.420965879439665e-7
-                  }]
-                }, {
-                  group_name: "Security",
-                  group_value: "JPMorgan Chase & Co Unsec. Notes 4.75 % Due Jul 15, 2013",
-                  level: 6,
-                  values: [{
-                    type: "money",
-                    value: 90823.5,
-                    currency: "USD"
-                  }, {
-                    type: "money",
-                    value: 92850.3,
-                    currency: "USD"
-                  }, {
-                    type: "money",
-                    value: 91250.1,
-                    currency: "USD"
-                  }, {
-                    type: "money",
-                    value: -1600.199999999997,
-                    currency: "USD"
-                  }, {
-                    type: "percent",
-                    value: -0.01723419310438412
-                  }, {
-                    type: "percent",
-                    value: -0.000025946539394650502
-                  }]
-                }, {
-                  group_name: "Security",
-                  group_value: "Metlife Inc 5.38 % Due Dec 15, 2012",
-                  level: 6,
-                  values: [{
-                    type: "money",
-                    value: 93712.5,
-                    currency: "USD"
-                  }, {
-                    type: "money",
-                    value: 93150,
-                    currency: "USD"
-                  }, {
-                    type: "money",
-                    value: 93757.5,
-                    currency: "USD"
-                  }, {
-                    type: "money",
-                    value: 607.5,
-                    currency: "USD"
-                  }, {
-                    type: "percent",
-                    value: 0.006521739130434782
-                  }, {
-                    type: "percent",
-                    value: 0.000009850345383233477
-                  }]
-                }, {
-                  group_name: "Security",
-                  group_value: "Morgan Stanley 2.88 % Due Jul 28, 2014",
-                  level: 6,
-                  values: [{
-                    type: "money",
-                    value: 85325.40000000001,
-                    currency: "USD"
-                  }, {
-                    type: "money",
-                    value: 88021.8,
-                    currency: "USD"
-                  }, {
-                    type: "money",
-                    value: 84289.5,
-                    currency: "USD"
-                  }, {
-                    type: "money",
-                    value: -3732.300000000003,
-                    currency: "USD"
-                  }, {
-                    type: "percent",
-                    value: -0.04240199586920516
-                  }, {
-                    type: "percent",
-                    value: -0.00006051760341373224
-                  }]
-                }, {
-                  group_name: "Security",
-                  group_value: "Ohio PWR Co 5.38 % Due Oct 1, 2021",
-                  level: 6,
-                  values: [{
-                    type: "money",
-                    value: 103878,
-                    currency: "USD"
-                  }, {
-                    type: "money",
-                    value: 103481.1,
-                    currency: "USD"
-                  }, {
-                    type: "money",
-                    value: 101792.7,
-                    currency: "USD"
-                  }, {
-                    type: "money",
-                    value: -1688.4000000000087,
-                    currency: "USD"
-                  }, {
-                    type: "percent",
-                    value: -0.016316022925925686
-                  }, {
-                    type: "percent",
-                    value: -0.000027376663613253477
-                  }]
-                }]
-              }]
-            }]
-          }]
-        }, {
-          group_name: "Owner (Down)",
-          group_value: "Directly Owned",
-          level: 2,
-          values: [{
-            type: "money",
-            value: 42028564.1595874,
-            currency: "USD"
-          }, {
-            type: "money",
-            value: 42445645.1703414,
-            currency: "USD"
-          }, {
-            type: "money",
-            value: 42336451.914816,
-            currency: "USD"
-          }, {
-            type: "money",
-            value: -490732.6747303987,
-            currency: "USD"
-          }, {
-            type: "percent",
-            value: -0.011509297500501158
-          }, {
-            type: "percent",
-            value: -0.007957014546390778
-          }],
-          children: [{
-            group_name: "Holding Status",
-            group_value: "Current Holding",
-            level: 3,
-            values: [{
-              type: "money",
-              value: 42028564.1595874,
-              currency: "USD"
-            }, {
-              type: "money",
-              value: 42445645.1703414,
-              currency: "USD"
-            }, {
-              type: "money",
-              value: 42336451.914816,
-              currency: "USD"
-            }, {
-              type: "money",
-              value: -490732.6747303987,
-              currency: "USD"
-            }, {
-              type: "percent",
-              value: -0.011509297500501158
-            }, {
-              type: "percent",
-              value: -0.007957014546390778
-            }],
-            children: [{
-              group_name: "Asset Class",
-              group_value: "Cash & Cash Equivalents",
-              level: 4,
-              values: [{
-                type: "money",
-                value: 4522893,
-                currency: "USD"
-              }, {
-                type: "money",
-                value: 3584496,
-                currency: "USD"
-              }, {
-                type: "money",
-                value: 4048725,
-                currency: "USD"
-              }, {
-                type: "money",
-                value: -2,
-                currency: "USD"
-              }, {
-                type: "percent",
-                value: 0
-              }, {
-                type: "percent",
-                value: -3.2429120603237784e-8
-              }],
-              children: [{
-                group_name: "Security",
-                group_value: "Cash",
-                level: 5,
-                values: [{
-                  type: "money",
-                  value: 4522893,
-                  currency: "USD"
-                }, {
-                  type: "money",
-                  value: 3584496,
-                  currency: "USD"
-                }, {
-                  type: "money",
-                  value: 4048725,
-                  currency: "USD"
-                }, {
-                  type: "money",
-                  value: -2,
-                  currency: "USD"
-                }, {
-                  type: "percent",
-                  value: 0
-                }, {
-                  type: "percent",
-                  value: -3.2429120603237784e-8
-                }]
-              }]
-            }, {
-              group_name: "Asset Class",
-              group_value: "Equity",
-              level: 4,
-              values: [{
-                type: "money",
-                value: 14354363.1840884,
-                currency: "USD"
-              }, {
-                type: "money",
-                value: 15577473.865274899,
-                currency: "USD"
-              }, {
-                type: "money",
-                value: 15033957.5173331,
-                currency: "USD"
-              }, {
-                type: "money",
-                value: -507398.5953467991,
-                currency: "USD"
-              }, {
-                type: "percent",
-                value: -0.03259330821114757
-              }, {
-                type: "percent",
-                value: -0.008227245121207396
-              }],
-              children: [{
-                group_name: "Security",
-                group_value: "Hewlett-Packard Company",
-                level: 5,
-                values: [{
-                  type: "money",
-                  value: 492659.6758712,
-                  currency: "USD"
-                }, {
-                  type: "money",
-                  value: 507340.32410729997,
-                  currency: "USD"
-                }, {
-                  type: "money",
-                  value: 532888.4651935,
-                  currency: "USD"
-                }, {
-                  type: "money",
-                  value: 25548.141086200078,
-                  currency: "USD"
-                }, {
-                  type: "percent",
-                  value: 0.05035700864336731
-                }, {
-                  type: "percent",
-                  value: 0.0004142518742364583
-                }]
-              }, {
-                group_name: "Security",
-                group_value: "Johnson & Johnson",
-                level: 5,
-                values: [{
-                  type: "money",
-                  value: 994124.922925,
-                  currency: "USD"
-                }, {
-                  type: "money",
-                  value: 995516.3886025001,
-                  currency: "USD"
-                }, {
-                  type: "money",
-                  value: 1000618.4294200001,
-                  currency: "USD"
-                }, {
-                  type: "money",
-                  value: 13914.65677250002,
-                  currency: "USD"
-                }, {
-                  type: "percent",
-                  value: 0.013997949380945998
-                }, {
-                  type: "percent",
-                  value: 0.00022562004131403127
-                }]
-              }, {
-                group_name: "Security",
-                group_value: "Las Vegas Sands Corp.",
-                level: 5,
-                values: [{
-                  type: "money",
-                  value: 2498796.6305316,
-                  currency: "USD"
-                }, {
-                  type: "money",
-                  value: 2824909.747254,
-                  currency: "USD"
-                }, {
-                  type: "money",
-                  value: 2810469.3140412,
-                  currency: "USD"
-                }, {
-                  type: "money",
-                  value: -14440.433212799951,
-                  currency: "USD"
-                }, {
-                  type: "percent",
-                  value: -0.005111821086261964
-                }, {
-                  type: "percent",
-                  value: -0.00023414527511044503
-                }]
-              }, {
-                group_name: "Security",
-                group_value: "McDonald",
-                level: 5,
-                values: [{
-                  type: "money",
-                  value: 1552883.0833780998,
-                  currency: "USD"
-                }, {
-                  type: "money",
-                  value: 1478974.1952165,
-                  currency: "USD"
-                }, {
-                  type: "money",
-                  value: 1521503.6631888,
-                  currency: "USD"
-                }, {
-                  type: "money",
-                  value: 53679.5157623,
-                  currency: "USD"
-                }, {
-                  type: "percent",
-                  value: 0.03630421027233325
-                }, {
-                  type: "percent",
-                  value: 0.0008703897452895151
-                }]
-              }, {
-                group_name: "Security",
-                group_value: "Microsoft",
-                level: 5,
-                values: [{
-                  type: "money",
-                  value: 840064.62046,
-                  currency: "USD"
-                }, {
-                  type: "money",
-                  value: 860420.0324172999,
-                  currency: "USD"
-                }, {
-                  type: "money",
-                  value: 826494.3458218,
-                  currency: "USD"
-                }, {
-                  type: "money",
-                  value: -17770.59774550004,
-                  currency: "USD"
-                }, {
-                  type: "percent",
-                  value: -0.020849854094320323
-                }, {
-                  type: "percent",
-                  value: -0.00028814242874022314
-                }]
-              }, {
-                group_name: "Security",
-                group_value: "Netflix, Inc",
-                level: 5,
-                values: [{
-                  type: "money",
-                  value: 1305534.7794962,
-                  currency: "USD"
-                }, {
-                  type: "money",
-                  value: 1534779.3569328,
-                  currency: "USD"
-                }, {
-                  type: "money",
-                  value: 1206619.2970623001,
-                  currency: "USD"
-                }, {
-                  type: "money",
-                  value: -328160.0598704999,
-                  currency: "USD"
-                }, {
-                  type: "percent",
-                  value: -0.21381578947368413
-                }, {
-                  type: "percent",
-                  value: -0.005320971079353086
-                }]
-              }, {
-                group_name: "Security",
-                group_value: "Oracle Corporation",
-                level: 5,
-                values: [{
-                  type: "money",
-                  value: 1175452.7162349,
-                  currency: "USD"
-                }, {
-                  type: "money",
-                  value: 1318712.2735713,
-                  currency: "USD"
-                }, {
-                  type: "money",
-                  value: 1261569.4164314999,
-                  currency: "USD"
-                }, {
-                  type: "money",
-                  value: -57142.85713980021,
-                  currency: "USD"
-                }, {
-                  type: "percent",
-                  value: -0.04333231614281371
-                }, {
-                  type: "percent",
-                  value: -0.0009265463029000841
-                }]
-              }, {
-                group_name: "Security",
-                group_value: "Procter & Gamble Company",
-                level: 5,
-                values: [{
-                  type: "money",
-                  value: 1065772.2510156,
-                  currency: "USD"
-                }, {
-                  type: "money",
-                  value: 1046956.8059946,
-                  currency: "USD"
-                }, {
-                  type: "money",
-                  value: 1056446.3347878,
-                  currency: "USD"
-                }, {
-                  type: "money",
-                  value: 9489.52879319992,
-                  currency: "USD"
-                }, {
-                  type: "percent",
-                  value: 0.00906391623691194
-                }, {
-                  type: "percent",
-                  value: 0.00015386853685128886
-                }]
-              }, {
-                group_name: "Security",
-                group_value: "Salesforce.Com",
-                level: 5,
-                values: [{
-                  type: "money",
-                  value: 1430900.8288592002,
-                  currency: "USD"
-                }, {
-                  type: "money",
-                  value: 1779871.6923143999,
-                  currency: "USD"
-                }, {
-                  type: "money",
-                  value: 1582731.8900944002,
-                  currency: "USD"
-                }, {
-                  type: "money",
-                  value: -197139.80221999972,
-                  currency: "USD"
-                }, {
-                  type: "percent",
-                  value: -0.11076068183524804
-                }, {
-                  type: "percent",
-                  value: -0.0031965352109454073
-                }]
-              }, {
-                group_name: "Security",
-                group_value: "Sysco Corp.",
-                level: 5,
-                values: [{
-                  type: "money",
-                  value: 1028469.7508289999,
-                  currency: "USD"
-                }, {
-                  type: "money",
-                  value: 986476.8682691999,
-                  currency: "USD"
-                }, {
-                  type: "money",
-                  value: 1015658.3629293999,
-                  currency: "USD"
-                }, {
-                  type: "money",
-                  value: 29181.494660200085,
-                  currency: "USD"
-                }, {
-                  type: "percent",
-                  value: 0.029581529581529674
-                }, {
-                  type: "percent",
-                  value: 0.00047316510485918394
-                }]
-              }, {
-                group_name: "Security",
-                group_value: "Vmware, Inc",
-                level: 5,
-                values: [{
-                  type: "money",
-                  value: 1969703.9244875999,
-                  currency: "USD"
-                }, {
-                  type: "money",
-                  value: 2243516.180595,
-                  currency: "USD"
-                }, {
-                  type: "money",
-                  value: 2218957.9983624,
-                  currency: "USD"
-                }, {
-                  type: "money",
-                  value: -24558.182232599705,
-                  currency: "USD"
-                }, {
-                  type: "percent",
-                  value: -0.010946291560102172
-                }, {
-                  type: "percent",
-                  value: -0.0003982001267086336
-                }]
-              }]
-            }, {
-              group_name: "Asset Class",
-              group_value: "Alternatives",
-              level: 4,
-              values: [{
-                type: "money",
-                value: 23151307.975499,
-                currency: "USD"
-              }, {
-                type: "money",
-                value: 23283675.3050665,
-                currency: "USD"
-              }, {
-                type: "money",
-                value: 23253769.3974829,
-                currency: "USD"
-              }, {
-                type: "money",
-                value: 16667.920616400195,
-                currency: "USD"
-              }, {
-                type: "percent",
-                value: 0.0007170712230973364
-              }, {
-                type: "percent",
-                value: 0.0002702630039372177
-              }],
-              children: [{
-                group_name: "Security",
-                group_value: "Accel Internet Venture Fund Vi LP",
-                level: 5,
-                values: [{
-                  type: "money",
-                  value: 1100000,
-                  currency: "USD"
-                }, {
-                  type: "money",
-                  value: 1100000,
-                  currency: "USD"
-                }, {
-                  type: "money",
-                  value: 1100000,
-                  currency: "USD"
-                }, {
-                  type: "money",
-                  value: 0,
-                  currency: "USD"
-                }, {
-                  type: "percent",
-                  value: 0
-                }, {
-                  type: "percent",
-                  value: 0
-                }]
-              }, {
-                group_name: "Security",
-                group_value: "Anything But The Usd, LP",
-                level: 5,
-                values: [{
-                  type: "money",
-                  value: 1597770,
-                  currency: "USD"
-                }, {
-                  type: "money",
-                  value: 1664190,
-                  currency: "USD"
-                }, {
-                  type: "money",
-                  value: 1616548,
-                  currency: "USD"
-                }, {
-                  type: "money",
-                  value: -45288.60000000009,
-                  currency: "USD"
-                }, {
-                  type: "percent",
-                  value: -0.027250853198422898
-                }, {
-                  type: "percent",
-                  value: -0.0007343347356758988
-                }]
-              }, {
-                group_name: "Security",
-                group_value: "Apollo Investment Fund V",
-                level: 5,
-                values: [{
-                  type: "money",
-                  value: 1614907,
-                  currency: "USD"
-                }, {
-                  type: "money",
-                  value: 1614907,
-                  currency: "USD"
-                }, {
-                  type: "money",
-                  value: 1614907,
-                  currency: "USD"
-                }, {
-                  type: "money",
-                  value: 0,
-                  currency: "USD"
-                }, {
-                  type: "percent",
-                  value: 0
-                }, {
-                  type: "percent",
-                  value: 0
-                }]
-              }, {
-                group_name: "Security",
-                group_value: "Blackstone Communications I",
-                level: 5,
-                values: [{
-                  type: "money",
-                  value: 1522387,
-                  currency: "USD"
-                }, {
-                  type: "money",
-                  value: 1522387,
-                  currency: "USD"
-                }, {
-                  type: "money",
-                  value: 1522387,
-                  currency: "USD"
-                }, {
-                  type: "money",
-                  value: 0,
-                  currency: "USD"
-                }, {
-                  type: "percent",
-                  value: 0
-                }, {
-                  type: "percent",
-                  value: 0
-                }]
-              }, {
-                group_name: "Security",
-                group_value: "Blue Ridge",
-                level: 5,
-                values: [{
-                  type: "money",
-                  value: 1335005,
-                  currency: "USD"
-                }, {
-                  type: "money",
-                  value: 1335005,
-                  currency: "USD"
-                }, {
-                  type: "money",
-                  value: 1335005,
-                  currency: "USD"
-                }, {
-                  type: "money",
-                  value: 0,
-                  currency: "USD"
-                }, {
-                  type: "percent",
-                  value: 0
-                }, {
-                  type: "percent",
-                  value: 0
-                }]
-              }, {
-                group_name: "Security",
-                group_value: "Brevan Howard Master Fund LP",
-                level: 5,
-                values: [{
-                  type: "money",
-                  value: 1652094,
-                  currency: "USD"
-                }, {
-                  type: "money",
-                  value: 1652094,
-                  currency: "USD"
-                }, {
-                  type: "money",
-                  value: 1652094,
-                  currency: "USD"
-                }, {
-                  type: "money",
-                  value: 0,
-                  currency: "USD"
-                }, {
-                  type: "percent",
-                  value: 0
-                }, {
-                  type: "percent",
-                  value: 0
-                }]
-              }, {
-                group_name: "Security",
-                group_value: "Bridgewater All Weather 12% Strategy LP",
-                level: 5,
-                values: [{
-                  type: "money",
-                  value: 1012502,
-                  currency: "USD"
-                }, {
-                  type: "money",
-                  value: 1012502,
-                  currency: "USD"
-                }, {
-                  type: "money",
-                  value: 1012502,
-                  currency: "USD"
-                }, {
-                  type: "money",
-                  value: 0,
-                  currency: "USD"
-                }, {
-                  type: "percent",
-                  value: 0
-                }, {
-                  type: "percent",
-                  value: 0
-                }]
-              }, {
-                group_name: "Security",
-                group_value: "Buckeye Partners LP",
-                level: 5,
-                values: [{
-                  type: "money",
-                  value: 1109712.230167,
-                  currency: "USD"
-                }, {
-                  type: "money",
-                  value: 1214928.0575004998,
-                  currency: "USD"
-                }, {
-                  type: "money",
-                  value: 1147482.014338,
-                  currency: "USD"
-                }, {
-                  type: "money",
-                  value: -49010.79136249982,
-                  currency: "USD"
-                }, {
-                  type: "percent",
-                  value: -0.040775699586931786
-                }, {
-                  type: "percent",
-                  value: -0.0007946884319773157
-                }]
-              }, {
-                group_name: "Security",
-                group_value: "Citadel Kensington Global Strategies LTD",
-                level: 5,
-                values: [{
-                  type: "money",
-                  value: 757000,
-                  currency: "USD"
-                }, {
-                  type: "money",
-                  value: 757000,
-                  currency: "USD"
-                }, {
-                  type: "money",
-                  value: 757000,
-                  currency: "USD"
-                }, {
-                  type: "money",
-                  value: 0,
-                  currency: "USD"
-                }, {
-                  type: "percent",
-                  value: 0
-                }, {
-                  type: "percent",
-                  value: 0
-                }]
-              }, {
-                group_name: "Security",
-                group_value: "Debt Collectors, LP",
-                level: 5,
-                values: [{
-                  type: "money",
-                  value: 1574468,
-                  currency: "USD"
-                }, {
-                  type: "money",
-                  value: 1594264,
-                  currency: "USD"
-                }, {
-                  type: "money",
-                  value: 1538404,
-                  currency: "USD"
-                }, {
-                  type: "money",
-                  value: -48686.39999999991,
-                  currency: "USD"
-                }, {
-                  type: "percent",
-                  value: -0.0306673372406235
-                }, {
-                  type: "percent",
-                  value: -0.0007894285686687365
-                }]
-              }, {
-                group_name: "Security",
-                group_value: "Enterprise Products Partners LP",
-                level: 5,
-                values: [{
-                  type: "money",
-                  value: 1371708.5119359998,
-                  currency: "USD"
-                }, {
-                  type: "money",
-                  value: 1372627.0667430998,
-                  currency: "USD"
-                }, {
-                  type: "money",
-                  value: 1392835.2724993,
-                  currency: "USD"
-                }, {
-                  type: "money",
-                  value: 20208.205756200245,
-                  currency: "USD"
-                }, {
-                  type: "percent",
-                  value: 0.014722284184697928
-                }, {
-                  type: "percent",
-                  value: 0.00032766717082143086
-                }]
-              }, {
-                group_name: "Security",
-                group_value: "GS Capital Partners V LP",
-                level: 5,
-                values: [{
-                  type: "money",
-                  value: 523468,
-                  currency: "USD"
-                }, {
-                  type: "money",
-                  value: 523468,
-                  currency: "USD"
-                }, {
-                  type: "money",
-                  value: 523468,
-                  currency: "USD"
-                }, {
-                  type: "money",
-                  value: 0,
-                  currency: "USD"
-                }, {
-                  type: "percent",
-                  value: 0
-                }, {
-                  type: "percent",
-                  value: 0
-                }]
-              }, {
-                group_name: "Security",
-                group_value: "GS Distressed Opportunities Fund III",
-                level: 5,
-                values: [{
-                  type: "money",
-                  value: 305263,
-                  currency: "USD"
-                }, {
-                  type: "money",
-                  value: 305263,
-                  currency: "USD"
-                }, {
-                  type: "money",
-                  value: 305263,
-                  currency: "USD"
-                }, {
-                  type: "money",
-                  value: 0,
-                  currency: "USD"
-                }, {
-                  type: "percent",
-                  value: 0
-                }, {
-                  type: "percent",
-                  value: 0
-                }]
-              }, {
-                group_name: "Security",
-                group_value: "Horseman Global Fund LTD",
-                level: 5,
-                values: [{
-                  type: "money",
-                  value: 600000,
-                  currency: "USD"
-                }, {
-                  type: "money",
-                  value: 600000,
-                  currency: "USD"
-                }, {
-                  type: "money",
-                  value: 600000,
-                  currency: "USD"
-                }, {
-                  type: "money",
-                  value: 0,
-                  currency: "USD"
-                }, {
-                  type: "percent",
-                  value: 0
-                }, {
-                  type: "percent",
-                  value: 0
-                }]
-              }, {
-                group_name: "Security",
-                group_value: "Kinder Morgan Energy Partners, LP",
-                level: 5,
-                values: [{
-                  type: "money",
-                  value: 1273574.2973384,
-                  currency: "USD"
-                }, {
-                  type: "money",
-                  value: 1220722.8917097,
-                  currency: "USD"
-                }, {
-                  type: "money",
-                  value: 1256224.899746,
-                  currency: "USD"
-                }, {
-                  type: "money",
-                  value: 35502.008036300074,
-                  currency: "USD"
-                }, {
-                  type: "percent",
-                  value: 0.029082774049217063
-                }, {
-                  type: "percent",
-                  value: 0.000575649450133146
-                }]
-              }, {
-                group_name: "Security",
-                group_value: "Kinder Morgan Management, LLC",
-                level: 5,
-                values: [{
-                  type: "money",
-                  value: 1308675.3063251998,
-                  currency: "USD"
-                }, {
-                  type: "money",
-                  value: 1192224.6223487998,
-                  currency: "USD"
-                }, {
-                  type: "money",
-                  value: 1273758.0996923998,
-                  currency: "USD"
-                }, {
-                  type: "money",
-                  value: 81533.47734360001,
-                  currency: "USD"
-                }, {
-                  type: "percent",
-                  value: 0.0683876811594203
-                }, {
-                  type: "percent",
-                  value: 0.00132202948498848
-                }]
-              }, {
-                group_name: "Security",
-                group_value: "KKR 2006 Fund LP",
-                level: 5,
-                values: [{
-                  type: "money",
-                  value: 823100,
-                  currency: "USD"
-                }, {
-                  type: "money",
-                  value: 823100,
-                  currency: "USD"
-                }, {
-                  type: "money",
-                  value: 823100,
-                  currency: "USD"
-                }, {
-                  type: "money",
-                  value: 0,
-                  currency: "USD"
-                }, {
-                  type: "percent",
-                  value: 0
-                }, {
-                  type: "percent",
-                  value: 0
-                }]
-              }, {
-                group_name: "Security",
-                group_value: "Paulson Credit Opportunities",
-                level: 5,
-                values: [{
-                  type: "money",
-                  value: 368500,
-                  currency: "USD"
-                }, {
-                  type: "money",
-                  value: 368500,
-                  currency: "USD"
-                }, {
-                  type: "money",
-                  value: 368500,
-                  currency: "USD"
-                }, {
-                  type: "money",
-                  value: 0,
-                  currency: "USD"
-                }, {
-                  type: "percent",
-                  value: 0
-                }, {
-                  type: "percent",
-                  value: 0
-                }]
-              }, {
-                group_name: "Security",
-                group_value: "Plains All American Pipeline, L.P.",
-                level: 5,
-                values: [{
-                  type: "money",
-                  value: 1284629.6297324002,
-                  currency: "USD"
-                }, {
-                  type: "money",
-                  value: 1221666.6667644,
-                  currency: "USD"
-                }, {
-                  type: "money",
-                  value: 1201111.1112072,
-                  currency: "USD"
-                }, {
-                  type: "money",
-                  value: -1943.9791572000831,
-                  currency: "USD"
-                }, {
-                  type: "percent",
-                  value: -0.0016142062729210425
-                }, {
-                  type: "percent",
-                  value: -0.00003152076726951102
-                }]
-              }, {
-                group_name: "Security",
-                group_value: "Trading Places, LP",
-                level: 5,
-                values: [{
-                  type: "money",
-                  value: 2016544,
-                  currency: "USD"
-                }, {
-                  type: "money",
-                  value: 2188826,
-                  currency: "USD"
-                }, {
-                  type: "money",
-                  value: 2213180,
-                  currency: "USD"
-                }, {
-                  type: "money",
-                  value: 24354,
-                  currency: "USD"
-                }, {
-                  type: "percent",
-                  value: 0.011126512568838271
-                }, {
-                  type: "percent",
-                  value: 0.00039488940158562645
-                }]
-              }]
-            }]
-          }]
-        }]
-      }]
-    },
-    grouping_factors: [{
-      display_name: "Owner (Down)",
-      is_time_series: false,
-      template_id: "down_factor"
-    }, {
-      display_name: "Holding Status",
-      is_time_series: false,
-      template_id: "holding_period_factor"
-    }, {
-      display_name: "Asset Class",
-      is_time_series: false,
-      template_id: "asset_class_factor"
-    }, {
-      display_name: "Security",
-      is_time_series: false,
-      template_id: "security_factor"
-    }],
-    value_factors: [{
-      display_name: "Current Value (Native Currency)",
-      is_time_series: false,
-      template_id: "personal_value_factor"
-    }, {
-      display_name: "Adjusted Value 11/1/2012 (USD)",
-      is_time_series: false,
-      template_id: "personal_value_factor"
-    }, {
-      display_name: "Adjusted Value 11/30/2011 (USD)",
-      is_time_series: false,
-      template_id: "personal_value_factor"
-    }, {
-      display_name: "Adjusted Total Return Nov. 2011 (USD)",
-      is_time_series: false,
-      template_id: "absolute_gain_factor"
-    }, {
-      display_name: "Adjusted Total Return (%) Nov. 2011 (USD)",
-      is_time_series: false,
-      template_id: "percent_gain_factor"
-    }, {
-      display_name: "Adjusted Performance Attribution Nov. 2011 (USD) ",
-      is_time_series: false,
-      template_id: "contribution_to_portfolio_factor"
-    }]
+    name: 'App Version',
+    initialize: function initialize(application) {
+      if (!registered) {
+        var appName = classify(application.toString());
+        Ember['default'].libraries.register(appName, config['default'].APP.version);
+        registered = true;
+      }
+    }
   };
+
+});
+define('dummy/models/treedata', ['exports'], function (exports) {
+
+	'use strict';
+
+	exports['default'] = {'root':{'group_value':'Total','level':0,'values':[{'type':'money','value':60269996.24879856,'currency':'USD'},{'type':'money','value':61494836.611845456,'currency':'USD'},{'type':'money','value':60816540.19589533,'currency':'USD'},{'type':'money','value':-1039739.6313347403,'currency':'USD'},{'type':'percent','value':-0.016858920950260137},{'type':'percent','value':-0.01685892095026014}],'children':[{'group_name':'Owner (Down)','group_value':'Uncle Money Penny','level':1,'values':[{'type':'money','value':60269996.248798564,'currency':'USD'},{'type':'money','value':61494836.61184546,'currency':'USD'},{'type':'money','value':60816540.19589534,'currency':'USD'},{'type':'money','value':-1039739.6313347424,'currency':'USD'},{'type':'percent','value':-0.016858920950260176},{'type':'percent','value':-0.01685892095026018}],'children':[{'group_name':'Owner (Down)','group_value':'The Money Penny Trust','level':2,'values':[{'type':'money','value':18241432.089211173,'currency':'USD'},{'type':'money','value':19049191.44150407,'currency':'USD'},{'type':'money','value':18480088.281079322,'currency':'USD'},{'type':'money','value':-549006.9566043427,'currency':'USD'},{'type':'percent','value':-0.028841927979075494},{'type':'percent','value':-0.00890190640386938}],'children':[{'group_name':'Owner (Down)','group_value':'Sterling Holdings, LLC','level':3,'values':[{'type':'money','value':6828594.139080001,'currency':'USD'},{'type':'money','value':6840053.28,'currency':'USD'},{'type':'money','value':6841431,'currency':'USD'},{'type':'money','value':8502.119999999879,'currency':'USD'},{'type':'percent','value':0.0012440650800411423},{'type':'percent','value':0.00013785813743159806}],'children':[{'group_name':'Holding Status','group_value':'Current Holding','level':4,'values':[{'type':'money','value':6828594.139080001,'currency':'USD'},{'type':'money','value':6840053.28,'currency':'USD'},{'type':'money','value':6841431,'currency':'USD'},{'type':'money','value':8502.119999999879,'currency':'USD'},{'type':'percent','value':0.0012440650800411423},{'type':'percent','value':0.00013785813743159806}],'children':[{'group_name':'Asset Class','group_value':'Fixed Income','level':5,'values':[{'type':'money','value':6828594.139080001,'currency':'USD'},{'type':'money','value':6840053.28,'currency':'USD'},{'type':'money','value':6841431,'currency':'USD'},{'type':'money','value':8502.119999999879,'currency':'USD'},{'type':'percent','value':0.0012440650800411423},{'type':'percent','value':0.00013785813743159806}],'children':[{'group_name':'Security','group_value':'Bay Area Toll Auth Calif Toll Rev BDS 3.50 % Due Apr 1, 2019','level':6,'values':[{'type':'money','value':38471.4,'currency':'USD'},{'type':'money','value':38232.00000000001,'currency':'USD'},{'type':'money','value':38656.8,'currency':'USD'},{'type':'money','value':424.79999999999563,'currency':'USD'},{'type':'percent','value':0.011111111111110995},{'type':'percent','value':0.000006887945216127635}]},{'group_name':'Security','group_value':'Bay Area Toll Auth Calif Toll Toll Bridge Rev 3.90 % Due Apr 1, 2014','level':6,'values':[{'type':'money','value':38471.4,'currency':'USD'},{'type':'money','value':38232.00000000001,'currency':'USD'},{'type':'money','value':38656.8,'currency':'USD'},{'type':'money','value':424.79999999999563,'currency':'USD'},{'type':'percent','value':0.011111111111110995},{'type':'percent','value':0.000006887945216127635}]},{'group_name':'Security','group_value':'Berkshire Hathaway Inc 3.20 % Due Feb 11, 2015','level':6,'values':[{'type':'money','value':38063.16,'currency':'USD'},{'type':'money','value':38147.04,'currency':'USD'},{'type':'money','value':37989.36000000001,'currency':'USD'},{'type':'money','value':-157.67999999999302,'currency':'USD'},{'type':'percent','value':-0.0041334792948546735},{'type':'percent','value':-0.0000025567118683591537}]},{'group_name':'Security','group_value':'Burlington Northern Santa Fe CP 4.30 % Due Jul 1, 2013','level':6,'values':[{'type':'money','value':37758.600000000006,'currency':'USD'},{'type':'money','value':38019.96000000001,'currency':'USD'},{'type':'money','value':37260.00000000001,'currency':'USD'},{'type':'money','value':-759.9599999999991,'currency':'USD'},{'type':'percent','value':-0.019988448173012256},{'type':'percent','value':-0.000012322417246818278}]},{'group_name':'Security','group_value':'Burlington Northern Santa Fe CP 4.70 % Due Oct 1, 2019','level':6,'values':[{'type':'money','value':39441.600000000006,'currency':'USD'},{'type':'money','value':40383.00000000001,'currency':'USD'},{'type':'money','value':40011.840000000004,'currency':'USD'},{'type':'money','value':-371.1600000000035,'currency':'USD'},{'type':'percent','value':-0.009190996211277107},{'type':'percent','value':-0.000006018196201548924}]},{'group_name':'Security','group_value':'CA CNTY Calif Tob Sec Asset Backed BDS 5.00 % Due Jun 1, 2036','level':6,'values':[{'type':'money','value':1423656.0000000002,'currency':'USD'},{'type':'money','value':1467460.8000000003,'currency':'USD'},{'type':'money','value':1468519.2,'currency':'USD'},{'type':'money','value':1058.399999999674,'currency':'USD'},{'type':'percent','value':0.0007212458417967103},{'type':'percent','value':0.000017161490623228148}]},{'group_name':'Security','group_value':'Canadian Natl RY Co 7.62 % Due May 15, 2023','level':6,'values':[{'type':'money','value':48960.00000000001,'currency':'USD'},{'type':'money','value':50580.00000000001,'currency':'USD'},{'type':'money','value':49207.50000000001,'currency':'USD'},{'type':'money','value':0,'currency':'USD'},{'type':'percent','value':0},{'type':'percent','value':0}]},{'group_name':'Security','group_value':'Comcast Corp 6.50 % Due Jan 15, 2015','level':6,'values':[{'type':'money','value':40730.4,'currency':'USD'},{'type':'money','value':41179.32000000001,'currency':'USD'},{'type':'money','value':40817.520000000004,'currency':'USD'},{'type':'money','value':-361.8000000000029,'currency':'USD'},{'type':'percent','value':-0.008785963439901456},{'type':'percent','value':-0.000005866427917125762}]},{'group_name':'Security','group_value':'CSX Corp 5.75 % Due Mar 15, 2013','level':6,'values':[{'type':'money','value':38115.36000000001,'currency':'USD'},{'type':'money','value':38282.4,'currency':'USD'},{'type':'money','value':38055.96000000001,'currency':'USD'},{'type':'money','value':-226.43999999999505,'currency':'USD'},{'type':'percent','value':-0.005914989655820822},{'type':'percent','value':-0.0000036716250346985016}]},{'group_name':'Security','group_value':'Dell Inc 1.40 % Due Sep 10, 2013','level':6,'values':[{'type':'money','value':36448.560000000005,'currency':'USD'},{'type':'money','value':36234.00000000001,'currency':'USD'},{'type':'money','value':36241.560000000005,'currency':'USD'},{'type':'money','value':7.559999999997672,'currency':'USD'},{'type':'percent','value':0.00020864381520112796},{'type':'percent','value':1.2258207588020108e-7}]},{'group_name':'Security','group_value':'Du Pont E I De Nemours & Co 3.25 % Due Jan 15, 2015','level':6,'values':[{'type':'money','value':38441.16,'currency':'USD'},{'type':'money','value':38532.600000000006,'currency':'USD'},{'type':'money','value':38362.68000000001,'currency':'USD'},{'type':'money','value':-169.91999999999825,'currency':'USD'},{'type':'percent','value':-0.004409772504320971},{'type':'percent','value':-0.0000027551780864510538}]},{'group_name':'Security','group_value':'Duke Energy 3.95 % Due Sep 15, 2014','level':6,'values':[{'type':'money','value':38405.520000000004,'currency':'USD'},{'type':'money','value':38570.04000000001,'currency':'USD'},{'type':'money','value':38552.04000000001,'currency':'USD'},{'type':'money','value':-18,'currency':'USD'},{'type':'percent','value':-0.00046668346727148834},{'type':'percent','value':-2.9186208542914004e-7}]},{'group_name':'Security','group_value':'Golden ST Tob Sec C Tobacco Settlement 5.12 % Due May 31, 2047','level':6,'values':[{'type':'money','value':1350000.0000000002,'currency':'USD'},{'type':'money','value':1333087.2000000002,'currency':'USD'},{'type':'money','value':1326240.0000000002,'currency':'USD'},{'type':'money','value':-6847.199999999953,'currency':'USD'},{'type':'percent','value':-0.005136348169872123},{'type':'percent','value':-0.00011102433729724412}]},{'group_name':'Security','group_value':'Golden ST Tob Sec C Tobacco Settlement 5.75 % Due Jun 1, 2047','level':6,'values':[{'type':'money','value':1260000.0000000002,'currency':'USD'},{'type':'money','value':1243800,'currency':'USD'},{'type':'money','value':1256778.0000000002,'currency':'USD'},{'type':'money','value':12978.000000000233,'currency':'USD'},{'type':'percent','value':0.010434153400868494},{'type':'percent','value':0.00021043256359441374}]},{'group_name':'Security','group_value':'Long Beach Calif HBR Rev Rev BDS 4.00 % Due May 15, 2019','level':6,'values':[{'type':'money','value':40452.840000000004,'currency':'USD'},{'type':'money','value':38716.560000000005,'currency':'USD'},{'type':'money','value':40452.840000000004,'currency':'USD'},{'type':'money','value':2456.279999999999,'currency':'USD'},{'type':'percent','value':0.06402791155277268},{'type':'percent','value':0.00003982750017766043}]},{'group_name':'Security','group_value':'Menlo PK Calif City SCH Dist Go BDS 0.00 % Due Jul 1, 2040','level':6,'values':[{'type':'money','value':1752192.0000000002,'currency':'USD'},{'type':'money','value':1752192.0000000002,'currency':'USD'},{'type':'money','value':1752192.0000000002,'currency':'USD'},{'type':'money','value':0,'currency':'USD'},{'type':'percent','value':0},{'type':'percent','value':0}]},{'group_name':'Security','group_value':'Midamerican Energy Co 5.30 % Due Mar 15, 2018','level':6,'values':[{'type':'money','value':41422.339080000005,'currency':'USD'},{'type':'money','value':41973.840000000004,'currency':'USD'},{'type':'money','value':41568.12,'currency':'USD'},{'type':'money','value':-405.72000000000116,'currency':'USD'},{'type':'percent','value':-0.009666020549942563},{'type':'percent','value':-0.000006578571405572836}]},{'group_name':'Security','group_value':'Napa Calif Santn Dist CTFS Par Cops 5.00 % Due Aug 1, 2013','level':6,'values':[{'type':'money','value':38045.16,'currency':'USD'},{'type':'money','value':38592.72,'currency':'USD'},{'type':'money','value':38131.560000000005,'currency':'USD'},{'type':'money','value':-461.1599999999962,'currency':'USD'},{'type':'percent','value':-0.011949403929031077},{'type':'percent','value':-0.000007477506628694506}]},{'group_name':'Security','group_value':'National Grid PLC 6.30 % Due Aug 1, 2016','level':6,'values':[{'type':'money','value':41097.600000000006,'currency':'USD'},{'type':'money','value':41767.920000000006,'currency':'USD'},{'type':'money','value':41082.48,'currency':'USD'},{'type':'money','value':-685.4400000000023,'currency':'USD'},{'type':'percent','value':-0.01641068073296449},{'type':'percent','value':-0.000011114108213141692}]},{'group_name':'Security','group_value':'Norfolk Southern Corp 7.05 % Due May 1, 2037','level':6,'values':[{'type':'money','value':46945.44,'currency':'USD'},{'type':'money','value':46945.44,'currency':'USD'},{'type':'money','value':45684.54000000001,'currency':'USD'},{'type':'money','value':7.275957614183426e-12,'currency':'USD'},{'type':'percent','value':0},{'type':'percent','value':0}]},{'group_name':'Security','group_value':'Pacific Gas & Elec Co 3.25 % Due Sep 15, 2021','level':6,'values':[{'type':'money','value':36443.520000000004,'currency':'USD'},{'type':'money','value':36476.280000000006,'currency':'USD'},{'type':'money','value':36115.920000000006,'currency':'USD'},{'type':'money','value':-360.3600000000006,'currency':'USD'},{'type':'percent','value':-0.00987929690198673},{'type':'percent','value':-0.000005843078950291393}]},{'group_name':'Security','group_value':'Pepsico Inc 3.75 % Due Mar 1, 2014','level':6,'values':[{'type':'money','value':38118.96000000001,'currency':'USD'},{'type':'money','value':38498.4,'currency':'USD'},{'type':'money','value':38247.12,'currency':'USD'},{'type':'money','value':-251.27999999999884,'currency':'USD'},{'type':'percent','value':-0.006527024499719439},{'type':'percent','value':-0.0000040743947125907765}]},{'group_name':'Security','group_value':'Port Oakland CA Rev Inter Lien Rev Ref BDS 5.00 % Due Nov 1, 2017','level':6,'values':[{'type':'money','value':41180.04000000001,'currency':'USD'},{'type':'money','value':39441.600000000006,'currency':'USD'},{'type':'money','value':39902.76,'currency':'USD'},{'type':'money','value':1361.1599999999962,'currency':'USD'},{'type':'percent','value':0.035288714560572254},{'type':'percent','value':0.000022070610900151507}]},{'group_name':'Security','group_value':'Reynolds R J Tob HLDGS Inc 9.25 % Due Aug 15, 2013','level':6,'values':[{'type':'money','value':39547.8,'currency':'USD'},{'type':'money','value':41373.72000000001,'currency':'USD'},{'type':'money','value':39009.600000000006,'currency':'USD'},{'type':'money','value':-2364.1200000000026,'currency':'USD'},{'type':'percent','value':-0.05714061969772121},{'type':'percent','value':-0.000038333166300263294}]},{'group_name':'Security','group_value':'Sac Calif City Fing Aut Ref Rev BDS 5.00 % Due Dec 1, 2014','level':6,'values':[{'type':'money','value':39448.8,'currency':'USD'},{'type':'money','value':39307.32000000001,'currency':'USD'},{'type':'money','value':39448.8,'currency':'USD'},{'type':'money','value':141.47999999999593,'currency':'USD'},{'type':'percent','value':0.0035993295905189134},{'type':'percent','value':0.000002294035991472975}]},{'group_name':'Security','group_value':'SD CNTY Calif WTR Auth Water Rev BDS 4.00 % Due May 1, 2014','level':6,'values':[{'type':'money','value':38529.36000000001,'currency':'USD'},{'type':'money','value':38528.280000000006,'currency':'USD'},{'type':'money','value':38529.36000000001,'currency':'USD'},{'type':'money','value':721.0800000000017,'currency':'USD'},{'type':'percent','value':0.01905993068485019},{'type':'percent','value':0.000011691995142291378}]},{'group_name':'Security','group_value':'SF Calif City & CNT Lease Rev BDS 5.00 % Due Jun 15, 2022','level':6,'values':[{'type':'money','value':40270.32000000001,'currency':'USD'},{'type':'money','value':39305.520000000004,'currency':'USD'},{'type':'money','value':40270.32000000001,'currency':'USD'},{'type':'money','value':964.8000000000029,'currency':'USD'},{'type':'percent','value':0.024546170614203878},{'type':'percent','value':0.000015643807779001955}]},{'group_name':'Security','group_value':'SF Calif City & CNT Second Series 5.73 % Due Jun 11, 2031','level':6,'values':[{'type':'money','value':39948.48,'currency':'USD'},{'type':'money','value':39053.880000000005,'currency':'USD'},{'type':'money','value':39825.00000000001,'currency':'USD'},{'type':'money','value':771.1200000000026,'currency':'USD'},{'type':'percent','value':0.01974502917507819},{'type':'percent','value':0.000012503371739784402}]},{'group_name':'Security','group_value':'SF Calif City & CNT WTR Rev BDS 5.00 % Due Nov 1, 2015','level':6,'values':[{'type':'money','value':41299.920000000006,'currency':'USD'},{'type':'money','value':41536.44,'currency':'USD'},{'type':'money','value':41269.32000000001,'currency':'USD'},{'type':'money','value':632.8800000000047,'currency':'USD'},{'type':'percent','value':0.0155627256171805},{'type':'percent','value':0.00001026187092368864}]},{'group_name':'Security','group_value':'SF Calif City & CNT WTR Rev BDS 6.95 % Due Nov 1, 2050','level':6,'values':[{'type':'money','value':46688.40000000001,'currency':'USD'},{'type':'money','value':45603.00000000001,'currency':'USD'},{'type':'money','value':44352.00000000001,'currency':'USD'},{'type':'money','value':0,'currency':'USD'},{'type':'percent','value':0},{'type':'percent','value':0}]}]}]}]},{'group_name':'Owner (Down)','group_value':'Directly Owned','level':3,'values':[{'type':'money','value':11412837.950131172,'currency':'USD'},{'type':'money','value':12209138.16150407,'currency':'USD'},{'type':'money','value':11638657.281079324,'currency':'USD'},{'type':'money','value':-557509.0766043423,'currency':'USD'},{'type':'percent','value':-0.04569464814997896},{'type':'percent','value':-0.009039764541300975}],'children':[{'group_name':'Holding Status','group_value':'Current Holding','level':4,'values':[{'type':'money','value':11412837.950131172,'currency':'USD'},{'type':'money','value':12209138.16150407,'currency':'USD'},{'type':'money','value':11638657.281079324,'currency':'USD'},{'type':'money','value':-557509.0766043423,'currency':'USD'},{'type':'percent','value':-0.04569464814997896},{'type':'percent','value':-0.009039764541300975}],'children':[{'group_name':'Asset Class','group_value':'Equity','level':5,'values':[{'type':'money','value':10752798.650131172,'currency':'USD'},{'type':'money','value':11545886.761504069,'currency':'USD'},{'type':'money','value':10982219.781079324,'currency':'USD'},{'type':'money','value':-550695.1766043424,'currency':'USD'},{'type':'percent','value':-0.04773083747756965},{'type':'percent','value':-0.008929280148861775}],'children':[{'group_name':'Security','group_value':'Aflac, Inc','level':6,'values':[{'type':'money','value':773996.2160337,'currency':'USD'},{'type':'money','value':853079.6719863001,'currency':'USD'},{'type':'money','value':821862.5183208,'currency':'USD'},{'type':'money','value':-24973.72293150006,'currency':'USD'},{'type':'percent','value':-0.02939034020252622},{'type':'percent','value':-0.00040493793642873026}]},{'group_name':'Security','group_value':'Amazon.Com, Inc','level':6,'values':[{'type':'money','value':1218327.10971093,'currency':'USD'},{'type':'money','value':1435093.353163305,'currency':'USD'},{'type':'money','value':1292464.525688595,'currency':'USD'},{'type':'money','value':-142628.82747471007,'currency':'USD'},{'type':'percent','value':-0.09938644559973776},{'type':'percent','value':-0.0023126637238378837}]},{'group_name':'Security','group_value':'Apple, Inc.','level':6,'values':[{'type':'money','value':1602345.684855546,'currency':'USD'},{'type':'money','value':1702266.249319794,'currency':'USD'},{'type':'money','value':1607308.06979106,'currency':'USD'},{'type':'money','value':-94958.17952873395,'currency':'USD'},{'type':'percent','value':-0.05578338850733729},{'type':'percent','value':-0.0015397051281006093}]},{'group_name':'Security','group_value':'Baidu, Inc','level':6,'values':[{'type':'money','value':251366.97313778396,'currency':'USD'},{'type':'money','value':307689.681229956,'currency':'USD'},{'type':'money','value':287517.98647675803,'currency':'USD'},{'type':'money','value':-20171.694753197953,'currency':'USD'},{'type':'percent','value':-0.06555856755599929},{'type':'percent','value':-0.0003270751609615776}]},{'group_name':'Security','group_value':'Berkshire Hathaway Inc','level':6,'values':[{'type':'money','value':1014984.9394992001,'currency':'USD'},{'type':'money','value':1056777.1081632,'currency':'USD'},{'type':'money','value':1070783.132256,'currency':'USD'},{'type':'money','value':14006.024092799984,'currency':'USD'},{'type':'percent','value':0.013253527148353981},{'type':'percent','value':0.00022710152223863236}]},{'group_name':'Security','group_value':'Boeing Co.','level':6,'values':[{'type':'money','value':1137575.6496792,'currency':'USD'},{'type':'money','value':1053951.5841768002,'currency':'USD'},{'type':'money','value':1100409.3983448,'currency':'USD'},{'type':'money','value':53186.187254399876,'currency':'USD'},{'type':'percent','value':0.0506990429849482},{'type':'percent','value':0.0008623906404496608}]},{'group_name':'Security','group_value':'Chipotle Mexican Grill, Inc','level':6,'values':[{'type':'money','value':3262295.080584,'currency':'USD'},{'type':'money','value':3443852.4575562007,'currency':'USD'},{'type':'money','value':3294672.1297506006,'currency':'USD'},{'type':'money','value':-149180.32780560013,'currency':'USD'},{'type':'percent','value':-0.04331786266809476},{'type':'percent','value':-0.0024188934210191766}]},{'group_name':'Security','group_value':'General Electric Company','level':6,'values':[{'type':'money','value':990873.7863488102,'currency':'USD'},{'type':'money','value':973398.0581945102,'currency':'USD'},{'type':'money','value':926796.1164497101,'currency':'USD'},{'type':'money','value':-46601.941744800075,'currency':'USD'},{'type':'percent','value':-0.04787552363853986},{'type':'percent','value':-0.0007556299945935915}]},{'group_name':'Security','group_value':'Green Mountain Coffee Roasters','level':6,'values':[{'type':'money','value':501033.210282,'currency':'USD'},{'type':'money','value':719778.5977139999,'currency':'USD'},{'type':'money','value':580405.904001,'currency':'USD'},{'type':'money','value':-139372.69371299993,'currency':'USD'},{'type':'percent','value':-0.19363272839126414},{'type':'percent','value':-0.0022598669466084974}]}]},{'group_name':'Asset Class','group_value':'Fixed Income','level':5,'values':[{'type':'money','value':660039.3,'currency':'USD'},{'type':'money','value':663251.4,'currency':'USD'},{'type':'money','value':656437.5000000001,'currency':'USD'},{'type':'money','value':-6813.900000000023,'currency':'USD'},{'type':'percent','value':-0.01027348001074709},{'type':'percent','value':-0.00011048439243920134}],'children':[{'group_name':'Security','group_value':'American Express Co 4.88 % Due Jul 15, 2013','level':6,'values':[{'type':'money','value':94106.7,'currency':'USD'},{'type':'money','value':94784.40000000001,'currency':'USD'},{'type':'money','value':94344.3,'currency':'USD'},{'type':'money','value':-440.1000000000058,'currency':'USD'},{'type':'percent','value':-0.0046431691290972545},{'type':'percent','value':-0.000007136027988742569}]},{'group_name':'Security','group_value':'East Bay Calif Mun Util Dist W Rev BDS 4.00 % Due Jun 1, 2014','level':6,'values':[{'type':'money','value':96615,'currency':'USD'},{'type':'money','value':95378.40000000001,'currency':'USD'},{'type':'money','value':95378.40000000001,'currency':'USD'},{'type':'money','value':0,'currency':'USD'},{'type':'percent','value':0},{'type':'percent','value':0}]},{'group_name':'Security','group_value':'FPL Group Cap Inc 5.35 % Due Jun 15, 2013','level':6,'values':[{'type':'money','value':95578.2,'currency':'USD'},{'type':'money','value':95585.40000000001,'currency':'USD'},{'type':'money','value':95625,'currency':'USD'},{'type':'money','value':39.59999999999127,'currency':'USD'},{'type':'percent','value':0.00041428921153221376},{'type':'percent','value':6.420965879439665e-7}]},{'group_name':'Security','group_value':'JPMorgan Chase & Co Unsec. Notes 4.75 % Due Jul 15, 2013','level':6,'values':[{'type':'money','value':90823.5,'currency':'USD'},{'type':'money','value':92850.3,'currency':'USD'},{'type':'money','value':91250.1,'currency':'USD'},{'type':'money','value':-1600.199999999997,'currency':'USD'},{'type':'percent','value':-0.01723419310438412},{'type':'percent','value':-0.000025946539394650502}]},{'group_name':'Security','group_value':'Metlife Inc 5.38 % Due Dec 15, 2012','level':6,'values':[{'type':'money','value':93712.5,'currency':'USD'},{'type':'money','value':93150,'currency':'USD'},{'type':'money','value':93757.5,'currency':'USD'},{'type':'money','value':607.5,'currency':'USD'},{'type':'percent','value':0.006521739130434782},{'type':'percent','value':0.000009850345383233477}]},{'group_name':'Security','group_value':'Morgan Stanley 2.88 % Due Jul 28, 2014','level':6,'values':[{'type':'money','value':85325.40000000001,'currency':'USD'},{'type':'money','value':88021.8,'currency':'USD'},{'type':'money','value':84289.5,'currency':'USD'},{'type':'money','value':-3732.300000000003,'currency':'USD'},{'type':'percent','value':-0.04240199586920516},{'type':'percent','value':-0.00006051760341373224}]},{'group_name':'Security','group_value':'Ohio PWR Co 5.38 % Due Oct 1, 2021','level':6,'values':[{'type':'money','value':103878,'currency':'USD'},{'type':'money','value':103481.1,'currency':'USD'},{'type':'money','value':101792.7,'currency':'USD'},{'type':'money','value':-1688.4000000000087,'currency':'USD'},{'type':'percent','value':-0.016316022925925686},{'type':'percent','value':-0.000027376663613253477}]}]}]}]}]},{'group_name':'Owner (Down)','group_value':'Directly Owned','level':2,'values':[{'type':'money','value':42028564.1595874,'currency':'USD'},{'type':'money','value':42445645.1703414,'currency':'USD'},{'type':'money','value':42336451.914816,'currency':'USD'},{'type':'money','value':-490732.6747303987,'currency':'USD'},{'type':'percent','value':-0.011509297500501158},{'type':'percent','value':-0.007957014546390778}],'children':[{'group_name':'Holding Status','group_value':'Current Holding','level':3,'values':[{'type':'money','value':42028564.1595874,'currency':'USD'},{'type':'money','value':42445645.1703414,'currency':'USD'},{'type':'money','value':42336451.914816,'currency':'USD'},{'type':'money','value':-490732.6747303987,'currency':'USD'},{'type':'percent','value':-0.011509297500501158},{'type':'percent','value':-0.007957014546390778}],'children':[{'group_name':'Asset Class','group_value':'Cash & Cash Equivalents','level':4,'values':[{'type':'money','value':4522893,'currency':'USD'},{'type':'money','value':3584496,'currency':'USD'},{'type':'money','value':4048725,'currency':'USD'},{'type':'money','value':-2,'currency':'USD'},{'type':'percent','value':0},{'type':'percent','value':-3.2429120603237784e-8}],'children':[{'group_name':'Security','group_value':'Cash','level':5,'values':[{'type':'money','value':4522893,'currency':'USD'},{'type':'money','value':3584496,'currency':'USD'},{'type':'money','value':4048725,'currency':'USD'},{'type':'money','value':-2,'currency':'USD'},{'type':'percent','value':0},{'type':'percent','value':-3.2429120603237784e-8}]}]},{'group_name':'Asset Class','group_value':'Equity','level':4,'values':[{'type':'money','value':14354363.1840884,'currency':'USD'},{'type':'money','value':15577473.865274899,'currency':'USD'},{'type':'money','value':15033957.5173331,'currency':'USD'},{'type':'money','value':-507398.5953467991,'currency':'USD'},{'type':'percent','value':-0.03259330821114757},{'type':'percent','value':-0.008227245121207396}],'children':[{'group_name':'Security','group_value':'Hewlett-Packard Company','level':5,'values':[{'type':'money','value':492659.6758712,'currency':'USD'},{'type':'money','value':507340.32410729997,'currency':'USD'},{'type':'money','value':532888.4651935,'currency':'USD'},{'type':'money','value':25548.141086200078,'currency':'USD'},{'type':'percent','value':0.05035700864336731},{'type':'percent','value':0.0004142518742364583}]},{'group_name':'Security','group_value':'Johnson & Johnson','level':5,'values':[{'type':'money','value':994124.922925,'currency':'USD'},{'type':'money','value':995516.3886025001,'currency':'USD'},{'type':'money','value':1000618.4294200001,'currency':'USD'},{'type':'money','value':13914.65677250002,'currency':'USD'},{'type':'percent','value':0.013997949380945998},{'type':'percent','value':0.00022562004131403127}]},{'group_name':'Security','group_value':'Las Vegas Sands Corp.','level':5,'values':[{'type':'money','value':2498796.6305316,'currency':'USD'},{'type':'money','value':2824909.747254,'currency':'USD'},{'type':'money','value':2810469.3140412,'currency':'USD'},{'type':'money','value':-14440.433212799951,'currency':'USD'},{'type':'percent','value':-0.005111821086261964},{'type':'percent','value':-0.00023414527511044503}]},{'group_name':'Security','group_value':'McDonald','level':5,'values':[{'type':'money','value':1552883.0833780998,'currency':'USD'},{'type':'money','value':1478974.1952165,'currency':'USD'},{'type':'money','value':1521503.6631888,'currency':'USD'},{'type':'money','value':53679.5157623,'currency':'USD'},{'type':'percent','value':0.03630421027233325},{'type':'percent','value':0.0008703897452895151}]},{'group_name':'Security','group_value':'Microsoft','level':5,'values':[{'type':'money','value':840064.62046,'currency':'USD'},{'type':'money','value':860420.0324172999,'currency':'USD'},{'type':'money','value':826494.3458218,'currency':'USD'},{'type':'money','value':-17770.59774550004,'currency':'USD'},{'type':'percent','value':-0.020849854094320323},{'type':'percent','value':-0.00028814242874022314}]},{'group_name':'Security','group_value':'Netflix, Inc','level':5,'values':[{'type':'money','value':1305534.7794962,'currency':'USD'},{'type':'money','value':1534779.3569328,'currency':'USD'},{'type':'money','value':1206619.2970623001,'currency':'USD'},{'type':'money','value':-328160.0598704999,'currency':'USD'},{'type':'percent','value':-0.21381578947368413},{'type':'percent','value':-0.005320971079353086}]},{'group_name':'Security','group_value':'Oracle Corporation','level':5,'values':[{'type':'money','value':1175452.7162349,'currency':'USD'},{'type':'money','value':1318712.2735713,'currency':'USD'},{'type':'money','value':1261569.4164314999,'currency':'USD'},{'type':'money','value':-57142.85713980021,'currency':'USD'},{'type':'percent','value':-0.04333231614281371},{'type':'percent','value':-0.0009265463029000841}]},{'group_name':'Security','group_value':'Procter & Gamble Company','level':5,'values':[{'type':'money','value':1065772.2510156,'currency':'USD'},{'type':'money','value':1046956.8059946,'currency':'USD'},{'type':'money','value':1056446.3347878,'currency':'USD'},{'type':'money','value':9489.52879319992,'currency':'USD'},{'type':'percent','value':0.00906391623691194},{'type':'percent','value':0.00015386853685128886}]},{'group_name':'Security','group_value':'Salesforce.Com','level':5,'values':[{'type':'money','value':1430900.8288592002,'currency':'USD'},{'type':'money','value':1779871.6923143999,'currency':'USD'},{'type':'money','value':1582731.8900944002,'currency':'USD'},{'type':'money','value':-197139.80221999972,'currency':'USD'},{'type':'percent','value':-0.11076068183524804},{'type':'percent','value':-0.0031965352109454073}]},{'group_name':'Security','group_value':'Sysco Corp.','level':5,'values':[{'type':'money','value':1028469.7508289999,'currency':'USD'},{'type':'money','value':986476.8682691999,'currency':'USD'},{'type':'money','value':1015658.3629293999,'currency':'USD'},{'type':'money','value':29181.494660200085,'currency':'USD'},{'type':'percent','value':0.029581529581529674},{'type':'percent','value':0.00047316510485918394}]},{'group_name':'Security','group_value':'Vmware, Inc','level':5,'values':[{'type':'money','value':1969703.9244875999,'currency':'USD'},{'type':'money','value':2243516.180595,'currency':'USD'},{'type':'money','value':2218957.9983624,'currency':'USD'},{'type':'money','value':-24558.182232599705,'currency':'USD'},{'type':'percent','value':-0.010946291560102172},{'type':'percent','value':-0.0003982001267086336}]}]},{'group_name':'Asset Class','group_value':'Alternatives','level':4,'values':[{'type':'money','value':23151307.975499,'currency':'USD'},{'type':'money','value':23283675.3050665,'currency':'USD'},{'type':'money','value':23253769.3974829,'currency':'USD'},{'type':'money','value':16667.920616400195,'currency':'USD'},{'type':'percent','value':0.0007170712230973364},{'type':'percent','value':0.0002702630039372177}],'children':[{'group_name':'Security','group_value':'Accel Internet Venture Fund Vi LP','level':5,'values':[{'type':'money','value':1100000,'currency':'USD'},{'type':'money','value':1100000,'currency':'USD'},{'type':'money','value':1100000,'currency':'USD'},{'type':'money','value':0,'currency':'USD'},{'type':'percent','value':0},{'type':'percent','value':0}]},{'group_name':'Security','group_value':'Anything But The Usd, LP','level':5,'values':[{'type':'money','value':1597770,'currency':'USD'},{'type':'money','value':1664190,'currency':'USD'},{'type':'money','value':1616548,'currency':'USD'},{'type':'money','value':-45288.60000000009,'currency':'USD'},{'type':'percent','value':-0.027250853198422898},{'type':'percent','value':-0.0007343347356758988}]},{'group_name':'Security','group_value':'Apollo Investment Fund V','level':5,'values':[{'type':'money','value':1614907,'currency':'USD'},{'type':'money','value':1614907,'currency':'USD'},{'type':'money','value':1614907,'currency':'USD'},{'type':'money','value':0,'currency':'USD'},{'type':'percent','value':0},{'type':'percent','value':0}]},{'group_name':'Security','group_value':'Blackstone Communications I','level':5,'values':[{'type':'money','value':1522387,'currency':'USD'},{'type':'money','value':1522387,'currency':'USD'},{'type':'money','value':1522387,'currency':'USD'},{'type':'money','value':0,'currency':'USD'},{'type':'percent','value':0},{'type':'percent','value':0}]},{'group_name':'Security','group_value':'Blue Ridge','level':5,'values':[{'type':'money','value':1335005,'currency':'USD'},{'type':'money','value':1335005,'currency':'USD'},{'type':'money','value':1335005,'currency':'USD'},{'type':'money','value':0,'currency':'USD'},{'type':'percent','value':0},{'type':'percent','value':0}]},{'group_name':'Security','group_value':'Brevan Howard Master Fund LP','level':5,'values':[{'type':'money','value':1652094,'currency':'USD'},{'type':'money','value':1652094,'currency':'USD'},{'type':'money','value':1652094,'currency':'USD'},{'type':'money','value':0,'currency':'USD'},{'type':'percent','value':0},{'type':'percent','value':0}]},{'group_name':'Security','group_value':'Bridgewater All Weather 12% Strategy LP','level':5,'values':[{'type':'money','value':1012502,'currency':'USD'},{'type':'money','value':1012502,'currency':'USD'},{'type':'money','value':1012502,'currency':'USD'},{'type':'money','value':0,'currency':'USD'},{'type':'percent','value':0},{'type':'percent','value':0}]},{'group_name':'Security','group_value':'Buckeye Partners LP','level':5,'values':[{'type':'money','value':1109712.230167,'currency':'USD'},{'type':'money','value':1214928.0575004998,'currency':'USD'},{'type':'money','value':1147482.014338,'currency':'USD'},{'type':'money','value':-49010.79136249982,'currency':'USD'},{'type':'percent','value':-0.040775699586931786},{'type':'percent','value':-0.0007946884319773157}]},{'group_name':'Security','group_value':'Citadel Kensington Global Strategies LTD','level':5,'values':[{'type':'money','value':757000,'currency':'USD'},{'type':'money','value':757000,'currency':'USD'},{'type':'money','value':757000,'currency':'USD'},{'type':'money','value':0,'currency':'USD'},{'type':'percent','value':0},{'type':'percent','value':0}]},{'group_name':'Security','group_value':'Debt Collectors, LP','level':5,'values':[{'type':'money','value':1574468,'currency':'USD'},{'type':'money','value':1594264,'currency':'USD'},{'type':'money','value':1538404,'currency':'USD'},{'type':'money','value':-48686.39999999991,'currency':'USD'},{'type':'percent','value':-0.0306673372406235},{'type':'percent','value':-0.0007894285686687365}]},{'group_name':'Security','group_value':'Enterprise Products Partners LP','level':5,'values':[{'type':'money','value':1371708.5119359998,'currency':'USD'},{'type':'money','value':1372627.0667430998,'currency':'USD'},{'type':'money','value':1392835.2724993,'currency':'USD'},{'type':'money','value':20208.205756200245,'currency':'USD'},{'type':'percent','value':0.014722284184697928},{'type':'percent','value':0.00032766717082143086}]},{'group_name':'Security','group_value':'GS Capital Partners V LP','level':5,'values':[{'type':'money','value':523468,'currency':'USD'},{'type':'money','value':523468,'currency':'USD'},{'type':'money','value':523468,'currency':'USD'},{'type':'money','value':0,'currency':'USD'},{'type':'percent','value':0},{'type':'percent','value':0}]},{'group_name':'Security','group_value':'GS Distressed Opportunities Fund III','level':5,'values':[{'type':'money','value':305263,'currency':'USD'},{'type':'money','value':305263,'currency':'USD'},{'type':'money','value':305263,'currency':'USD'},{'type':'money','value':0,'currency':'USD'},{'type':'percent','value':0},{'type':'percent','value':0}]},{'group_name':'Security','group_value':'Horseman Global Fund LTD','level':5,'values':[{'type':'money','value':600000,'currency':'USD'},{'type':'money','value':600000,'currency':'USD'},{'type':'money','value':600000,'currency':'USD'},{'type':'money','value':0,'currency':'USD'},{'type':'percent','value':0},{'type':'percent','value':0}]},{'group_name':'Security','group_value':'Kinder Morgan Energy Partners, LP','level':5,'values':[{'type':'money','value':1273574.2973384,'currency':'USD'},{'type':'money','value':1220722.8917097,'currency':'USD'},{'type':'money','value':1256224.899746,'currency':'USD'},{'type':'money','value':35502.008036300074,'currency':'USD'},{'type':'percent','value':0.029082774049217063},{'type':'percent','value':0.000575649450133146}]},{'group_name':'Security','group_value':'Kinder Morgan Management, LLC','level':5,'values':[{'type':'money','value':1308675.3063251998,'currency':'USD'},{'type':'money','value':1192224.6223487998,'currency':'USD'},{'type':'money','value':1273758.0996923998,'currency':'USD'},{'type':'money','value':81533.47734360001,'currency':'USD'},{'type':'percent','value':0.0683876811594203},{'type':'percent','value':0.00132202948498848}]},{'group_name':'Security','group_value':'KKR 2006 Fund LP','level':5,'values':[{'type':'money','value':823100,'currency':'USD'},{'type':'money','value':823100,'currency':'USD'},{'type':'money','value':823100,'currency':'USD'},{'type':'money','value':0,'currency':'USD'},{'type':'percent','value':0},{'type':'percent','value':0}]},{'group_name':'Security','group_value':'Paulson Credit Opportunities','level':5,'values':[{'type':'money','value':368500,'currency':'USD'},{'type':'money','value':368500,'currency':'USD'},{'type':'money','value':368500,'currency':'USD'},{'type':'money','value':0,'currency':'USD'},{'type':'percent','value':0},{'type':'percent','value':0}]},{'group_name':'Security','group_value':'Plains All American Pipeline, L.P.','level':5,'values':[{'type':'money','value':1284629.6297324002,'currency':'USD'},{'type':'money','value':1221666.6667644,'currency':'USD'},{'type':'money','value':1201111.1112072,'currency':'USD'},{'type':'money','value':-1943.9791572000831,'currency':'USD'},{'type':'percent','value':-0.0016142062729210425},{'type':'percent','value':-0.00003152076726951102}]},{'group_name':'Security','group_value':'Trading Places, LP','level':5,'values':[{'type':'money','value':2016544,'currency':'USD'},{'type':'money','value':2188826,'currency':'USD'},{'type':'money','value':2213180,'currency':'USD'},{'type':'money','value':24354,'currency':'USD'},{'type':'percent','value':0.011126512568838271},{'type':'percent','value':0.00039488940158562645}]}]}]}]}]}]},'grouping_factors':[{'display_name':'Owner (Down)','is_time_series':false,'template_id':'down_factor'},{'display_name':'Holding Status','is_time_series':false,'template_id':'holding_period_factor'},{'display_name':'Asset Class','is_time_series':false,'template_id':'asset_class_factor'},{'display_name':'Security','is_time_series':false,'template_id':'security_factor'}],'value_factors':[{'display_name':'Current Value (Native Currency)','is_time_series':false,'template_id':'personal_value_factor'},{'display_name':'Adjusted Value 11/1/2012 (USD)','is_time_series':false,'template_id':'personal_value_factor'},{'display_name':'Adjusted Value 11/30/2011 (USD)','is_time_series':false,'template_id':'personal_value_factor'},{'display_name':'Adjusted Total Return Nov. 2011 (USD)','is_time_series':false,'template_id':'absolute_gain_factor'},{'display_name':'Adjusted Total Return (%) Nov. 2011 (USD)','is_time_series':false,'template_id':'percent_gain_factor'},{'display_name':'Adjusted Performance Attribution Nov. 2011 (USD) ','is_time_series':false,'template_id':'contribution_to_portfolio_factor'}]};
 
 });
 define('dummy/router', ['exports', 'ember', 'dummy/config/environment'], function (exports, Ember, config) {
@@ -3729,23 +1180,23 @@ define('dummy/router', ['exports', 'ember', 'dummy/config/environment'], functio
   });
 
   Router.map(function () {
-    this.route("overview");
-    this.route("documentation");
-    this.route("migration-guides");
+    this.route('overview');
+    this.route('documentation');
+    this.route('migration-guides');
 
-    this.route("simple");
-    this.route("ajax");
-    this.route("bars");
-    this.route("dynamic-bars");
-    this.route("financial");
-    this.route("editable");
-    this.route("sparkline");
-    this.route("horizon");
-    this.route("configurable-columns");
+    this.route('simple');
+    this.route('ajax');
+    this.route('bars');
+    this.route('dynamic-bars');
+    this.route('financial');
+    this.route('editable');
+    this.route('sparkline');
+    this.route('horizon');
+    this.route('configurable-columns');
 
-    this.route("community-examples");
+    this.route('community-examples');
 
-    this.route("license");
+    this.route('license');
   });
 
   exports['default'] = Router;
@@ -3756,8 +1207,8 @@ define('dummy/routes/index', ['exports', 'ember'], function (exports, Ember) {
   'use strict';
 
   exports['default'] = Ember['default'].Route.extend({
-    redirect: function () {
-      this.transitionTo("overview");
+    redirect: function redirect() {
+      this.transitionTo('overview');
     }
   });
 
@@ -3767,14 +1218,14 @@ define('dummy/routes/overview', ['exports', 'ember'], function (exports, Ember) 
   'use strict';
 
   exports['default'] = Ember['default'].Route.extend({
-    activate: function () {
-      var controller = this.controllerFor("application");
-      controller.set("showLargeHero", true);
+    activate: function activate() {
+      var controller = this.controllerFor('application');
+      controller.set('showLargeHero', true);
     },
 
-    deactivate: function () {
-      var controller = this.controllerFor("application");
-      controller.set("showLargeHero", false);
+    deactivate: function deactivate() {
+      var controller = this.controllerFor('application');
+      controller.set('showLargeHero', false);
     }
   });
 
@@ -3787,7 +1238,7 @@ define('dummy/templates/ajax-table/ajax-cell', ['exports'], function (exports) {
     var child0 = (function() {
       return {
         isHTMLBars: true,
-        revision: "Ember@1.11.3",
+        revision: "Ember@1.12.1",
         blockParams: 0,
         cachedFragment: null,
         hasRendered: false,
@@ -3831,7 +1282,7 @@ define('dummy/templates/ajax-table/ajax-cell', ['exports'], function (exports) {
     var child1 = (function() {
       return {
         isHTMLBars: true,
-        revision: "Ember@1.11.3",
+        revision: "Ember@1.12.1",
         blockParams: 0,
         cachedFragment: null,
         hasRendered: false,
@@ -3872,7 +1323,7 @@ define('dummy/templates/ajax-table/ajax-cell', ['exports'], function (exports) {
     }());
     return {
       isHTMLBars: true,
-      revision: "Ember@1.11.3",
+      revision: "Ember@1.12.1",
       blockParams: 0,
       cachedFragment: null,
       hasRendered: false,
@@ -3919,7 +1370,7 @@ define('dummy/templates/ajax-table/ajax-table', ['exports'], function (exports) 
   exports['default'] = Ember.HTMLBars.template((function() {
     return {
       isHTMLBars: true,
-      revision: "Ember@1.11.3",
+      revision: "Ember@1.12.1",
       blockParams: 0,
       cachedFragment: null,
       hasRendered: false,
@@ -3967,7 +1418,7 @@ define('dummy/templates/ajax', ['exports'], function (exports) {
   exports['default'] = Ember.HTMLBars.template((function() {
     return {
       isHTMLBars: true,
-      revision: "Ember@1.11.3",
+      revision: "Ember@1.12.1",
       blockParams: 0,
       cachedFragment: null,
       hasRendered: false,
@@ -4209,7 +1660,7 @@ define('dummy/templates/application', ['exports'], function (exports) {
     var child0 = (function() {
       return {
         isHTMLBars: true,
-        revision: "Ember@1.11.3",
+        revision: "Ember@1.12.1",
         blockParams: 0,
         cachedFragment: null,
         hasRendered: false,
@@ -4310,7 +1761,7 @@ define('dummy/templates/application', ['exports'], function (exports) {
     var child1 = (function() {
       return {
         isHTMLBars: true,
-        revision: "Ember@1.11.3",
+        revision: "Ember@1.12.1",
         blockParams: 0,
         cachedFragment: null,
         hasRendered: false,
@@ -4364,7 +1815,7 @@ define('dummy/templates/application', ['exports'], function (exports) {
     }());
     return {
       isHTMLBars: true,
-      revision: "Ember@1.11.3",
+      revision: "Ember@1.12.1",
       blockParams: 0,
       cachedFragment: null,
       hasRendered: false,
@@ -4451,7 +1902,7 @@ define('dummy/templates/bar-table/bar-cell', ['exports'], function (exports) {
   exports['default'] = Ember.HTMLBars.template((function() {
     return {
       isHTMLBars: true,
-      revision: "Ember@1.11.3",
+      revision: "Ember@1.12.1",
       blockParams: 0,
       cachedFragment: null,
       hasRendered: false,
@@ -4501,7 +1952,7 @@ define('dummy/templates/bar-table/bar-table', ['exports'], function (exports) {
   exports['default'] = Ember.HTMLBars.template((function() {
     return {
       isHTMLBars: true,
-      revision: "Ember@1.11.3",
+      revision: "Ember@1.12.1",
       blockParams: 0,
       cachedFragment: null,
       hasRendered: false,
@@ -4549,7 +2000,7 @@ define('dummy/templates/bars', ['exports'], function (exports) {
   exports['default'] = Ember.HTMLBars.template((function() {
     return {
       isHTMLBars: true,
-      revision: "Ember@1.11.3",
+      revision: "Ember@1.12.1",
       blockParams: 0,
       cachedFragment: null,
       hasRendered: false,
@@ -4750,7 +2201,7 @@ define('dummy/templates/body-table-container', ['exports'], function (exports) {
     var child0 = (function() {
       return {
         isHTMLBars: true,
-        revision: "Ember@1.11.3",
+        revision: "Ember@1.12.1",
         blockParams: 0,
         cachedFragment: null,
         hasRendered: false,
@@ -4792,7 +2243,7 @@ define('dummy/templates/body-table-container', ['exports'], function (exports) {
     }());
     return {
       isHTMLBars: true,
-      revision: "Ember@1.11.3",
+      revision: "Ember@1.12.1",
       blockParams: 0,
       cachedFragment: null,
       hasRendered: false,
@@ -4867,7 +2318,7 @@ define('dummy/templates/community-examples', ['exports'], function (exports) {
   exports['default'] = Ember.HTMLBars.template((function() {
     return {
       isHTMLBars: true,
-      revision: "Ember@1.11.3",
+      revision: "Ember@1.12.1",
       blockParams: 0,
       cachedFragment: null,
       hasRendered: false,
@@ -5006,7 +2457,7 @@ define('dummy/templates/components/ember-table', ['exports'], function (exports)
     var child0 = (function() {
       return {
         isHTMLBars: true,
-        revision: "Ember@1.11.3",
+        revision: "Ember@1.12.1",
         blockParams: 0,
         cachedFragment: null,
         hasRendered: false,
@@ -5049,7 +2500,7 @@ define('dummy/templates/components/ember-table', ['exports'], function (exports)
     var child1 = (function() {
       return {
         isHTMLBars: true,
-        revision: "Ember@1.11.3",
+        revision: "Ember@1.12.1",
         blockParams: 0,
         cachedFragment: null,
         hasRendered: false,
@@ -5091,7 +2542,7 @@ define('dummy/templates/components/ember-table', ['exports'], function (exports)
     }());
     return {
       isHTMLBars: true,
-      revision: "Ember@1.11.3",
+      revision: "Ember@1.12.1",
       blockParams: 0,
       cachedFragment: null,
       hasRendered: false,
@@ -5160,7 +2611,7 @@ define('dummy/templates/configurable-columns', ['exports'], function (exports) {
     var child0 = (function() {
       return {
         isHTMLBars: true,
-        revision: "Ember@1.11.3",
+        revision: "Ember@1.12.1",
         blockParams: 0,
         cachedFragment: null,
         hasRendered: false,
@@ -5275,7 +2726,7 @@ define('dummy/templates/configurable-columns', ['exports'], function (exports) {
     var child1 = (function() {
       return {
         isHTMLBars: true,
-        revision: "Ember@1.11.3",
+        revision: "Ember@1.12.1",
         blockParams: 0,
         cachedFragment: null,
         hasRendered: false,
@@ -5325,7 +2776,7 @@ define('dummy/templates/configurable-columns', ['exports'], function (exports) {
     var child2 = (function() {
       return {
         isHTMLBars: true,
-        revision: "Ember@1.11.3",
+        revision: "Ember@1.12.1",
         blockParams: 0,
         cachedFragment: null,
         hasRendered: false,
@@ -5361,7 +2812,7 @@ define('dummy/templates/configurable-columns', ['exports'], function (exports) {
     var child3 = (function() {
       return {
         isHTMLBars: true,
-        revision: "Ember@1.11.3",
+        revision: "Ember@1.12.1",
         blockParams: 0,
         cachedFragment: null,
         hasRendered: false,
@@ -5402,7 +2853,7 @@ define('dummy/templates/configurable-columns', ['exports'], function (exports) {
     }());
     return {
       isHTMLBars: true,
-      revision: "Ember@1.11.3",
+      revision: "Ember@1.12.1",
       blockParams: 0,
       cachedFragment: null,
       hasRendered: false,
@@ -5713,7 +3164,7 @@ define('dummy/templates/documentation', ['exports'], function (exports) {
     var child0 = (function() {
       return {
         isHTMLBars: true,
-        revision: "Ember@1.11.3",
+        revision: "Ember@1.12.1",
         blockParams: 0,
         cachedFragment: null,
         hasRendered: false,
@@ -5748,7 +3199,7 @@ define('dummy/templates/documentation', ['exports'], function (exports) {
     }());
     return {
       isHTMLBars: true,
-      revision: "Ember@1.11.3",
+      revision: "Ember@1.12.1",
       blockParams: 0,
       cachedFragment: null,
       hasRendered: false,
@@ -7142,7 +4593,7 @@ define('dummy/templates/dynamic-bar-table/dynamic-bar-table', ['exports'], funct
   exports['default'] = Ember.HTMLBars.template((function() {
     return {
       isHTMLBars: true,
-      revision: "Ember@1.11.3",
+      revision: "Ember@1.12.1",
       blockParams: 0,
       cachedFragment: null,
       hasRendered: false,
@@ -7190,7 +4641,7 @@ define('dummy/templates/dynamic-bars', ['exports'], function (exports) {
   exports['default'] = Ember.HTMLBars.template((function() {
     return {
       isHTMLBars: true,
-      revision: "Ember@1.11.3",
+      revision: "Ember@1.12.1",
       blockParams: 0,
       cachedFragment: null,
       hasRendered: false,
@@ -7391,7 +4842,7 @@ define('dummy/templates/editable-table/editable-table-cell', ['exports'], functi
     var child0 = (function() {
       return {
         isHTMLBars: true,
-        revision: "Ember@1.11.3",
+        revision: "Ember@1.12.1",
         blockParams: 0,
         cachedFragment: null,
         hasRendered: false,
@@ -7434,7 +4885,7 @@ define('dummy/templates/editable-table/editable-table-cell', ['exports'], functi
     var child1 = (function() {
       return {
         isHTMLBars: true,
-        revision: "Ember@1.11.3",
+        revision: "Ember@1.12.1",
         blockParams: 0,
         cachedFragment: null,
         hasRendered: false,
@@ -7479,7 +4930,7 @@ define('dummy/templates/editable-table/editable-table-cell', ['exports'], functi
     }());
     return {
       isHTMLBars: true,
-      revision: "Ember@1.11.3",
+      revision: "Ember@1.12.1",
       blockParams: 0,
       cachedFragment: null,
       hasRendered: false,
@@ -7529,7 +4980,7 @@ define('dummy/templates/editable-table/editable-table', ['exports'], function (e
   exports['default'] = Ember.HTMLBars.template((function() {
     return {
       isHTMLBars: true,
-      revision: "Ember@1.11.3",
+      revision: "Ember@1.12.1",
       blockParams: 0,
       cachedFragment: null,
       hasRendered: false,
@@ -7577,7 +5028,7 @@ define('dummy/templates/editable-table/rating-table-cell', ['exports'], function
   exports['default'] = Ember.HTMLBars.template((function() {
     return {
       isHTMLBars: true,
-      revision: "Ember@1.11.3",
+      revision: "Ember@1.12.1",
       blockParams: 0,
       cachedFragment: null,
       hasRendered: false,
@@ -7634,7 +5085,7 @@ define('dummy/templates/editable', ['exports'], function (exports) {
   exports['default'] = Ember.HTMLBars.template((function() {
     return {
       isHTMLBars: true,
-      revision: "Ember@1.11.3",
+      revision: "Ember@1.12.1",
       blockParams: 0,
       cachedFragment: null,
       hasRendered: false,
@@ -7861,7 +5312,7 @@ define('dummy/templates/empty-cell', ['exports'], function (exports) {
   exports['default'] = Ember.HTMLBars.template((function() {
     return {
       isHTMLBars: true,
-      revision: "Ember@1.11.3",
+      revision: "Ember@1.12.1",
       blockParams: 0,
       cachedFragment: null,
       hasRendered: false,
@@ -7901,7 +5352,7 @@ define('dummy/templates/financial-table/financial-table-cell', ['exports'], func
   exports['default'] = Ember.HTMLBars.template((function() {
     return {
       isHTMLBars: true,
-      revision: "Ember@1.11.3",
+      revision: "Ember@1.12.1",
       blockParams: 0,
       cachedFragment: null,
       hasRendered: false,
@@ -7960,7 +5411,7 @@ define('dummy/templates/financial-table/financial-table-header-cell', ['exports'
   exports['default'] = Ember.HTMLBars.template((function() {
     return {
       isHTMLBars: true,
-      revision: "Ember@1.11.3",
+      revision: "Ember@1.12.1",
       blockParams: 0,
       cachedFragment: null,
       hasRendered: false,
@@ -8026,7 +5477,7 @@ define('dummy/templates/financial-table/financial-table-header-tree-cell', ['exp
   exports['default'] = Ember.HTMLBars.template((function() {
     return {
       isHTMLBars: true,
-      revision: "Ember@1.11.3",
+      revision: "Ember@1.12.1",
       blockParams: 0,
       cachedFragment: null,
       hasRendered: false,
@@ -8110,7 +5561,7 @@ define('dummy/templates/financial-table/financial-table-tree-cell', ['exports'],
   exports['default'] = Ember.HTMLBars.template((function() {
     return {
       isHTMLBars: true,
-      revision: "Ember@1.11.3",
+      revision: "Ember@1.12.1",
       blockParams: 0,
       cachedFragment: null,
       hasRendered: false,
@@ -8188,7 +5639,7 @@ define('dummy/templates/financial-table/financial-table', ['exports'], function 
   exports['default'] = Ember.HTMLBars.template((function() {
     return {
       isHTMLBars: true,
-      revision: "Ember@1.11.3",
+      revision: "Ember@1.12.1",
       blockParams: 0,
       cachedFragment: null,
       hasRendered: false,
@@ -8236,7 +5687,7 @@ define('dummy/templates/financial', ['exports'], function (exports) {
   exports['default'] = Ember.HTMLBars.template((function() {
     return {
       isHTMLBars: true,
-      revision: "Ember@1.11.3",
+      revision: "Ember@1.12.1",
       blockParams: 0,
       cachedFragment: null,
       hasRendered: false,
@@ -8653,7 +6104,7 @@ define('dummy/templates/footer-table-container', ['exports'], function (exports)
     var child0 = (function() {
       return {
         isHTMLBars: true,
-        revision: "Ember@1.11.3",
+        revision: "Ember@1.12.1",
         blockParams: 0,
         cachedFragment: null,
         hasRendered: false,
@@ -8695,7 +6146,7 @@ define('dummy/templates/footer-table-container', ['exports'], function (exports)
     }());
     return {
       isHTMLBars: true,
-      revision: "Ember@1.11.3",
+      revision: "Ember@1.12.1",
       blockParams: 0,
       cachedFragment: null,
       hasRendered: false,
@@ -8757,7 +6208,7 @@ define('dummy/templates/footer', ['exports'], function (exports) {
     var child0 = (function() {
       return {
         isHTMLBars: true,
-        revision: "Ember@1.11.3",
+        revision: "Ember@1.12.1",
         blockParams: 0,
         cachedFragment: null,
         hasRendered: false,
@@ -8793,7 +6244,7 @@ define('dummy/templates/footer', ['exports'], function (exports) {
     var child1 = (function() {
       return {
         isHTMLBars: true,
-        revision: "Ember@1.11.3",
+        revision: "Ember@1.12.1",
         blockParams: 0,
         cachedFragment: null,
         hasRendered: false,
@@ -8829,7 +6280,7 @@ define('dummy/templates/footer', ['exports'], function (exports) {
     var child2 = (function() {
       return {
         isHTMLBars: true,
-        revision: "Ember@1.11.3",
+        revision: "Ember@1.12.1",
         blockParams: 0,
         cachedFragment: null,
         hasRendered: false,
@@ -8865,7 +6316,7 @@ define('dummy/templates/footer', ['exports'], function (exports) {
     var child3 = (function() {
       return {
         isHTMLBars: true,
-        revision: "Ember@1.11.3",
+        revision: "Ember@1.12.1",
         blockParams: 0,
         cachedFragment: null,
         hasRendered: false,
@@ -8901,7 +6352,7 @@ define('dummy/templates/footer', ['exports'], function (exports) {
     var child4 = (function() {
       return {
         isHTMLBars: true,
-        revision: "Ember@1.11.3",
+        revision: "Ember@1.12.1",
         blockParams: 0,
         cachedFragment: null,
         hasRendered: false,
@@ -8937,7 +6388,7 @@ define('dummy/templates/footer', ['exports'], function (exports) {
     var child5 = (function() {
       return {
         isHTMLBars: true,
-        revision: "Ember@1.11.3",
+        revision: "Ember@1.12.1",
         blockParams: 0,
         cachedFragment: null,
         hasRendered: false,
@@ -8973,7 +6424,7 @@ define('dummy/templates/footer', ['exports'], function (exports) {
     var child6 = (function() {
       return {
         isHTMLBars: true,
-        revision: "Ember@1.11.3",
+        revision: "Ember@1.12.1",
         blockParams: 0,
         cachedFragment: null,
         hasRendered: false,
@@ -9009,7 +6460,7 @@ define('dummy/templates/footer', ['exports'], function (exports) {
     var child7 = (function() {
       return {
         isHTMLBars: true,
-        revision: "Ember@1.11.3",
+        revision: "Ember@1.12.1",
         blockParams: 0,
         cachedFragment: null,
         hasRendered: false,
@@ -9045,7 +6496,7 @@ define('dummy/templates/footer', ['exports'], function (exports) {
     var child8 = (function() {
       return {
         isHTMLBars: true,
-        revision: "Ember@1.11.3",
+        revision: "Ember@1.12.1",
         blockParams: 0,
         cachedFragment: null,
         hasRendered: false,
@@ -9081,7 +6532,7 @@ define('dummy/templates/footer', ['exports'], function (exports) {
     var child9 = (function() {
       return {
         isHTMLBars: true,
-        revision: "Ember@1.11.3",
+        revision: "Ember@1.12.1",
         blockParams: 0,
         cachedFragment: null,
         hasRendered: false,
@@ -9117,7 +6568,7 @@ define('dummy/templates/footer', ['exports'], function (exports) {
     var child10 = (function() {
       return {
         isHTMLBars: true,
-        revision: "Ember@1.11.3",
+        revision: "Ember@1.12.1",
         blockParams: 0,
         cachedFragment: null,
         hasRendered: false,
@@ -9153,7 +6604,7 @@ define('dummy/templates/footer', ['exports'], function (exports) {
     var child11 = (function() {
       return {
         isHTMLBars: true,
-        revision: "Ember@1.11.3",
+        revision: "Ember@1.12.1",
         blockParams: 0,
         cachedFragment: null,
         hasRendered: false,
@@ -9189,7 +6640,7 @@ define('dummy/templates/footer', ['exports'], function (exports) {
     var child12 = (function() {
       return {
         isHTMLBars: true,
-        revision: "Ember@1.11.3",
+        revision: "Ember@1.12.1",
         blockParams: 0,
         cachedFragment: null,
         hasRendered: false,
@@ -9225,7 +6676,7 @@ define('dummy/templates/footer', ['exports'], function (exports) {
     var child13 = (function() {
       return {
         isHTMLBars: true,
-        revision: "Ember@1.11.3",
+        revision: "Ember@1.12.1",
         blockParams: 0,
         cachedFragment: null,
         hasRendered: false,
@@ -9260,7 +6711,7 @@ define('dummy/templates/footer', ['exports'], function (exports) {
     }());
     return {
       isHTMLBars: true,
-      revision: "Ember@1.11.3",
+      revision: "Ember@1.12.1",
       blockParams: 0,
       cachedFragment: null,
       hasRendered: false,
@@ -9623,7 +7074,7 @@ define('dummy/templates/header-cell', ['exports'], function (exports) {
   exports['default'] = Ember.HTMLBars.template((function() {
     return {
       isHTMLBars: true,
-      revision: "Ember@1.11.3",
+      revision: "Ember@1.12.1",
       blockParams: 0,
       cachedFragment: null,
       hasRendered: false,
@@ -9684,7 +7135,7 @@ define('dummy/templates/header-row', ['exports'], function (exports) {
   exports['default'] = Ember.HTMLBars.template((function() {
     return {
       isHTMLBars: true,
-      revision: "Ember@1.11.3",
+      revision: "Ember@1.12.1",
       blockParams: 0,
       cachedFragment: null,
       hasRendered: false,
@@ -9733,7 +7184,7 @@ define('dummy/templates/header-table-container', ['exports'], function (exports)
     var child0 = (function() {
       return {
         isHTMLBars: true,
-        revision: "Ember@1.11.3",
+        revision: "Ember@1.12.1",
         blockParams: 0,
         cachedFragment: null,
         hasRendered: false,
@@ -9775,7 +7226,7 @@ define('dummy/templates/header-table-container', ['exports'], function (exports)
     }());
     return {
       isHTMLBars: true,
-      revision: "Ember@1.11.3",
+      revision: "Ember@1.12.1",
       blockParams: 0,
       cachedFragment: null,
       hasRendered: false,
@@ -9836,7 +7287,7 @@ define('dummy/templates/horizon-table/horizon-table', ['exports'], function (exp
   exports['default'] = Ember.HTMLBars.template((function() {
     return {
       isHTMLBars: true,
-      revision: "Ember@1.11.3",
+      revision: "Ember@1.12.1",
       blockParams: 0,
       cachedFragment: null,
       hasRendered: false,
@@ -9884,7 +7335,7 @@ define('dummy/templates/horizon', ['exports'], function (exports) {
   exports['default'] = Ember.HTMLBars.template((function() {
     return {
       isHTMLBars: true,
-      revision: "Ember@1.11.3",
+      revision: "Ember@1.12.1",
       blockParams: 0,
       cachedFragment: null,
       hasRendered: false,
@@ -10057,7 +7508,7 @@ define('dummy/templates/license', ['exports'], function (exports) {
   exports['default'] = Ember.HTMLBars.template((function() {
     return {
       isHTMLBars: true,
-      revision: "Ember@1.11.3",
+      revision: "Ember@1.12.1",
       blockParams: 0,
       cachedFragment: null,
       hasRendered: false,
@@ -10151,7 +7602,7 @@ define('dummy/templates/migration-guides', ['exports'], function (exports) {
     var child0 = (function() {
       return {
         isHTMLBars: true,
-        revision: "Ember@1.11.3",
+        revision: "Ember@1.12.1",
         blockParams: 0,
         cachedFragment: null,
         hasRendered: false,
@@ -10187,7 +7638,7 @@ define('dummy/templates/migration-guides', ['exports'], function (exports) {
     var child1 = (function() {
       return {
         isHTMLBars: true,
-        revision: "Ember@1.11.3",
+        revision: "Ember@1.12.1",
         blockParams: 0,
         cachedFragment: null,
         hasRendered: false,
@@ -10222,7 +7673,7 @@ define('dummy/templates/migration-guides', ['exports'], function (exports) {
     }());
     return {
       isHTMLBars: true,
-      revision: "Ember@1.11.3",
+      revision: "Ember@1.12.1",
       blockParams: 0,
       cachedFragment: null,
       hasRendered: false,
@@ -10845,7 +8296,7 @@ define('dummy/templates/navigation', ['exports'], function (exports) {
   exports['default'] = Ember.HTMLBars.template((function() {
     return {
       isHTMLBars: true,
-      revision: "Ember@1.11.3",
+      revision: "Ember@1.12.1",
       blockParams: 0,
       cachedFragment: null,
       hasRendered: false,
@@ -10996,7 +8447,7 @@ define('dummy/templates/overview', ['exports'], function (exports) {
     var child0 = (function() {
       return {
         isHTMLBars: true,
-        revision: "Ember@1.11.3",
+        revision: "Ember@1.12.1",
         blockParams: 0,
         cachedFragment: null,
         hasRendered: false,
@@ -11051,7 +8502,7 @@ define('dummy/templates/overview', ['exports'], function (exports) {
     var child1 = (function() {
       return {
         isHTMLBars: true,
-        revision: "Ember@1.11.3",
+        revision: "Ember@1.12.1",
         blockParams: 0,
         cachedFragment: null,
         hasRendered: false,
@@ -11106,7 +8557,7 @@ define('dummy/templates/overview', ['exports'], function (exports) {
     var child2 = (function() {
       return {
         isHTMLBars: true,
-        revision: "Ember@1.11.3",
+        revision: "Ember@1.12.1",
         blockParams: 0,
         cachedFragment: null,
         hasRendered: false,
@@ -11161,7 +8612,7 @@ define('dummy/templates/overview', ['exports'], function (exports) {
     var child3 = (function() {
       return {
         isHTMLBars: true,
-        revision: "Ember@1.11.3",
+        revision: "Ember@1.12.1",
         blockParams: 0,
         cachedFragment: null,
         hasRendered: false,
@@ -11216,7 +8667,7 @@ define('dummy/templates/overview', ['exports'], function (exports) {
     var child4 = (function() {
       return {
         isHTMLBars: true,
-        revision: "Ember@1.11.3",
+        revision: "Ember@1.12.1",
         blockParams: 0,
         cachedFragment: null,
         hasRendered: false,
@@ -11271,7 +8722,7 @@ define('dummy/templates/overview', ['exports'], function (exports) {
     var child5 = (function() {
       return {
         isHTMLBars: true,
-        revision: "Ember@1.11.3",
+        revision: "Ember@1.12.1",
         blockParams: 0,
         cachedFragment: null,
         hasRendered: false,
@@ -11326,7 +8777,7 @@ define('dummy/templates/overview', ['exports'], function (exports) {
     var child6 = (function() {
       return {
         isHTMLBars: true,
-        revision: "Ember@1.11.3",
+        revision: "Ember@1.12.1",
         blockParams: 0,
         cachedFragment: null,
         hasRendered: false,
@@ -11381,7 +8832,7 @@ define('dummy/templates/overview', ['exports'], function (exports) {
     var child7 = (function() {
       return {
         isHTMLBars: true,
-        revision: "Ember@1.11.3",
+        revision: "Ember@1.12.1",
         blockParams: 0,
         cachedFragment: null,
         hasRendered: false,
@@ -11436,7 +8887,7 @@ define('dummy/templates/overview', ['exports'], function (exports) {
     var child8 = (function() {
       return {
         isHTMLBars: true,
-        revision: "Ember@1.11.3",
+        revision: "Ember@1.12.1",
         blockParams: 0,
         cachedFragment: null,
         hasRendered: false,
@@ -11491,7 +8942,7 @@ define('dummy/templates/overview', ['exports'], function (exports) {
     var child9 = (function() {
       return {
         isHTMLBars: true,
-        revision: "Ember@1.11.3",
+        revision: "Ember@1.12.1",
         blockParams: 0,
         cachedFragment: null,
         hasRendered: false,
@@ -11526,7 +8977,7 @@ define('dummy/templates/overview', ['exports'], function (exports) {
     }());
     return {
       isHTMLBars: true,
-      revision: "Ember@1.11.3",
+      revision: "Ember@1.12.1",
       blockParams: 0,
       cachedFragment: null,
       hasRendered: false,
@@ -11928,7 +9379,7 @@ define('dummy/templates/overview', ['exports'], function (exports) {
         var el4 = dom.createTextNode("\n      ");
         dom.appendChild(el3, el4);
         var el4 = dom.createElement("p");
-        var el5 = dom.createTextNode("The current version is 0.8.0.");
+        var el5 = dom.createTextNode("The current version is 0.9.0.");
         dom.appendChild(el4, el5);
         dom.appendChild(el3, el4);
         var el4 = dom.createTextNode("\n      ");
@@ -12081,7 +9532,7 @@ define('dummy/templates/scroll-container', ['exports'], function (exports) {
   exports['default'] = Ember.HTMLBars.template((function() {
     return {
       isHTMLBars: true,
-      revision: "Ember@1.11.3",
+      revision: "Ember@1.12.1",
       blockParams: 0,
       cachedFragment: null,
       hasRendered: false,
@@ -12142,7 +9593,7 @@ define('dummy/templates/simple-table/simple-table', ['exports'], function (expor
   exports['default'] = Ember.HTMLBars.template((function() {
     return {
       isHTMLBars: true,
-      revision: "Ember@1.11.3",
+      revision: "Ember@1.12.1",
       blockParams: 0,
       cachedFragment: null,
       hasRendered: false,
@@ -12190,7 +9641,7 @@ define('dummy/templates/simple', ['exports'], function (exports) {
   exports['default'] = Ember.HTMLBars.template((function() {
     return {
       isHTMLBars: true,
-      revision: "Ember@1.11.3",
+      revision: "Ember@1.12.1",
       blockParams: 0,
       cachedFragment: null,
       hasRendered: false,
@@ -12336,7 +9787,7 @@ define('dummy/templates/sparkline-table/sparkline-table', ['exports'], function 
   exports['default'] = Ember.HTMLBars.template((function() {
     return {
       isHTMLBars: true,
-      revision: "Ember@1.11.3",
+      revision: "Ember@1.12.1",
       blockParams: 0,
       cachedFragment: null,
       hasRendered: false,
@@ -12384,7 +9835,7 @@ define('dummy/templates/sparkline', ['exports'], function (exports) {
   exports['default'] = Ember.HTMLBars.template((function() {
     return {
       isHTMLBars: true,
-      revision: "Ember@1.11.3",
+      revision: "Ember@1.12.1",
       blockParams: 0,
       cachedFragment: null,
       hasRendered: false,
@@ -12558,7 +10009,7 @@ define('dummy/templates/sub-navigation', ['exports'], function (exports) {
     var child0 = (function() {
       return {
         isHTMLBars: true,
-        revision: "Ember@1.11.3",
+        revision: "Ember@1.12.1",
         blockParams: 0,
         cachedFragment: null,
         hasRendered: false,
@@ -12594,7 +10045,7 @@ define('dummy/templates/sub-navigation', ['exports'], function (exports) {
     var child1 = (function() {
       return {
         isHTMLBars: true,
-        revision: "Ember@1.11.3",
+        revision: "Ember@1.12.1",
         blockParams: 0,
         cachedFragment: null,
         hasRendered: false,
@@ -12630,7 +10081,7 @@ define('dummy/templates/sub-navigation', ['exports'], function (exports) {
     var child2 = (function() {
       return {
         isHTMLBars: true,
-        revision: "Ember@1.11.3",
+        revision: "Ember@1.12.1",
         blockParams: 0,
         cachedFragment: null,
         hasRendered: false,
@@ -12666,7 +10117,7 @@ define('dummy/templates/sub-navigation', ['exports'], function (exports) {
     var child3 = (function() {
       return {
         isHTMLBars: true,
-        revision: "Ember@1.11.3",
+        revision: "Ember@1.12.1",
         blockParams: 0,
         cachedFragment: null,
         hasRendered: false,
@@ -12702,7 +10153,7 @@ define('dummy/templates/sub-navigation', ['exports'], function (exports) {
     var child4 = (function() {
       return {
         isHTMLBars: true,
-        revision: "Ember@1.11.3",
+        revision: "Ember@1.12.1",
         blockParams: 0,
         cachedFragment: null,
         hasRendered: false,
@@ -12738,7 +10189,7 @@ define('dummy/templates/sub-navigation', ['exports'], function (exports) {
     var child5 = (function() {
       return {
         isHTMLBars: true,
-        revision: "Ember@1.11.3",
+        revision: "Ember@1.12.1",
         blockParams: 0,
         cachedFragment: null,
         hasRendered: false,
@@ -12774,7 +10225,7 @@ define('dummy/templates/sub-navigation', ['exports'], function (exports) {
     var child6 = (function() {
       return {
         isHTMLBars: true,
-        revision: "Ember@1.11.3",
+        revision: "Ember@1.12.1",
         blockParams: 0,
         cachedFragment: null,
         hasRendered: false,
@@ -12810,7 +10261,7 @@ define('dummy/templates/sub-navigation', ['exports'], function (exports) {
     var child7 = (function() {
       return {
         isHTMLBars: true,
-        revision: "Ember@1.11.3",
+        revision: "Ember@1.12.1",
         blockParams: 0,
         cachedFragment: null,
         hasRendered: false,
@@ -12846,7 +10297,7 @@ define('dummy/templates/sub-navigation', ['exports'], function (exports) {
     var child8 = (function() {
       return {
         isHTMLBars: true,
-        revision: "Ember@1.11.3",
+        revision: "Ember@1.12.1",
         blockParams: 0,
         cachedFragment: null,
         hasRendered: false,
@@ -12882,7 +10333,7 @@ define('dummy/templates/sub-navigation', ['exports'], function (exports) {
     var child9 = (function() {
       return {
         isHTMLBars: true,
-        revision: "Ember@1.11.3",
+        revision: "Ember@1.12.1",
         blockParams: 0,
         cachedFragment: null,
         hasRendered: false,
@@ -12918,7 +10369,7 @@ define('dummy/templates/sub-navigation', ['exports'], function (exports) {
     var child10 = (function() {
       return {
         isHTMLBars: true,
-        revision: "Ember@1.11.3",
+        revision: "Ember@1.12.1",
         blockParams: 0,
         cachedFragment: null,
         hasRendered: false,
@@ -12954,7 +10405,7 @@ define('dummy/templates/sub-navigation', ['exports'], function (exports) {
     var child11 = (function() {
       return {
         isHTMLBars: true,
-        revision: "Ember@1.11.3",
+        revision: "Ember@1.12.1",
         blockParams: 0,
         cachedFragment: null,
         hasRendered: false,
@@ -12990,7 +10441,7 @@ define('dummy/templates/sub-navigation', ['exports'], function (exports) {
     var child12 = (function() {
       return {
         isHTMLBars: true,
-        revision: "Ember@1.11.3",
+        revision: "Ember@1.12.1",
         blockParams: 0,
         cachedFragment: null,
         hasRendered: false,
@@ -13039,7 +10490,7 @@ define('dummy/templates/sub-navigation', ['exports'], function (exports) {
     }());
     return {
       isHTMLBars: true,
-      revision: "Ember@1.11.3",
+      revision: "Ember@1.12.1",
       blockParams: 0,
       cachedFragment: null,
       hasRendered: false,
@@ -13273,7 +10724,7 @@ define('dummy/templates/table-cell', ['exports'], function (exports) {
   exports['default'] = Ember.HTMLBars.template((function() {
     return {
       isHTMLBars: true,
-      revision: "Ember@1.11.3",
+      revision: "Ember@1.12.1",
       blockParams: 0,
       cachedFragment: null,
       hasRendered: false,
@@ -13325,7 +10776,7 @@ define('dummy/templates/table-row', ['exports'], function (exports) {
   exports['default'] = Ember.HTMLBars.template((function() {
     return {
       isHTMLBars: true,
-      revision: "Ember@1.11.3",
+      revision: "Ember@1.12.1",
       blockParams: 0,
       cachedFragment: null,
       hasRendered: false,
@@ -13373,7 +10824,7 @@ define('dummy/templates/tree_table/table_header_cell', ['exports'], function (ex
   exports['default'] = Ember.HTMLBars.template((function() {
     return {
       isHTMLBars: true,
-      revision: "Ember@1.11.3",
+      revision: "Ember@1.12.1",
       blockParams: 0,
       cachedFragment: null,
       hasRendered: false,
@@ -13436,7 +10887,7 @@ define('dummy/templates/tree_table/table_header_tree_cell', ['exports'], functio
   exports['default'] = Ember.HTMLBars.template((function() {
     return {
       isHTMLBars: true,
-      revision: "Ember@1.11.3",
+      revision: "Ember@1.12.1",
       blockParams: 0,
       cachedFragment: null,
       hasRendered: false,
@@ -13514,7 +10965,7 @@ define('dummy/templates/tree_table/table_tree_cell', ['exports'], function (expo
   exports['default'] = Ember.HTMLBars.template((function() {
     return {
       isHTMLBars: true,
-      revision: "Ember@1.11.3",
+      revision: "Ember@1.12.1",
       blockParams: 0,
       cachedFragment: null,
       hasRendered: false,
@@ -14002,10 +11453,10 @@ define('dummy/utils/horizon', ['exports'], function (exports) {
   }
 
   function d3_horizonTransform(bands, h, mode) {
-    return mode === "offset" ? function (d) {
-      return "translate(0," + (d + (d < 0) - bands) * h + ")";
+    return mode === 'offset' ? function (d) {
+      return 'translate(0,' + (d + (d < 0) - bands) * h + ')';
     } : function (d) {
-      return (d < 0 ? "scale(1,-1)" : "") + "translate(0," + (d - bands) * h + ")";
+      return (d < 0 ? 'scale(1,-1)' : '') + 'translate(0,' + (d - bands) * h + ')';
     };
   }
 
@@ -14014,12 +11465,12 @@ define('dummy/utils/horizon', ['exports'], function (exports) {
   ///////////////////////////////////////////////////////////////////////////////
 
   exports['default'] = {
-    d3Horizon: function () {
+    d3Horizon: function d3Horizon() {
       var bands = 1,
           // between 1 and 5, typically
-      mode = "offset",
+      mode = 'offset',
           // or mirror
-      interpolate = "linear",
+      interpolate = 'linear',
           // or basis, monotone, step-before, etc.
       x = d3_horizonX,
           y = d3_horizonY,
@@ -14027,7 +11478,7 @@ define('dummy/utils/horizon', ['exports'], function (exports) {
           h = 40,
           duration = 0;
 
-      var color = d3.scale.linear().domain([-1, 0, 1]).range(["#d62728", "#fff", "#1f77b4"]);
+      var color = d3.scale.linear().domain([-1, 0, 1]).range(['#d62728', '#fff', '#1f77b4']);
 
       // For each small multiple…
       function horizon(g) {
@@ -14081,18 +11532,18 @@ define('dummy/utils/horizon', ['exports'], function (exports) {
           }
 
           // We'll use a defs to store the area path and the clip path.
-          var defs = g.selectAll("defs").data([null]);
+          var defs = g.selectAll('defs').data([null]);
 
           // The clip path is a simple rect.
-          defs.enter().append("defs").append("clipPath").attr("id", "d3_horizon_clip" + id).append("rect").attr("width", w).attr("height", h);
+          defs.enter().append('defs').append('clipPath').attr('id', 'd3_horizon_clip' + id).append('rect').attr('width', w).attr('height', h);
 
-          defs.select("rect").transition().duration(duration).attr("width", w).attr("height", h);
+          defs.select('rect').transition().duration(duration).attr('width', w).attr('height', h);
 
           // We'll use a container to clip all horizon layers at once.
-          g.selectAll("g").data([null]).enter().append("g").attr("clip-path", "url(#d3_horizon_clip" + id + ")");
+          g.selectAll('g').data([null]).enter().append('g').attr('clip-path', 'url(#d3_horizon_clip' + id + ')');
 
           // Instantiate each copy of the path with different transforms.
-          var path = g.select("g").selectAll("path").data(d3.range(-1, -bands - 1, -1).concat(d3.range(1, bands + 1)), Number);
+          var path = g.select('g').selectAll('path').data(d3.range(-1, -bands - 1, -1).concat(d3.range(1, bands + 1)), Number);
 
           var d0 = d3_horizonArea.interpolate(interpolate).x(function (d) {
             return x0(d[0]);
@@ -14106,11 +11557,11 @@ define('dummy/utils/horizon', ['exports'], function (exports) {
             return h * bands - y1(d[1]);
           })(data);
 
-          path.enter().append("path").style("fill", color).attr("transform", t0).attr("d", d0);
+          path.enter().append('path').style('fill', color).attr('transform', t0).attr('d', d0);
 
-          path.transition().duration(duration).style("fill", color).attr("transform", t1).attr("d", d1);
+          path.transition().duration(duration).style('fill', color).attr('transform', t1).attr('d', d1);
 
-          path.exit().transition().duration(duration).attr("transform", t1).attr("d", d1).remove();
+          path.exit().transition().duration(duration).attr('transform', t1).attr('d', d1).remove();
 
           // Stash the new scales.
           this.__chart__ = { x: x1, y: y1, t: t1, id: id };
@@ -14139,7 +11590,7 @@ define('dummy/utils/horizon', ['exports'], function (exports) {
         if (!arguments.length) {
           return mode;
         }
-        mode = x + "";
+        mode = x + '';
         return horizon;
       };
 
@@ -14155,7 +11606,7 @@ define('dummy/utils/horizon', ['exports'], function (exports) {
         if (!arguments.length) {
           return interpolate;
         }
-        interpolate = x + "";
+        interpolate = x + '';
         return horizon;
       };
 
@@ -14203,21 +11654,21 @@ define('dummy/utils/number-format', ['exports'], function (exports) {
   // HACK: Used to help format table cells, should be refactored or use a library
   // TODO(azirbel): Should be a handlebars helper
   exports['default'] = {
-    toCurrency: function (num) {
+    toCurrency: function toCurrency(num) {
       var value;
       if (isNaN(num) || !isFinite(num)) {
-        return "-";
+        return '-';
       }
       value = Math.abs(num).toFixed(2);
-      value = value.replace(/(\d)(?=(\d\d\d)+(?!\d))/g, "$1,");
-      return (num < 0 ? "-$" : "$") + value;
+      value = value.replace(/(\d)(?=(\d\d\d)+(?!\d))/g, '$1,');
+      return (num < 0 ? '-$' : '$') + value;
     },
 
-    toPercent: function (num) {
+    toPercent: function toPercent(num) {
       if (isNaN(num) || !isFinite(num)) {
-        return "-";
+        return '-';
       }
-      return Math.abs(num * 100).toFixed(2) + "%";
+      return Math.abs(num * 100).toFixed(2) + '%';
     }
   };
 
@@ -14227,8 +11678,8 @@ define('dummy/views/ajax-image-table-cell', ['exports', 'ember-table/views/table
   'use strict';
 
   exports['default'] = TableCell['default'].extend({
-    templateName: "ajax-table/ajax-cell",
-    classNames: "img-table-cell"
+    templateName: 'ajax-table/ajax-cell',
+    classNames: 'img-table-cell'
   });
 
 });
@@ -14237,21 +11688,21 @@ define('dummy/views/ajax-table-lazy-data-source', ['exports', 'ember'], function
   'use strict';
 
   exports['default'] = Ember['default'].ArrayProxy.extend({
-    createGithubEvent: function (row, event) {
-      row.set("type", event.type);
-      row.set("createdAt", event.created_at);
-      row.set("login", event.actor.login);
-      row.set("avatar", event.actor.avatar_url);
-      row.set("isLoaded", true);
+    createGithubEvent: function createGithubEvent(row, event) {
+      row.set('type', event.type);
+      row.set('createdAt', event.created_at);
+      row.set('login', event.actor.login);
+      row.set('avatar', event.actor.avatar_url);
+      row.set('isLoaded', true);
       return row;
     },
 
-    requestGithubEvent: function (page) {
+    requestGithubEvent: function requestGithubEvent(page) {
       var _this = this;
-      var content = this.get("content");
+      var content = this.get('content');
       var start = (page - 1) * 30;
       var end = start + 30;
-      var url = "https://api.github.com/repos/emberjs/ember.js/events?page=" + page + "&per_page=30&callback=?";
+      var url = 'https://api.github.com/repos/emberjs/ember.js/events?page=' + page + '&per_page=30&callback=?';
       Ember['default'].$.getJSON(url, function (json) {
         return json.data.forEach(function (event, index) {
           var row = content[start + index];
@@ -14266,10 +11717,10 @@ define('dummy/views/ajax-table-lazy-data-source', ['exports', 'ember'], function
       }
     },
 
-    objectAt: function (index) {
-      var content = this.get("content");
+    objectAt: function objectAt(index) {
+      var content = this.get('content');
       var row = content[index];
-      if (row && !row.get("error")) {
+      if (row && !row.get('error')) {
         return row;
       }
       this.requestGithubEvent(Math.floor(index / 30 + 1));
@@ -14283,22 +11734,22 @@ define('dummy/views/bar-table-cell', ['exports', 'ember', 'ember-table/views/tab
   'use strict';
 
   exports['default'] = TableCell['default'].extend({
-    templateName: "bar_table/bar-cell",
-    classNameBindings: ["column.color"],
+    templateName: 'bar_table/bar-cell',
+    classNameBindings: ['column.color'],
 
     barWidth: Ember['default'].computed(function () {
-      var properties = this.getProperties("column", "row");
+      var properties = this.getProperties('column', 'row');
       var column = properties.column;
       var row = properties.row;
       if (!(column && row)) {
         return 0;
       }
-      return Math.round(+this.get("cellContent"));
-    }).property("column", "row", "cellContent"),
+      return Math.round(+this.get('cellContent'));
+    }).property('column', 'row', 'cellContent'),
 
     histogramStyle: Ember['default'].computed(function () {
-      return "width: " + this.get("barWidth") + "%;";
-    }).property("barWidth")
+      return 'width: ' + this.get('barWidth') + '%;';
+    }).property('barWidth')
   });
 
 });
@@ -14325,71 +11776,71 @@ define('dummy/views/configurable-column-definition', ['exports', 'ember', 'ember
 
     savedWidthValue: Ember['default'].computed(function (key, value) {
       if (arguments.length === 1) {
-        return this.get("savedWidth");
+        return this.get('savedWidth');
       } else {
-        this.set("savedWidth", parseInt(value));
-        return this.get("savedWidth");
+        this.set('savedWidth', parseInt(value));
+        return this.get('savedWidth');
       }
-    }).property("savedWidth"),
+    }).property('savedWidth'),
 
     minWidthValue: Ember['default'].computed(function (key, value) {
       if (arguments.length === 1) {
-        return this.get("minWidth");
+        return this.get('minWidth');
       } else {
-        this.set("minWidth", parseInt(value));
-        return this.get("minWidth");
+        this.set('minWidth', parseInt(value));
+        return this.get('minWidth');
       }
-    }).property("minWidth"),
+    }).property('minWidth'),
 
     atMinWidth: Ember['default'].computed(function () {
-      return this.get("width") === this.get("minWidth");
-    }).property("width", "minWidth"),
+      return this.get('width') === this.get('minWidth');
+    }).property('width', 'minWidth'),
 
     atMaxWidth: Ember['default'].computed(function () {
-      return this.get("width") === this.get("maxWidth");
-    }).property("width", "maxWidth"),
+      return this.get('width') === this.get('maxWidth');
+    }).property('width', 'maxWidth'),
 
     maxWidth: undefined,
 
     maxWidthValue: Ember['default'].computed(function (key, value) {
       if (arguments.length === 1) {
-        return this.get("maxWidth");
+        return this.get('maxWidth');
       } else {
-        this.set("maxWidth", parseInt(value));
-        return this.get("maxWidth");
+        this.set('maxWidth', parseInt(value));
+        return this.get('maxWidth');
       }
-    }).property("maxWidth"),
+    }).property('maxWidth'),
 
     columnDefinitionDocumentation: Ember['default'].computed(function () {
-      var docString = "";
-      docString += "    var " + this.get("headerCellName").toLowerCase() + "Column = ColumnDefinition.create({\n";
-      if (this.get("textAlign") !== "text-align-right") {
-        docString += "      textAlign: '" + this.get("textAlign") + "',\n";
+      var docString = '';
+      docString += '    var ' + this.get('headerCellName').toLowerCase() + 'Column = ColumnDefinition.create({\n';
+      if (this.get('textAlign') !== 'text-align-right') {
+        docString += '      textAlign: \'' + this.get('textAlign') + '\',\n';
       }
-      docString += "      headerCellName: '" + this.get("headerCellName") + "',\n";
-      if (this.get("minWidth") !== 25) {
-        docString += "      minWidth: " + this.get("minWidth") + ",\n";
+      docString += '      headerCellName: \'' + this.get('headerCellName') + '\',\n';
+      if (this.get('minWidth') !== 25) {
+        docString += '      minWidth: ' + this.get('minWidth') + ',\n';
       }
-      if (this.get("maxWidth")) {
-        docString += "      maxWidth: " + this.get("maxWidth") + ",\n";
+      if (this.get('maxWidth')) {
+        docString += '      maxWidth: ' + this.get('maxWidth') + ',\n';
       }
-      if (!this.get("isSortable")) {
-        docString += "      isSortable: false,\n";
+      if (!this.get('isSortable')) {
+        docString += '      isSortable: false,\n';
       }
-      if (!this.get("isResizable")) {
-        docString += "      isResizable: false,\n";
+      if (!this.get('isResizable')) {
+        docString += '      isResizable: false,\n';
       }
-      if (this.get("canAutoResize")) {
-        docString += "      canAutoResize: true,\n";
+      if (this.get('canAutoResize')) {
+        docString += '      canAutoResize: true,\n';
       }
-      if (this.get("headerCellName") === "Date") {
-        docString += "      getCellContent: function(row) {\n" + "        return row.get('date').toDateString();\n" + "      }\n";
+      if (this.get('headerCellName') === 'Date') {
+        docString += '      getCellContent: function(row) {\n' + '        return row.get(\'date\').toDateString();\n' + '      }\n';
       } else {
-        docString += "      getCellContent: function(row) {\n" + "        return row.get('" + this.get("headerCellName").toLowerCase() + "').toFixed(2);\n" + "      }\n";
+        docString += '      getCellContent: function(row) {\n' + '        return row.get(\'' + this.get('headerCellName').toLowerCase() + '\').toFixed(2);\n' + '      }\n';
       }
-      docString += "    });";
+      docString += '    });';
       return docString;
-    }).property("headerCellName", "textAlign", "minWidth", "maxWidth", "isSortable", "isResizable", "canAutoResize")
+    }).property('headerCellName', 'textAlign', 'minWidth', 'maxWidth', 'isSortable', 'isResizable', 'canAutoResize')
   });
 
 });
@@ -14398,7 +11849,7 @@ define('dummy/views/date-picker-table-cell', ['exports', 'dummy/views/editable-t
   'use strict';
 
   exports['default'] = EditableTableCell['default'].extend({
-    type: "date"
+    type: 'date'
   });
 
 });
@@ -14407,29 +11858,29 @@ define('dummy/views/editable-table-cell', ['exports', 'ember', 'ember-table/view
   'use strict';
 
   exports['default'] = TableCell['default'].extend({
-    className: "editable-table-cell",
-    templateName: "editable-table/editable-table-cell",
+    className: 'editable-table-cell',
+    templateName: 'editable-table/editable-table-cell',
     isEditing: false,
-    type: "text",
+    type: 'text',
 
     innerTextField: Ember['default'].TextField.extend({
-      typeBinding: "parentView.type",
-      valueBinding: "parentView.cellContent",
-      didInsertElement: function () {
+      typeBinding: 'parentView.type',
+      valueBinding: 'parentView.cellContent',
+      didInsertElement: function didInsertElement() {
         this.$().focus();
         // TODO(azirbel): Call this._super()
       },
-      focusOut: function () {
-        this.set("parentView.isEditing", false);
+      focusOut: function focusOut() {
+        this.set('parentView.isEditing', false);
       }
     }),
 
     onRowContentDidChange: Ember['default'].observer(function () {
-      this.set("isEditing", false);
-    }, "row.content"),
+      this.set('isEditing', false);
+    }, 'row.content'),
 
-    click: function (event) {
-      this.set("isEditing", true);
+    click: function click(event) {
+      this.set('isEditing', true);
       event.stopPropagation();
     }
   });
@@ -14440,7 +11891,7 @@ define('dummy/views/financial-table-cell', ['exports', 'ember-table/views/table-
   'use strict';
 
   exports['default'] = TableCell['default'].extend({
-    templateName: "financial-table/financial-table-cell"
+    templateName: 'financial-table/financial-table-cell'
   });
 
 });
@@ -14449,7 +11900,7 @@ define('dummy/views/financial-table-header-cell', ['exports', 'ember-table/views
   'use strict';
 
   exports['default'] = HeaderCell['default'].extend({
-    templateName: "financial-table/financial-table-header-cell"
+    templateName: 'financial-table/financial-table-header-cell'
   });
 
 });
@@ -14458,8 +11909,8 @@ define('dummy/views/financial-table-header-tree-cell', ['exports', 'ember-table/
   'use strict';
 
   exports['default'] = HeaderCell['default'].extend({
-    templateName: "financial-table/financial-table-header-tree-cell",
-    classNames: "ember-table-table-header-tree-cell"
+    templateName: 'financial-table/financial-table-header-tree-cell',
+    classNames: 'ember-table-table-header-tree-cell'
   });
 
 });
@@ -14468,12 +11919,12 @@ define('dummy/views/financial-table-tree-cell', ['exports', 'ember', 'ember-tabl
   'use strict';
 
   exports['default'] = TableCell['default'].extend({
-    templateName: "financial-table/financial-table-tree-cell",
-    classNames: "ember-table-table-tree-cell",
+    templateName: 'financial-table/financial-table-tree-cell',
+    classNames: 'ember-table-table-tree-cell',
 
     paddingStyle: Ember['default'].computed(function () {
-      return "padding-left:" + this.get("row.indentation") + "px;";
-    }).property("row.indentation")
+      return 'padding-left:' + this.get('row.indentation') + 'px;';
+    }).property('row.indentation')
   });
 
 });
@@ -14492,44 +11943,44 @@ define('dummy/views/financial-table-tree-row', ['exports', 'ember-table/controll
     indentationSpacing: 20,
     groupName: null,
 
-    computeStyles: function (parent) {
+    computeStyles: function computeStyles(parent) {
       var groupingLevel, indentType, indentation, isShowing, pGroupingLevel, spacing;
       groupingLevel = 0;
       indentation = 0;
       isShowing = true;
       if (parent) {
-        isShowing = parent.get("isShowing") && !parent.get("isCollapsed");
-        pGroupingLevel = parent.get("groupingLevel");
+        isShowing = parent.get('isShowing') && !parent.get('isCollapsed');
+        pGroupingLevel = parent.get('groupingLevel');
         groupingLevel = pGroupingLevel;
-        if (parent.get("groupName") !== this.get("groupName")) {
+        if (parent.get('groupName') !== this.get('groupName')) {
           groupingLevel += 1;
         }
-        indentType = groupingLevel === pGroupingLevel ? "half" : "full";
-        spacing = this.get("indentationSpacing");
-        if (!parent.get("isRoot")) {
-          indentation = parent.get("indentation");
-          indentation += indentType === "half" ? spacing / 2 : spacing;
+        indentType = groupingLevel === pGroupingLevel ? 'half' : 'full';
+        spacing = this.get('indentationSpacing');
+        if (!parent.get('isRoot')) {
+          indentation = parent.get('indentation');
+          indentation += indentType === 'half' ? spacing / 2 : spacing;
         }
       }
-      this.set("groupingLevel", groupingLevel);
-      this.set("indentation", indentation);
-      this.set("isShowing", isShowing);
+      this.set('groupingLevel', groupingLevel);
+      this.set('indentation', indentation);
+      this.set('isShowing', isShowing);
     },
 
-    computeRowStyle: function (maxLevels) {
+    computeRowStyle: function computeRowStyle(maxLevels) {
       var level;
-      level = this.getFormattingLevel(this.get("groupingLevel"), maxLevels);
-      this.set("rowStyle", "ember-table-row-style-" + level);
+      level = this.getFormattingLevel(this.get('groupingLevel'), maxLevels);
+      this.set('rowStyle', 'ember-table-row-style-' + level);
     },
 
-    recursiveCollapse: function (isCollapsed) {
-      this.set("isCollapsed", isCollapsed);
-      this.get("children").forEach(function (child) {
+    recursiveCollapse: function recursiveCollapse(isCollapsed) {
+      this.set('isCollapsed', isCollapsed);
+      this.get('children').forEach(function (child) {
         child.recursiveCollapse(isCollapsed);
       });
     },
 
-    getFormattingLevel: function (level, maxLevels) {
+    getFormattingLevel: function getFormattingLevel(level, maxLevels) {
       switch (maxLevels) {
         case 1:
           return 5;
@@ -14609,8 +12060,8 @@ define('dummy/views/horizon-table-cell', ['exports', 'ember', 'ember-table/views
   'use strict';
 
   exports['default'] = TableCell['default'].extend({
-    templateName: "empty-cell",
-    heightBinding: "controller.rowHeight",
+    templateName: 'empty-cell',
+    heightBinding: 'controller.rowHeight',
 
     horizonContent: Ember['default'].computed(function () {
       var normal = d3.random.normal(1.5, 3);
@@ -14622,22 +12073,22 @@ define('dummy/views/horizon-table-cell', ['exports', 'ember', 'ember-table/views
     }).property(),
 
     onWidthDidChange: Ember['default'].observer(function () {
-      this.$("svg").remove();
+      this.$('svg').remove();
       this.renderD3View();
-    }, "width"),
+    }, 'width'),
 
-    didInsertElement: function () {
+    didInsertElement: function didInsertElement() {
       this.onWidthDidChange();
       // TODO(azirbel): Add _this.super()
     },
 
-    renderD3View: function () {
+    renderD3View: function renderD3View() {
       var chart, data, height, svg, width;
-      width = this.get("width");
-      height = this.get("height");
-      data = this.get("horizonContent");
-      chart = d3HorizonUtils['default'].d3Horizon().width(width).height(height).bands(2).mode("mirror").interpolate("basis");
-      svg = d3.select("#" + this.get("elementId")).append("svg").attr("width", width).attr("height", height);
+      width = this.get('width');
+      height = this.get('height');
+      data = this.get('horizonContent');
+      chart = d3HorizonUtils['default'].d3Horizon().width(width).height(height).bands(2).mode('mirror').interpolate('basis');
+      svg = d3.select('#' + this.get('elementId')).append('svg').attr('width', width).attr('height', height);
       svg.data([data]).call(chart);
     }
   });
@@ -14662,30 +12113,30 @@ define('dummy/views/rating-table-cell', ['exports', 'ember', 'ember-table/views/
   'use strict';
 
   exports['default'] = TableCell['default'].extend({
-    classNames: "rating-table-cell",
-    templateName: "editable-table/rating-table-cell",
+    classNames: 'rating-table-cell',
+    templateName: 'editable-table/rating-table-cell',
 
     onRowContentDidChange: Ember['default'].observer(function () {
-      this.applyRating(this.get("cellContent"));
-    }, "cellContent"),
+      this.applyRating(this.get('cellContent'));
+    }, 'cellContent'),
 
-    didInsertElement: function () {
+    didInsertElement: function didInsertElement() {
       this._super();
       this.onRowContentDidChange();
     },
 
-    applyRating: function (rating) {
-      this.$(".rating span").removeClass("active");
-      var span = this.$(".rating span").get(rating);
-      Ember['default'].$(span).addClass("active");
+    applyRating: function applyRating(rating) {
+      this.$('.rating span').removeClass('active');
+      var span = this.$('.rating span').get(rating);
+      Ember['default'].$(span).addClass('active');
     },
 
-    click: function (event) {
-      var rating = this.$(".rating span").index(event.target);
+    click: function click(event) {
+      var rating = this.$('.rating span').index(event.target);
       if (rating === -1) {
         return;
       }
-      this.get("column").setCellContent(this.get("row"), rating);
+      this.get('column').setCellContent(this.get('row'), rating);
       this.applyRating(rating);
     }
   });
@@ -14710,26 +12161,26 @@ define('dummy/views/sparkline-table-cell', ['exports', 'ember', 'ember-table/vie
   'use strict';
 
   exports['default'] = TableCell['default'].extend({
-    templateName: "empty-cell",
-    heightBinding: "controller.rowHeight",
+    templateName: 'empty-cell',
+    heightBinding: 'controller.rowHeight',
 
     onContentOrSizeDidChange: Ember['default'].observer(function () {
-      this.$("svg").remove();
+      this.$('svg').remove();
       this.renderD3View();
-    }, "row", "width"),
+    }, 'row', 'width'),
 
-    didInsertElement: function () {
+    didInsertElement: function didInsertElement() {
       this.renderD3View();
       // TODO(azirbel): Add _this.super()
     },
 
-    renderD3View: function () {
-      var data = this.get("row.timeseries");
+    renderD3View: function renderD3View() {
+      var data = this.get('row.timeseries');
       if (!data) {
         return;
       }
-      var h = this.get("height");
-      var w = this.get("width");
+      var h = this.get('height');
+      var w = this.get('width');
       var p = 2;
       var min = Math.min.apply(null, data);
       var max = Math.max.apply(null, data);
@@ -14742,11 +12193,11 @@ define('dummy/views/sparkline-table-cell', ['exports', 'ember', 'ember-table/vie
       }).y(function (d) {
         return yscale(d);
       });
-      var svg = d3.select("#" + this.get("elementId")).append("svg:svg").attr("height", h).attr("width", w);
-      var g = svg.append("svg:g");
-      g.append("svg:path").attr("d", line(data)).attr("stroke", function () {
+      var svg = d3.select('#' + this.get('elementId')).append('svg:svg').attr('height', h).attr('width', w);
+      var g = svg.append('svg:g');
+      g.append('svg:path').attr('d', line(data)).attr('stroke', function () {
         return fill(Math.round(Math.random()) * 10);
-      }).attr("fill", "none");
+      }).attr('fill', 'none');
     }
   });
 
@@ -14800,7 +12251,7 @@ catch(err) {
 if (runningTests) {
   require("dummy/tests/test-helper");
 } else {
-  require("dummy/app")["default"].create({"name":"ember-table","version":"0.8.0.d5b357e3"});
+  require("dummy/app")["default"].create({"name":"ember-table","version":"0.9.0+c3596470"});
 }
 
 /* jshint ignore:end */
