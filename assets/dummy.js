@@ -19,6 +19,62 @@ define('dummy/app', ['exports', 'ember', 'ember/resolver', 'ember/load-initializ
   exports['default'] = App;
 
 });
+define('dummy/components/code-snippet', ['exports', 'ember', 'dummy/snippets'], function (exports, Ember, Snippets) {
+
+  'use strict';
+
+  var Highlight = require('highlight.js');
+
+  exports['default'] = Ember['default'].Component.extend({
+    tagName: 'pre',
+    classNameBindings: ['language'],
+    unindent: true,
+
+    _unindent: function _unindent(src) {
+      if (!this.get('unindent')) {
+        return src;
+      }
+      var match,
+          min,
+          lines = src.split("\n");
+      for (var i = 0; i < lines.length; i++) {
+        match = /^\s*/.exec(lines[i]);
+        if (match && (typeof min === 'undefined' || min > match[0].length)) {
+          min = match[0].length;
+        }
+      }
+      if (typeof min !== 'undefined' && min > 0) {
+        src = src.replace(new RegExp("(\\n|^)\\s{" + min + "}", 'g'), "$1");
+      }
+      return src;
+    },
+
+    source: Ember['default'].computed('name', function () {
+      return this._unindent((Snippets['default'][this.get('name')] || "").replace(/^(\s*\n)*/, '').replace(/\s*$/, ''));
+    }),
+
+    didInsertElement: function didInsertElement() {
+      Highlight.highlightBlock(this.get('element'));
+    },
+
+    language: Ember['default'].computed('name', function () {
+      var m = /\.(\w+)$/i.exec(this.get('name'));
+      if (m) {
+        switch (m[1].toLowerCase()) {
+          case 'js':
+            return 'javascript';
+          case 'hbs':
+            return 'handlebars';
+          case 'css':
+            return 'css';
+          case 'scss':
+            return 'scss';
+        }
+      }
+    })
+  });
+
+});
 define('dummy/components/configurable-table', ['exports', 'ember', 'ember-table/components/ember-table'], function (exports, Ember, TableComponent) {
 
   'use strict';
@@ -42,6 +98,7 @@ define('dummy/components/financial-table', ['exports', 'ember', 'ember-table/com
 
   'use strict';
 
+  // BEGIN-SNIPPET financial-table-component
   exports['default'] = TableComponent['default'].extend({
     // Overriding default properties
     layoutName: 'components/ember-table',
@@ -227,12 +284,14 @@ define('dummy/components/financial-table', ['exports', 'ember', 'ember-table/com
       }
     }
   });
+  // END-SNIPPET
 
 });
 define('dummy/controllers/ajax', ['exports', 'ember', 'ember-table/models/column-definition', 'dummy/views/ajax-table-lazy-data-source'], function (exports, Ember, ColumnDefinition, AjaxTableLazyDataSource) {
 
   'use strict';
 
+  // BEGIN-SNIPPET ajax-controller
   exports['default'] = Ember['default'].Controller.extend({
     tableColumns: Ember['default'].computed(function () {
       var avatar = ColumnDefinition['default'].create({
@@ -259,6 +318,7 @@ define('dummy/controllers/ajax', ['exports', 'ember', 'ember-table/models/column
       });
     })
   });
+  // END-SNIPPET
 
 });
 define('dummy/controllers/array', ['exports', 'ember'], function (exports, Ember) {
@@ -272,6 +332,7 @@ define('dummy/controllers/bars', ['exports', 'ember', 'ember-table/models/column
 
   'use strict';
 
+  // BEGIN-SNIPPET bars-controller
   exports['default'] = Ember['default'].Controller.extend({
     tableColumns: Ember['default'].computed(function () {
       var colors = ['blue', 'teal', 'green', 'yellow', 'orange'];
@@ -307,9 +368,10 @@ define('dummy/controllers/bars', ['exports', 'ember', 'ember-table/models/column
       return content;
     })
   });
+  // END-SNIPPET
 
 });
-define('dummy/controllers/configurable-columns', ['exports', 'ember', 'dummy/views/configurable-column-definition'], function (exports, Ember, ConfigurableColumnDefinition) {
+define('dummy/controllers/configurable-columns', ['exports', 'ember', 'dummy/views/configurable-column-definition', 'dummy/utils/random'], function (exports, Ember, ConfigurableColumnDefinition, random) {
 
   'use strict';
 
@@ -376,15 +438,14 @@ define('dummy/controllers/configurable-columns', ['exports', 'ember', 'dummy/vie
       var content = [];
       var date;
       for (var i = 0; i < 100; i++) {
-        date = new Date();
-        date.setDate(date.getDate() + i);
+        date = random.randomDate(new Date(2000, 1, 5), new Date(2012, 2, 2));
         content.pushObject({
           date: date,
-          open: Math.random() * 100 - 50,
-          high: Math.random() * 100 - 50,
-          low: Math.random() * 100 - 50,
-          close: Math.random() * 100 - 50,
-          volume: Math.random() * 1000000
+          open: random.randomNumber(100) - 50,
+          high: random.randomNumber(100) - 50,
+          low: random.randomNumber(100) - 50,
+          close: random.randomNumber(100) - 50,
+          volume: random.randomNumber(100) * 1000000
         });
       }
       return content;
@@ -407,6 +468,7 @@ define('dummy/controllers/dynamic-bars', ['exports', 'ember', 'ember-table/model
 
   'use strict';
 
+  // BEGIN-SNIPPET dynamic-bars-controller
   exports['default'] = Ember['default'].Controller.extend({
     // TODO(azirbel): Don't use setInterval in an Ember application
     init: function init() {
@@ -464,12 +526,14 @@ define('dummy/controllers/dynamic-bars', ['exports', 'ember', 'ember-table/model
       return content;
     })
   });
+  // END-SNIPPET
 
 });
 define('dummy/controllers/editable', ['exports', 'ember', 'ember-table/models/column-definition'], function (exports, Ember, ColumnDefinition) {
 
   'use strict';
 
+  // BEGIN-SNIPPET editable-controller
   exports['default'] = Ember['default'].Controller.extend({
     tableColumns: Ember['default'].computed(function () {
       var columnNames = ['open', 'close'];
@@ -530,23 +594,27 @@ define('dummy/controllers/editable', ['exports', 'ember', 'ember-table/models/co
       return content;
     })
   });
+  // END-SNIPPET
 
 });
 define('dummy/controllers/financial', ['exports', 'ember', 'dummy/models/treedata'], function (exports, Ember, Treedata) {
 
   'use strict';
 
+  // BEGIN-SNIPPET financial-controller
   exports['default'] = Ember['default'].Controller.extend({
     data: Ember['default'].computed(function () {
       return Treedata['default'];
     })
   });
+  // END-SNIPPET
 
 });
 define('dummy/controllers/horizon', ['exports', 'ember', 'ember-table/models/column-definition'], function (exports, Ember, ColumnDefinition) {
 
   'use strict';
 
+  // BEGIN-SNIPPET horizon-controller
   exports['default'] = Ember['default'].Controller.extend({
     tableColumns: Ember['default'].computed(function () {
       var name = ColumnDefinition['default'].create({
@@ -582,6 +650,7 @@ define('dummy/controllers/horizon', ['exports', 'ember', 'ember-table/models/col
       return content;
     })
   });
+  // END-SNIPPET
 
 });
 define('dummy/controllers/object', ['exports', 'ember'], function (exports, Ember) {
@@ -602,10 +671,94 @@ define('dummy/controllers/overview', ['exports', 'ember', 'dummy/models/treedata
   });
 
 });
-define('dummy/controllers/simple', ['exports', 'ember', 'ember-table/models/column-definition'], function (exports, Ember, ColumnDefinition) {
+define('dummy/controllers/removable-columns', ['exports', 'ember', 'ember-table/models/column-definition', 'dummy/utils/random'], function (exports, Ember, ColumnDefinition, random) {
 
   'use strict';
 
+  // BEGIN-SNIPPET removable-columns-controller
+  exports['default'] = Ember['default'].Controller.extend({
+    queryParams: ['removed'],
+    removed: [],
+    withoutRemovedColumns: Ember['default'].computed('removed.[]', 'tableColumns.[]', function () {
+      var removed = this.get('removed');
+      return this.get('tableColumns').filter(function (column) {
+        return !removed.contains(column.get('headerCellName'));
+      });
+    }),
+    tableColumns: Ember['default'].computed(function () {
+      var dateColumn = ColumnDefinition['default'].create({
+        savedWidth: 150,
+        textAlign: 'text-align-left',
+        headerCellName: 'Date',
+        getCellContent: function getCellContent(row) {
+          return row.get('date').toDateString();
+        }
+      });
+      var openColumn = ColumnDefinition['default'].create({
+        savedWidth: 100,
+        headerCellName: 'Open',
+        getCellContent: function getCellContent(row) {
+          return row.get('open').toFixed(2);
+        }
+      });
+      var highColumn = ColumnDefinition['default'].create({
+        savedWidth: 100,
+        headerCellName: 'High',
+        getCellContent: function getCellContent(row) {
+          return row.get('high').toFixed(2);
+        }
+      });
+      var lowColumn = ColumnDefinition['default'].create({
+        savedWidth: 100,
+        headerCellName: 'Low',
+        getCellContent: function getCellContent(row) {
+          return row.get('low').toFixed(2);
+        }
+      });
+      var closeColumn = ColumnDefinition['default'].create({
+        savedWidth: 100,
+        headerCellName: 'Close',
+        getCellContent: function getCellContent(row) {
+          return row.get('close').toFixed(2);
+        }
+      });
+      return [dateColumn, openColumn, highColumn, lowColumn, closeColumn];
+    }),
+    tableContent: Ember['default'].computed(function () {
+      var content = [];
+      var date;
+      for (var i = 0; i < 100; i++) {
+        date = random.randomDate(new Date(2000, 1, 5), new Date(2012, 2, 2));
+        content.pushObject({
+          date: date,
+          open: random.randomNumber(100) - 50,
+          high: random.randomNumber(100) - 50,
+          low: random.randomNumber(100) - 50,
+          close: random.randomNumber(100) - 50,
+          volume: random.randomNumber(100) * 1000000
+        });
+      }
+      return content;
+    }),
+    actions: {
+      toggleColumn: function toggleColumn(headerCellName) {
+        var removed = this.get('removed');
+        if (removed.contains(headerCellName)) {
+          removed.removeObject(headerCellName);
+        } else {
+          removed.pushObject(headerCellName);
+        }
+      }
+    }
+  });
+  // END-SNIPPET
+
+});
+define('dummy/controllers/simple', ['exports', 'ember', 'ember-table/models/column-definition', 'dummy/utils/random'], function (exports, Ember, ColumnDefinition, random) {
+
+  'use strict';
+
+  // BEGIN-SNIPPET simple-controller
   exports['default'] = Ember['default'].Controller.extend({
     tableColumns: Ember['default'].computed(function () {
       var dateColumn = ColumnDefinition['default'].create({
@@ -651,26 +804,27 @@ define('dummy/controllers/simple', ['exports', 'ember', 'ember-table/models/colu
       var content = [];
       var date;
       for (var i = 0; i < 100; i++) {
-        date = new Date();
-        date.setDate(date.getDate() + i);
+        date = random.randomDate(new Date(2000, 1, 5), new Date(2012, 2, 2));
         content.pushObject({
           date: date,
-          open: Math.random() * 100 - 50,
-          high: Math.random() * 100 - 50,
-          low: Math.random() * 100 - 50,
-          close: Math.random() * 100 - 50,
-          volume: Math.random() * 1000000
+          open: random.randomNumber(100) - 50,
+          high: random.randomNumber(100) - 50,
+          low: random.randomNumber(100) - 50,
+          close: random.randomNumber(100) - 50,
+          volume: random.randomNumber(100) * 1000000
         });
       }
       return content;
     })
   });
+  // END-SNIPPET
 
 });
 define('dummy/controllers/sparkline', ['exports', 'ember', 'ember-table/models/column-definition'], function (exports, Ember, ColumnDefinition) {
 
   'use strict';
 
+  // BEGIN-SNIPPET sparkline-controller
   exports['default'] = Ember['default'].Controller.extend({
     tableColumns: Ember['default'].computed(function () {
       var name = ColumnDefinition['default'].create({
@@ -743,6 +897,7 @@ define('dummy/controllers/sparkline', ['exports', 'ember', 'ember-table/models/c
       return content;
     })
   });
+  // END-SNIPPET
 
 });
 define('dummy/ember-table/tests/modules/ember-table/components/ember-table.jshint', function () {
@@ -1025,6 +1180,15 @@ define('dummy/ember-table/tests/modules/ember-table/views/table-row.jshint', fun
   });
 
 });
+define('dummy/helpers/array-contains', ['exports', 'ember'], function (exports, Ember) {
+
+  'use strict';
+
+  exports['default'] = Ember['default'].Handlebars.makeBoundHelper(function (array, value) {
+    return (array || []).contains(value);
+  });
+
+});
 define('dummy/helpers/fa-icon', ['exports', 'ember'], function (exports, Ember) {
 
   'use strict';
@@ -1043,58 +1207,58 @@ define('dummy/helpers/fa-icon', ['exports', 'ember'], function (exports, Ember) 
    */
   var faIcon = function faIcon(name, options) {
     if (Ember['default'].typeOf(name) !== 'string') {
-      var message = 'fa-icon: no icon specified';
+      var message = "fa-icon: no icon specified";
       warn(message);
       return Ember['default'].String.htmlSafe(message);
     }
 
     var params = options.hash,
         classNames = [],
-        html = '';
+        html = "";
 
-    classNames.push('fa');
+    classNames.push("fa");
     if (!name.match(FA_PREFIX)) {
-      name = 'fa-' + name;
+      name = "fa-" + name;
     }
     classNames.push(name);
     if (params.spin) {
-      classNames.push('fa-spin');
+      classNames.push("fa-spin");
     }
     if (params.flip) {
-      classNames.push('fa-flip-' + params.flip);
+      classNames.push("fa-flip-" + params.flip);
     }
     if (params.rotate) {
-      classNames.push('fa-rotate-' + params.rotate);
+      classNames.push("fa-rotate-" + params.rotate);
     }
     if (params.lg) {
-      warn('fa-icon: the \'lg\' parameter is deprecated. Use \'size\' instead. I.e. {{fa-icon size="lg"}}');
-      classNames.push('fa-lg');
+      warn("fa-icon: the 'lg' parameter is deprecated. Use 'size' instead. I.e. {{fa-icon size=\"lg\"}}");
+      classNames.push("fa-lg");
     }
     if (params.x) {
-      warn('fa-icon: the \'x\' parameter is deprecated. Use \'size\' instead. I.e. {{fa-icon size="' + params.x + '"}}');
-      classNames.push('fa-' + params.x + 'x');
+      warn("fa-icon: the 'x' parameter is deprecated. Use 'size' instead. I.e. {{fa-icon size=\"" + params.x + "\"}}");
+      classNames.push("fa-" + params.x + "x");
     }
     if (params.size) {
-      if (Ember['default'].typeOf(params.size) === 'string' && params.size.match(/\d+/)) {
+      if (Ember['default'].typeOf(params.size) === "string" && params.size.match(/\d+/)) {
         params.size = Number(params.size);
       }
-      if (Ember['default'].typeOf(params.size) === 'number') {
-        classNames.push('fa-' + params.size + 'x');
+      if (Ember['default'].typeOf(params.size) === "number") {
+        classNames.push("fa-" + params.size + "x");
       } else {
-        classNames.push('fa-' + params.size);
+        classNames.push("fa-" + params.size);
       }
     }
     if (params.fixedWidth) {
-      classNames.push('fa-fw');
+      classNames.push("fa-fw");
     }
     if (params.listItem) {
-      classNames.push('fa-li');
+      classNames.push("fa-li");
     }
     if (params.pull) {
-      classNames.push('pull-' + params.pull);
+      classNames.push("pull-" + params.pull);
     }
     if (params.border) {
-      classNames.push('fa-border');
+      classNames.push("fa-border");
     }
     if (params.classNames && !Ember['default'].isArray(params.classNames)) {
       params.classNames = [params.classNames];
@@ -1103,17 +1267,17 @@ define('dummy/helpers/fa-icon', ['exports', 'ember'], function (exports, Ember) 
       Array.prototype.push.apply(classNames, params.classNames);
     }
 
-    html += '<';
+    html += "<";
     var tagName = params.tagName || 'i';
     html += tagName;
-    html += ' class=\'' + classNames.join(' ') + '\'';
+    html += " class='" + classNames.join(" ") + "'";
     if (params.title) {
-      html += ' title=\'' + params.title + '\'';
+      html += " title='" + params.title + "'";
     }
     if (params.ariaHidden === undefined || params.ariaHidden) {
-      html += ' aria-hidden="true"';
+      html += " aria-hidden=\"true\"";
     }
-    html += '></' + tagName + '>';
+    html += "></" + tagName + ">";
     return Ember['default'].String.htmlSafe(html);
   };
 
@@ -1129,10 +1293,26 @@ define('dummy/initializers/export-application-global', ['exports', 'ember', 'dum
   exports.initialize = initialize;
 
   function initialize(container, application) {
-    var classifiedName = Ember['default'].String.classify(config['default'].modulePrefix);
+    if (config['default'].exportApplicationGlobal !== false) {
+      var value = config['default'].exportApplicationGlobal;
+      var globalName;
 
-    if (config['default'].exportApplicationGlobal && !window[classifiedName]) {
-      window[classifiedName] = application;
+      if (typeof value === 'string') {
+        globalName = value;
+      } else {
+        globalName = Ember['default'].String.classify(config['default'].modulePrefix);
+      }
+
+      if (!window[globalName]) {
+        window[globalName] = application;
+
+        application.reopen({
+          willDestroy: function willDestroy() {
+            this._super.apply(this, arguments);
+            delete window[globalName];
+          }
+        });
+      }
     }
   }
 
@@ -1193,6 +1373,7 @@ define('dummy/router', ['exports', 'ember', 'dummy/config/environment'], functio
     this.route('sparkline');
     this.route('horizon');
     this.route('configurable-columns');
+    this.route('removable-columns');
 
     this.route('community-examples');
 
@@ -1228,6 +1409,53 @@ define('dummy/routes/overview', ['exports', 'ember'], function (exports, Ember) 
       controller.set('showLargeHero', false);
     }
   });
+
+});
+define('dummy/snippets', ['exports'], function (exports) {
+
+  'use strict';
+
+  exports['default'] = {
+    "ajax-cell.hbs": "{{#if view.row.isLoaded}}\n  <img width=\"30\" {{bind-attr src=\"view.cellContent\"}}/>\n{{else}}\n  <img src=\"images/loading.gif\" style=\"padding: 8px;\"/>\n{{/if}}",
+    "ajax-controller.js": "import Ember from 'ember';\nimport ColumnDefinition from 'ember-table/models/column-definition';\nimport AjaxTableLazyDataSource from\n  '../views/ajax-table-lazy-data-source';\n\nexport default Ember.Controller.extend({\n  tableColumns: Ember.computed(function() {\n    var avatar = ColumnDefinition.create({\n      savedWidth: 80,\n      headerCellName: 'avatar',\n      tableCellViewClass: 'ajax-image-table-cell',\n      contentPath: 'avatar'\n    });\n    var columnNames = ['login', 'type', 'createdAt'];\n    var columns = columnNames.map(function(key) {\n      return ColumnDefinition.create({\n        savedWidth: 150,\n        headerCellName: key.w(),\n        contentPath: key\n      });\n    });\n    columns.unshift(avatar);\n    return columns;\n  }),\n\n  tableContent: Ember.computed(function() {\n    return AjaxTableLazyDataSource.create({\n      content: new Array(100)\n    });\n  })\n});",
+    "ajax-image-table-cell.js": "import TableCell from 'ember-table/views/table-cell';\n\nexport default TableCell.extend({\n  templateName: 'ajax-table/ajax-cell',\n  classNames: 'img-table-cell'\n});",
+    "ajax-table-lazy-data-source.js": "import Ember from 'ember';\n\nexport default Ember.ArrayProxy.extend({\n  createGithubEvent: function(row, event) {\n    row.set('type', event.type);\n    row.set('createdAt', event.created_at);\n    row.set('login', event.actor.login);\n    row.set('avatar', event.actor.avatar_url);\n    row.set('isLoaded', true);\n    return row;\n  },\n\n  requestGithubEvent: function(page) {\n    var _this = this;\n    var content = this.get('content');\n    var start = (page - 1) * 30;\n    var end = start + 30;\n    var url = 'https://api.github.com/repos/emberjs/ember.js/events?page=' +\n      page + '&per_page=30&callback=?';\n    Ember.$.getJSON(url, function(json) {\n      return json.data.forEach(function(event, index) {\n        var row = content[start + index];\n        return _this.createGithubEvent(row, event);\n      });\n    });\n    for (var index = start; index < end; index++) {\n      content[index] = Ember.Object.create({\n        eventId: index,\n        isLoaded: false\n      });\n    }\n  },\n\n  objectAt: function(index) {\n    var content = this.get('content');\n    var row = content[index];\n    if (row && !row.get('error')) {\n      return row;\n    }\n    this.requestGithubEvent(Math.floor(index / 30 + 1));\n    return content[index];\n  }\n});",
+    "ajax-table.hbs": "          {{ember-table\n            hasHeader=true\n            hasFooter=false\n            numFixedColumns=0\n            numRows=100\n            rowHeight=35\n            columns=tableColumns\n            content=tableContent\n          }}",
+    "bar-cell.hbs": "<span class=\"bar-cell\" style={{view.histogramStyle}}>\n</span>",
+    "bar-table-cell.js": "import Ember from 'ember';\nimport TableCell from 'ember-table/views/table-cell';\n\nexport default TableCell.extend({\n  templateName: 'bar_table/bar-cell',\n  classNameBindings: ['column.color'],\n\n  barWidth: Ember.computed(function() {\n    var properties = this.getProperties('column', 'row');\n    var column = properties.column;\n    var row = properties.row;\n    if (!(column && row)) {\n      return 0;\n    }\n    return Math.round(+this.get('cellContent'));\n  }).property('column', 'row', 'cellContent'),\n\n  histogramStyle: Ember.computed(function() {\n    return new Ember.Handlebars.SafeString('width: ' + (this.get('barWidth')) + '%;');\n  }).property('barWidth')\n});",
+    "bars-controller.js": "import Ember from 'ember';\nimport ColumnDefinition from 'ember-table/models/column-definition';\n\nexport default Ember.Controller.extend({\n  tableColumns: Ember.computed(function() {\n    var colors = ['blue', 'teal', 'green', 'yellow', 'orange'];\n    var firstColumn = ColumnDefinition.create({\n      savedWidth: 50,\n      headerCellName: 'Name',\n      contentPath: 'key'\n    });\n    var columns = colors.map(function(color, index) {\n      return ColumnDefinition.create({\n        color: color,\n        headerCellName: 'Bar',\n        tableCellViewClass: 'bar-table-cell',\n        contentPath: 'value' + (index + 1)\n      });\n    });\n    columns.unshift(firstColumn);\n    return columns;\n  }),\n\n  tableContent: Ember.computed(function() {\n    var content = [];\n    for (var i = 0; i < 100; i++) {\n      content.pushObject({\n        key: i,\n        value1: Math.random() * 80 + 10,\n        value2: Math.random() * 80 + 10,\n        value3: Math.random() * 80 + 10,\n        value4: Math.random() * 80 + 10,\n        value5: Math.random() * 80 + 10\n      });\n    }\n    return content;\n  })\n});",
+    "bars-table.hbs": "          {{ember-table\n            hasHeader=true\n            hasFooter=false\n            rowHeight=30\n            columns=tableColumns\n            content=tableContent\n          }}",
+    "dynamic-bars-controller.js": "import Ember from 'ember';\nimport ColumnDefinition from 'ember-table/models/column-definition';\n\nexport default Ember.Controller.extend({\n  // TODO(azirbel): Don't use setInterval in an Ember application\n  init: function() {\n    // TODO(azirbel): Call this._super()\n    var _this = this;\n    setInterval(function() {\n      _this.get('tableContent').forEach(function(item) {\n        item.set('value1', _this.getNextValue(item.get('value1')));\n        item.set('value2', _this.getNextValue(item.get('value2')));\n        item.set('value3', _this.getNextValue(item.get('value3')));\n        item.set('value4', _this.getNextValue(item.get('value4')));\n        item.set('value5', _this.getNextValue(item.get('value5')));\n      });\n    }, 1500);\n  },\n\n  getNextValue: function(current) {\n    current = current + (Math.random() * 10 - 5);\n    current = Math.min(100, current);\n    current = Math.max(0, current);\n    return current;\n  },\n\n  tableColumns: Ember.computed(function() {\n    var colors = ['blue', 'teal', 'green', 'yellow', 'orange'];\n    var firstColumn = ColumnDefinition.create({\n      savedWidth: 50,\n      headerCellName: 'Name',\n      contentPath: 'key'\n    });\n    var columns = colors.map(function(color, index) {\n      return ColumnDefinition.create({\n        color: color,\n        headerCellName: 'Bar',\n        tableCellViewClass: 'bar-table-cell',\n        contentPath: 'value' + (index + 1)\n      });\n    });\n    columns.unshift(firstColumn);\n    return columns;\n  }),\n\n  tableContent: Ember.computed(function() {\n    var content = [];\n    for (var i = 0; i < 100; i++) {\n      content.pushObject(Ember.Object.create({\n        key: i,\n        value1: Math.random() * 80 + 10,\n        value2: Math.random() * 80 + 10,\n        value3: Math.random() * 80 + 10,\n        value4: Math.random() * 80 + 10,\n        value5: Math.random() * 80 + 10\n      }));\n    }\n    return content;\n  })\n});",
+    "dynamic-bars-table.hbs": "          {{ember-table\n            hasHeader=true\n            hasFooter=false\n            rowHeight=30\n            columns=tableColumns\n            content=tableContent\n          }}",
+    "editable-controller.js": "import Ember from 'ember';\nimport ColumnDefinition from 'ember-table/models/column-definition';\n\nexport default Ember.Controller.extend({\n  tableColumns: Ember.computed(function() {\n    var columnNames = ['open', 'close'];\n    var dateColumn = ColumnDefinition.create({\n      savedWidth: 100,\n      headerCellName: 'Date',\n      tableCellViewClass: 'date-picker-table-cell',\n      getCellContent: function(row) {\n        return row.get('date').toString('yyyy-MM-dd');\n      },\n      setCellContent: function(row, value) {\n        return row.set('date', value);\n      }\n    });\n    var ratingColumn = ColumnDefinition.create({\n      savedWidth: 150,\n      headerCellName: 'Analyst Rating',\n      tableCellViewClass: 'rating-table-cell',\n      contentPath: 'rating',\n      setCellContent: function(row, value) {\n        return row.set('rating', value);\n      }\n    });\n    var columns = columnNames.map(function(key) {\n      var name;\n      name = key.charAt(0).toUpperCase() + key.slice(1);\n      return ColumnDefinition.create({\n        savedWidth: 100,\n        headerCellName: name,\n        tableCellViewClass: 'editable-table-cell',\n        getCellContent: function(row) {\n          return row.get(key).toFixed(2);\n        },\n        setCellContent: function(row, value) {\n          return row.set(key, +value);\n        }\n      });\n    });\n    columns.unshift(ratingColumn);\n    columns.unshift(dateColumn);\n    return columns;\n  }),\n\n  tableContent: Ember.computed(function() {\n    var content = [];\n    var date;\n    for (var i = 0; i < 100; i++) {\n      date = new Date();\n      date.setDate(date.getDate() + i);\n      content.pushObject({\n        index: i,\n        date: date,\n        open: Math.random() * 100 - 50,\n        close: Math.random() * 100 - 50,\n        rating: Math.round(Math.random() * 4)\n      });\n    }\n    return content;\n  })\n});",
+    "editable-table-cell.hbs": "<span class=\"ember-table-content\">\n  {{#if view.isEditing}}\n    {{view view.innerTextField}}\n  {{else}}\n    <span class='content'>{{view.cellContent}}</span>\n  {{/if}}\n</span>",
+    "editable-table-cell.js": "import Ember from 'ember';\nimport TableCell from 'ember-table/views/table-cell';\n\nexport default TableCell.extend({\n  className: 'editable-table-cell',\n  templateName: 'editable-table/editable-table-cell',\n  isEditing: false,\n  type: 'text',\n\n  innerTextField: Ember.TextField.extend({\n    typeBinding: 'parentView.type',\n    valueBinding: 'parentView.cellContent',\n    didInsertElement: function() {\n      this.$().focus();\n      // TODO(azirbel): Call this._super()\n    },\n    focusOut: function() {\n      this.set('parentView.isEditing', false);\n    }\n  }),\n\n  onRowContentDidChange: Ember.observer(function() {\n    this.set('isEditing', false);\n  }, 'row.content'),\n\n  click: function(event) {\n    this.set('isEditing', true);\n    event.stopPropagation();\n  }\n});",
+    "editable-table.hbs": "          {{ember-table\n            hasHeader=true\n            hasFooter=false\n            numFixedColumns=0\n            rowHeight=30\n            columns=tableColumns\n            content=tableContent\n          }}",
+    "financial-controller.js": "import Ember from 'ember';\nimport Treedata from '../models/treedata';\n\nexport default Ember.Controller.extend({\n  data: Ember.computed(function() {\n    return Treedata;\n  })\n});",
+    "financial-table-cell-template.hbs": "<div class=\"ember-table-cell-container\">\n  <span class=\"ember-table-content\">\n    {{view.cellContent}}\n  </span>\n</div>",
+    "financial-table-cell.js": "import TableCell from 'ember-table/views/table-cell';\n\nexport default TableCell.extend({\n  templateName: 'financial-table/financial-table-cell'\n});",
+    "financial-table-component.js": "import Ember from 'ember';\nimport TableComponent from 'ember-table/components/ember-table';\nimport ColumnDefinition from 'ember-table/models/column-definition';\nimport FinancialTableTreeRow from '../views/financial-table-tree-row';\nimport NumberFormatHelpers from '../utils/number-format';\n\nexport default TableComponent.extend({\n  // Overriding default properties\n  layoutName: 'components/ember-table',\n  numFixedColumns: 1,\n  isCollapsed: false,\n  isHeaderHeightResizable: true,\n  rowHeight: 30,\n  hasHeader: true,\n  hasFooter: true,\n  headerHeight: 70,\n\n  // Custom properties\n  sortAscending: false,\n  sortColumn: null,\n\n  /////////////////////////////////////////////////////////////////////////////\n  // Data conversions\n  /////////////////////////////////////////////////////////////////////////////\n\n  data: null,\n\n  columns: Ember.computed(function() {\n    var data = this.get('data');\n    if (!data) {\n      return;\n    }\n    var names = this.get('data.value_factors').getEach('display_name');\n    var columns = names.map(function(name, index) {\n      return ColumnDefinition.create({\n        index: index,\n        headerCellName: name,\n        headerCellView: 'financial-table-header-cell',\n        tableCellView: 'financial-table-cell',\n        getCellContent: function(row) {\n          var object = row.get('values')[this.get('index')];\n          if (object.type === 'money') {\n            return NumberFormatHelpers.toCurrency(object.value);\n          }\n          if (object.type === 'percent') {\n            return NumberFormatHelpers.toPercent(object.value);\n          }\n          return '-';\n        }\n      });\n    });\n    columns.unshiftObject(this.get('groupingColumn'));\n    return columns;\n  }).property('data.valueFactors.@each', 'groupingColumn'),\n\n  groupingColumn: Ember.computed(function() {\n    var groupingFactors = this.get('data.grouping_factors');\n    var name = groupingFactors.getEach('display_name').join(' ▸ ');\n    return ColumnDefinition.create({\n      headerCellName: name,\n      savedWidth: 400,\n      isTreeColumn: true,\n      isSortable: false,\n      textAlign: 'text-align-left',\n      headerCellView: 'financial-table-header-tree-cell',\n      tableCellView: 'financial-table-tree-cell',\n      contentPath: 'group_value'\n    });\n  }).property('data.grouping_factors.@each'),\n\n  root: Ember.computed(function() {\n    var data = this.get('data');\n    if (!data) {\n      return;\n    }\n    return this.createTree(null, data.root);\n  }).property('data', 'sortAscending', 'sortColumn'),\n\n  rows: Ember.computed(function() {\n    var root = this.get('root');\n    if (!root) {\n      return Ember.A();\n    }\n    var rows = this.flattenTree(null, root, Ember.A());\n    this.computeStyles(null, root);\n    var maxGroupingLevel = Math.max.apply(rows.getEach('groupingLevel'));\n    rows.forEach(function(row) {\n      return row.computeRowStyle(maxGroupingLevel);\n    });\n    return rows;\n  }).property('root'),\n\n  // OPTIMIZATION HACK\n  bodyContent: Ember.computed(function() {\n    var rows = this.get('rows');\n    if (!rows) {\n      return Ember.A();\n    }\n    rows = rows.slice(1, rows.get('length'));\n    return rows.filterProperty('isShowing');\n  }).property('rows'),\n\n  footerContent: Ember.computed(function() {\n    var rows = this.get('rows');\n    if (!rows) {\n      return Ember.A();\n    }\n    return rows.slice(0, 1);\n  }).property('rows'),\n\n  orderBy: function(item1, item2) {\n    var sortColumn = this.get('sortColumn');\n    var sortAscending = this.get('sortAscending');\n    if (!sortColumn) {\n      return 1;\n    }\n    var value1 = sortColumn.getCellContent(item1.get('content'));\n    var value2 = sortColumn.getCellContent(item2.get('content'));\n    var result = Ember.compare(value1, value2);\n    if (sortAscending) {\n      return result;\n    } else {\n      return -result;\n    }\n  },\n\n  createTree: function(parent, node) {\n    var row = FinancialTableTreeRow.create({ parentController: this });\n    // TODO(azirbel): better map function and _this use\n    var children = (node.children || []).map((function(_this) {\n      return function(child) {\n        return _this.createTree(row, child);\n      };\n    })(this));\n    // TODO(Peter): Hack... only collapse table if it should collapseByDefault\n    // and it is not the root. Currently the total row is the root, and if it\n    // is collapse, it causes nothing to show in the table and there is no way\n    // to get expand it.\n    row.setProperties({\n      isRoot: !parent,\n      isLeaf: Ember.isEmpty(children),\n      content: node,\n      parent: parent,\n      children: children,\n      groupName: node.group_name,\n      isCollapsed: false\n    });\n    return row;\n  },\n\n  // TODO(azirbel): Don't use the word 'parent'\n  flattenTree: function(parent, node, rows) {\n    rows.pushObject(node);\n    (node.children || []).forEach((function(_this) {\n      return function(child) {\n        return _this.flattenTree(node, child, rows);\n      };\n    })(this));\n    return rows;\n  },\n\n  computeStyles: function(parent, node) {\n    node.computeStyles(parent);\n    node.get('children').forEach((function(_this) {\n      return function(child) {\n        _this.computeStyles(node, child);\n      };\n    })(this));\n  },\n\n  actions: {\n    toggleTableCollapse: function() {\n      var isCollapsed = this.toggleProperty('isCollapsed');\n      var children = this.get('root.children');\n      if (!(children && children.get('length') > 0)) {\n        return;\n      }\n      children.forEach(function(child) {\n        return child.recursiveCollapse(isCollapsed);\n      });\n      return this.notifyPropertyChange('rows');\n    },\n\n    toggleCollapse: function(row) {\n      row.toggleProperty('isCollapsed');\n      Ember.run.next(this, function() {\n        this.notifyPropertyChange('rows');\n      });\n    }\n  },\n});",
+    "financial-table-header-cell-template.hbs": "<div class=\"ember-table-cell-container\">\n  <div class=\"ember-table-header-content-container\">\n    <span class=\"ember-table-content\">\n      {{view.content.headerCellName}}\n    </span>\n  </div>\n</div>",
+    "financial-table-header-cell.js": "import HeaderCell from 'ember-table/views/header-cell';\n\nexport default HeaderCell.extend({\n  templateName: 'financial-table/financial-table-header-cell'\n});",
+    "financial-table-header-tree-cell-template.hbs": "<div class=\"ember-table-cell-container\">\n  <span {{bind-attr class=\":ember-table-toggle-span :ember-table-toggle\n      isCollapsed:ember-table-expand:ember-table-collapse\"}}\n      {{action 'toggleTableCollapse'}}>\n    {{fa-icon \"caret-down\" classNames=\"ember-table-toggle-icon\"}}\n  </span>\n  <div class=\"ember-table-header-content-container\">\n    <span class=\"ember-table-content\">\n      {{view.column.headerCellName}}\n    </span>\n  </div>\n</div>",
+    "financial-table-header-tree-cell.js": "import HeaderCell from 'ember-table/views/header-cell';\n\nexport default HeaderCell.extend({\n  templateName: 'financial-table/financial-table-header-tree-cell',\n  classNames:   'ember-table-table-header-tree-cell'\n});",
+    "financial-table-tree-cell-template.hbs": "<div class=\"ember-table-cell-container\" style={{view.paddingStyle}}>\n  <span {{bind-attr class=\":ember-table-toggle-span view.row.isLeaf::ember-table-toggle\n    view.row.isCollapsed:ember-table-expand:ember-table-collapse\"}}\n    {{action 'toggleCollapse' view.row}}>\n    {{fa-icon \"caret-down\" classNames=\"ember-table-toggle-icon\"}}\n  </span>\n  <span class=\"ember-table-content\">\n    {{view.cellContent}}\n  </span>\n</div>",
+    "financial-table-tree-cell.js": "import Ember from 'ember';\nimport TableCell from 'ember-table/views/table-cell';\n\nexport default TableCell.extend({\n  templateName: 'financial-table/financial-table-tree-cell',\n  classNames: 'ember-table-table-tree-cell',\n\n  paddingStyle: Ember.computed(function() {\n    return new Ember.Handlebars.SafeString('padding-left:' + (this.get('row.indentation')) + 'px;');\n  }).property('row.indentation')\n});",
+    "financial-table-tree-row.js": "import Row from 'ember-table/controllers/row';\n\nexport default Row.extend({\n  content: null,\n  children: null,\n  parent: null,\n  isRoot: false,\n  isLeaf: false,\n  isCollapsed: false,\n  isShowing: true,\n  indentationSpacing: 20,\n  groupName: null,\n\n  computeStyles: function(parent) {\n    var groupingLevel, indentType, indentation, isShowing, pGroupingLevel, spacing;\n    groupingLevel = 0;\n    indentation = 0;\n    isShowing = true;\n    if (parent) {\n      isShowing = parent.get('isShowing') && !parent.get('isCollapsed');\n      pGroupingLevel = parent.get('groupingLevel');\n      groupingLevel = pGroupingLevel;\n      if (parent.get('groupName') !== this.get('groupName')) {\n        groupingLevel += 1;\n      }\n      indentType = groupingLevel === pGroupingLevel ? 'half' : 'full';\n      spacing = this.get('indentationSpacing');\n      if (!parent.get('isRoot')) {\n        indentation = parent.get('indentation');\n        indentation += (indentType === 'half' ? spacing / 2 : spacing);\n      }\n    }\n    this.set('groupingLevel', groupingLevel);\n    this.set('indentation', indentation);\n    this.set('isShowing', isShowing);\n  },\n\n  computeRowStyle: function(maxLevels) {\n    var level;\n    level = this.getFormattingLevel(this.get('groupingLevel'), maxLevels);\n    this.set('rowStyle', 'ember-table-row-style-' + level);\n  },\n\n  recursiveCollapse: function(isCollapsed) {\n    this.set('isCollapsed', isCollapsed);\n    this.get('children').forEach(function(child) {\n      child.recursiveCollapse(isCollapsed);\n    });\n  },\n\n  getFormattingLevel: function(level, maxLevels) {\n    switch (maxLevels) {\n      case 1:\n        return 5;\n      case 2:\n        if (level === 1) {\n          return 2;\n        }\n        return 5;\n      case 3:\n        if (level === 1) {\n          return 1;\n        }\n        if (level === 2) {\n          return 3;\n        }\n        return 5;\n      case 4:\n        if (level === 1) {\n          return 1;\n        }\n        if (level === 2) {\n          return 2;\n        }\n        if (level === 4) {\n          return 4;\n        }\n        return 5;\n      case 5:\n        return level;\n      default:\n        if (level === maxLevels) {\n          return 5;\n        }\n        return Math.min(level, 4);\n    }\n  }\n});",
+    "financial-table.hbs": "          {{financial-table\n            data=data\n          }}",
+    "horizon-controller.js": "import Ember from 'ember';\nimport ColumnDefinition from 'ember-table/models/column-definition';\n\nexport default Ember.Controller.extend({\n  tableColumns: Ember.computed(function() {\n    var name = ColumnDefinition.create({\n      savedWidth: 100,\n      headerCellName: 'Name',\n      getCellContent: function(row) {\n        return 'Horizon ' + row.get('name');\n      }\n    });\n    var horizon = ColumnDefinition.create({\n      savedWidth: 600,\n      headerCellName: 'Horizon',\n      tableCellViewClass: 'horizon-table-cell',\n      getCellContent: Ember.K\n    });\n    return [name, horizon];\n  }),\n\n  tableContent: Ember.computed(function() {\n    var normal = d3.random.normal(1.5, 3);\n    var data;\n    var content = [];\n    for (var i = 0; i < 100; i++) {\n      data = [];\n      for (var j = 0; j < 100; j++) {\n        data.push([j, normal()]);\n      }\n      content.pushObject({\n        name: i,\n        data: data\n      });\n    }\n    return content;\n  })\n});",
+    "horizon-table-cell.js": "import Ember from 'ember';\nimport TableCell from 'ember-table/views/table-cell';\nimport d3HorizonUtils from '../utils/horizon';\n\nexport default TableCell.extend({\n  templateName: 'empty-cell',\n  heightBinding: 'controller.rowHeight',\n\n  horizonContent: Ember.computed(function() {\n    var normal = d3.random.normal(1.5, 3);\n    var content = [];\n    for (var i = 0; i < 100; i++) {\n      content.pushObject([i, normal()]);\n    }\n    return content;\n  }).property(),\n\n  onWidthDidChange: Ember.observer(function() {\n    this.$('svg').remove();\n    this.renderD3View();\n  }, 'width'),\n\n  didInsertElement: function() {\n    this.onWidthDidChange();\n    // TODO(azirbel): Add _this.super()\n  },\n\n  renderD3View: function() {\n    var chart, data, height, svg, width;\n    width = this.get('width');\n    height = this.get('height');\n    data = this.get('horizonContent');\n    chart = d3HorizonUtils.d3Horizon().width(width).height(height).bands(2).mode('mirror').interpolate('basis');\n    svg = d3.select('#' + this.get('elementId')).append('svg').attr('width', width).attr('height', height);\n    svg.data([data]).call(chart);\n  }\n});",
+    "horizon-table.hbs": "          {{ember-table\n            hasHeader=true\n            hasFooter=false\n            numFixedColumns=0\n            rowHeight=30\n            columns=tableColumns\n            content=tableContent\n          }}",
+    "rating-table-cell.hbs": "<div class=\"rating\">\n  <span></span><span></span><span></span><span></span><span></span>\n</div>",
+    "rating-table-cell.js": "import Ember from 'ember';\nimport TableCell from 'ember-table/views/table-cell';\n\nexport default TableCell.extend({\n  classNames: 'rating-table-cell',\n  templateName: 'editable-table/rating-table-cell',\n\n  onRowContentDidChange: Ember.observer(function() {\n    this.applyRating(this.get('cellContent'));\n  }, 'cellContent'),\n\n  didInsertElement: function() {\n    this._super();\n    this.onRowContentDidChange();\n  },\n\n  applyRating: function(rating) {\n    this.$('.rating span').removeClass('active');\n    var span = this.$('.rating span').get(rating);\n    Ember.$(span).addClass('active');\n  },\n\n  click: function(event) {\n    var rating = this.$('.rating span').index(event.target);\n    if (rating === -1) {\n      return;\n    }\n    this.get('column').setCellContent(this.get('row'), rating);\n    this.applyRating(rating);\n  }\n});",
+    "removable-columns-controller.js": "import Ember from 'ember';\nimport ColumnDefinition from 'ember-table/models/column-definition';\nimport {randomNumber, randomDate} from '../utils/random';\n\nexport default Ember.Controller.extend({\n  queryParams: ['removed'],\n  removed: [],\n  withoutRemovedColumns: Ember.computed(\n    'removed.[]',\n    'tableColumns.[]',\n    function(){\n      let removed = this.get('removed');\n      return this.get('tableColumns').filter(function(column){\n        return !removed.contains(column.get('headerCellName'));\n      });\n  }),\n  tableColumns: Ember.computed(function() {\n    var dateColumn = ColumnDefinition.create({\n      savedWidth: 150,\n      textAlign: 'text-align-left',\n      headerCellName: 'Date',\n      getCellContent: function(row) {\n        return row.get('date').toDateString();\n      }\n    });\n    var openColumn = ColumnDefinition.create({\n      savedWidth: 100,\n      headerCellName: 'Open',\n      getCellContent: function(row) {\n        return row.get('open').toFixed(2);\n      }\n    });\n    var highColumn = ColumnDefinition.create({\n      savedWidth: 100,\n      headerCellName: 'High',\n      getCellContent: function(row) {\n        return row.get('high').toFixed(2);\n      }\n    });\n    var lowColumn = ColumnDefinition.create({\n      savedWidth: 100,\n      headerCellName: 'Low',\n      getCellContent: function(row) {\n        return row.get('low').toFixed(2);\n      }\n    });\n    var closeColumn = ColumnDefinition.create({\n      savedWidth: 100,\n      headerCellName: 'Close',\n      getCellContent: function(row) {\n        return row.get('close').toFixed(2);\n      }\n    });\n    return [dateColumn, openColumn, highColumn, lowColumn, closeColumn];\n  }),\n  tableContent: Ember.computed(function() {\n    var content = [];\n    var date;\n    for (var i = 0; i < 100; i++) {\n      date = randomDate(new Date(2000, 1, 5), new Date(2012, 2, 2));\n      content.pushObject({\n        date: date,\n        open: randomNumber(100) - 50,\n        high: randomNumber(100) - 50,\n        low: randomNumber(100) - 50,\n        close: randomNumber(100) - 50,\n        volume: randomNumber(100) * 1000000\n      });\n    }\n    return content;\n  }),\n  actions: {\n    toggleColumn(headerCellName) {\n      let removed = this.get('removed');\n      if (removed.contains(headerCellName)) {\n        removed.removeObject(headerCellName);\n      } else {\n        removed.pushObject(headerCellName);\n      }\n    }\n  }\n});",
+    "removable-columns-table.hbs": "          {{ember-table\n            hasFooter=false\n            columns=withoutRemovedColumns\n            content=tableContent\n          }}",
+    "simple-controller.js": "import Ember from 'ember';\nimport ColumnDefinition from 'ember-table/models/column-definition';\nimport {randomNumber, randomDate} from '../utils/random';\n\nexport default Ember.Controller.extend({\n  tableColumns: Ember.computed(function() {\n    var dateColumn = ColumnDefinition.create({\n      savedWidth: 150,\n      textAlign: 'text-align-left',\n      headerCellName: 'Date',\n      getCellContent: function(row) {\n        return row.get('date').toDateString();\n      }\n    });\n    var openColumn = ColumnDefinition.create({\n      savedWidth: 100,\n      headerCellName: 'Open',\n      getCellContent: function(row) {\n        return row.get('open').toFixed(2);\n      }\n    });\n    var highColumn = ColumnDefinition.create({\n      savedWidth: 100,\n      headerCellName: 'High',\n      getCellContent: function(row) {\n        return row.get('high').toFixed(2);\n      }\n    });\n    var lowColumn = ColumnDefinition.create({\n      savedWidth: 100,\n      headerCellName: 'Low',\n      getCellContent: function(row) {\n        return row.get('low').toFixed(2);\n      }\n    });\n    var closeColumn = ColumnDefinition.create({\n      savedWidth: 100,\n      headerCellName: 'Close',\n      getCellContent: function(row) {\n        return row.get('close').toFixed(2);\n      }\n    });\n    return [dateColumn, openColumn, highColumn, lowColumn, closeColumn];\n  }),\n\n  tableContent: Ember.computed(function() {\n    var content = [];\n    var date;\n    for (var i = 0; i < 100; i++) {\n      date = randomDate(new Date(2000, 1, 5), new Date(2012, 2, 2));\n      content.pushObject({\n        date: date,\n        open: randomNumber(100) - 50,\n        high: randomNumber(100) - 50,\n        low: randomNumber(100) - 50,\n        close: randomNumber(100) - 50,\n        volume: randomNumber(100) * 1000000\n      });\n    }\n    return content;\n  })\n});",
+    "simple-table.hbs": "          {{ember-table\n            hasFooter=false\n            columns=tableColumns\n            content=tableContent\n          }}",
+    "sparkline-controller.js": "import Ember from 'ember';\nimport ColumnDefinition from 'ember-table/models/column-definition';\n\nexport default Ember.Controller.extend({\n  tableColumns: Ember.computed(function() {\n    var name = ColumnDefinition.create({\n      savedWidth: 100,\n      headerCellName: 'Name',\n      getCellContent: function(row) {\n        return 'Asset ' + row.get('name');\n      }\n    });\n    var open = ColumnDefinition.create({\n      savedWidth: 100,\n      headerCellName: 'Open',\n      getCellContent: function(row) {\n        return row.get('open').toFixed(2);\n      }\n    });\n    var spark = ColumnDefinition.create({\n      savedWidth: 200,\n      headerCellName: 'Sparkline',\n      tableCellViewClass: 'sparkline-table-cell',\n      contentPath: 'timeseries'\n    });\n    var close = ColumnDefinition.create({\n      savedWidth: 100,\n      headerCellName: 'Close',\n      getCellContent: function(row) {\n        return row.get('close').toFixed(2);\n      }\n    });\n    var low = ColumnDefinition.create({\n      savedWidth: 100,\n      headerCellName: 'Low',\n      getCellContent: function(row) {\n        return row.get('low').toFixed(2);\n      }\n    });\n    var high = ColumnDefinition.create({\n      savedWidth: 100,\n      headerCellName: 'High',\n      getCellContent: function(row) {\n        return row.get('high').toFixed(2);\n      }\n    });\n    return [name, open, spark, close, low, high];\n  }),\n\n  tableContent: Ember.computed(function() {\n    var randomWalk = function(numSteps) {\n      var lastValue = 0;\n      var walk = [];\n      for (var i = 0; i < numSteps; i++) {\n        lastValue = lastValue + d3.random.normal()();\n        walk.push(lastValue);\n      }\n      return walk;\n    };\n    var content = [];\n    var data;\n    for (var i = 0; i < 100; i++) {\n      data = randomWalk(100);\n      content.pushObject({\n        name: i,\n        timeseries: data,\n        open: data[0],\n        close: data[99],\n        low: Math.min.apply(null, data),\n        high: Math.max.apply(null, data)\n      });\n    }\n    return content;\n  })\n});",
+    "sparkline-table-cell.js": "import Ember from 'ember';\nimport TableCell from 'ember-table/views/table-cell';\n\nexport default TableCell.extend({\n  templateName: 'empty-cell',\n  heightBinding: 'controller.rowHeight',\n\n  onContentOrSizeDidChange: Ember.observer(function() {\n    this.$('svg').remove();\n    this.renderD3View();\n  }, 'row', 'width'),\n\n  didInsertElement: function() {\n    this.renderD3View();\n    // TODO(azirbel): Add _this.super()\n  },\n\n  renderD3View: function() {\n    var data = this.get('row.timeseries');\n    if (!data) {\n      return;\n    }\n    var h = this.get('height');\n    var w = this.get('width');\n    var p = 2;\n    var min = Math.min.apply(null, data);\n    var max = Math.max.apply(null, data);\n    var len = data.length;\n    var fill = d3.scale.category10();\n    var xscale = d3.scale.linear().domain([0, len]).range([p, w - p]);\n    var yscale = d3.scale.linear().domain([min, max]).range([h - p, p]);\n    var line = d3.svg.line().x(function(d, i) {\n      return xscale(i);\n    }).y(function(d) {\n      return yscale(d);\n    });\n    var svg = d3.select('#' + (this.get('elementId'))).append('svg:svg').attr('height', h).attr('width', w);\n    var g = svg.append('svg:g');\n    g.append('svg:path').attr('d', line(data)).attr('stroke', function() {\n      return fill(Math.round(Math.random()) * 10);\n    }).attr('fill', 'none');\n  }\n});",
+    "sparkline-table.hbs": "          {{ember-table\n            hasHeader=true\n            hasFooter=false\n            numFixedColumns=1\n            rowHeight=30\n            columns=tableColumns\n            content=tableContent\n          }}"
+  };
 
 });
 define('dummy/templates/ajax-table/ajax-cell', ['exports'], function (exports) {
@@ -1363,54 +1591,6 @@ define('dummy/templates/ajax-table/ajax-cell', ['exports'], function (exports) {
   }()));
 
 });
-define('dummy/templates/ajax-table/ajax-table', ['exports'], function (exports) {
-
-  'use strict';
-
-  exports['default'] = Ember.HTMLBars.template((function() {
-    return {
-      isHTMLBars: true,
-      revision: "Ember@1.12.1",
-      blockParams: 0,
-      cachedFragment: null,
-      hasRendered: false,
-      build: function build(dom) {
-        var el0 = dom.createDocumentFragment();
-        var el1 = dom.createComment("");
-        dom.appendChild(el0, el1);
-        var el1 = dom.createTextNode("\n");
-        dom.appendChild(el0, el1);
-        return el0;
-      },
-      render: function render(context, env, contextualElement) {
-        var dom = env.dom;
-        var hooks = env.hooks, get = hooks.get, inline = hooks.inline;
-        dom.detectNamespace(contextualElement);
-        var fragment;
-        if (env.useFragmentCache && dom.canClone) {
-          if (this.cachedFragment === null) {
-            fragment = this.build(dom);
-            if (this.hasRendered) {
-              this.cachedFragment = fragment;
-            } else {
-              this.hasRendered = true;
-            }
-          }
-          if (this.cachedFragment) {
-            fragment = dom.cloneNode(this.cachedFragment, true);
-          }
-        } else {
-          fragment = this.build(dom);
-        }
-        var morph0 = dom.createMorphAt(fragment,0,0,contextualElement);
-        dom.insertBoundary(fragment, 0);
-        inline(env, morph0, context, "ember-table", [], {"hasHeader": true, "hasFooter": false, "numFixedColumns": 0, "numRows": 100, "rowHeight": 35, "columns": get(env, context, "tableColumns"), "content": get(env, context, "tableContent")});
-        return fragment;
-      }
-    };
-  }()));
-
-});
 define('dummy/templates/ajax', ['exports'], function (exports) {
 
   'use strict';
@@ -1491,17 +1671,7 @@ define('dummy/templates/ajax', ['exports'], function (exports) {
         dom.appendChild(el3, el4);
         var el4 = dom.createTextNode("\n      ");
         dom.appendChild(el3, el4);
-        var el4 = dom.createElement("div");
-        dom.setAttribute(el4,"class","highlight");
-        var el5 = dom.createTextNode("\n        ");
-        dom.appendChild(el4, el5);
-        var el5 = dom.createElement("pre");
-        dom.setAttribute(el5,"class","prettyprint lang-html");
-        var el6 = dom.createTextNode("{{ember-table\n  hasHeader=true\n  hasFooter=false\n  numFixedColumns=0\n  numRows=100\n  rowHeight=35\n  columns=tableColumns\n  content=tableContent\n}}\n");
-        dom.appendChild(el5, el6);
-        dom.appendChild(el4, el5);
-        var el5 = dom.createTextNode("\n      ");
-        dom.appendChild(el4, el5);
+        var el4 = dom.createComment("");
         dom.appendChild(el3, el4);
         var el4 = dom.createTextNode("\n    ");
         dom.appendChild(el3, el4);
@@ -1518,17 +1688,7 @@ define('dummy/templates/ajax', ['exports'], function (exports) {
         dom.appendChild(el3, el4);
         var el4 = dom.createTextNode("\n      ");
         dom.appendChild(el3, el4);
-        var el4 = dom.createElement("div");
-        dom.setAttribute(el4,"class","highlight");
-        var el5 = dom.createTextNode("\n        ");
-        dom.appendChild(el4, el5);
-        var el5 = dom.createElement("pre");
-        dom.setAttribute(el5,"class","prettyprint lang-js");
-        var el6 = dom.createTextNode("import Ember from &#39;ember&#39;;\nimport ColumnDefinition from &#39;ember-table&#x2F;models&#x2F;column-definition&#39;;\nimport AjaxTableLazyDataSource from\n  &#39;..&#x2F;views&#x2F;ajax-table-lazy-data-source&#39;;\n\nexport default Ember.Controller.extend({\n  tableColumns: Ember.computed(function() {\n    var avatar = ColumnDefinition.create({\n      savedWidth: 80,\n      headerCellName: &#39;avatar&#39;,\n      tableCellViewClass: &#39;ajax-image-table-cell&#39;,\n      contentPath: &#39;avatar&#39;\n    });\n    var columnNames = [&#39;login&#39;, &#39;type&#39;, &#39;createdAt&#39;];\n    var columns = columnNames.map(function(key) {\n      return ColumnDefinition.create({\n        savedWidth: 150,\n        headerCellName: key.w(),\n        contentPath: key\n      });\n    });\n    columns.unshift(avatar);\n    return columns;\n  }),\n\n  tableContent: Ember.computed(function() {\n    return AjaxTableLazyDataSource.create({\n      content: new Array(100)\n    });\n  })\n});\n");
-        dom.appendChild(el5, el6);
-        dom.appendChild(el4, el5);
-        var el5 = dom.createTextNode("\n      ");
-        dom.appendChild(el4, el5);
+        var el4 = dom.createComment("");
         dom.appendChild(el3, el4);
         var el4 = dom.createTextNode("\n    ");
         dom.appendChild(el3, el4);
@@ -1545,17 +1705,7 @@ define('dummy/templates/ajax', ['exports'], function (exports) {
         dom.appendChild(el3, el4);
         var el4 = dom.createTextNode("\n      ");
         dom.appendChild(el3, el4);
-        var el4 = dom.createElement("div");
-        dom.setAttribute(el4,"class","highlight");
-        var el5 = dom.createTextNode("\n        ");
-        dom.appendChild(el4, el5);
-        var el5 = dom.createElement("pre");
-        dom.setAttribute(el5,"class","prettyprint lang-js");
-        var el6 = dom.createTextNode("import TableCell from &#39;ember-table&#x2F;views&#x2F;table-cell&#39;;\n\nexport default TableCell.extend({\n  templateName: &#39;ajax-table&#x2F;ajax-cell&#39;,\n  classNames: &#39;img-table-cell&#39;\n});\n");
-        dom.appendChild(el5, el6);
-        dom.appendChild(el4, el5);
-        var el5 = dom.createTextNode("\n      ");
-        dom.appendChild(el4, el5);
+        var el4 = dom.createComment("");
         dom.appendChild(el3, el4);
         var el4 = dom.createTextNode("\n    ");
         dom.appendChild(el3, el4);
@@ -1572,17 +1722,7 @@ define('dummy/templates/ajax', ['exports'], function (exports) {
         dom.appendChild(el3, el4);
         var el4 = dom.createTextNode("\n      ");
         dom.appendChild(el3, el4);
-        var el4 = dom.createElement("div");
-        dom.setAttribute(el4,"class","highlight");
-        var el5 = dom.createTextNode("\n        ");
-        dom.appendChild(el4, el5);
-        var el5 = dom.createElement("pre");
-        dom.setAttribute(el5,"class","prettyprint lang-html");
-        var el6 = dom.createTextNode("{{#if view.row.isLoaded}}\n  &lt;img width=&quot;30&quot; {{bind-attr src=&quot;view.cellContent&quot;}}&#x2F;&gt;\n{{else}}\n  &lt;img src=&quot;images&#x2F;loading.gif&quot; style=&quot;padding: 8px;&quot;&#x2F;&gt;\n{{&#x2F;if}}\n");
-        dom.appendChild(el5, el6);
-        dom.appendChild(el4, el5);
-        var el5 = dom.createTextNode("\n      ");
-        dom.appendChild(el4, el5);
+        var el4 = dom.createComment("");
         dom.appendChild(el3, el4);
         var el4 = dom.createTextNode("\n    ");
         dom.appendChild(el3, el4);
@@ -1599,17 +1739,7 @@ define('dummy/templates/ajax', ['exports'], function (exports) {
         dom.appendChild(el3, el4);
         var el4 = dom.createTextNode("\n      ");
         dom.appendChild(el3, el4);
-        var el4 = dom.createElement("div");
-        dom.setAttribute(el4,"class","highlight");
-        var el5 = dom.createTextNode("\n        ");
-        dom.appendChild(el4, el5);
-        var el5 = dom.createElement("pre");
-        dom.setAttribute(el5,"class","prettyprint lang-js");
-        var el6 = dom.createTextNode("import Ember from &#39;ember&#39;;\n\nexport default Ember.ArrayProxy.extend({\n  createGithubEvent: function(row, event) {\n    row.set(&#39;type&#39;, event.type);\n    row.set(&#39;createdAt&#39;, event.created_at);\n    row.set(&#39;login&#39;, event.actor.login);\n    row.set(&#39;avatar&#39;, event.actor.avatar_url);\n    row.set(&#39;isLoaded&#39;, true);\n    return row;\n  },\n\n  requestGithubEvent: function(page) {\n    var _this = this;\n    var content = this.get(&#39;content&#39;);\n    var start = (page - 1) * 30;\n    var end = start + 30;\n    var url = &#39;https:&#x2F;&#x2F;api.github.com&#x2F;repos&#x2F;emberjs&#x2F;ember.js&#x2F;events?page=&#39; +\n      page + &#39;&amp;per_page=30&amp;callback=?&#39;;\n    Ember.$.getJSON(url, function(json) {\n      return json.data.forEach(function(event, index) {\n        var row = content[start + index];\n        return _this.createGithubEvent(row, event);\n      });\n    });\n    for (var index = start; index &lt; end; index++) {\n      content[index] = Ember.Object.create({\n        eventId: index,\n        isLoaded: false\n      });\n    }\n  },\n\n  objectAt: function(index) {\n    var content = this.get(&#39;content&#39;);\n    var row = content[index];\n    if (row &amp;&amp; !row.get(&#39;error&#39;)) {\n      return row;\n    }\n    this.requestGithubEvent(Math.floor(index &#x2F; 30 + 1));\n    return content[index];\n  }\n});\n");
-        dom.appendChild(el5, el6);
-        dom.appendChild(el4, el5);
-        var el5 = dom.createTextNode("\n      ");
-        dom.appendChild(el4, el5);
+        var el4 = dom.createComment("");
         dom.appendChild(el3, el4);
         var el4 = dom.createTextNode("\n    ");
         dom.appendChild(el3, el4);
@@ -1626,7 +1756,7 @@ define('dummy/templates/ajax', ['exports'], function (exports) {
       },
       render: function render(context, env, contextualElement) {
         var dom = env.dom;
-        var hooks = env.hooks, inline = hooks.inline;
+        var hooks = env.hooks, get = hooks.get, inline = hooks.inline;
         dom.detectNamespace(contextualElement);
         var fragment;
         if (env.useFragmentCache && dom.canClone) {
@@ -1644,8 +1774,19 @@ define('dummy/templates/ajax', ['exports'], function (exports) {
         } else {
           fragment = this.build(dom);
         }
-        var morph0 = dom.createMorphAt(dom.childAt(fragment, [0, 3, 1, 1, 1]),1,1);
-        inline(env, morph0, context, "partial", ["ajax-table/ajax-table"], {});
+        var element0 = dom.childAt(fragment, [0, 3]);
+        var morph0 = dom.createMorphAt(dom.childAt(element0, [1, 1, 1]),1,1);
+        var morph1 = dom.createMorphAt(dom.childAt(element0, [3]),3,3);
+        var morph2 = dom.createMorphAt(dom.childAt(element0, [5]),3,3);
+        var morph3 = dom.createMorphAt(dom.childAt(element0, [7]),3,3);
+        var morph4 = dom.createMorphAt(dom.childAt(element0, [9]),3,3);
+        var morph5 = dom.createMorphAt(dom.childAt(element0, [11]),3,3);
+        inline(env, morph0, context, "ember-table", [], {"hasHeader": true, "hasFooter": false, "numFixedColumns": 0, "numRows": 100, "rowHeight": 35, "columns": get(env, context, "tableColumns"), "content": get(env, context, "tableContent")});
+        inline(env, morph1, context, "code-snippet", [], {"name": "ajax-table.hbs"});
+        inline(env, morph2, context, "code-snippet", [], {"name": "ajax-controller.js"});
+        inline(env, morph3, context, "code-snippet", [], {"name": "ajax-image-table-cell.js"});
+        inline(env, morph4, context, "code-snippet", [], {"name": "ajax-cell.hbs"});
+        inline(env, morph5, context, "code-snippet", [], {"name": "ajax-table-lazy-data-source.js"});
         return fragment;
       }
     };
@@ -1919,7 +2060,7 @@ define('dummy/templates/bar-table/bar-cell', ['exports'], function (exports) {
       },
       render: function render(context, env, contextualElement) {
         var dom = env.dom;
-        var hooks = env.hooks, element = hooks.element;
+        var hooks = env.hooks, get = hooks.get, attribute = hooks.attribute;
         dom.detectNamespace(contextualElement);
         var fragment;
         if (env.useFragmentCache && dom.canClone) {
@@ -1938,55 +2079,8 @@ define('dummy/templates/bar-table/bar-cell', ['exports'], function (exports) {
           fragment = this.build(dom);
         }
         var element0 = dom.childAt(fragment, [0]);
-        element(env, element0, context, "bind-attr", [], {"style": "view.histogramStyle"});
-        return fragment;
-      }
-    };
-  }()));
-
-});
-define('dummy/templates/bar-table/bar-table', ['exports'], function (exports) {
-
-  'use strict';
-
-  exports['default'] = Ember.HTMLBars.template((function() {
-    return {
-      isHTMLBars: true,
-      revision: "Ember@1.12.1",
-      blockParams: 0,
-      cachedFragment: null,
-      hasRendered: false,
-      build: function build(dom) {
-        var el0 = dom.createDocumentFragment();
-        var el1 = dom.createComment("");
-        dom.appendChild(el0, el1);
-        var el1 = dom.createTextNode("\n");
-        dom.appendChild(el0, el1);
-        return el0;
-      },
-      render: function render(context, env, contextualElement) {
-        var dom = env.dom;
-        var hooks = env.hooks, get = hooks.get, inline = hooks.inline;
-        dom.detectNamespace(contextualElement);
-        var fragment;
-        if (env.useFragmentCache && dom.canClone) {
-          if (this.cachedFragment === null) {
-            fragment = this.build(dom);
-            if (this.hasRendered) {
-              this.cachedFragment = fragment;
-            } else {
-              this.hasRendered = true;
-            }
-          }
-          if (this.cachedFragment) {
-            fragment = dom.cloneNode(this.cachedFragment, true);
-          }
-        } else {
-          fragment = this.build(dom);
-        }
-        var morph0 = dom.createMorphAt(fragment,0,0,contextualElement);
-        dom.insertBoundary(fragment, 0);
-        inline(env, morph0, context, "ember-table", [], {"hasHeader": true, "hasFooter": false, "rowHeight": 30, "columns": get(env, context, "tableColumns"), "content": get(env, context, "tableContent")});
+        var attrMorph0 = dom.createAttrMorph(element0, 'style');
+        attribute(env, attrMorph0, element0, "style", get(env, context, "view.histogramStyle"));
         return fragment;
       }
     };
@@ -2059,17 +2153,7 @@ define('dummy/templates/bars', ['exports'], function (exports) {
         dom.appendChild(el3, el4);
         var el4 = dom.createTextNode("\n      ");
         dom.appendChild(el3, el4);
-        var el4 = dom.createElement("div");
-        dom.setAttribute(el4,"class","highlight");
-        var el5 = dom.createTextNode("\n        ");
-        dom.appendChild(el4, el5);
-        var el5 = dom.createElement("pre");
-        dom.setAttribute(el5,"class","prettyprint lang-html");
-        var el6 = dom.createTextNode("{{ember-table\n  hasHeader=true\n  hasFooter=false\n  rowHeight=30\n  columns=tableColumns\n  content=tableContent\n}}\n");
-        dom.appendChild(el5, el6);
-        dom.appendChild(el4, el5);
-        var el5 = dom.createTextNode("\n      ");
-        dom.appendChild(el4, el5);
+        var el4 = dom.createComment("");
         dom.appendChild(el3, el4);
         var el4 = dom.createTextNode("\n    ");
         dom.appendChild(el3, el4);
@@ -2086,17 +2170,7 @@ define('dummy/templates/bars', ['exports'], function (exports) {
         dom.appendChild(el3, el4);
         var el4 = dom.createTextNode("\n      ");
         dom.appendChild(el3, el4);
-        var el4 = dom.createElement("div");
-        dom.setAttribute(el4,"class","highlight");
-        var el5 = dom.createTextNode("\n        ");
-        dom.appendChild(el4, el5);
-        var el5 = dom.createElement("pre");
-        dom.setAttribute(el5,"class","prettyprint lang-js");
-        var el6 = dom.createTextNode("import Ember from &#39;ember&#39;;\nimport ColumnDefinition from &#39;ember-table&#x2F;models&#x2F;column-definition&#39;;\n\nexport default Ember.Controller.extend({\n  tableColumns: Ember.computed(function() {\n    var colors = [&#39;blue&#39;, &#39;teal&#39;, &#39;green&#39;, &#39;yellow&#39;, &#39;orange&#39;];\n    var firstColumn = ColumnDefinition.create({\n      savedWidth: 50,\n      headerCellName: &#39;Name&#39;,\n      contentPath: &#39;key&#39;\n    });\n    var columns = colors.map(function(color, index) {\n      return ColumnDefinition.create({\n        color: color,\n        headerCellName: &#39;Bar&#39;,\n        tableCellViewClass: &#39;bar-table-cell&#39;,\n        contentPath: &#39;value&#39; + (index + 1)\n      });\n    });\n    columns.unshift(firstColumn);\n    return columns;\n  }),\n\n  tableContent: Ember.computed(function() {\n    var content = [];\n    for (var i = 0; i &lt; 100; i++) {\n      content.pushObject({\n        key: i,\n        value1: Math.random() * 80 + 10,\n        value2: Math.random() * 80 + 10,\n        value3: Math.random() * 80 + 10,\n        value4: Math.random() * 80 + 10,\n        value5: Math.random() * 80 + 10\n      });\n    }\n    return content;\n  })\n});\n");
-        dom.appendChild(el5, el6);
-        dom.appendChild(el4, el5);
-        var el5 = dom.createTextNode("\n      ");
-        dom.appendChild(el4, el5);
+        var el4 = dom.createComment("");
         dom.appendChild(el3, el4);
         var el4 = dom.createTextNode("\n    ");
         dom.appendChild(el3, el4);
@@ -2113,17 +2187,7 @@ define('dummy/templates/bars', ['exports'], function (exports) {
         dom.appendChild(el3, el4);
         var el4 = dom.createTextNode("\n      ");
         dom.appendChild(el3, el4);
-        var el4 = dom.createElement("div");
-        dom.setAttribute(el4,"class","highlight");
-        var el5 = dom.createTextNode("\n        ");
-        dom.appendChild(el4, el5);
-        var el5 = dom.createElement("pre");
-        dom.setAttribute(el5,"class","prettyprint lang-js");
-        var el6 = dom.createTextNode("import Ember from &#39;ember&#39;;\nimport TableCell from &#39;ember-table&#x2F;views&#x2F;table-cell&#39;;\n\nexport default TableCell.extend({\n  templateName: &#39;bar_table&#x2F;bar-cell&#39;,\n  classNameBindings: [&#39;column.color&#39;],\n\n  barWidth: Ember.computed(function() {\n    var properties = this.getProperties(&#39;column&#39;, &#39;row&#39;);\n    var column = properties.column;\n    var row = properties.row;\n    if (!(column &amp;&amp; row)) {\n      return 0;\n    }\n    return Math.round(+this.get(&#39;cellContent&#39;));\n  }).property(&#39;column&#39;, &#39;row&#39;, &#39;cellContent&#39;),\n\n  histogramStyle: Ember.computed(function() {\n    return &#39;width: &#39; + (this.get(&#39;barWidth&#39;)) + &#39;%;&#39;;\n  }).property(&#39;barWidth&#39;)\n});\n");
-        dom.appendChild(el5, el6);
-        dom.appendChild(el4, el5);
-        var el5 = dom.createTextNode("\n      ");
-        dom.appendChild(el4, el5);
+        var el4 = dom.createComment("");
         dom.appendChild(el3, el4);
         var el4 = dom.createTextNode("\n    ");
         dom.appendChild(el3, el4);
@@ -2140,17 +2204,7 @@ define('dummy/templates/bars', ['exports'], function (exports) {
         dom.appendChild(el3, el4);
         var el4 = dom.createTextNode("\n      ");
         dom.appendChild(el3, el4);
-        var el4 = dom.createElement("div");
-        dom.setAttribute(el4,"class","highlight");
-        var el5 = dom.createTextNode("\n        ");
-        dom.appendChild(el4, el5);
-        var el5 = dom.createElement("pre");
-        dom.setAttribute(el5,"class","prettyprint lang-html");
-        var el6 = dom.createTextNode("&lt;span class=&quot;bar-cell&quot; {{bind-attr style=&quot;view.histogramStyle&quot;}}&gt;\n&lt;&#x2F;span&gt;\n");
-        dom.appendChild(el5, el6);
-        dom.appendChild(el4, el5);
-        var el5 = dom.createTextNode("\n      ");
-        dom.appendChild(el4, el5);
+        var el4 = dom.createComment("");
         dom.appendChild(el3, el4);
         var el4 = dom.createTextNode("\n    ");
         dom.appendChild(el3, el4);
@@ -2167,7 +2221,7 @@ define('dummy/templates/bars', ['exports'], function (exports) {
       },
       render: function render(context, env, contextualElement) {
         var dom = env.dom;
-        var hooks = env.hooks, inline = hooks.inline;
+        var hooks = env.hooks, get = hooks.get, inline = hooks.inline;
         dom.detectNamespace(contextualElement);
         var fragment;
         if (env.useFragmentCache && dom.canClone) {
@@ -2185,8 +2239,17 @@ define('dummy/templates/bars', ['exports'], function (exports) {
         } else {
           fragment = this.build(dom);
         }
-        var morph0 = dom.createMorphAt(dom.childAt(fragment, [0, 3, 1, 1, 1]),1,1);
-        inline(env, morph0, context, "partial", ["bar-table/bar-table"], {});
+        var element0 = dom.childAt(fragment, [0, 3]);
+        var morph0 = dom.createMorphAt(dom.childAt(element0, [1, 1, 1]),1,1);
+        var morph1 = dom.createMorphAt(dom.childAt(element0, [3]),3,3);
+        var morph2 = dom.createMorphAt(dom.childAt(element0, [5]),3,3);
+        var morph3 = dom.createMorphAt(dom.childAt(element0, [7]),3,3);
+        var morph4 = dom.createMorphAt(dom.childAt(element0, [9]),3,3);
+        inline(env, morph0, context, "ember-table", [], {"hasHeader": true, "hasFooter": false, "rowHeight": 30, "columns": get(env, context, "tableColumns"), "content": get(env, context, "tableContent")});
+        inline(env, morph1, context, "code-snippet", [], {"name": "bars-table.hbs"});
+        inline(env, morph2, context, "code-snippet", [], {"name": "bars-controller.js"});
+        inline(env, morph3, context, "code-snippet", [], {"name": "bar-table-cell.js"});
+        inline(env, morph4, context, "code-snippet", [], {"name": "bar-cell.hbs"});
         return fragment;
       }
     };
@@ -2443,6 +2506,54 @@ define('dummy/templates/community-examples', ['exports'], function (exports) {
         } else {
           fragment = this.build(dom);
         }
+        return fragment;
+      }
+    };
+  }()));
+
+});
+define('dummy/templates/components/code-snippet', ['exports'], function (exports) {
+
+  'use strict';
+
+  exports['default'] = Ember.HTMLBars.template((function() {
+    return {
+      isHTMLBars: true,
+      revision: "Ember@1.12.1",
+      blockParams: 0,
+      cachedFragment: null,
+      hasRendered: false,
+      build: function build(dom) {
+        var el0 = dom.createDocumentFragment();
+        var el1 = dom.createComment("");
+        dom.appendChild(el0, el1);
+        var el1 = dom.createTextNode("\n");
+        dom.appendChild(el0, el1);
+        return el0;
+      },
+      render: function render(context, env, contextualElement) {
+        var dom = env.dom;
+        var hooks = env.hooks, content = hooks.content;
+        dom.detectNamespace(contextualElement);
+        var fragment;
+        if (env.useFragmentCache && dom.canClone) {
+          if (this.cachedFragment === null) {
+            fragment = this.build(dom);
+            if (this.hasRendered) {
+              this.cachedFragment = fragment;
+            } else {
+              this.hasRendered = true;
+            }
+          }
+          if (this.cachedFragment) {
+            fragment = dom.cloneNode(this.cachedFragment, true);
+          }
+        } else {
+          fragment = this.build(dom);
+        }
+        var morph0 = dom.createMorphAt(fragment,0,0,contextualElement);
+        dom.insertBoundary(fragment, 0);
+        content(env, morph0, context, "source");
         return fragment;
       }
     };
@@ -4586,54 +4697,6 @@ define('dummy/templates/documentation', ['exports'], function (exports) {
   }()));
 
 });
-define('dummy/templates/dynamic-bar-table/dynamic-bar-table', ['exports'], function (exports) {
-
-  'use strict';
-
-  exports['default'] = Ember.HTMLBars.template((function() {
-    return {
-      isHTMLBars: true,
-      revision: "Ember@1.12.1",
-      blockParams: 0,
-      cachedFragment: null,
-      hasRendered: false,
-      build: function build(dom) {
-        var el0 = dom.createDocumentFragment();
-        var el1 = dom.createComment("");
-        dom.appendChild(el0, el1);
-        var el1 = dom.createTextNode("\n");
-        dom.appendChild(el0, el1);
-        return el0;
-      },
-      render: function render(context, env, contextualElement) {
-        var dom = env.dom;
-        var hooks = env.hooks, get = hooks.get, inline = hooks.inline;
-        dom.detectNamespace(contextualElement);
-        var fragment;
-        if (env.useFragmentCache && dom.canClone) {
-          if (this.cachedFragment === null) {
-            fragment = this.build(dom);
-            if (this.hasRendered) {
-              this.cachedFragment = fragment;
-            } else {
-              this.hasRendered = true;
-            }
-          }
-          if (this.cachedFragment) {
-            fragment = dom.cloneNode(this.cachedFragment, true);
-          }
-        } else {
-          fragment = this.build(dom);
-        }
-        var morph0 = dom.createMorphAt(fragment,0,0,contextualElement);
-        dom.insertBoundary(fragment, 0);
-        inline(env, morph0, context, "ember-table", [], {"hasHeader": true, "hasFooter": false, "rowHeight": 30, "columns": get(env, context, "tableColumns"), "content": get(env, context, "tableContent")});
-        return fragment;
-      }
-    };
-  }()));
-
-});
 define('dummy/templates/dynamic-bars', ['exports'], function (exports) {
 
   'use strict';
@@ -4700,17 +4763,7 @@ define('dummy/templates/dynamic-bars', ['exports'], function (exports) {
         dom.appendChild(el3, el4);
         var el4 = dom.createTextNode("\n      ");
         dom.appendChild(el3, el4);
-        var el4 = dom.createElement("div");
-        dom.setAttribute(el4,"class","highlight");
-        var el5 = dom.createTextNode("\n        ");
-        dom.appendChild(el4, el5);
-        var el5 = dom.createElement("pre");
-        dom.setAttribute(el5,"class","prettyprint lang-html");
-        var el6 = dom.createTextNode("{{ember-table\n  hasHeader=true\n  hasFooter=false\n  rowHeight=30\n  columns=tableColumns\n  content=tableContent\n}}\n");
-        dom.appendChild(el5, el6);
-        dom.appendChild(el4, el5);
-        var el5 = dom.createTextNode("\n      ");
-        dom.appendChild(el4, el5);
+        var el4 = dom.createComment("");
         dom.appendChild(el3, el4);
         var el4 = dom.createTextNode("\n    ");
         dom.appendChild(el3, el4);
@@ -4727,17 +4780,7 @@ define('dummy/templates/dynamic-bars', ['exports'], function (exports) {
         dom.appendChild(el3, el4);
         var el4 = dom.createTextNode("\n      ");
         dom.appendChild(el3, el4);
-        var el4 = dom.createElement("div");
-        dom.setAttribute(el4,"class","highlight");
-        var el5 = dom.createTextNode("\n        ");
-        dom.appendChild(el4, el5);
-        var el5 = dom.createElement("pre");
-        dom.setAttribute(el5,"class","prettyprint lang-js");
-        var el6 = dom.createTextNode("import Ember from &#39;ember&#39;;\nimport ColumnDefinition from &#39;ember-table&#x2F;models&#x2F;column-definition&#39;;\n\nexport default Ember.Controller.extend({\n  &#x2F;&#x2F; TODO(azirbel): Don&#39;t use setInterval in an Ember application\n  init: function() {\n    &#x2F;&#x2F; TODO(azirbel): Call this._super()\n    var _this = this;\n    setInterval(function() {\n      _this.get(&#39;tableContent&#39;).forEach(function(item) {\n        item.set(&#39;value1&#39;, _this.getNextValue(item.get(&#39;value1&#39;)));\n        item.set(&#39;value2&#39;, _this.getNextValue(item.get(&#39;value2&#39;)));\n        item.set(&#39;value3&#39;, _this.getNextValue(item.get(&#39;value3&#39;)));\n        item.set(&#39;value4&#39;, _this.getNextValue(item.get(&#39;value4&#39;)));\n        item.set(&#39;value5&#39;, _this.getNextValue(item.get(&#39;value5&#39;)));\n      });\n    }, 1500);\n  },\n\n  getNextValue: function(current) {\n    current = current + (Math.random() * 10 - 5);\n    current = Math.min(100, current);\n    current = Math.max(0, current);\n    return current;\n  },\n\n  tableColumns: Ember.computed(function() {\n    var colors = [&#39;blue&#39;, &#39;teal&#39;, &#39;green&#39;, &#39;yellow&#39;, &#39;orange&#39;];\n    var firstColumn = ColumnDefinition.create({\n      savedWidth: 50,\n      headerCellName: &#39;Name&#39;,\n      contentPath: &#39;key&#39;\n    });\n    var columns = colors.map(function(color, index) {\n      return ColumnDefinition.create({\n        color: color,\n        headerCellName: &#39;Bar&#39;,\n        tableCellViewClass: &#39;bar-table-cell&#39;,\n        contentPath: &#39;value&#39; + (index + 1)\n      });\n    });\n    columns.unshift(firstColumn);\n    return columns;\n  }),\n\n  tableContent: Ember.computed(function() {\n    var content = [];\n    for (var i = 0; i &lt; 100; i++) {\n      content.pushObject(Ember.Object.create({\n        key: i,\n        value1: Math.random() * 80 + 10,\n        value2: Math.random() * 80 + 10,\n        value3: Math.random() * 80 + 10,\n        value4: Math.random() * 80 + 10,\n        value5: Math.random() * 80 + 10\n      }));\n    }\n    return content;\n  })\n});\n");
-        dom.appendChild(el5, el6);
-        dom.appendChild(el4, el5);
-        var el5 = dom.createTextNode("\n      ");
-        dom.appendChild(el4, el5);
+        var el4 = dom.createComment("");
         dom.appendChild(el3, el4);
         var el4 = dom.createTextNode("\n    ");
         dom.appendChild(el3, el4);
@@ -4754,17 +4797,7 @@ define('dummy/templates/dynamic-bars', ['exports'], function (exports) {
         dom.appendChild(el3, el4);
         var el4 = dom.createTextNode("\n      ");
         dom.appendChild(el3, el4);
-        var el4 = dom.createElement("div");
-        dom.setAttribute(el4,"class","highlight");
-        var el5 = dom.createTextNode("\n        ");
-        dom.appendChild(el4, el5);
-        var el5 = dom.createElement("pre");
-        dom.setAttribute(el5,"class","prettyprint lang-js");
-        var el6 = dom.createTextNode("import Ember from &#39;ember&#39;;\nimport TableCell from &#39;ember-table&#x2F;views&#x2F;table-cell&#39;;\n\nexport default TableCell.extend({\n  templateName: &#39;bar_table&#x2F;bar-cell&#39;,\n  classNameBindings: [&#39;column.color&#39;],\n\n  barWidth: Ember.computed(function() {\n    var properties = this.getProperties(&#39;column&#39;, &#39;row&#39;);\n    var column = properties.column;\n    var row = properties.row;\n    if (!(column &amp;&amp; row)) {\n      return 0;\n    }\n    return Math.round(+this.get(&#39;cellContent&#39;));\n  }).property(&#39;column&#39;, &#39;row&#39;, &#39;cellContent&#39;),\n\n  histogramStyle: Ember.computed(function() {\n    return &#39;width: &#39; + (this.get(&#39;barWidth&#39;)) + &#39;%;&#39;;\n  }).property(&#39;barWidth&#39;)\n});\n");
-        dom.appendChild(el5, el6);
-        dom.appendChild(el4, el5);
-        var el5 = dom.createTextNode("\n      ");
-        dom.appendChild(el4, el5);
+        var el4 = dom.createComment("");
         dom.appendChild(el3, el4);
         var el4 = dom.createTextNode("\n    ");
         dom.appendChild(el3, el4);
@@ -4781,17 +4814,7 @@ define('dummy/templates/dynamic-bars', ['exports'], function (exports) {
         dom.appendChild(el3, el4);
         var el4 = dom.createTextNode("\n      ");
         dom.appendChild(el3, el4);
-        var el4 = dom.createElement("div");
-        dom.setAttribute(el4,"class","highlight");
-        var el5 = dom.createTextNode("\n        ");
-        dom.appendChild(el4, el5);
-        var el5 = dom.createElement("pre");
-        dom.setAttribute(el5,"class","prettyprint lang-html");
-        var el6 = dom.createTextNode("&lt;span class=&quot;bar-cell&quot; {{bind-attr style=&quot;view.histogramStyle&quot;}}&gt;\n&lt;&#x2F;span&gt;\n");
-        dom.appendChild(el5, el6);
-        dom.appendChild(el4, el5);
-        var el5 = dom.createTextNode("\n      ");
-        dom.appendChild(el4, el5);
+        var el4 = dom.createComment("");
         dom.appendChild(el3, el4);
         var el4 = dom.createTextNode("\n    ");
         dom.appendChild(el3, el4);
@@ -4808,7 +4831,7 @@ define('dummy/templates/dynamic-bars', ['exports'], function (exports) {
       },
       render: function render(context, env, contextualElement) {
         var dom = env.dom;
-        var hooks = env.hooks, inline = hooks.inline;
+        var hooks = env.hooks, get = hooks.get, inline = hooks.inline;
         dom.detectNamespace(contextualElement);
         var fragment;
         if (env.useFragmentCache && dom.canClone) {
@@ -4826,8 +4849,17 @@ define('dummy/templates/dynamic-bars', ['exports'], function (exports) {
         } else {
           fragment = this.build(dom);
         }
-        var morph0 = dom.createMorphAt(dom.childAt(fragment, [0, 3, 1, 1, 1]),1,1);
-        inline(env, morph0, context, "partial", ["dynamic-bar-table/dynamic-bar-table"], {});
+        var element0 = dom.childAt(fragment, [0, 3]);
+        var morph0 = dom.createMorphAt(dom.childAt(element0, [1, 1, 1]),1,1);
+        var morph1 = dom.createMorphAt(dom.childAt(element0, [3]),3,3);
+        var morph2 = dom.createMorphAt(dom.childAt(element0, [5]),3,3);
+        var morph3 = dom.createMorphAt(dom.childAt(element0, [7]),3,3);
+        var morph4 = dom.createMorphAt(dom.childAt(element0, [9]),3,3);
+        inline(env, morph0, context, "ember-table", [], {"hasHeader": true, "hasFooter": false, "rowHeight": 30, "columns": get(env, context, "tableColumns"), "content": get(env, context, "tableContent")});
+        inline(env, morph1, context, "code-snippet", [], {"name": "dynamic-bars-table.hbs"});
+        inline(env, morph2, context, "code-snippet", [], {"name": "dynamic-bars-controller.js"});
+        inline(env, morph3, context, "code-snippet", [], {"name": "bar-table-cell.js"});
+        inline(env, morph4, context, "code-snippet", [], {"name": "bar-cell.hbs"});
         return fragment;
       }
     };
@@ -4943,6 +4975,8 @@ define('dummy/templates/editable-table/editable-table-cell', ['exports'], functi
         var el2 = dom.createComment("");
         dom.appendChild(el1, el2);
         dom.appendChild(el0, el1);
+        var el1 = dom.createTextNode("\n");
+        dom.appendChild(el0, el1);
         return el0;
       },
       render: function render(context, env, contextualElement) {
@@ -4967,54 +5001,6 @@ define('dummy/templates/editable-table/editable-table-cell', ['exports'], functi
         }
         var morph0 = dom.createMorphAt(dom.childAt(fragment, [0]),1,1);
         block(env, morph0, context, "if", [get(env, context, "view.isEditing")], {}, child0, child1);
-        return fragment;
-      }
-    };
-  }()));
-
-});
-define('dummy/templates/editable-table/editable-table', ['exports'], function (exports) {
-
-  'use strict';
-
-  exports['default'] = Ember.HTMLBars.template((function() {
-    return {
-      isHTMLBars: true,
-      revision: "Ember@1.12.1",
-      blockParams: 0,
-      cachedFragment: null,
-      hasRendered: false,
-      build: function build(dom) {
-        var el0 = dom.createDocumentFragment();
-        var el1 = dom.createComment("");
-        dom.appendChild(el0, el1);
-        var el1 = dom.createTextNode("\n");
-        dom.appendChild(el0, el1);
-        return el0;
-      },
-      render: function render(context, env, contextualElement) {
-        var dom = env.dom;
-        var hooks = env.hooks, get = hooks.get, inline = hooks.inline;
-        dom.detectNamespace(contextualElement);
-        var fragment;
-        if (env.useFragmentCache && dom.canClone) {
-          if (this.cachedFragment === null) {
-            fragment = this.build(dom);
-            if (this.hasRendered) {
-              this.cachedFragment = fragment;
-            } else {
-              this.hasRendered = true;
-            }
-          }
-          if (this.cachedFragment) {
-            fragment = dom.cloneNode(this.cachedFragment, true);
-          }
-        } else {
-          fragment = this.build(dom);
-        }
-        var morph0 = dom.createMorphAt(fragment,0,0,contextualElement);
-        dom.insertBoundary(fragment, 0);
-        inline(env, morph0, context, "ember-table", [], {"hasHeader": true, "hasFooter": false, "numFixedColumns": 0, "rowHeight": 30, "columns": get(env, context, "tableColumns"), "content": get(env, context, "tableContent")});
         return fragment;
       }
     };
@@ -5050,6 +5036,8 @@ define('dummy/templates/editable-table/rating-table-cell', ['exports'], function
         dom.appendChild(el1, el2);
         var el2 = dom.createTextNode("\n");
         dom.appendChild(el1, el2);
+        dom.appendChild(el0, el1);
+        var el1 = dom.createTextNode("\n");
         dom.appendChild(el0, el1);
         return el0;
       },
@@ -5144,17 +5132,7 @@ define('dummy/templates/editable', ['exports'], function (exports) {
         dom.appendChild(el3, el4);
         var el4 = dom.createTextNode("\n      ");
         dom.appendChild(el3, el4);
-        var el4 = dom.createElement("div");
-        dom.setAttribute(el4,"class","highlight");
-        var el5 = dom.createTextNode("\n        ");
-        dom.appendChild(el4, el5);
-        var el5 = dom.createElement("pre");
-        dom.setAttribute(el5,"class","prettyprint lang-html");
-        var el6 = dom.createTextNode("{{ember-table\n  hasHeader=true\n  hasFooter=false\n  numFixedColumns=0\n  rowHeight=30\n  columns=tableColumns\n  content=tableContent\n}}\n");
-        dom.appendChild(el5, el6);
-        dom.appendChild(el4, el5);
-        var el5 = dom.createTextNode("\n      ");
-        dom.appendChild(el4, el5);
+        var el4 = dom.createComment("");
         dom.appendChild(el3, el4);
         var el4 = dom.createTextNode("\n    ");
         dom.appendChild(el3, el4);
@@ -5171,17 +5149,7 @@ define('dummy/templates/editable', ['exports'], function (exports) {
         dom.appendChild(el3, el4);
         var el4 = dom.createTextNode("\n      ");
         dom.appendChild(el3, el4);
-        var el4 = dom.createElement("div");
-        dom.setAttribute(el4,"class","highlight");
-        var el5 = dom.createTextNode("\n        ");
-        dom.appendChild(el4, el5);
-        var el5 = dom.createElement("pre");
-        dom.setAttribute(el5,"class","prettyprint lang-js");
-        var el6 = dom.createTextNode("import Ember from &#39;ember&#39;;\nimport ColumnDefinition from &#39;ember-table&#x2F;models&#x2F;column-definition&#39;;\n\nexport default Ember.Controller.extend({\n  tableColumns: Ember.computed(function() {\n    var columnNames = [&#39;open&#39;, &#39;close&#39;];\n    var dateColumn = ColumnDefinition.create({\n      savedWidth: 100,\n      headerCellName: &#39;Date&#39;,\n      tableCellViewClass: &#39;date-picker-table-cell&#39;,\n      getCellContent: function(row) {\n        return row.get(&#39;date&#39;).toString(&#39;yyyy-MM-dd&#39;);\n      },\n      setCellContent: function(row, value) {\n        return row.set(&#39;date&#39;, value);\n      }\n    });\n    var ratingColumn = ColumnDefinition.create({\n      savedWidth: 150,\n      headerCellName: &#39;Analyst Rating&#39;,\n      tableCellViewClass: &#39;rating-table-cell&#39;,\n      contentPath: &#39;rating&#39;,\n      setCellContent: function(row, value) {\n        return row.set(&#39;rating&#39;, value);\n      }\n    });\n    var columns = columnNames.map(function(key) {\n      var name;\n      name = key.charAt(0).toUpperCase() + key.slice(1);\n      return ColumnDefinition.create({\n        savedWidth: 100,\n        headerCellName: name,\n        tableCellViewClass: &#39;editable-table-cell&#39;,\n        getCellContent: function(row) {\n          return row.get(key).toFixed(2);\n        },\n        setCellContent: function(row, value) {\n          return row.set(key, +value);\n        }\n      });\n    });\n    columns.unshift(ratingColumn);\n    columns.unshift(dateColumn);\n    return columns;\n  }),\n\n  tableContent: Ember.computed(function() {\n    var content = [];\n    var date;\n    for (var i = 0; i &lt; 100; i++) {\n      date = new Date();\n      date.setDate(date.getDate() + i);\n      content.pushObject({\n        index: i,\n        date: date,\n        open: Math.random() * 100 - 50,\n        close: Math.random() * 100 - 50,\n        rating: Math.round(Math.random() * 4)\n      });\n    }\n    return content;\n  })\n});\n");
-        dom.appendChild(el5, el6);
-        dom.appendChild(el4, el5);
-        var el5 = dom.createTextNode("\n      ");
-        dom.appendChild(el4, el5);
+        var el4 = dom.createComment("");
         dom.appendChild(el3, el4);
         var el4 = dom.createTextNode("\n    ");
         dom.appendChild(el3, el4);
@@ -5193,22 +5161,12 @@ define('dummy/templates/editable', ['exports'], function (exports) {
         var el4 = dom.createTextNode("\n      ");
         dom.appendChild(el3, el4);
         var el4 = dom.createElement("h3");
-        var el5 = dom.createTextNode("views/editable_table_cell.js");
+        var el5 = dom.createTextNode("views/editable-table-cell.js");
         dom.appendChild(el4, el5);
         dom.appendChild(el3, el4);
         var el4 = dom.createTextNode("\n      ");
         dom.appendChild(el3, el4);
-        var el4 = dom.createElement("div");
-        dom.setAttribute(el4,"class","highlight");
-        var el5 = dom.createTextNode("\n        ");
-        dom.appendChild(el4, el5);
-        var el5 = dom.createElement("pre");
-        dom.setAttribute(el5,"class","prettyprint lang-js");
-        var el6 = dom.createTextNode("import Ember from &#39;ember&#39;;\nimport TableCell from &#39;ember-table&#x2F;views&#x2F;table-cell&#39;;\n\nexport default TableCell.extend({\n  className: &#39;editable-table-cell&#39;,\n  templateName: &#39;editable-table&#x2F;editable-table-cell&#39;,\n  isEditing: false,\n  type: &#39;text&#39;,\n\n  innerTextField: Ember.TextField.extend({\n    typeBinding: &#39;parentView.type&#39;,\n    valueBinding: &#39;parentView.cellContent&#39;,\n    didInsertElement: function() {\n      this.$().focus();\n      &#x2F;&#x2F; TODO(azirbel): Call this._super()\n    },\n    focusOut: function() {\n      this.set(&#39;parentView.isEditing&#39;, false);\n    }\n  }),\n\n  onRowContentDidChange: Ember.observer(function() {\n    this.set(&#39;isEditing&#39;, false);\n  }, &#39;row.content&#39;),\n\n  click: function(event) {\n    this.set(&#39;isEditing&#39;, true);\n    event.stopPropagation();\n  }\n});\n");
-        dom.appendChild(el5, el6);
-        dom.appendChild(el4, el5);
-        var el5 = dom.createTextNode("\n      ");
-        dom.appendChild(el4, el5);
+        var el4 = dom.createComment("");
         dom.appendChild(el3, el4);
         var el4 = dom.createTextNode("\n    ");
         dom.appendChild(el3, el4);
@@ -5220,22 +5178,12 @@ define('dummy/templates/editable', ['exports'], function (exports) {
         var el4 = dom.createTextNode("\n      ");
         dom.appendChild(el3, el4);
         var el4 = dom.createElement("h3");
-        var el5 = dom.createTextNode("templates/editable-table/editable_table_cell.hbs");
+        var el5 = dom.createTextNode("templates/editable-table/editable-table-cell.hbs");
         dom.appendChild(el4, el5);
         dom.appendChild(el3, el4);
         var el4 = dom.createTextNode("\n      ");
         dom.appendChild(el3, el4);
-        var el4 = dom.createElement("div");
-        dom.setAttribute(el4,"class","highlight");
-        var el5 = dom.createTextNode("\n        ");
-        dom.appendChild(el4, el5);
-        var el5 = dom.createElement("pre");
-        dom.setAttribute(el5,"class","prettyprint lang-html");
-        var el6 = dom.createTextNode("&lt;span class=&quot;ember-table-content&quot;&gt;\n  {{#if view.isEditing}}\n    {{view view.innerTextField}}\n  {{else}}\n    &lt;span class=&#39;content&#39;&gt;{{view.cellContent}}&lt;&#x2F;span&gt;\n  {{&#x2F;if}}\n&lt;&#x2F;span&gt;");
-        dom.appendChild(el5, el6);
-        dom.appendChild(el4, el5);
-        var el5 = dom.createTextNode("\n      ");
-        dom.appendChild(el4, el5);
+        var el4 = dom.createComment("");
         dom.appendChild(el3, el4);
         var el4 = dom.createTextNode("\n    ");
         dom.appendChild(el3, el4);
@@ -5247,22 +5195,29 @@ define('dummy/templates/editable', ['exports'], function (exports) {
         var el4 = dom.createTextNode("\n      ");
         dom.appendChild(el3, el4);
         var el4 = dom.createElement("h3");
-        var el5 = dom.createTextNode("templates/editable-table/rating_table_cell.hbs");
+        var el5 = dom.createTextNode("views/rating-table-cell.js");
         dom.appendChild(el4, el5);
         dom.appendChild(el3, el4);
         var el4 = dom.createTextNode("\n      ");
         dom.appendChild(el3, el4);
-        var el4 = dom.createElement("div");
-        dom.setAttribute(el4,"class","highlight");
-        var el5 = dom.createTextNode("\n        ");
+        var el4 = dom.createComment("");
+        dom.appendChild(el3, el4);
+        var el4 = dom.createTextNode("\n    ");
+        dom.appendChild(el3, el4);
+        dom.appendChild(el2, el3);
+        var el3 = dom.createTextNode("\n\n    ");
+        dom.appendChild(el2, el3);
+        var el3 = dom.createElement("div");
+        dom.setAttribute(el3,"class","col-md-12 bumper-30");
+        var el4 = dom.createTextNode("\n      ");
+        dom.appendChild(el3, el4);
+        var el4 = dom.createElement("h3");
+        var el5 = dom.createTextNode("templates/editable-table/rating-table-cell.hbs");
         dom.appendChild(el4, el5);
-        var el5 = dom.createElement("pre");
-        dom.setAttribute(el5,"class","prettyprint lang-html");
-        var el6 = dom.createTextNode("&lt;div class=&quot;rating&quot;&gt;\n  &lt;span&gt;&lt;&#x2F;span&gt;&lt;span&gt;&lt;&#x2F;span&gt;&lt;span&gt;&lt;&#x2F;span&gt;&lt;span&gt;&lt;&#x2F;span&gt;&lt;span&gt;&lt;&#x2F;span&gt;\n&lt;&#x2F;div&gt;");
-        dom.appendChild(el5, el6);
-        dom.appendChild(el4, el5);
-        var el5 = dom.createTextNode("\n      ");
-        dom.appendChild(el4, el5);
+        dom.appendChild(el3, el4);
+        var el4 = dom.createTextNode("\n      ");
+        dom.appendChild(el3, el4);
+        var el4 = dom.createComment("");
         dom.appendChild(el3, el4);
         var el4 = dom.createTextNode("\n    ");
         dom.appendChild(el3, el4);
@@ -5279,7 +5234,7 @@ define('dummy/templates/editable', ['exports'], function (exports) {
       },
       render: function render(context, env, contextualElement) {
         var dom = env.dom;
-        var hooks = env.hooks, inline = hooks.inline;
+        var hooks = env.hooks, get = hooks.get, inline = hooks.inline;
         dom.detectNamespace(contextualElement);
         var fragment;
         if (env.useFragmentCache && dom.canClone) {
@@ -5297,8 +5252,21 @@ define('dummy/templates/editable', ['exports'], function (exports) {
         } else {
           fragment = this.build(dom);
         }
-        var morph0 = dom.createMorphAt(dom.childAt(fragment, [0, 3, 1, 1, 1]),1,1);
-        inline(env, morph0, context, "partial", ["editable-table/editable-table"], {});
+        var element0 = dom.childAt(fragment, [0, 3]);
+        var morph0 = dom.createMorphAt(dom.childAt(element0, [1, 1, 1]),1,1);
+        var morph1 = dom.createMorphAt(dom.childAt(element0, [3]),3,3);
+        var morph2 = dom.createMorphAt(dom.childAt(element0, [5]),3,3);
+        var morph3 = dom.createMorphAt(dom.childAt(element0, [7]),3,3);
+        var morph4 = dom.createMorphAt(dom.childAt(element0, [9]),3,3);
+        var morph5 = dom.createMorphAt(dom.childAt(element0, [11]),3,3);
+        var morph6 = dom.createMorphAt(dom.childAt(element0, [13]),3,3);
+        inline(env, morph0, context, "ember-table", [], {"hasHeader": true, "hasFooter": false, "numFixedColumns": 0, "rowHeight": 30, "columns": get(env, context, "tableColumns"), "content": get(env, context, "tableContent")});
+        inline(env, morph1, context, "code-snippet", [], {"name": "editable-table.hbs"});
+        inline(env, morph2, context, "code-snippet", [], {"name": "editable-controller.js"});
+        inline(env, morph3, context, "code-snippet", [], {"name": "editable-table-cell.js"});
+        inline(env, morph4, context, "code-snippet", [], {"name": "editable-table-cell.hbs"});
+        inline(env, morph5, context, "code-snippet", [], {"name": "rating-table-cell.js"});
+        inline(env, morph6, context, "code-snippet", [], {"name": "rating-table-cell.hbs"});
         return fragment;
       }
     };
@@ -5374,6 +5342,8 @@ define('dummy/templates/financial-table/financial-table-cell', ['exports'], func
         var el2 = dom.createTextNode("\n");
         dom.appendChild(el1, el2);
         dom.appendChild(el0, el1);
+        var el1 = dom.createTextNode("\n");
+        dom.appendChild(el0, el1);
         return el0;
       },
       render: function render(context, env, contextualElement) {
@@ -5439,6 +5409,8 @@ define('dummy/templates/financial-table/financial-table-header-cell', ['exports'
         dom.appendChild(el1, el2);
         var el2 = dom.createTextNode("\n");
         dom.appendChild(el1, el2);
+        dom.appendChild(el0, el1);
+        var el1 = dom.createTextNode("\n");
         dom.appendChild(el0, el1);
         return el0;
       },
@@ -5599,7 +5571,7 @@ define('dummy/templates/financial-table/financial-table-tree-cell', ['exports'],
       },
       render: function render(context, env, contextualElement) {
         var dom = env.dom;
-        var hooks = env.hooks, element = hooks.element, get = hooks.get, inline = hooks.inline, content = hooks.content;
+        var hooks = env.hooks, get = hooks.get, attribute = hooks.attribute, element = hooks.element, inline = hooks.inline, content = hooks.content;
         dom.detectNamespace(contextualElement);
         var fragment;
         if (env.useFragmentCache && dom.canClone) {
@@ -5619,61 +5591,14 @@ define('dummy/templates/financial-table/financial-table-tree-cell', ['exports'],
         }
         var element0 = dom.childAt(fragment, [0]);
         var element1 = dom.childAt(element0, [1]);
+        var attrMorph0 = dom.createAttrMorph(element0, 'style');
         var morph0 = dom.createMorphAt(element1,1,1);
         var morph1 = dom.createMorphAt(dom.childAt(element0, [3]),1,1);
-        element(env, element0, context, "bind-attr", [], {"style": "view.paddingStyle"});
+        attribute(env, attrMorph0, element0, "style", get(env, context, "view.paddingStyle"));
         element(env, element1, context, "bind-attr", [], {"class": ":ember-table-toggle-span view.row.isLeaf::ember-table-toggle\n    view.row.isCollapsed:ember-table-expand:ember-table-collapse"});
         element(env, element1, context, "action", ["toggleCollapse", get(env, context, "view.row")], {});
         inline(env, morph0, context, "fa-icon", ["caret-down"], {"classNames": "ember-table-toggle-icon"});
         content(env, morph1, context, "view.cellContent");
-        return fragment;
-      }
-    };
-  }()));
-
-});
-define('dummy/templates/financial-table/financial-table', ['exports'], function (exports) {
-
-  'use strict';
-
-  exports['default'] = Ember.HTMLBars.template((function() {
-    return {
-      isHTMLBars: true,
-      revision: "Ember@1.12.1",
-      blockParams: 0,
-      cachedFragment: null,
-      hasRendered: false,
-      build: function build(dom) {
-        var el0 = dom.createDocumentFragment();
-        var el1 = dom.createComment("");
-        dom.appendChild(el0, el1);
-        var el1 = dom.createTextNode("\n");
-        dom.appendChild(el0, el1);
-        return el0;
-      },
-      render: function render(context, env, contextualElement) {
-        var dom = env.dom;
-        var hooks = env.hooks, get = hooks.get, inline = hooks.inline;
-        dom.detectNamespace(contextualElement);
-        var fragment;
-        if (env.useFragmentCache && dom.canClone) {
-          if (this.cachedFragment === null) {
-            fragment = this.build(dom);
-            if (this.hasRendered) {
-              this.cachedFragment = fragment;
-            } else {
-              this.hasRendered = true;
-            }
-          }
-          if (this.cachedFragment) {
-            fragment = dom.cloneNode(this.cachedFragment, true);
-          }
-        } else {
-          fragment = this.build(dom);
-        }
-        var morph0 = dom.createMorphAt(fragment,0,0,contextualElement);
-        dom.insertBoundary(fragment, 0);
-        inline(env, morph0, context, "financial-table", [], {"data": get(env, context, "data")});
         return fragment;
       }
     };
@@ -5746,17 +5671,7 @@ define('dummy/templates/financial', ['exports'], function (exports) {
         dom.appendChild(el3, el4);
         var el4 = dom.createTextNode("\n      ");
         dom.appendChild(el3, el4);
-        var el4 = dom.createElement("div");
-        dom.setAttribute(el4,"class","highlight");
-        var el5 = dom.createTextNode("\n        ");
-        dom.appendChild(el4, el5);
-        var el5 = dom.createElement("pre");
-        dom.setAttribute(el5,"class","prettyprint lang-html");
-        var el6 = dom.createTextNode("{{financial-table\n  data=data\n}}\n");
-        dom.appendChild(el5, el6);
-        dom.appendChild(el4, el5);
-        var el5 = dom.createTextNode("\n      ");
-        dom.appendChild(el4, el5);
+        var el4 = dom.createComment("");
         dom.appendChild(el3, el4);
         var el4 = dom.createTextNode("\n    ");
         dom.appendChild(el3, el4);
@@ -5773,17 +5688,7 @@ define('dummy/templates/financial', ['exports'], function (exports) {
         dom.appendChild(el3, el4);
         var el4 = dom.createTextNode("\n      ");
         dom.appendChild(el3, el4);
-        var el4 = dom.createElement("div");
-        dom.setAttribute(el4,"class","highlight");
-        var el5 = dom.createTextNode("\n        ");
-        dom.appendChild(el4, el5);
-        var el5 = dom.createElement("pre");
-        dom.setAttribute(el5,"class","prettyprint lang-js");
-        var el6 = dom.createTextNode("import Ember from &#39;ember&#39;;\nimport Treedata from &#39;..&#x2F;models&#x2F;treedata&#39;;\n\nexport default Ember.Controller.extend({\n  data: Ember.computed(function() {\n    return Treedata;\n  })\n});\n");
-        dom.appendChild(el5, el6);
-        dom.appendChild(el4, el5);
-        var el5 = dom.createTextNode("\n      ");
-        dom.appendChild(el4, el5);
+        var el4 = dom.createComment("");
         dom.appendChild(el3, el4);
         var el4 = dom.createTextNode("\n    ");
         dom.appendChild(el3, el4);
@@ -5800,17 +5705,7 @@ define('dummy/templates/financial', ['exports'], function (exports) {
         dom.appendChild(el3, el4);
         var el4 = dom.createTextNode("\n      ");
         dom.appendChild(el3, el4);
-        var el4 = dom.createElement("div");
-        dom.setAttribute(el4,"class","highlight");
-        var el5 = dom.createTextNode("\n        ");
-        dom.appendChild(el4, el5);
-        var el5 = dom.createElement("pre");
-        dom.setAttribute(el5,"class","prettyprint lang-js");
-        var el6 = dom.createTextNode("import Ember from &#39;ember&#39;;\nimport TableComponent from &#39;ember-table&#x2F;components&#x2F;ember-table&#39;;\nimport ColumnDefinition from &#39;ember-table&#x2F;models&#x2F;column-definition&#39;;\nimport FinancialTableTreeRow from &#39;..&#x2F;views&#x2F;financial-table-tree-row&#39;;\nimport NumberFormatHelpers from &#39;..&#x2F;utils&#x2F;number-format&#39;;\n\nexport default TableComponent.extend({\n  &#x2F;&#x2F; Overriding default properties\n  layoutName: &#39;components&#x2F;ember-table&#39;,\n  numFixedColumns: 1,\n  isCollapsed: false,\n  isHeaderHeightResizable: true,\n  rowHeight: 30,\n  hasHeader: true,\n  hasFooter: true,\n  headerHeight: 70,\n\n  &#x2F;&#x2F; Custom properties\n  sortAscending: false,\n  sortColumn: null,\n\n  &#x2F;&#x2F;&#x2F;&#x2F;&#x2F;&#x2F;&#x2F;&#x2F;&#x2F;&#x2F;&#x2F;&#x2F;&#x2F;&#x2F;&#x2F;&#x2F;&#x2F;&#x2F;&#x2F;&#x2F;&#x2F;&#x2F;&#x2F;&#x2F;&#x2F;&#x2F;&#x2F;&#x2F;&#x2F;&#x2F;&#x2F;&#x2F;&#x2F;&#x2F;&#x2F;&#x2F;&#x2F;&#x2F;&#x2F;&#x2F;&#x2F;&#x2F;&#x2F;&#x2F;&#x2F;&#x2F;&#x2F;&#x2F;&#x2F;&#x2F;&#x2F;&#x2F;&#x2F;&#x2F;&#x2F;&#x2F;&#x2F;&#x2F;&#x2F;&#x2F;&#x2F;&#x2F;&#x2F;&#x2F;&#x2F;&#x2F;&#x2F;&#x2F;&#x2F;&#x2F;&#x2F;&#x2F;&#x2F;&#x2F;&#x2F;&#x2F;&#x2F;\n  &#x2F;&#x2F; Data conversions\n  &#x2F;&#x2F;&#x2F;&#x2F;&#x2F;&#x2F;&#x2F;&#x2F;&#x2F;&#x2F;&#x2F;&#x2F;&#x2F;&#x2F;&#x2F;&#x2F;&#x2F;&#x2F;&#x2F;&#x2F;&#x2F;&#x2F;&#x2F;&#x2F;&#x2F;&#x2F;&#x2F;&#x2F;&#x2F;&#x2F;&#x2F;&#x2F;&#x2F;&#x2F;&#x2F;&#x2F;&#x2F;&#x2F;&#x2F;&#x2F;&#x2F;&#x2F;&#x2F;&#x2F;&#x2F;&#x2F;&#x2F;&#x2F;&#x2F;&#x2F;&#x2F;&#x2F;&#x2F;&#x2F;&#x2F;&#x2F;&#x2F;&#x2F;&#x2F;&#x2F;&#x2F;&#x2F;&#x2F;&#x2F;&#x2F;&#x2F;&#x2F;&#x2F;&#x2F;&#x2F;&#x2F;&#x2F;&#x2F;&#x2F;&#x2F;&#x2F;&#x2F;\n\n  data: null,\n\n  columns: Ember.computed(function() {\n    var data = this.get(&#39;data&#39;);\n    if (!data) {\n      return;\n    }\n    var names = this.get(&#39;data.value_factors&#39;).getEach(&#39;display_name&#39;);\n    var columns = names.map(function(name, index) {\n      return ColumnDefinition.create({\n        index: index,\n        headerCellName: name,\n        headerCellView: &#39;financial-table-header-cell&#39;,\n        tableCellView: &#39;financial-table-cell&#39;,\n        getCellContent: function(row) {\n          var object = row.get(&#39;values&#39;)[this.get(&#39;index&#39;)];\n          if (object.type === &#39;money&#39;) {\n            return NumberFormatHelpers.toCurrency(object.value);\n          }\n          if (object.type === &#39;percent&#39;) {\n            return NumberFormatHelpers.toPercent(object.value);\n          }\n          return &#39;-&#39;;\n        }\n      });\n    });\n    columns.unshiftObject(this.get(&#39;groupingColumn&#39;));\n    return columns;\n  }).property(&#39;data.valueFactors.@each&#39;, &#39;groupingColumn&#39;),\n\n  groupingColumn: Ember.computed(function() {\n    var groupingFactors = this.get(&#39;data.grouping_factors&#39;);\n    var name = groupingFactors.getEach(&#39;display_name&#39;).join(&#39; ▸ &#39;);\n    return ColumnDefinition.create({\n      headerCellName: name,\n      savedWidth: 400,\n      isTreeColumn: true,\n      isSortable: false,\n      textAlign: &#39;text-align-left&#39;,\n      headerCellView: &#39;financial-table-header-tree-cell&#39;,\n      tableCellView: &#39;financial-table-tree-cell&#39;,\n      contentPath: &#39;group_value&#39;\n    });\n  }).property(&#39;data.grouping_factors.@each&#39;),\n\n  root: Ember.computed(function() {\n    var data = this.get(&#39;data&#39;);\n    if (!data) {\n      return;\n    }\n    return this.createTree(null, data.root);\n  }).property(&#39;data&#39;, &#39;sortAscending&#39;, &#39;sortColumn&#39;),\n\n  rows: Ember.computed(function() {\n    var root = this.get(&#39;root&#39;);\n    if (!root) {\n      return Ember.A();\n    }\n    var rows = this.flattenTree(null, root, Ember.A());\n    this.computeStyles(null, root);\n    var maxGroupingLevel = Math.max.apply(rows.getEach(&#39;groupingLevel&#39;));\n    rows.forEach(function(row) {\n      return row.computeRowStyle(maxGroupingLevel);\n    });\n    return rows;\n  }).property(&#39;root&#39;),\n\n  &#x2F;&#x2F; OPTIMIZATION HACK\n  bodyContent: Ember.computed(function() {\n    var rows = this.get(&#39;rows&#39;);\n    if (!rows) {\n      return Ember.A();\n    }\n    rows = rows.slice(1, rows.get(&#39;length&#39;));\n    return rows.filterProperty(&#39;isShowing&#39;);\n  }).property(&#39;rows&#39;),\n\n  footerContent: Ember.computed(function() {\n    var rows = this.get(&#39;rows&#39;);\n    if (!rows) {\n      return Ember.A();\n    }\n    return rows.slice(0, 1);\n  }).property(&#39;rows&#39;),\n\n  orderBy: function(item1, item2) {\n    var sortColumn = this.get(&#39;sortColumn&#39;);\n    var sortAscending = this.get(&#39;sortAscending&#39;);\n    if (!sortColumn) {\n      return 1;\n    }\n    var value1 = sortColumn.getCellContent(item1.get(&#39;content&#39;));\n    var value2 = sortColumn.getCellContent(item2.get(&#39;content&#39;));\n    var result = Ember.compare(value1, value2);\n    if (sortAscending) {\n      return result;\n    } else {\n      return -result;\n    }\n  },\n\n  createTree: function(parent, node) {\n    var row = FinancialTableTreeRow.create({ parentController: this });\n    &#x2F;&#x2F; TODO(azirbel): better map function and _this use\n    var children = (node.children || []).map((function(_this) {\n      return function(child) {\n        return _this.createTree(row, child);\n      };\n    })(this));\n    &#x2F;&#x2F; TODO(Peter): Hack... only collapse table if it should collapseByDefault\n    &#x2F;&#x2F; and it is not the root. Currently the total row is the root, and if it\n    &#x2F;&#x2F; is collapse, it causes nothing to show in the table and there is no way\n    &#x2F;&#x2F; to get expand it.\n    row.setProperties({\n      isRoot: !parent,\n      isLeaf: Ember.isEmpty(children),\n      content: node,\n      parent: parent,\n      children: children,\n      groupName: node.group_name,\n      isCollapsed: false\n    });\n    return row;\n  },\n\n  &#x2F;&#x2F; TODO(azirbel): Don&#39;t use the word &#39;parent&#39;\n  flattenTree: function(parent, node, rows) {\n    rows.pushObject(node);\n    (node.children || []).forEach((function(_this) {\n      return function(child) {\n        return _this.flattenTree(node, child, rows);\n      };\n    })(this));\n    return rows;\n  },\n\n  computeStyles: function(parent, node) {\n    node.computeStyles(parent);\n    node.get(&#39;children&#39;).forEach((function(_this) {\n      return function(child) {\n        _this.computeStyles(node, child);\n      };\n    })(this));\n  },\n\n  actions: {\n    toggleTableCollapse: function() {\n      var isCollapsed = this.toggleProperty(&#39;isCollapsed&#39;);\n      var children = this.get(&#39;root.children&#39;);\n      if (!(children &amp;&amp; children.get(&#39;length&#39;) &gt; 0)) {\n        return;\n      }\n      children.forEach(function(child) {\n        return child.recursiveCollapse(isCollapsed);\n      });\n      return this.notifyPropertyChange(&#39;rows&#39;);\n    },\n\n    toggleCollapse: function(row) {\n      row.toggleProperty(&#39;isCollapsed&#39;);\n      Ember.run.next(this, function() {\n        this.notifyPropertyChange(&#39;rows&#39;);\n      });\n    }\n  },\n});\n");
-        dom.appendChild(el5, el6);
-        dom.appendChild(el4, el5);
-        var el5 = dom.createTextNode("\n      ");
-        dom.appendChild(el4, el5);
+        var el4 = dom.createComment("");
         dom.appendChild(el3, el4);
         var el4 = dom.createTextNode("\n    ");
         dom.appendChild(el3, el4);
@@ -5827,22 +5722,12 @@ define('dummy/templates/financial', ['exports'], function (exports) {
         dom.appendChild(el3, el4);
         var el4 = dom.createTextNode("\n      ");
         dom.appendChild(el3, el4);
-        var el4 = dom.createElement("div");
-        dom.setAttribute(el4,"class","highlight");
-        var el5 = dom.createTextNode("\n        ");
-        dom.appendChild(el4, el5);
-        var el5 = dom.createElement("pre");
-        dom.setAttribute(el5,"class","prettyprint lang-js");
-        var el6 = dom.createTextNode("import TableCell from &#39;ember-table&#x2F;views&#x2F;table-cell&#39;;\n\nexport default TableCell.extend({\n  templateName: &#39;financial-table&#x2F;financial-table-cell&#39;\n});\n");
-        dom.appendChild(el5, el6);
-        dom.appendChild(el4, el5);
-        var el5 = dom.createTextNode("\n      ");
-        dom.appendChild(el4, el5);
+        var el4 = dom.createComment("");
         dom.appendChild(el3, el4);
         var el4 = dom.createTextNode("\n    ");
         dom.appendChild(el3, el4);
         dom.appendChild(el2, el3);
-        var el3 = dom.createTextNode("\n    \n    ");
+        var el3 = dom.createTextNode("\n\n    ");
         dom.appendChild(el2, el3);
         var el3 = dom.createElement("div");
         dom.setAttribute(el3,"class","col-md-12 bumper-30");
@@ -5854,17 +5739,7 @@ define('dummy/templates/financial', ['exports'], function (exports) {
         dom.appendChild(el3, el4);
         var el4 = dom.createTextNode("\n      ");
         dom.appendChild(el3, el4);
-        var el4 = dom.createElement("div");
-        dom.setAttribute(el4,"class","highlight");
-        var el5 = dom.createTextNode("\n        ");
-        dom.appendChild(el4, el5);
-        var el5 = dom.createElement("pre");
-        dom.setAttribute(el5,"class","prettyprint lang-html");
-        var el6 = dom.createTextNode("&lt;div class=&quot;ember-table-cell-container&quot;&gt;\n  &lt;span class=&quot;ember-table-content&quot;&gt;\n    {{view.cellContent}}\n  &lt;&#x2F;span&gt;\n&lt;&#x2F;div&gt;");
-        dom.appendChild(el5, el6);
-        dom.appendChild(el4, el5);
-        var el5 = dom.createTextNode("\n      ");
-        dom.appendChild(el4, el5);
+        var el4 = dom.createComment("");
         dom.appendChild(el3, el4);
         var el4 = dom.createTextNode("\n    ");
         dom.appendChild(el3, el4);
@@ -5881,17 +5756,7 @@ define('dummy/templates/financial', ['exports'], function (exports) {
         dom.appendChild(el3, el4);
         var el4 = dom.createTextNode("\n      ");
         dom.appendChild(el3, el4);
-        var el4 = dom.createElement("div");
-        dom.setAttribute(el4,"class","highlight");
-        var el5 = dom.createTextNode("\n        ");
-        dom.appendChild(el4, el5);
-        var el5 = dom.createElement("pre");
-        dom.setAttribute(el5,"class","prettyprint lang-js");
-        var el6 = dom.createTextNode("import HeaderCell from &#39;ember-table&#x2F;views&#x2F;header-cell&#39;;\n\nexport default HeaderCell.extend({\n  templateName: &#39;financial-table&#x2F;financial-table-header-cell&#39;\n});\n");
-        dom.appendChild(el5, el6);
-        dom.appendChild(el4, el5);
-        var el5 = dom.createTextNode("\n      ");
-        dom.appendChild(el4, el5);
+        var el4 = dom.createComment("");
         dom.appendChild(el3, el4);
         var el4 = dom.createTextNode("\n    ");
         dom.appendChild(el3, el4);
@@ -5908,17 +5773,7 @@ define('dummy/templates/financial', ['exports'], function (exports) {
         dom.appendChild(el3, el4);
         var el4 = dom.createTextNode("\n      ");
         dom.appendChild(el3, el4);
-        var el4 = dom.createElement("div");
-        dom.setAttribute(el4,"class","highlight");
-        var el5 = dom.createTextNode("\n        ");
-        dom.appendChild(el4, el5);
-        var el5 = dom.createElement("pre");
-        dom.setAttribute(el5,"class","prettyprint lang-html");
-        var el6 = dom.createTextNode("&lt;div class=&quot;ember-table-cell-container&quot; {{bind-attr style=&quot;view.paddingStyle&quot;}}&gt;\n  &lt;span {{bind-attr class=&quot;:ember-table-toggle-span view.row.isLeaf::ember-table-toggle\n    view.row.isCollapsed:ember-table-expand:ember-table-collapse&quot;}}\n    {{action &#39;toggleCollapse&#39; view.row}}&gt;\n    {{fa-icon &quot;caret-down&quot; classNames=&quot;ember-table-toggle-icon&quot;}}\n  &lt;&#x2F;span&gt;\n  &lt;span class=&quot;ember-table-content&quot;&gt;\n    {{view.cellContent}}\n  &lt;&#x2F;span&gt;\n&lt;&#x2F;div&gt;\n");
-        dom.appendChild(el5, el6);
-        dom.appendChild(el4, el5);
-        var el5 = dom.createTextNode("\n      ");
-        dom.appendChild(el4, el5);
+        var el4 = dom.createComment("");
         dom.appendChild(el3, el4);
         var el4 = dom.createTextNode("\n    ");
         dom.appendChild(el3, el4);
@@ -5935,17 +5790,7 @@ define('dummy/templates/financial', ['exports'], function (exports) {
         dom.appendChild(el3, el4);
         var el4 = dom.createTextNode("\n      ");
         dom.appendChild(el3, el4);
-        var el4 = dom.createElement("div");
-        dom.setAttribute(el4,"class","highlight");
-        var el5 = dom.createTextNode("\n        ");
-        dom.appendChild(el4, el5);
-        var el5 = dom.createElement("pre");
-        dom.setAttribute(el5,"class","prettyprint lang-js");
-        var el6 = dom.createTextNode("import HeaderCell from &#39;ember-table&#x2F;views&#x2F;header-cell&#39;;\n\nexport default HeaderCell.extend({\n  templateName: &#39;financial-table&#x2F;financial-table-header-tree-cell&#39;,\n  classNames:   &#39;ember-table-table-header-tree-cell&#39;\n});\n");
-        dom.appendChild(el5, el6);
-        dom.appendChild(el4, el5);
-        var el5 = dom.createTextNode("\n      ");
-        dom.appendChild(el4, el5);
+        var el4 = dom.createComment("");
         dom.appendChild(el3, el4);
         var el4 = dom.createTextNode("\n    ");
         dom.appendChild(el3, el4);
@@ -5962,17 +5807,7 @@ define('dummy/templates/financial', ['exports'], function (exports) {
         dom.appendChild(el3, el4);
         var el4 = dom.createTextNode("\n      ");
         dom.appendChild(el3, el4);
-        var el4 = dom.createElement("div");
-        dom.setAttribute(el4,"class","highlight");
-        var el5 = dom.createTextNode("\n        ");
-        dom.appendChild(el4, el5);
-        var el5 = dom.createElement("pre");
-        dom.setAttribute(el5,"class","prettyprint lang-html");
-        var el6 = dom.createTextNode("&lt;div class=&quot;ember-table-cell-container&quot;&gt;\n  &lt;div class=&quot;ember-table-header-content-container&quot;&gt;\n    &lt;span class=&quot;ember-table-content&quot;&gt;\n      {{view.content.headerCellName}}\n    &lt;&#x2F;span&gt;\n  &lt;&#x2F;div&gt;\n&lt;&#x2F;div&gt;");
-        dom.appendChild(el5, el6);
-        dom.appendChild(el4, el5);
-        var el5 = dom.createTextNode("\n      ");
-        dom.appendChild(el4, el5);
+        var el4 = dom.createComment("");
         dom.appendChild(el3, el4);
         var el4 = dom.createTextNode("\n    ");
         dom.appendChild(el3, el4);
@@ -5989,17 +5824,7 @@ define('dummy/templates/financial', ['exports'], function (exports) {
         dom.appendChild(el3, el4);
         var el4 = dom.createTextNode("\n      ");
         dom.appendChild(el3, el4);
-        var el4 = dom.createElement("div");
-        dom.setAttribute(el4,"class","highlight");
-        var el5 = dom.createTextNode("\n        ");
-        dom.appendChild(el4, el5);
-        var el5 = dom.createElement("pre");
-        dom.setAttribute(el5,"class","prettyprint lang-js");
-        var el6 = dom.createTextNode("import Ember from &#39;ember&#39;;\nimport TableCell from &#39;ember-table&#x2F;views&#x2F;table-cell&#39;;\n\nexport default TableCell.extend({\n  templateName: &#39;financial-table&#x2F;financial-table-tree-cell&#39;,\n  classNames: &#39;ember-table-table-tree-cell&#39;,\n\n  paddingStyle: Ember.computed(function() {\n    return &#39;padding-left:&#39; + (this.get(&#39;row.indentation&#39;)) + &#39;px;&#39;;\n  }).property(&#39;row.indentation&#39;)\n});\n");
-        dom.appendChild(el5, el6);
-        dom.appendChild(el4, el5);
-        var el5 = dom.createTextNode("\n      ");
-        dom.appendChild(el4, el5);
+        var el4 = dom.createComment("");
         dom.appendChild(el3, el4);
         var el4 = dom.createTextNode("\n    ");
         dom.appendChild(el3, el4);
@@ -6016,17 +5841,7 @@ define('dummy/templates/financial', ['exports'], function (exports) {
         dom.appendChild(el3, el4);
         var el4 = dom.createTextNode("\n      ");
         dom.appendChild(el3, el4);
-        var el4 = dom.createElement("div");
-        dom.setAttribute(el4,"class","highlight");
-        var el5 = dom.createTextNode("\n        ");
-        dom.appendChild(el4, el5);
-        var el5 = dom.createElement("pre");
-        dom.setAttribute(el5,"class","prettyprint lang-html");
-        var el6 = dom.createTextNode("&lt;div class=&quot;ember-table-cell-container&quot;&gt;\n  &lt;span {{bind-attr class=&quot;:ember-table-toggle-span :ember-table-toggle\n      isCollapsed:ember-table-expand:ember-table-collapse&quot;}}\n      {{action &#39;toggleTableCollapse&#39;}}&gt;\n    {{fa-icon &quot;caret-down&quot; classNames=&quot;ember-table-toggle-icon&quot;}}\n  &lt;&#x2F;span&gt;\n  &lt;div class=&quot;ember-table-header-content-container&quot;&gt;\n    &lt;span class=&quot;ember-table-content&quot;&gt;\n      {{view.column.headerCellName}}\n    &lt;&#x2F;span&gt;\n  &lt;&#x2F;div&gt;\n&lt;&#x2F;div&gt;\n");
-        dom.appendChild(el5, el6);
-        dom.appendChild(el4, el5);
-        var el5 = dom.createTextNode("\n      ");
-        dom.appendChild(el4, el5);
+        var el4 = dom.createComment("");
         dom.appendChild(el3, el4);
         var el4 = dom.createTextNode("\n    ");
         dom.appendChild(el3, el4);
@@ -6043,17 +5858,7 @@ define('dummy/templates/financial', ['exports'], function (exports) {
         dom.appendChild(el3, el4);
         var el4 = dom.createTextNode("\n      ");
         dom.appendChild(el3, el4);
-        var el4 = dom.createElement("div");
-        dom.setAttribute(el4,"class","highlight");
-        var el5 = dom.createTextNode("\n        ");
-        dom.appendChild(el4, el5);
-        var el5 = dom.createElement("pre");
-        dom.setAttribute(el5,"class","prettyprint lang-js");
-        var el6 = dom.createTextNode("import Row from &#39;ember-table&#x2F;controllers&#x2F;row&#39;;\n\nexport default Row.extend({\n  content: null,\n  children: null,\n  parent: null,\n  isRoot: false,\n  isLeaf: false,\n  isCollapsed: false,\n  isShowing: true,\n  indentationSpacing: 20,\n  groupName: null,\n\n  computeStyles: function(parent) {\n    var groupingLevel, indentType, indentation, isShowing, pGroupingLevel, spacing;\n    groupingLevel = 0;\n    indentation = 0;\n    isShowing = true;\n    if (parent) {\n      isShowing = parent.get(&#39;isShowing&#39;) &amp;&amp; !parent.get(&#39;isCollapsed&#39;);\n      pGroupingLevel = parent.get(&#39;groupingLevel&#39;);\n      groupingLevel = pGroupingLevel;\n      if (parent.get(&#39;groupName&#39;) !== this.get(&#39;groupName&#39;)) {\n        groupingLevel += 1;\n      }\n      indentType = groupingLevel === pGroupingLevel ? &#39;half&#39; : &#39;full&#39;;\n      spacing = this.get(&#39;indentationSpacing&#39;);\n      if (!parent.get(&#39;isRoot&#39;)) {\n        indentation = parent.get(&#39;indentation&#39;);\n        indentation += (indentType === &#39;half&#39; ? spacing &#x2F; 2 : spacing);\n      }\n    }\n    this.set(&#39;groupingLevel&#39;, groupingLevel);\n    this.set(&#39;indentation&#39;, indentation);\n    this.set(&#39;isShowing&#39;, isShowing);\n  },\n\n  computeRowStyle: function(maxLevels) {\n    var level;\n    level = this.getFormattingLevel(this.get(&#39;groupingLevel&#39;), maxLevels);\n    this.set(&#39;rowStyle&#39;, &#39;ember-table-row-style-&#39; + level);\n  },\n\n  recursiveCollapse: function(isCollapsed) {\n    this.set(&#39;isCollapsed&#39;, isCollapsed);\n    this.get(&#39;children&#39;).forEach(function(child) {\n      child.recursiveCollapse(isCollapsed);\n    });\n  },\n\n  getFormattingLevel: function(level, maxLevels) {\n    switch (maxLevels) {\n      case 1:\n        return 5;\n      case 2:\n        if (level === 1) {\n          return 2;\n        }\n        return 5;\n      case 3:\n        if (level === 1) {\n          return 1;\n        }\n        if (level === 2) {\n          return 3;\n        }\n        return 5;\n      case 4:\n        if (level === 1) {\n          return 1;\n        }\n        if (level === 2) {\n          return 2;\n        }\n        if (level === 4) {\n          return 4;\n        }\n        return 5;\n      case 5:\n        return level;\n      default:\n        if (level === maxLevels) {\n          return 5;\n        }\n        return Math.min(level, 4);\n    }\n  }\n});\n");
-        dom.appendChild(el5, el6);
-        dom.appendChild(el4, el5);
-        var el5 = dom.createTextNode("\n      ");
-        dom.appendChild(el4, el5);
+        var el4 = dom.createComment("");
         dom.appendChild(el3, el4);
         var el4 = dom.createTextNode("\n    ");
         dom.appendChild(el3, el4);
@@ -6070,7 +5875,7 @@ define('dummy/templates/financial', ['exports'], function (exports) {
       },
       render: function render(context, env, contextualElement) {
         var dom = env.dom;
-        var hooks = env.hooks, inline = hooks.inline;
+        var hooks = env.hooks, get = hooks.get, inline = hooks.inline;
         dom.detectNamespace(contextualElement);
         var fragment;
         if (env.useFragmentCache && dom.canClone) {
@@ -6088,8 +5893,33 @@ define('dummy/templates/financial', ['exports'], function (exports) {
         } else {
           fragment = this.build(dom);
         }
-        var morph0 = dom.createMorphAt(dom.childAt(fragment, [0, 3, 1, 1, 1]),1,1);
-        inline(env, morph0, context, "partial", ["financial-table/financial-table"], {});
+        var element0 = dom.childAt(fragment, [0, 3]);
+        var morph0 = dom.createMorphAt(dom.childAt(element0, [1, 1, 1]),1,1);
+        var morph1 = dom.createMorphAt(dom.childAt(element0, [3]),3,3);
+        var morph2 = dom.createMorphAt(dom.childAt(element0, [5]),3,3);
+        var morph3 = dom.createMorphAt(dom.childAt(element0, [7]),3,3);
+        var morph4 = dom.createMorphAt(dom.childAt(element0, [9]),3,3);
+        var morph5 = dom.createMorphAt(dom.childAt(element0, [11]),3,3);
+        var morph6 = dom.createMorphAt(dom.childAt(element0, [13]),3,3);
+        var morph7 = dom.createMorphAt(dom.childAt(element0, [15]),3,3);
+        var morph8 = dom.createMorphAt(dom.childAt(element0, [17]),3,3);
+        var morph9 = dom.createMorphAt(dom.childAt(element0, [19]),3,3);
+        var morph10 = dom.createMorphAt(dom.childAt(element0, [21]),3,3);
+        var morph11 = dom.createMorphAt(dom.childAt(element0, [23]),3,3);
+        var morph12 = dom.createMorphAt(dom.childAt(element0, [25]),3,3);
+        inline(env, morph0, context, "financial-table", [], {"data": get(env, context, "data")});
+        inline(env, morph1, context, "code-snippet", [], {"name": "financial-table.hbs"});
+        inline(env, morph2, context, "code-snippet", [], {"name": "financial-controller.js"});
+        inline(env, morph3, context, "code-snippet", [], {"name": "financial-table-component.js"});
+        inline(env, morph4, context, "code-snippet", [], {"name": "financial-table-cell.js"});
+        inline(env, morph5, context, "code-snippet", [], {"name": "financial-table-cell-template.hbs"});
+        inline(env, morph6, context, "code-snippet", [], {"name": "financial-table-header-cell.js"});
+        inline(env, morph7, context, "code-snippet", [], {"name": "financial-table-tree-cell-template.hbs"});
+        inline(env, morph8, context, "code-snippet", [], {"name": "financial-table-header-tree-cell.js"});
+        inline(env, morph9, context, "code-snippet", [], {"name": "financial-table-header-cell-template.hbs"});
+        inline(env, morph10, context, "code-snippet", [], {"name": "financial-table-tree-cell.js"});
+        inline(env, morph11, context, "code-snippet", [], {"name": "financial-table-header-tree-cell-template.hbs"});
+        inline(env, morph12, context, "code-snippet", [], {"name": "financial-table-tree-row.js"});
         return fragment;
       }
     };
@@ -7280,54 +7110,6 @@ define('dummy/templates/header-table-container', ['exports'], function (exports)
   }()));
 
 });
-define('dummy/templates/horizon-table/horizon-table', ['exports'], function (exports) {
-
-  'use strict';
-
-  exports['default'] = Ember.HTMLBars.template((function() {
-    return {
-      isHTMLBars: true,
-      revision: "Ember@1.12.1",
-      blockParams: 0,
-      cachedFragment: null,
-      hasRendered: false,
-      build: function build(dom) {
-        var el0 = dom.createDocumentFragment();
-        var el1 = dom.createComment("");
-        dom.appendChild(el0, el1);
-        var el1 = dom.createTextNode("\n");
-        dom.appendChild(el0, el1);
-        return el0;
-      },
-      render: function render(context, env, contextualElement) {
-        var dom = env.dom;
-        var hooks = env.hooks, get = hooks.get, inline = hooks.inline;
-        dom.detectNamespace(contextualElement);
-        var fragment;
-        if (env.useFragmentCache && dom.canClone) {
-          if (this.cachedFragment === null) {
-            fragment = this.build(dom);
-            if (this.hasRendered) {
-              this.cachedFragment = fragment;
-            } else {
-              this.hasRendered = true;
-            }
-          }
-          if (this.cachedFragment) {
-            fragment = dom.cloneNode(this.cachedFragment, true);
-          }
-        } else {
-          fragment = this.build(dom);
-        }
-        var morph0 = dom.createMorphAt(fragment,0,0,contextualElement);
-        dom.insertBoundary(fragment, 0);
-        inline(env, morph0, context, "ember-table", [], {"hasHeader": true, "hasFooter": false, "numFixedColumns": 0, "rowHeight": 30, "columns": get(env, context, "tableColumns"), "content": get(env, context, "tableContent")});
-        return fragment;
-      }
-    };
-  }()));
-
-});
 define('dummy/templates/horizon', ['exports'], function (exports) {
 
   'use strict';
@@ -7394,17 +7176,7 @@ define('dummy/templates/horizon', ['exports'], function (exports) {
         dom.appendChild(el3, el4);
         var el4 = dom.createTextNode("\n      ");
         dom.appendChild(el3, el4);
-        var el4 = dom.createElement("div");
-        dom.setAttribute(el4,"class","highlight");
-        var el5 = dom.createTextNode("\n        ");
-        dom.appendChild(el4, el5);
-        var el5 = dom.createElement("pre");
-        dom.setAttribute(el5,"class","prettyprint lang-html");
-        var el6 = dom.createTextNode("{{ember-table\n  hasHeader=true\n  hasFooter=false\n  numFixedColumns=0\n  rowHeight=30\n  columns=tableColumns\n  content=tableContent\n}}\n");
-        dom.appendChild(el5, el6);
-        dom.appendChild(el4, el5);
-        var el5 = dom.createTextNode("\n      ");
-        dom.appendChild(el4, el5);
+        var el4 = dom.createComment("");
         dom.appendChild(el3, el4);
         var el4 = dom.createTextNode("\n    ");
         dom.appendChild(el3, el4);
@@ -7421,17 +7193,7 @@ define('dummy/templates/horizon', ['exports'], function (exports) {
         dom.appendChild(el3, el4);
         var el4 = dom.createTextNode("\n      ");
         dom.appendChild(el3, el4);
-        var el4 = dom.createElement("div");
-        dom.setAttribute(el4,"class","highlight");
-        var el5 = dom.createTextNode("\n        ");
-        dom.appendChild(el4, el5);
-        var el5 = dom.createElement("pre");
-        dom.setAttribute(el5,"class","prettyprint lang-js");
-        var el6 = dom.createTextNode("import Ember from &#39;ember&#39;;\nimport ColumnDefinition from &#39;ember-table&#x2F;models&#x2F;column-definition&#39;;\n\nexport default Ember.Controller.extend({\n  tableColumns: Ember.computed(function() {\n    var name = ColumnDefinition.create({\n      savedWidth: 100,\n      headerCellName: &#39;Name&#39;,\n      getCellContent: function(row) {\n        return &#39;Horizon &#39; + row.get(&#39;name&#39;);\n      }\n    });\n    var horizon = ColumnDefinition.create({\n      savedWidth: 600,\n      headerCellName: &#39;Horizon&#39;,\n      tableCellViewClass: &#39;horizon-table-cell&#39;,\n      getCellContent: Ember.K\n    });\n    return [name, horizon];\n  }),\n\n  tableContent: Ember.computed(function() {\n    var normal = d3.random.normal(1.5, 3);\n    var data;\n    var content = [];\n    for (var i = 0; i &lt; 100; i++) {\n      data = [];\n      for (var j = 0; j &lt; 100; j++) {\n        data.push([j, normal()]);\n      }\n      content.pushObject({\n        name: i,\n        data: data\n      });\n    }\n    return content;\n  })\n});\n");
-        dom.appendChild(el5, el6);
-        dom.appendChild(el4, el5);
-        var el5 = dom.createTextNode("\n      ");
-        dom.appendChild(el4, el5);
+        var el4 = dom.createComment("");
         dom.appendChild(el3, el4);
         var el4 = dom.createTextNode("\n    ");
         dom.appendChild(el3, el4);
@@ -7448,17 +7210,7 @@ define('dummy/templates/horizon', ['exports'], function (exports) {
         dom.appendChild(el3, el4);
         var el4 = dom.createTextNode("\n      ");
         dom.appendChild(el3, el4);
-        var el4 = dom.createElement("div");
-        dom.setAttribute(el4,"class","highlight");
-        var el5 = dom.createTextNode("\n        ");
-        dom.appendChild(el4, el5);
-        var el5 = dom.createElement("pre");
-        dom.setAttribute(el5,"class","prettyprint lang-js");
-        var el6 = dom.createTextNode("import Ember from &#39;ember&#39;;\nimport TableCell from &#39;ember-table&#x2F;views&#x2F;table-cell&#39;;\nimport d3HorizonUtils from &#39;..&#x2F;utils&#x2F;horizon&#39;;\n\nexport default TableCell.extend({\n  templateName: &#39;empty-cell&#39;,\n  heightBinding: &#39;controller.rowHeight&#39;,\n\n  horizonContent: Ember.computed(function() {\n    var normal = d3.random.normal(1.5, 3);\n    var content = [];\n    for (var i = 0; i &lt; 100; i++) {\n      content.pushObject([i, normal()]);\n    }\n    return content;\n  }).property(),\n\n  onWidthDidChange: Ember.observer(function() {\n    this.$(&#39;svg&#39;).remove();\n    this.renderD3View();\n  }, &#39;width&#39;),\n\n  didInsertElement: function() {\n    this.onWidthDidChange();\n    &#x2F;&#x2F; TODO(azirbel): Add _this.super()\n  },\n\n  renderD3View: function() {\n    var chart, data, height, svg, width;\n    width = this.get(&#39;width&#39;);\n    height = this.get(&#39;height&#39;);\n    data = this.get(&#39;horizonContent&#39;);\n    chart = d3HorizonUtils.d3Horizon().width(width).height(height).bands(2).mode(&#39;mirror&#39;).interpolate(&#39;basis&#39;);\n    svg = d3.select(&#39;#&#39; + this.get(&#39;elementId&#39;)).append(&#39;svg&#39;).attr(&#39;width&#39;, width).attr(&#39;height&#39;, height);\n    svg.data([data]).call(chart);\n  }\n});\n\n");
-        dom.appendChild(el5, el6);
-        dom.appendChild(el4, el5);
-        var el5 = dom.createTextNode("\n      ");
-        dom.appendChild(el4, el5);
+        var el4 = dom.createComment("");
         dom.appendChild(el3, el4);
         var el4 = dom.createTextNode("\n    ");
         dom.appendChild(el3, el4);
@@ -7475,7 +7227,7 @@ define('dummy/templates/horizon', ['exports'], function (exports) {
       },
       render: function render(context, env, contextualElement) {
         var dom = env.dom;
-        var hooks = env.hooks, inline = hooks.inline;
+        var hooks = env.hooks, get = hooks.get, inline = hooks.inline;
         dom.detectNamespace(contextualElement);
         var fragment;
         if (env.useFragmentCache && dom.canClone) {
@@ -7493,8 +7245,15 @@ define('dummy/templates/horizon', ['exports'], function (exports) {
         } else {
           fragment = this.build(dom);
         }
-        var morph0 = dom.createMorphAt(dom.childAt(fragment, [0, 3, 1, 1, 1]),1,1);
-        inline(env, morph0, context, "partial", ["horizon-table/horizon-table"], {});
+        var element0 = dom.childAt(fragment, [0, 3]);
+        var morph0 = dom.createMorphAt(dom.childAt(element0, [1, 1, 1]),1,1);
+        var morph1 = dom.createMorphAt(dom.childAt(element0, [3]),3,3);
+        var morph2 = dom.createMorphAt(dom.childAt(element0, [5]),3,3);
+        var morph3 = dom.createMorphAt(dom.childAt(element0, [7]),3,3);
+        inline(env, morph0, context, "ember-table", [], {"hasHeader": true, "hasFooter": false, "numFixedColumns": 0, "rowHeight": 30, "columns": get(env, context, "tableColumns"), "content": get(env, context, "tableContent")});
+        inline(env, morph1, context, "code-snippet", [], {"name": "horizon-table.hbs"});
+        inline(env, morph2, context, "code-snippet", [], {"name": "horizon-controller.js"});
+        inline(env, morph3, context, "code-snippet", [], {"name": "horizon-table-cell.js"});
         return fragment;
       }
     };
@@ -9379,7 +9138,7 @@ define('dummy/templates/overview', ['exports'], function (exports) {
         var el4 = dom.createTextNode("\n      ");
         dom.appendChild(el3, el4);
         var el4 = dom.createElement("p");
-        var el5 = dom.createTextNode("The current version is 0.9.0.");
+        var el5 = dom.createTextNode("The current version is 0.9.1.");
         dom.appendChild(el4, el5);
         dom.appendChild(el3, el4);
         var el4 = dom.createTextNode("\n      ");
@@ -9525,6 +9284,208 @@ define('dummy/templates/overview', ['exports'], function (exports) {
   }()));
 
 });
+define('dummy/templates/removable-columns', ['exports'], function (exports) {
+
+  'use strict';
+
+  exports['default'] = Ember.HTMLBars.template((function() {
+    var child0 = (function() {
+      return {
+        isHTMLBars: true,
+        revision: "Ember@1.12.1",
+        blockParams: 1,
+        cachedFragment: null,
+        hasRendered: false,
+        build: function build(dom) {
+          var el0 = dom.createDocumentFragment();
+          var el1 = dom.createTextNode("            ");
+          dom.appendChild(el0, el1);
+          var el1 = dom.createElement("button");
+          dom.setAttribute(el1,"type","button");
+          var el2 = dom.createComment("");
+          dom.appendChild(el1, el2);
+          dom.appendChild(el0, el1);
+          var el1 = dom.createTextNode("\n");
+          dom.appendChild(el0, el1);
+          return el0;
+        },
+        render: function render(context, env, contextualElement, blockArguments) {
+          var dom = env.dom;
+          var hooks = env.hooks, set = hooks.set, get = hooks.get, subexpr = hooks.subexpr, concat = hooks.concat, attribute = hooks.attribute, element = hooks.element, content = hooks.content;
+          dom.detectNamespace(contextualElement);
+          var fragment;
+          if (env.useFragmentCache && dom.canClone) {
+            if (this.cachedFragment === null) {
+              fragment = this.build(dom);
+              if (this.hasRendered) {
+                this.cachedFragment = fragment;
+              } else {
+                this.hasRendered = true;
+              }
+            }
+            if (this.cachedFragment) {
+              fragment = dom.cloneNode(this.cachedFragment, true);
+            }
+          } else {
+            fragment = this.build(dom);
+          }
+          var element0 = dom.childAt(fragment, [1]);
+          var morph0 = dom.createMorphAt(element0,0,0);
+          var attrMorph0 = dom.createAttrMorph(element0, 'class');
+          set(env, context, "column", blockArguments[0]);
+          attribute(env, attrMorph0, element0, "class", concat(env, ["btn btn-lg btn-default btn-sm ", subexpr(env, context, "if", [subexpr(env, context, "array-contains", [get(env, context, "removed"), get(env, context, "column.headerCellName")], {}), "active"], {})]));
+          element(env, element0, context, "action", ["toggleColumn", get(env, context, "column.headerCellName")], {});
+          content(env, morph0, context, "column.headerCellName");
+          return fragment;
+        }
+      };
+    }());
+    return {
+      isHTMLBars: true,
+      revision: "Ember@1.12.1",
+      blockParams: 0,
+      cachedFragment: null,
+      hasRendered: false,
+      build: function build(dom) {
+        var el0 = dom.createDocumentFragment();
+        var el1 = dom.createElement("div");
+        dom.setAttribute(el1,"class","col-md-10 col-md-offset-2 left-border main-content-container");
+        var el2 = dom.createTextNode("\n  ");
+        dom.appendChild(el1, el2);
+        var el2 = dom.createElement("h1");
+        var el3 = dom.createTextNode("Ember Table ");
+        dom.appendChild(el2, el3);
+        var el3 = dom.createElement("small");
+        var el4 = dom.createTextNode("Removable Columns");
+        dom.appendChild(el3, el4);
+        dom.appendChild(el2, el3);
+        dom.appendChild(el1, el2);
+        var el2 = dom.createTextNode("\n\n  ");
+        dom.appendChild(el1, el2);
+        var el2 = dom.createElement("div");
+        dom.setAttribute(el2,"class","row");
+        var el3 = dom.createTextNode("\n    ");
+        dom.appendChild(el2, el3);
+        var el3 = dom.createElement("div");
+        dom.setAttribute(el3,"class","col-md-12");
+        var el4 = dom.createTextNode("\n      ");
+        dom.appendChild(el3, el4);
+        var el4 = dom.createElement("div");
+        dom.setAttribute(el4,"class","example-container");
+        var el5 = dom.createTextNode("\n        ");
+        dom.appendChild(el4, el5);
+        var el5 = dom.createElement("div");
+        dom.setAttribute(el5,"class","form-group");
+        var el6 = dom.createTextNode("\n          ");
+        dom.appendChild(el5, el6);
+        var el6 = dom.createElement("label");
+        var el7 = dom.createTextNode("Toggle");
+        dom.appendChild(el6, el7);
+        dom.appendChild(el5, el6);
+        var el6 = dom.createTextNode("\n");
+        dom.appendChild(el5, el6);
+        var el6 = dom.createComment("");
+        dom.appendChild(el5, el6);
+        var el6 = dom.createTextNode("        ");
+        dom.appendChild(el5, el6);
+        dom.appendChild(el4, el5);
+        var el5 = dom.createTextNode("\n        ");
+        dom.appendChild(el4, el5);
+        var el5 = dom.createElement("div");
+        dom.setAttribute(el5,"class","ember-table-example-container");
+        var el6 = dom.createTextNode("\n          ");
+        dom.appendChild(el5, el6);
+        var el6 = dom.createComment("");
+        dom.appendChild(el5, el6);
+        var el6 = dom.createTextNode("\n        ");
+        dom.appendChild(el5, el6);
+        dom.appendChild(el4, el5);
+        var el5 = dom.createTextNode("\n      ");
+        dom.appendChild(el4, el5);
+        dom.appendChild(el3, el4);
+        var el4 = dom.createTextNode("\n    ");
+        dom.appendChild(el3, el4);
+        dom.appendChild(el2, el3);
+        var el3 = dom.createTextNode("\n\n    ");
+        dom.appendChild(el2, el3);
+        var el3 = dom.createElement("div");
+        dom.setAttribute(el3,"class","col-md-12 bumper-30");
+        var el4 = dom.createTextNode("\n      ");
+        dom.appendChild(el3, el4);
+        var el4 = dom.createElement("h3");
+        var el5 = dom.createTextNode("Template");
+        dom.appendChild(el4, el5);
+        dom.appendChild(el3, el4);
+        var el4 = dom.createTextNode("\n      ");
+        dom.appendChild(el3, el4);
+        var el4 = dom.createComment("");
+        dom.appendChild(el3, el4);
+        var el4 = dom.createTextNode("\n    ");
+        dom.appendChild(el3, el4);
+        dom.appendChild(el2, el3);
+        var el3 = dom.createTextNode("\n\n    ");
+        dom.appendChild(el2, el3);
+        var el3 = dom.createElement("div");
+        dom.setAttribute(el3,"class","col-md-12 bumper-30");
+        var el4 = dom.createTextNode("\n      ");
+        dom.appendChild(el3, el4);
+        var el4 = dom.createElement("h3");
+        var el5 = dom.createTextNode("Controller");
+        dom.appendChild(el4, el5);
+        dom.appendChild(el3, el4);
+        var el4 = dom.createTextNode("\n      ");
+        dom.appendChild(el3, el4);
+        var el4 = dom.createComment("");
+        dom.appendChild(el3, el4);
+        var el4 = dom.createTextNode("\n    ");
+        dom.appendChild(el3, el4);
+        dom.appendChild(el2, el3);
+        var el3 = dom.createTextNode("\n  ");
+        dom.appendChild(el2, el3);
+        dom.appendChild(el1, el2);
+        var el2 = dom.createTextNode("\n");
+        dom.appendChild(el1, el2);
+        dom.appendChild(el0, el1);
+        var el1 = dom.createTextNode("\n");
+        dom.appendChild(el0, el1);
+        return el0;
+      },
+      render: function render(context, env, contextualElement) {
+        var dom = env.dom;
+        var hooks = env.hooks, get = hooks.get, block = hooks.block, inline = hooks.inline;
+        dom.detectNamespace(contextualElement);
+        var fragment;
+        if (env.useFragmentCache && dom.canClone) {
+          if (this.cachedFragment === null) {
+            fragment = this.build(dom);
+            if (this.hasRendered) {
+              this.cachedFragment = fragment;
+            } else {
+              this.hasRendered = true;
+            }
+          }
+          if (this.cachedFragment) {
+            fragment = dom.cloneNode(this.cachedFragment, true);
+          }
+        } else {
+          fragment = this.build(dom);
+        }
+        var element1 = dom.childAt(fragment, [0, 3]);
+        var element2 = dom.childAt(element1, [1, 1]);
+        var morph0 = dom.createMorphAt(dom.childAt(element2, [1]),3,3);
+        var morph1 = dom.createMorphAt(dom.childAt(element2, [3]),1,1);
+        var morph2 = dom.createMorphAt(dom.childAt(element1, [3]),3,3);
+        var morph3 = dom.createMorphAt(dom.childAt(element1, [5]),3,3);
+        block(env, morph0, context, "each", [get(env, context, "tableColumns")], {}, child0, null);
+        inline(env, morph1, context, "ember-table", [], {"hasFooter": false, "columns": get(env, context, "withoutRemovedColumns"), "content": get(env, context, "tableContent")});
+        inline(env, morph2, context, "code-snippet", [], {"name": "removable-columns-table.hbs"});
+        inline(env, morph3, context, "code-snippet", [], {"name": "removable-columns-controller.js"});
+        return fragment;
+      }
+    };
+  }()));
+
+});
 define('dummy/templates/scroll-container', ['exports'], function (exports) {
 
   'use strict';
@@ -9580,54 +9541,6 @@ define('dummy/templates/scroll-container', ['exports'], function (exports) {
         }
         var morph0 = dom.createMorphAt(dom.childAt(fragment, [0, 1]),1,1);
         inline(env, morph0, context, "view", ["scroll-panel"], {});
-        return fragment;
-      }
-    };
-  }()));
-
-});
-define('dummy/templates/simple-table/simple-table', ['exports'], function (exports) {
-
-  'use strict';
-
-  exports['default'] = Ember.HTMLBars.template((function() {
-    return {
-      isHTMLBars: true,
-      revision: "Ember@1.12.1",
-      blockParams: 0,
-      cachedFragment: null,
-      hasRendered: false,
-      build: function build(dom) {
-        var el0 = dom.createDocumentFragment();
-        var el1 = dom.createComment("");
-        dom.appendChild(el0, el1);
-        var el1 = dom.createTextNode("\n");
-        dom.appendChild(el0, el1);
-        return el0;
-      },
-      render: function render(context, env, contextualElement) {
-        var dom = env.dom;
-        var hooks = env.hooks, get = hooks.get, inline = hooks.inline;
-        dom.detectNamespace(contextualElement);
-        var fragment;
-        if (env.useFragmentCache && dom.canClone) {
-          if (this.cachedFragment === null) {
-            fragment = this.build(dom);
-            if (this.hasRendered) {
-              this.cachedFragment = fragment;
-            } else {
-              this.hasRendered = true;
-            }
-          }
-          if (this.cachedFragment) {
-            fragment = dom.cloneNode(this.cachedFragment, true);
-          }
-        } else {
-          fragment = this.build(dom);
-        }
-        var morph0 = dom.createMorphAt(fragment,0,0,contextualElement);
-        dom.insertBoundary(fragment, 0);
-        inline(env, morph0, context, "ember-table", [], {"hasFooter": false, "columns": get(env, context, "tableColumns"), "content": get(env, context, "tableContent")});
         return fragment;
       }
     };
@@ -9700,17 +9613,7 @@ define('dummy/templates/simple', ['exports'], function (exports) {
         dom.appendChild(el3, el4);
         var el4 = dom.createTextNode("\n      ");
         dom.appendChild(el3, el4);
-        var el4 = dom.createElement("div");
-        dom.setAttribute(el4,"class","highlight");
-        var el5 = dom.createTextNode("\n        ");
-        dom.appendChild(el4, el5);
-        var el5 = dom.createElement("pre");
-        dom.setAttribute(el5,"class","prettyprint lang-html");
-        var el6 = dom.createTextNode("{{ember-table\n  hasFooter=false\n  columns=tableColumns\n  content=tableContent\n}}\n");
-        dom.appendChild(el5, el6);
-        dom.appendChild(el4, el5);
-        var el5 = dom.createTextNode("\n      ");
-        dom.appendChild(el4, el5);
+        var el4 = dom.createComment("");
         dom.appendChild(el3, el4);
         var el4 = dom.createTextNode("\n    ");
         dom.appendChild(el3, el4);
@@ -9727,17 +9630,7 @@ define('dummy/templates/simple', ['exports'], function (exports) {
         dom.appendChild(el3, el4);
         var el4 = dom.createTextNode("\n      ");
         dom.appendChild(el3, el4);
-        var el4 = dom.createElement("div");
-        dom.setAttribute(el4,"class","highlight");
-        var el5 = dom.createTextNode("\n        ");
-        dom.appendChild(el4, el5);
-        var el5 = dom.createElement("pre");
-        dom.setAttribute(el5,"class","prettyprint lang-js");
-        var el6 = dom.createTextNode("import Ember from &#39;ember&#39;;\nimport ColumnDefinition from &#39;ember-table&#x2F;models&#x2F;column-definition&#39;;\n\nexport default Ember.Controller.extend({\n  tableColumns: Ember.computed(function() {\n    var dateColumn = ColumnDefinition.create({\n      savedWidth: 150,\n      textAlign: &#39;text-align-left&#39;,\n      headerCellName: &#39;Date&#39;,\n      getCellContent: function(row) {\n        return row.get(&#39;date&#39;).toDateString();\n      }\n    });\n    var openColumn = ColumnDefinition.create({\n      savedWidth: 100,\n      headerCellName: &#39;Open&#39;,\n      getCellContent: function(row) {\n        return row.get(&#39;open&#39;).toFixed(2);\n      }\n    });\n    var highColumn = ColumnDefinition.create({\n      savedWidth: 100,\n      headerCellName: &#39;High&#39;,\n      getCellContent: function(row) {\n        return row.get(&#39;high&#39;).toFixed(2);\n      }\n    });\n    var lowColumn = ColumnDefinition.create({\n      savedWidth: 100,\n      headerCellName: &#39;Low&#39;,\n      getCellContent: function(row) {\n        return row.get(&#39;low&#39;).toFixed(2);\n      }\n    });\n    var closeColumn = ColumnDefinition.create({\n      savedWidth: 100,\n      headerCellName: &#39;Close&#39;,\n      getCellContent: function(row) {\n        return row.get(&#39;close&#39;).toFixed(2);\n      }\n    });\n    return [dateColumn, openColumn, highColumn, lowColumn, closeColumn];\n  }),\n\n  tableContent: Ember.computed(function() {\n    var content = [];\n    var date;\n    for (var i = 0; i &lt; 100; i++) {\n      date = new Date();\n      date.setDate(date.getDate() + i);\n      content.pushObject({\n        date: date,\n        open: Math.random() * 100 - 50,\n        high: Math.random() * 100 - 50,\n        low: Math.random() * 100 - 50,\n        close: Math.random() * 100 - 50,\n        volume: Math.random() * 1000000\n      });\n    }\n    return content;\n  })\n});\n");
-        dom.appendChild(el5, el6);
-        dom.appendChild(el4, el5);
-        var el5 = dom.createTextNode("\n      ");
-        dom.appendChild(el4, el5);
+        var el4 = dom.createComment("");
         dom.appendChild(el3, el4);
         var el4 = dom.createTextNode("\n    ");
         dom.appendChild(el3, el4);
@@ -9747,53 +9640,6 @@ define('dummy/templates/simple', ['exports'], function (exports) {
         dom.appendChild(el1, el2);
         var el2 = dom.createTextNode("\n");
         dom.appendChild(el1, el2);
-        dom.appendChild(el0, el1);
-        var el1 = dom.createTextNode("\n");
-        dom.appendChild(el0, el1);
-        return el0;
-      },
-      render: function render(context, env, contextualElement) {
-        var dom = env.dom;
-        var hooks = env.hooks, inline = hooks.inline;
-        dom.detectNamespace(contextualElement);
-        var fragment;
-        if (env.useFragmentCache && dom.canClone) {
-          if (this.cachedFragment === null) {
-            fragment = this.build(dom);
-            if (this.hasRendered) {
-              this.cachedFragment = fragment;
-            } else {
-              this.hasRendered = true;
-            }
-          }
-          if (this.cachedFragment) {
-            fragment = dom.cloneNode(this.cachedFragment, true);
-          }
-        } else {
-          fragment = this.build(dom);
-        }
-        var morph0 = dom.createMorphAt(dom.childAt(fragment, [0, 3, 1, 1, 1]),1,1);
-        inline(env, morph0, context, "partial", ["simple-table/simple-table"], {});
-        return fragment;
-      }
-    };
-  }()));
-
-});
-define('dummy/templates/sparkline-table/sparkline-table', ['exports'], function (exports) {
-
-  'use strict';
-
-  exports['default'] = Ember.HTMLBars.template((function() {
-    return {
-      isHTMLBars: true,
-      revision: "Ember@1.12.1",
-      blockParams: 0,
-      cachedFragment: null,
-      hasRendered: false,
-      build: function build(dom) {
-        var el0 = dom.createDocumentFragment();
-        var el1 = dom.createComment("");
         dom.appendChild(el0, el1);
         var el1 = dom.createTextNode("\n");
         dom.appendChild(el0, el1);
@@ -9819,9 +9665,13 @@ define('dummy/templates/sparkline-table/sparkline-table', ['exports'], function 
         } else {
           fragment = this.build(dom);
         }
-        var morph0 = dom.createMorphAt(fragment,0,0,contextualElement);
-        dom.insertBoundary(fragment, 0);
-        inline(env, morph0, context, "ember-table", [], {"hasHeader": true, "hasFooter": false, "numFixedColumns": 1, "rowHeight": 30, "columns": get(env, context, "tableColumns"), "content": get(env, context, "tableContent")});
+        var element0 = dom.childAt(fragment, [0, 3]);
+        var morph0 = dom.createMorphAt(dom.childAt(element0, [1, 1, 1]),1,1);
+        var morph1 = dom.createMorphAt(dom.childAt(element0, [3]),3,3);
+        var morph2 = dom.createMorphAt(dom.childAt(element0, [5]),3,3);
+        inline(env, morph0, context, "ember-table", [], {"hasFooter": false, "columns": get(env, context, "tableColumns"), "content": get(env, context, "tableContent")});
+        inline(env, morph1, context, "code-snippet", [], {"name": "simple-table.hbs"});
+        inline(env, morph2, context, "code-snippet", [], {"name": "simple-controller.js"});
         return fragment;
       }
     };
@@ -9894,17 +9744,7 @@ define('dummy/templates/sparkline', ['exports'], function (exports) {
         dom.appendChild(el3, el4);
         var el4 = dom.createTextNode("\n      ");
         dom.appendChild(el3, el4);
-        var el4 = dom.createElement("div");
-        dom.setAttribute(el4,"class","highlight");
-        var el5 = dom.createTextNode("\n        ");
-        dom.appendChild(el4, el5);
-        var el5 = dom.createElement("pre");
-        dom.setAttribute(el5,"class","prettyprint lang-html");
-        var el6 = dom.createTextNode("{{ember-table\n  hasHeader=true\n  hasFooter=false\n  numFixedColumns=1\n  rowHeight=30\n  columns=tableColumns\n  content=tableContent\n}}\n");
-        dom.appendChild(el5, el6);
-        dom.appendChild(el4, el5);
-        var el5 = dom.createTextNode("\n      ");
-        dom.appendChild(el4, el5);
+        var el4 = dom.createComment("");
         dom.appendChild(el3, el4);
         var el4 = dom.createTextNode("\n    ");
         dom.appendChild(el3, el4);
@@ -9921,17 +9761,7 @@ define('dummy/templates/sparkline', ['exports'], function (exports) {
         dom.appendChild(el3, el4);
         var el4 = dom.createTextNode("\n      ");
         dom.appendChild(el3, el4);
-        var el4 = dom.createElement("div");
-        dom.setAttribute(el4,"class","highlight");
-        var el5 = dom.createTextNode("\n        ");
-        dom.appendChild(el4, el5);
-        var el5 = dom.createElement("pre");
-        dom.setAttribute(el5,"class","prettyprint lang-js");
-        var el6 = dom.createTextNode("import Ember from &#39;ember&#39;;\nimport ColumnDefinition from &#39;ember-table&#x2F;models&#x2F;column-definition&#39;;\n\nexport default Ember.Controller.extend({\n  tableColumns: Ember.computed(function() {\n    var name = ColumnDefinition.create({\n      savedWidth: 100,\n      headerCellName: &#39;Name&#39;,\n      getCellContent: function(row) {\n        return &#39;Asset &#39; + row.get(&#39;name&#39;);\n      }\n    });\n    var open = ColumnDefinition.create({\n      savedWidth: 100,\n      headerCellName: &#39;Open&#39;,\n      getCellContent: function(row) {\n        return row.get(&#39;open&#39;).toFixed(2);\n      }\n    });\n    var spark = ColumnDefinition.create({\n      savedWidth: 200,\n      headerCellName: &#39;Sparkline&#39;,\n      tableCellViewClass: &#39;sparkline-table-cell&#39;,\n      contentPath: &#39;timeseries&#39;\n    });\n    var close = ColumnDefinition.create({\n      savedWidth: 100,\n      headerCellName: &#39;Close&#39;,\n      getCellContent: function(row) {\n        return row.get(&#39;close&#39;).toFixed(2);\n      }\n    });\n    var low = ColumnDefinition.create({\n      savedWidth: 100,\n      headerCellName: &#39;Low&#39;,\n      getCellContent: function(row) {\n        return row.get(&#39;low&#39;).toFixed(2);\n      }\n    });\n    var high = ColumnDefinition.create({\n      savedWidth: 100,\n      headerCellName: &#39;High&#39;,\n      getCellContent: function(row) {\n        return row.get(&#39;high&#39;).toFixed(2);\n      }\n    });\n    return [name, open, spark, close, low, high];\n  }),\n\n  tableContent: Ember.computed(function() {\n    var randomWalk = function(numSteps) {\n      var lastValue = 0;\n      var walk = [];\n      for (var i = 0; i &lt; numSteps; i++) {\n        lastValue = lastValue + d3.random.normal()();\n        walk.push(lastValue);\n      }\n      return walk;\n    };\n    var content = [];\n    var data;\n    for (var i = 0; i &lt; 100; i++) {\n      data = randomWalk(100);\n      content.pushObject({\n        name: i,\n        timeseries: data,\n        open: data[0],\n        close: data[99],\n        low: Math.min.apply(null, data),\n        high: Math.max.apply(null, data)\n      });\n    }\n    return content;\n  })\n});\n");
-        dom.appendChild(el5, el6);
-        dom.appendChild(el4, el5);
-        var el5 = dom.createTextNode("\n      ");
-        dom.appendChild(el4, el5);
+        var el4 = dom.createComment("");
         dom.appendChild(el3, el4);
         var el4 = dom.createTextNode("\n    ");
         dom.appendChild(el3, el4);
@@ -9943,22 +9773,12 @@ define('dummy/templates/sparkline', ['exports'], function (exports) {
         var el4 = dom.createTextNode("\n      ");
         dom.appendChild(el3, el4);
         var el4 = dom.createElement("h3");
-        var el5 = dom.createTextNode("views/sparkline_table_cell.js");
+        var el5 = dom.createTextNode("views/sparkline-table-cell.js");
         dom.appendChild(el4, el5);
         dom.appendChild(el3, el4);
         var el4 = dom.createTextNode("\n      ");
         dom.appendChild(el3, el4);
-        var el4 = dom.createElement("div");
-        dom.setAttribute(el4,"class","highlight");
-        var el5 = dom.createTextNode("\n        ");
-        dom.appendChild(el4, el5);
-        var el5 = dom.createElement("pre");
-        dom.setAttribute(el5,"class","prettyprint lang-js");
-        var el6 = dom.createTextNode("import Ember from &#39;ember&#39;;\nimport TableCell from &#39;ember-table&#x2F;views&#x2F;table-cell&#39;;\n\nexport default TableCell.extend({\n  templateName: &#39;empty-cell&#39;,\n  heightBinding: &#39;controller.rowHeight&#39;,\n\n  onContentOrSizeDidChange: Ember.observer(function() {\n    this.$(&#39;svg&#39;).remove();\n    this.renderD3View();\n  }, &#39;row&#39;, &#39;width&#39;),\n\n  didInsertElement: function() {\n    this.renderD3View();\n    &#x2F;&#x2F; TODO(azirbel): Add _this.super()\n  },\n\n  renderD3View: function() {\n    var data = this.get(&#39;row.timeseries&#39;);\n    if (!data) {\n      return;\n    }\n    var h = this.get(&#39;height&#39;);\n    var w = this.get(&#39;width&#39;);\n    var p = 2;\n    var min = Math.min.apply(null, data);\n    var max = Math.max.apply(null, data);\n    var len = data.length;\n    var fill = d3.scale.category10();\n    var xscale = d3.scale.linear().domain([0, len]).range([p, w - p]);\n    var yscale = d3.scale.linear().domain([min, max]).range([h - p, p]);\n    var line = d3.svg.line().x(function(d, i) {\n      return xscale(i);\n    }).y(function(d) {\n      return yscale(d);\n    });\n    var svg = d3.select(&#39;#&#39; + (this.get(&#39;elementId&#39;))).append(&#39;svg:svg&#39;).attr(&#39;height&#39;, h).attr(&#39;width&#39;, w);\n    var g = svg.append(&#39;svg:g&#39;);\n    g.append(&#39;svg:path&#39;).attr(&#39;d&#39;, line(data)).attr(&#39;stroke&#39;, function() {\n      return fill(Math.round(Math.random()) * 10);\n    }).attr(&#39;fill&#39;, &#39;none&#39;);\n  }\n});\n");
-        dom.appendChild(el5, el6);
-        dom.appendChild(el4, el5);
-        var el5 = dom.createTextNode("\n      ");
-        dom.appendChild(el4, el5);
+        var el4 = dom.createComment("");
         dom.appendChild(el3, el4);
         var el4 = dom.createTextNode("\n    ");
         dom.appendChild(el3, el4);
@@ -9975,7 +9795,7 @@ define('dummy/templates/sparkline', ['exports'], function (exports) {
       },
       render: function render(context, env, contextualElement) {
         var dom = env.dom;
-        var hooks = env.hooks, inline = hooks.inline;
+        var hooks = env.hooks, get = hooks.get, inline = hooks.inline;
         dom.detectNamespace(contextualElement);
         var fragment;
         if (env.useFragmentCache && dom.canClone) {
@@ -9993,8 +9813,15 @@ define('dummy/templates/sparkline', ['exports'], function (exports) {
         } else {
           fragment = this.build(dom);
         }
-        var morph0 = dom.createMorphAt(dom.childAt(fragment, [0, 3, 1, 1, 1]),1,1);
-        inline(env, morph0, context, "partial", ["sparkline-table/sparkline-table"], {});
+        var element0 = dom.childAt(fragment, [0, 3]);
+        var morph0 = dom.createMorphAt(dom.childAt(element0, [1, 1, 1]),1,1);
+        var morph1 = dom.createMorphAt(dom.childAt(element0, [3]),3,3);
+        var morph2 = dom.createMorphAt(dom.childAt(element0, [5]),3,3);
+        var morph3 = dom.createMorphAt(dom.childAt(element0, [7]),3,3);
+        inline(env, morph0, context, "ember-table", [], {"hasHeader": true, "hasFooter": false, "numFixedColumns": 1, "rowHeight": 30, "columns": get(env, context, "tableColumns"), "content": get(env, context, "tableContent")});
+        inline(env, morph1, context, "code-snippet", [], {"name": "sparkline-table.hbs"});
+        inline(env, morph2, context, "code-snippet", [], {"name": "sparkline-controller.js"});
+        inline(env, morph3, context, "code-snippet", [], {"name": "sparkline-table-cell.js"});
         return fragment;
       }
     };
@@ -10447,6 +10274,42 @@ define('dummy/templates/sub-navigation', ['exports'], function (exports) {
         hasRendered: false,
         build: function build(dom) {
           var el0 = dom.createDocumentFragment();
+          var el1 = dom.createTextNode("Removable Columns");
+          dom.appendChild(el0, el1);
+          return el0;
+        },
+        render: function render(context, env, contextualElement) {
+          var dom = env.dom;
+          dom.detectNamespace(contextualElement);
+          var fragment;
+          if (env.useFragmentCache && dom.canClone) {
+            if (this.cachedFragment === null) {
+              fragment = this.build(dom);
+              if (this.hasRendered) {
+                this.cachedFragment = fragment;
+              } else {
+                this.hasRendered = true;
+              }
+            }
+            if (this.cachedFragment) {
+              fragment = dom.cloneNode(this.cachedFragment, true);
+            }
+          } else {
+            fragment = this.build(dom);
+          }
+          return fragment;
+        }
+      };
+    }());
+    var child13 = (function() {
+      return {
+        isHTMLBars: true,
+        revision: "Ember@1.12.1",
+        blockParams: 0,
+        cachedFragment: null,
+        hasRendered: false,
+        build: function build(dom) {
+          var el0 = dom.createDocumentFragment();
           var el1 = dom.createTextNode("    ");
           dom.appendChild(el0, el1);
           var el1 = dom.createElement("ul");
@@ -10646,6 +10509,12 @@ define('dummy/templates/sub-navigation', ['exports'], function (exports) {
         var el4 = dom.createComment("");
         dom.appendChild(el3, el4);
         dom.appendChild(el2, el3);
+        var el3 = dom.createTextNode("\n    ");
+        dom.appendChild(el2, el3);
+        var el3 = dom.createElement("li");
+        var el4 = dom.createComment("");
+        dom.appendChild(el3, el4);
+        dom.appendChild(el2, el3);
         var el3 = dom.createTextNode("\n  ");
         dom.appendChild(el2, el3);
         dom.appendChild(el1, el2);
@@ -10697,7 +10566,8 @@ define('dummy/templates/sub-navigation', ['exports'], function (exports) {
         var morph9 = dom.createMorphAt(dom.childAt(element2, [15]),0,0);
         var morph10 = dom.createMorphAt(dom.childAt(element2, [17]),0,0);
         var morph11 = dom.createMorphAt(dom.childAt(element2, [19]),0,0);
-        var morph12 = dom.createMorphAt(element0,13,13);
+        var morph12 = dom.createMorphAt(dom.childAt(element2, [21]),0,0);
+        var morph13 = dom.createMorphAt(element0,13,13);
         block(env, morph0, context, "link-to", ["overview"], {}, child0, null);
         block(env, morph1, context, "link-to", ["documentation"], {}, child1, null);
         block(env, morph2, context, "link-to", ["migration-guides"], {}, child2, null);
@@ -10710,7 +10580,8 @@ define('dummy/templates/sub-navigation', ['exports'], function (exports) {
         block(env, morph9, context, "link-to", ["sparkline"], {}, child9, null);
         block(env, morph10, context, "link-to", ["horizon"], {}, child10, null);
         block(env, morph11, context, "link-to", ["configurable-columns"], {}, child11, null);
-        block(env, morph12, context, "link-to", ["community-examples"], {}, child12, null);
+        block(env, morph12, context, "link-to", ["removable-columns"], {}, child12, null);
+        block(env, morph13, context, "link-to", ["community-examples"], {}, child13, null);
         return fragment;
       }
     };
@@ -11027,6 +10898,162 @@ define('dummy/templates/tree_table/table_tree_cell', ['exports'], function (expo
   }()));
 
 });
+define('dummy/tests/acceptance/configurable-columns-test', ['ember', 'qunit', 'dummy/tests/helpers/start-app', 'dummy/utils/random'], function (Ember, qunit, startApp, random) {
+
+  'use strict';
+
+  var application;
+
+  qunit.module('Acceptance: Configurable Columns', {
+    beforeEach: function beforeEach() {
+      application = startApp['default']();
+      random.setRandomSeed(6);
+    },
+
+    afterEach: function afterEach() {
+      Ember['default'].run(application, 'destroy');
+    }
+  });
+
+  qunit.test('table renders', function (assert) {
+    visit('/configurable-columns');
+    andThen(function () {
+      assert.equal(currentPath(), 'configurable-columns');
+      var headers = ['Date', 'Open', 'High', 'Low', 'Close'];
+      var firstRow = ['Thu Jul 14 2005', '22.49', '-18.01', '-47.10', '-0.30'];
+      assert.deepEqual(rowText(0), headers, "headers");
+      assert.deepEqual(rowText(1), firstRow, "values in first row");
+    });
+  });
+
+});
+define('dummy/tests/acceptance/configurable-columns-test.jshint', function () {
+
+  'use strict';
+
+  module('JSHint - acceptance');
+  test('acceptance/configurable-columns-test.js should pass jshint', function() { 
+    ok(true, 'acceptance/configurable-columns-test.js should pass jshint.'); 
+  });
+
+});
+define('dummy/tests/acceptance/removable-columns-test', ['ember', 'qunit', 'dummy/tests/helpers/start-app', 'dummy/utils/random'], function (Ember, qunit, startApp, random) {
+
+  'use strict';
+
+  var application;
+
+  qunit.module('Acceptance: Removable Columns', {
+    beforeEach: function beforeEach() {
+      application = startApp['default']();
+      random.setRandomSeed(6);
+    },
+
+    afterEach: function afterEach() {
+      Ember['default'].run(application, 'destroy');
+    }
+  });
+
+  qunit.test('table renders', function (assert) {
+    visit('/removable-columns');
+    andThen(function () {
+      assert.equal(currentPath(), 'removable-columns');
+      var headers = ['Date', 'Open', 'High', 'Low', 'Close'];
+      var firstRow = ['Thu Jul 14 2005', '22.49', '-18.01', '-47.10', '-0.30'];
+      assert.deepEqual(rowText(0), headers, "headers");
+      assert.deepEqual(rowText(1), firstRow, "values in first row");
+    });
+  });
+
+  qunit.test('columns can be removed and readded', function (assert) {
+    visit('/removable-columns');
+    andThen(function () {
+      assert.equal(currentPath(), 'removable-columns');
+      var headers = ['Date', 'Open', 'High', 'Low', 'Close'];
+      var firstRow = ['Thu Jul 14 2005', '22.49', '-18.01', '-47.10', '-0.30'];
+      assert.deepEqual(rowText(0), headers, "headers");
+      assert.deepEqual(rowText(1), firstRow, "values in first row");
+    });
+    // remove Date
+    toggle('Date');
+    andThen(function () {
+      var headers = ['Open', 'High', 'Low', 'Close'];
+      var firstRow = ['22.49', '-18.01', '-47.10', '-0.30'];
+      assert.deepEqual(rowText(0), headers, "Date removed in headers columns");
+      assert.deepEqual(rowText(1), firstRow, "date column removed in first row");
+    });
+    // remove Date
+    toggle('Low');
+    andThen(function () {
+      var headers = ['Open', 'High', 'Close'];
+      var firstRow = ['22.49', '-18.01', '-0.30'];
+      assert.deepEqual(rowText(0), headers, "Low removed in headers columns");
+      assert.deepEqual(rowText(1), firstRow, "Low column removed in first row");
+    });
+    // add Date
+    toggle('Date');
+    andThen(function () {
+      var headers = ['Date', 'Open', 'High', 'Close'];
+      var firstRow = ['Thu Jul 14 2005', '22.49', '-18.01', '-0.30'];
+      assert.deepEqual(rowText(0), headers, "Date column readded to headers");
+      assert.deepEqual(rowText(1), firstRow, "Date column value added to first row");
+    });
+  });
+
+  function toggle(headerCellName) {
+    click('button:contains(' + headerCellName + ')');
+  }
+
+});
+define('dummy/tests/acceptance/removable-columns-test.jshint', function () {
+
+  'use strict';
+
+  module('JSHint - acceptance');
+  test('acceptance/removable-columns-test.js should pass jshint', function() { 
+    ok(true, 'acceptance/removable-columns-test.js should pass jshint.'); 
+  });
+
+});
+define('dummy/tests/acceptance/simple-test', ['ember', 'qunit', 'dummy/tests/helpers/start-app', 'dummy/utils/random'], function (Ember, qunit, startApp, random) {
+
+  'use strict';
+
+  var application;
+
+  qunit.module('Acceptance: Simple', {
+    beforeEach: function beforeEach() {
+      application = startApp['default']();
+      random.setRandomSeed(6);
+    },
+
+    afterEach: function afterEach() {
+      Ember['default'].run(application, 'destroy');
+    }
+  });
+
+  qunit.test('table renders', function (assert) {
+    visit('/simple');
+    andThen(function () {
+      assert.equal(currentPath(), 'simple');
+      var headers = ['Date', 'Open', 'High', 'Low', 'Close'];
+      var firstRow = ['Thu Jul 14 2005', '22.49', '-18.01', '-47.10', '-0.30'];
+      assert.deepEqual(rowText(0), headers, "headers");
+      assert.deepEqual(rowText(1), firstRow, "values in first row");
+    });
+  });
+
+});
+define('dummy/tests/acceptance/simple-test.jshint', function () {
+
+  'use strict';
+
+  module('JSHint - acceptance');
+  test('acceptance/simple-test.js should pass jshint', function() { 
+    ok(true, 'acceptance/simple-test.js should pass jshint.'); 
+  });
+
+});
 define('dummy/tests/app.jshint', function () {
 
   'use strict';
@@ -11137,6 +11164,16 @@ define('dummy/tests/controllers/overview.jshint', function () {
   });
 
 });
+define('dummy/tests/controllers/removable-columns.jshint', function () {
+
+  'use strict';
+
+  module('JSHint - controllers');
+  test('controllers/removable-columns.js should pass jshint', function() { 
+    ok(true, 'controllers/removable-columns.js should pass jshint.'); 
+  });
+
+});
 define('dummy/tests/controllers/simple.jshint', function () {
 
   'use strict';
@@ -11154,6 +11191,40 @@ define('dummy/tests/controllers/sparkline.jshint', function () {
   module('JSHint - controllers');
   test('controllers/sparkline.js should pass jshint', function() { 
     ok(true, 'controllers/sparkline.js should pass jshint.'); 
+  });
+
+});
+define('dummy/tests/helpers/array-contains.jshint', function () {
+
+  'use strict';
+
+  module('JSHint - helpers');
+  test('helpers/array-contains.js should pass jshint', function() { 
+    ok(true, 'helpers/array-contains.js should pass jshint.'); 
+  });
+
+});
+define('dummy/tests/helpers/ember-table', ['ember'], function (Ember) {
+
+  'use strict';
+
+  Ember['default'].Test.registerHelper('rowText', function rowText(app) {
+    var rowIndex = arguments.length <= 1 || arguments[1] === undefined ? 0 : arguments[1];
+
+    var cells = app.$('.ember-table-table-row:eq(' + rowIndex + ') .ember-table-cell');
+    return cells.map(function () {
+      return $(this).text().trim();
+    }).toArray();
+  });
+
+});
+define('dummy/tests/helpers/ember-table.jshint', function () {
+
+  'use strict';
+
+  module('JSHint - helpers');
+  test('helpers/ember-table.js should pass jshint', function() { 
+    ok(true, 'helpers/ember-table.js should pass jshint.'); 
   });
 
 });
@@ -11254,7 +11325,7 @@ define('dummy/tests/routes/overview.jshint', function () {
   });
 
 });
-define('dummy/tests/test-helper', ['dummy/tests/helpers/resolver', 'ember-qunit'], function (resolver, ember_qunit) {
+define('dummy/tests/test-helper', ['dummy/tests/helpers/resolver', 'dummy/tests/helpers/ember-table', 'ember-qunit'], function (resolver, __dep1__, ember_qunit) {
 
 	'use strict';
 
@@ -11288,6 +11359,16 @@ define('dummy/tests/utils/number-format.jshint', function () {
   module('JSHint - utils');
   test('utils/number-format.js should pass jshint', function() { 
     ok(true, 'utils/number-format.js should pass jshint.'); 
+  });
+
+});
+define('dummy/tests/utils/random.jshint', function () {
+
+  'use strict';
+
+  module('JSHint - utils');
+  test('utils/random.js should pass jshint', function() { 
+    ok(true, 'utils/random.js should pass jshint.'); 
   });
 
 });
@@ -11673,20 +11754,65 @@ define('dummy/utils/number-format', ['exports'], function (exports) {
   };
 
 });
+define('dummy/utils/random', ['exports'], function (exports) {
+
+  'use strict';
+
+  exports.randomNumber = randomNumber;
+  exports.randomDate = randomDate;
+  exports.setRandomSeed = setRandomSeed;
+
+  var seed = 6;
+  // source: http://indiegamr.com/generate-repeatable-random-numbers-in-js/
+  // in order to work 'Math.seed' must NOT be undefined,
+  // so in any case, you HAVE to provide a Math.seed
+
+  function randomNumber() {
+    var max = arguments.length <= 0 || arguments[0] === undefined ? 1 : arguments[0];
+    var min = arguments.length <= 1 || arguments[1] === undefined ? 0 : arguments[1];
+    var randomSeed = arguments.length <= 2 || arguments[2] === undefined ? undefined : arguments[2];
+
+    if (randomSeed !== undefined) {
+      // reset seed
+      seed = randomSeed;
+    }
+    seed = (seed * 9301 + 49297) % 233280;
+    var rnd = seed / 233280;
+    return min + rnd * (max - min);
+  }
+
+  /**
+   * source: http://stackoverflow.com/questions/9035627/elegant-method-to-generate-array-of-random-dates-within-two-dates
+   */
+  function randomDate(start, end, randomSeed) {
+    var random = randomNumber(1, 0, randomSeed);
+    return new Date(start.getTime() + random * (end.getTime() - start.getTime()));
+  }
+
+  function setRandomSeed() {
+    var randomSeed = arguments.length <= 0 || arguments[0] === undefined ? 6 : arguments[0];
+
+    seed = randomSeed;
+  }
+
+});
 define('dummy/views/ajax-image-table-cell', ['exports', 'ember-table/views/table-cell'], function (exports, TableCell) {
 
   'use strict';
 
+  // BEGIN-SNIPPET ajax-image-table-cell
   exports['default'] = TableCell['default'].extend({
     templateName: 'ajax-table/ajax-cell',
     classNames: 'img-table-cell'
   });
+  // END-SNIPPET
 
 });
 define('dummy/views/ajax-table-lazy-data-source', ['exports', 'ember'], function (exports, Ember) {
 
   'use strict';
 
+  // BEGIN-SNIPPET ajax-table-lazy-data-source
   exports['default'] = Ember['default'].ArrayProxy.extend({
     createGithubEvent: function createGithubEvent(row, event) {
       row.set('type', event.type);
@@ -11727,12 +11853,14 @@ define('dummy/views/ajax-table-lazy-data-source', ['exports', 'ember'], function
       return content[index];
     }
   });
+  // END-SNIPPET
 
 });
 define('dummy/views/bar-table-cell', ['exports', 'ember', 'ember-table/views/table-cell'], function (exports, Ember, TableCell) {
 
   'use strict';
 
+  // BEGIN-SNIPPET bar-table-cell
   exports['default'] = TableCell['default'].extend({
     templateName: 'bar_table/bar-cell',
     classNameBindings: ['column.color'],
@@ -11748,9 +11876,10 @@ define('dummy/views/bar-table-cell', ['exports', 'ember', 'ember-table/views/tab
     }).property('column', 'row', 'cellContent'),
 
     histogramStyle: Ember['default'].computed(function () {
-      return 'width: ' + this.get('barWidth') + '%;';
+      return new Ember['default'].Handlebars.SafeString('width: ' + this.get('barWidth') + '%;');
     }).property('barWidth')
   });
+  // END-SNIPPET
 
 });
 define('dummy/views/body-table-container', ['exports', 'ember-table/views/body-table-container'], function (exports, BodyTableContainer) {
@@ -11815,9 +11944,9 @@ define('dummy/views/configurable-column-definition', ['exports', 'ember', 'ember
       var docString = '';
       docString += '    var ' + this.get('headerCellName').toLowerCase() + 'Column = ColumnDefinition.create({\n';
       if (this.get('textAlign') !== 'text-align-right') {
-        docString += '      textAlign: \'' + this.get('textAlign') + '\',\n';
+        docString += "      textAlign: '" + this.get('textAlign') + "',\n";
       }
-      docString += '      headerCellName: \'' + this.get('headerCellName') + '\',\n';
+      docString += "      headerCellName: '" + this.get('headerCellName') + "',\n";
       if (this.get('minWidth') !== 25) {
         docString += '      minWidth: ' + this.get('minWidth') + ',\n';
       }
@@ -11834,11 +11963,11 @@ define('dummy/views/configurable-column-definition', ['exports', 'ember', 'ember
         docString += '      canAutoResize: true,\n';
       }
       if (this.get('headerCellName') === 'Date') {
-        docString += '      getCellContent: function(row) {\n' + '        return row.get(\'date\').toDateString();\n' + '      }\n';
+        docString += "      getCellContent: function(row) {\n" + "        return row.get('date').toDateString();\n" + "      }\n";
       } else {
-        docString += '      getCellContent: function(row) {\n' + '        return row.get(\'' + this.get('headerCellName').toLowerCase() + '\').toFixed(2);\n' + '      }\n';
+        docString += "      getCellContent: function(row) {\n" + "        return row.get('" + this.get('headerCellName').toLowerCase() + "').toFixed(2);\n" + "      }\n";
       }
-      docString += '    });';
+      docString += "    });";
       return docString;
     }).property('headerCellName', 'textAlign', 'minWidth', 'maxWidth', 'isSortable', 'isResizable', 'canAutoResize')
   });
@@ -11857,6 +11986,7 @@ define('dummy/views/editable-table-cell', ['exports', 'ember', 'ember-table/view
 
   'use strict';
 
+  // BEGIN-SNIPPET editable-table-cell
   exports['default'] = TableCell['default'].extend({
     className: 'editable-table-cell',
     templateName: 'editable-table/editable-table-cell',
@@ -11884,54 +12014,64 @@ define('dummy/views/editable-table-cell', ['exports', 'ember', 'ember-table/view
       event.stopPropagation();
     }
   });
+  // END-SNIPPET
 
 });
 define('dummy/views/financial-table-cell', ['exports', 'ember-table/views/table-cell'], function (exports, TableCell) {
 
   'use strict';
 
+  // BEGIN-SNIPPET financial-table-cell
   exports['default'] = TableCell['default'].extend({
     templateName: 'financial-table/financial-table-cell'
   });
+  // END-SNIPPET
 
 });
 define('dummy/views/financial-table-header-cell', ['exports', 'ember-table/views/header-cell'], function (exports, HeaderCell) {
 
   'use strict';
 
+  // BEGIN-SNIPPET financial-table-header-cell
   exports['default'] = HeaderCell['default'].extend({
     templateName: 'financial-table/financial-table-header-cell'
   });
+  // END-SNIPPET
 
 });
 define('dummy/views/financial-table-header-tree-cell', ['exports', 'ember-table/views/header-cell'], function (exports, HeaderCell) {
 
   'use strict';
 
+  // BEGIN-SNIPPET financial-table-header-tree-cell
   exports['default'] = HeaderCell['default'].extend({
     templateName: 'financial-table/financial-table-header-tree-cell',
     classNames: 'ember-table-table-header-tree-cell'
   });
+  // END-SNIPPET
 
 });
 define('dummy/views/financial-table-tree-cell', ['exports', 'ember', 'ember-table/views/table-cell'], function (exports, Ember, TableCell) {
 
   'use strict';
 
+  // BEGIN-SNIPPET financial-table-tree-cell
   exports['default'] = TableCell['default'].extend({
     templateName: 'financial-table/financial-table-tree-cell',
     classNames: 'ember-table-table-tree-cell',
 
     paddingStyle: Ember['default'].computed(function () {
-      return 'padding-left:' + this.get('row.indentation') + 'px;';
+      return new Ember['default'].Handlebars.SafeString('padding-left:' + this.get('row.indentation') + 'px;');
     }).property('row.indentation')
   });
+  // END-SNIPPET
 
 });
 define('dummy/views/financial-table-tree-row', ['exports', 'ember-table/controllers/row'], function (exports, Row) {
 
   'use strict';
 
+  // BEGIN-SNIPPET financial-table-tree-row
   exports['default'] = Row['default'].extend({
     content: null,
     children: null,
@@ -12018,6 +12158,7 @@ define('dummy/views/financial-table-tree-row', ['exports', 'ember-table/controll
       }
     }
   });
+  // END-SNIPPET
 
 });
 define('dummy/views/footer-table-container', ['exports', 'ember-table/views/footer-table-container'], function (exports, FooterTableContainer) {
@@ -12059,6 +12200,7 @@ define('dummy/views/horizon-table-cell', ['exports', 'ember', 'ember-table/views
 
   'use strict';
 
+  // BEGIN-SNIPPET horizon-table-cell
   exports['default'] = TableCell['default'].extend({
     templateName: 'empty-cell',
     heightBinding: 'controller.rowHeight',
@@ -12092,6 +12234,7 @@ define('dummy/views/horizon-table-cell', ['exports', 'ember', 'ember-table/views
       svg.data([data]).call(chart);
     }
   });
+  // END-SNIPPET
 
 });
 define('dummy/views/lazy-table-block', ['exports', 'ember-table/views/lazy-table-block'], function (exports, LazyTableBlock) {
@@ -12112,6 +12255,7 @@ define('dummy/views/rating-table-cell', ['exports', 'ember', 'ember-table/views/
 
   'use strict';
 
+  // BEGIN-SNIPPET rating-table-cell
   exports['default'] = TableCell['default'].extend({
     classNames: 'rating-table-cell',
     templateName: 'editable-table/rating-table-cell',
@@ -12140,6 +12284,7 @@ define('dummy/views/rating-table-cell', ['exports', 'ember', 'ember-table/views/
       this.applyRating(rating);
     }
   });
+  // END-SNIPPET
 
 });
 define('dummy/views/scroll-container', ['exports', 'ember-table/views/scroll-container'], function (exports, ScrollContainer) {
@@ -12160,6 +12305,7 @@ define('dummy/views/sparkline-table-cell', ['exports', 'ember', 'ember-table/vie
 
   'use strict';
 
+  // BEGIN-SNIPPET sparkline-table-cell
   exports['default'] = TableCell['default'].extend({
     templateName: 'empty-cell',
     heightBinding: 'controller.rowHeight',
@@ -12200,6 +12346,7 @@ define('dummy/views/sparkline-table-cell', ['exports', 'ember', 'ember-table/vie
       }).attr('fill', 'none');
     }
   });
+  // END-SNIPPET
 
 });
 define('dummy/views/table-block', ['exports', 'ember-table/views/table-block'], function (exports, TableBlock) {
@@ -12251,7 +12398,7 @@ catch(err) {
 if (runningTests) {
   require("dummy/tests/test-helper");
 } else {
-  require("dummy/app")["default"].create({"name":"ember-table","version":"0.9.0+c3596470"});
+  require("dummy/app")["default"].create({"name":"ember-table","version":"0.9.1+87a986ae"});
 }
 
 /* jshint ignore:end */
