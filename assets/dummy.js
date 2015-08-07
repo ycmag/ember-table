@@ -9138,7 +9138,7 @@ define('dummy/templates/overview', ['exports'], function (exports) {
         var el4 = dom.createTextNode("\n      ");
         dom.appendChild(el3, el4);
         var el4 = dom.createElement("p");
-        var el5 = dom.createTextNode("The current version is 0.9.1.");
+        var el5 = dom.createTextNode("The current version is 0.9.2.");
         dom.appendChild(el4, el5);
         dom.appendChild(el3, el4);
         var el4 = dom.createTextNode("\n      ");
@@ -12398,7 +12398,7 @@ catch(err) {
 if (runningTests) {
   require("dummy/tests/test-helper");
 } else {
-  require("dummy/app")["default"].create({"name":"ember-table","version":"0.9.1+87a986ae"});
+  require("dummy/app")["default"].create({"name":"ember-table","version":"0.9.2+db732299"});
 }
 
 /* jshint ignore:end */
