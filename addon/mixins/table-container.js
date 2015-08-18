@@ -1,7 +1,7 @@
 import Ember from 'ember';
-import StyleBindingsMixin from 'ember-table/mixins/style-bindings';
+import StyleBindingsMixin from './style-bindings';
 
-export default Ember.View.extend(
+export default Ember.Mixin.create(
 StyleBindingsMixin, {
   classNames: ['ember-table-table-container'],
   styleBindings: ['height', 'width']

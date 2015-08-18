@@ -1,11 +1,11 @@
 import Ember from 'ember';
-import TableContainer from 'ember-table/views/table-container';
+import TableContainer from 'ember-table/mixins/table-container';
 import ShowHorizontalScrollMixin from 'ember-table/mixins/show-horizontal-scroll';
 import RegisterTableComponentMixin from 'ember-table/mixins/register-table-component';
 import MouseWheelHandlerMixin from 'ember-table/mixins/mouse-wheel-handler';
 import TouchMoveHandlerMixin from 'ember-table/mixins/touch-move-handler';
 
-export default TableContainer.extend(
+export default Ember.View.extend( TableContainer,
 MouseWheelHandlerMixin, TouchMoveHandlerMixin, ShowHorizontalScrollMixin,
 RegisterTableComponentMixin, {
   templateName: 'footer-table-container',

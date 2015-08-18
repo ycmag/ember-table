@@ -1,27 +1,46 @@
 import Ember from 'ember';
-import TableContainer from 'ember-table/views/table-container';
+import TableContainer from 'ember-table/mixins/table-container';
 import ShowHorizontalScrollMixin from 'ember-table/mixins/show-horizontal-scroll';
 import RegisterTableComponentMixin from 'ember-table/mixins/register-table-component';
 import MouseWheelHandlerMixin from 'ember-table/mixins/mouse-wheel-handler';
 import TouchMoveHandlerMixin from 'ember-table/mixins/touch-move-handler';
 import ScrollHandlerMixin from 'ember-table/mixins/scroll-handler';
 
-export default TableContainer.extend(
+export default Ember.Component.extend( TableContainer,
 MouseWheelHandlerMixin, TouchMoveHandlerMixin, ScrollHandlerMixin,
 ShowHorizontalScrollMixin, RegisterTableComponentMixin, {
-  templateName: 'body-table-container',
+
   classNames: ['ember-table-table-container',
       'ember-table-body-container',
       'antiscroll-wrap'],
 
-  height: Ember.computed.alias('tableComponent._bodyHeight'),
-  width: Ember.computed.alias('tableComponent._width'),
-  scrollTop: Ember.computed.alias('tableComponent._tableScrollTop'),
+  bodyHeight: null,
+  // TODO (Artych) where it should be
   scrollLeft: Ember.computed.alias('tableComponent._tableScrollLeft'),
   scrollElementSelector: '.antiscroll-inner',
 
+  _numItemsShowing: Ember.computed(function() {
+    return Math.floor(this.get('bodyHeight') / this.get('rowHeight'));
+  }).property('bodyHeight', 'rowHeight'),
+
+  _scrollTop: 0,
+
+  _startIndex: Ember.computed('_scrollTop', 'bodyContent.length', '_numItemsShowing', 
+      'rowHeight', function() {
+    var numContent = this.get('bodyContent.length');
+    var numViews = this.get('_numItemsShowing');
+    var rowHeight = this.get('rowHeight');
+    var _scrollTop = this.get('_scrollTop');
+    var index = Math.floor(_scrollTop / rowHeight);
+    // Adjust start index so that end index doesn't exceed content length
+    if (index + numViews >= numContent) {
+      index = numContent - numViews;
+    }
+    return Math.max(index, 0);
+  }),
+
   onScroll: function(event) {
-    this.set('scrollTop', event.target.scrollTop);
+    this.set('_scrollTop', event.target.scrollTop);
     return event.preventDefault();
   },
 

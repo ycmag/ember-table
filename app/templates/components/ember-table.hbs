@@ -1,7 +1,17 @@
 {{#if hasHeader}}
   {{view "header-table-container"}}
 {{/if}}
-{{view "body-table-container"}}
+{{body-table-container
+	numFixedColumns=numFixedColumns
+	tableColumns=tableColumns
+	fixedColumns=fixedColumns
+	fixedBlockWidth=_fixedBlockWidth
+	tableBlockWidth=_tableBlockWidth
+  bodyContent=bodyContent
+  bodyHeight=_bodyHeight
+  rowHeight=rowHeight
+  itemViewClass=tableRowViewClass
+}}
 {{#if hasFooter}}
   {{view "footer-table-container"}}
 {{/if}}

@@ -260,7 +260,7 @@ StyleBindingsMixin, ResizeHandlerMixin, {
 
   didInsertElement: function() {
     this._super();
-    this.set('_tableScrollTop', 0);
+    // this.set('_tableScrollTop', 0);
     this.elementSizeDidChange();
     this.doForceFillColumns();
   },
@@ -374,7 +374,7 @@ StyleBindingsMixin, ResizeHandlerMixin, {
   // Private variables
   // ---------------------------------------------------------------------------
 
-  _tableScrollTop: 0,
+  // _tableScrollTop: 0,
   _tableScrollLeft: 0,
 
   _width: null,
@@ -468,23 +468,23 @@ StyleBindingsMixin, ResizeHandlerMixin, {
     return this.get('_width') - this.get('_fixedColumnsWidth');
   }).property('_width', '_fixedColumnsWidth'),
 
-  _numItemsShowing: Ember.computed(function() {
-    return Math.floor(this.get('_bodyHeight') / this.get('rowHeight'));
-  }).property('_bodyHeight', 'rowHeight'),
+  // _numItemsShowing: Ember.computed(function() {
+  //   return Math.floor(this.get('_bodyHeight') / this.get('rowHeight'));
+  // }).property('_bodyHeight', 'rowHeight'),
 
-  _startIndex: Ember.computed(function() {
-    var numContent = this.get('bodyContent.length');
-    var numViews = this.get('_numItemsShowing');
-    var rowHeight = this.get('rowHeight');
-    var scrollTop = this.get('_tableScrollTop');
-    var index = Math.floor(scrollTop / rowHeight);
-    // Adjust start index so that end index doesn't exceed content length
-    if (index + numViews >= numContent) {
-      index = numContent - numViews;
-    }
-    return Math.max(index, 0);
-  }).property('bodyContent.length', '_numItemsShowing', 'rowHeight',
-      '_tableScrollTop'),
+  // _startIndex: Ember.computed(function() {
+  //   var numContent = this.get('bodyContent.length');
+  //   var numViews = this.get('_numItemsShowing');
+  //   var rowHeight = this.get('rowHeight');
+  //   var scrollTop = this.get('_tableScrollTop');
+  //   var index = Math.floor(scrollTop / rowHeight);
+  //   // Adjust start index so that end index doesn't exceed content length
+  //   if (index + numViews >= numContent) {
+  //     index = numContent - numViews;
+  //   }
+  //   return Math.max(index, 0);
+  // }).property('bodyContent.length', '_numItemsShowing', 'rowHeight',
+  //     '_tableScrollTop'),
 
   _getTotalWidth: function(columns, columnWidthPath) {
     if (columnWidthPath == null) {
