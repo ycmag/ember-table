@@ -31,21 +31,21 @@ StyleBindingsMixin, {
     this.notifyPropertyChange('cellContent');
   },
 
-  contentPathWillChange: Ember.beforeObserver(function() {
-    var contentPath = this.get('column.contentPath');
-    if (contentPath) {
-      this.removeObserver("row." + contentPath, this,
-          this.contentDidChange);
-    }
-  }, 'column.contentPath'),
+  contentPathDidChange: Ember.observer('column.contentPath', function() {
+    var newContentPath = this.get('column.contentPath');
+    var oldContentPath = this._oldContentPath;
 
-  contentPathDidChange: Ember.beforeObserver(function() {
-    var contentPath = this.get('column.contentPath');
-    if (contentPath) {
-      this.addObserver("row." + contentPath, this,
-          this.contentDidChange);
+    if (newContentPath !== oldContentPath) {
+      if (oldContentPath) {
+         this.removeObserver("row." + oldContentPath, this, this.contentDidChange);
+      }
+      this._oldContentPath = newContentPath;
+      if (newContentPath) {
+        this.addObserver("row." + newContentPath, this, this.contentDidChange);
+        this.contentDidChange();
+      }
     }
-  }, 'column.contentPath'),
+  }),
 
   cellContent: Ember.computed('row.isLoaded', 'column', {
     set: function(key, value) {
