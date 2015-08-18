@@ -98,7 +98,7 @@ export default TableComponent.extend({
       return Ember.A();
     }
     rows = rows.slice(1, rows.get('length'));
-    return rows.filterProperty('isShowing');
+    return rows.filterBy('isShowing');
   }).property('rows'),
 
   footerContent: Ember.computed(function() {

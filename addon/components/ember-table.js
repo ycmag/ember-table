@@ -322,8 +322,8 @@ StyleBindingsMixin, ResizeHandlerMixin, {
   // resizable columns are all restricted by min/max widths.
   doForceFillColumns: function() {
     var allColumns = this.get('columns');
-    var columnsToResize = allColumns.filterProperty('canAutoResize');
-    var unresizableColumns = allColumns.filterProperty('canAutoResize', false);
+    var columnsToResize = allColumns.filterBy('canAutoResize');
+    var unresizableColumns = allColumns.filterBy('canAutoResize', false);
     var availableWidth = this.get('_width') - this._getTotalWidth(unresizableColumns);
     var doNextLoop = true;
     var nextColumnsToResize = [];
