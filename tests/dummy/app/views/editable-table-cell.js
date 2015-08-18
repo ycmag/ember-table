@@ -20,9 +20,9 @@ export default TableCell.extend({
     }
   }),
 
-  onRowContentDidChange: Ember.observer(function() {
+  onRowContentDidChange: Ember.observer('row.content', function() {
     this.set('isEditing', false);
-  }, 'row.content'),
+  }),
 
   click: function(event) {
     this.set('isEditing', true);

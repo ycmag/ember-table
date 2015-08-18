@@ -6,9 +6,9 @@ export default TableCell.extend({
   classNames: 'rating-table-cell',
   templateName: 'editable-table/rating-table-cell',
 
-  onRowContentDidChange: Ember.observer(function() {
+  onRowContentDidChange: Ember.observer('cellContent', function() {
     this.applyRating(this.get('cellContent'));
-  }, 'cellContent'),
+  }),
 
   didInsertElement: function() {
     this._super();

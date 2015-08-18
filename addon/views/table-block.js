@@ -12,9 +12,9 @@ StyleBindingsMixin, RegisterTableComponentMixin, {
   content: null,
   scrollLeft: null,
 
-  onScrollLeftDidChange: Ember.observer(function() {
+  onScrollLeftDidChange: Ember.observer('scrollLeft', function() {
     this.$().scrollLeft(this.get('scrollLeft'));
-  }, 'scrollLeft'),
+  }),
 
   height: Ember.computed(function() {
     return this.get('tableComponent._headerHeight');

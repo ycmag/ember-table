@@ -355,11 +355,11 @@ StyleBindingsMixin, ResizeHandlerMixin, {
     }
   },
 
-  onBodyContentLengthDidChange: Ember.observer(function() {
+  onBodyContentLengthDidChange: Ember.observer('bodyContent.length', function() {
     Ember.run.next(this, function() {
       Ember.run.once(this, this.updateLayout);
     });
-  }, 'bodyContent.length'),
+  }),
 
   // ---------------------------------------------------------------------------
   // Private variables

@@ -24,7 +24,7 @@ StyleBindingsMixin, {
     return this.get('numItemsShowing') + 2;
   }).property('numItemsShowing'),
 
-  onNumChildViewsDidChange: Ember.observer(function() {
+  onNumChildViewsDidChange: Ember.observer('numChildViews', 'itemViewClass', function() {
     var view = this;
     // We are getting the class from a string e.g. "Ember.Table.Row"
     var itemViewClass = this.get('itemViewClass');
@@ -54,11 +54,11 @@ StyleBindingsMixin, {
       }
     }
     this.viewportDidChange();
-  }, 'numChildViews', 'itemViewClass'),
+  }),
 
   // TODO(Peter): Consider making this a computed... binding logic will go
   // into the LazyItemMixin
-  viewportDidChange: Ember.observer(function() {
+  viewportDidChange: Ember.observer('content.length', 'length', 'startIndex', function() {
     var childViews = this.get('childViews');
     var content = this.get('content') || [];
     var clength = content.get('length');
@@ -89,5 +89,5 @@ StyleBindingsMixin, {
         childView.prepareContent();
       }
     });
-  }, 'content.length', 'length', 'startIndex')
+  })
 });

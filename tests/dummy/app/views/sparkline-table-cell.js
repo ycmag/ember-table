@@ -6,10 +6,10 @@ export default TableCell.extend({
   templateName: 'empty-cell',
   heightBinding: 'controller.rowHeight',
 
-  onContentOrSizeDidChange: Ember.observer(function() {
+  onContentOrSizeDidChange: Ember.observer('row', 'width', function() {
     this.$('svg').remove();
     this.renderD3View();
-  }, 'row', 'width'),
+  }),
 
   didInsertElement: function() {
     this.renderD3View();

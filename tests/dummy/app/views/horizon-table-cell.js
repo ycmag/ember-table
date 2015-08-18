@@ -16,10 +16,10 @@ export default TableCell.extend({
     return content;
   }).property(),
 
-  onWidthDidChange: Ember.observer(function() {
+  onWidthDidChange: Ember.observer('width', function() {
     this.$('svg').remove();
     this.renderD3View();
-  }, 'width'),
+  }),
 
   didInsertElement: function() {
     this.onWidthDidChange();

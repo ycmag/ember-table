@@ -130,14 +130,14 @@ StyleBindingsMixin, RegisterTableComponentMixin, {
     this.set('tableComponent._contentHeaderHeight', maxHeight);
   },
 
-  cellWidthDidChange: Ember.observer(function() {
+  cellWidthDidChange: Ember.observer('width', function() {
     Ember.run.schedule('afterRender', this, this.elementSizeDidChange);
-  }, 'width'),
+  }),
 
-  resizableObserver: Ember.observer(function() {
+  resizableObserver: Ember.observer('resizableOption', 'column.isResizable', 'tableComponent.columnMode',
+      'nextResizableColumn', function() {
     this.recomputeResizableHandle();
-  }, 'resizableOption', 'column.isResizable', 'tableComponent.columnMode',
-      'nextResizableColumn'),
+  }),
 
   recomputeResizableHandle: function() {
     if (this.get('_isResizable')) {

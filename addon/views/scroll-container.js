@@ -30,8 +30,8 @@ StyleBindingsMixin, ScrollHandlerMixin, RegisterTableComponentMixin, {
     event.preventDefault();
   },
 
-  onScrollLeftDidChange: Ember.observer(function() {
+  onScrollLeftDidChange: Ember.observer('scrollLeft', 'scrollElementSelector', function() {
     var selector = this.get('scrollElementSelector');
     this.$(selector).scrollLeft(this.get('scrollLeft'));
-  }, 'scrollLeft', 'scrollElementSelector')
+  })
 });
