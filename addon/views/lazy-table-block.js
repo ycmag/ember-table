@@ -9,6 +9,8 @@ RegisterTableComponentMixin, {
   columns: null,
   scrollLeft: null,
 
+  width: Ember.computed.alias('blockWidth'),
+
   onScrollLeftDidChange: Ember.observer('scrollLeft', function() {
     this.$().scrollLeft(this.get('scrollLeft'));
   })
