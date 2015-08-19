@@ -2,6 +2,7 @@
   {{view "header-table-container"}}
 {{/if}}
 {{body-table-container
+  itemViewClass=tableRowViewClass
 	numFixedColumns=numFixedColumns
 	tableColumns=tableColumns
 	fixedColumns=fixedColumns
@@ -9,8 +10,9 @@
 	tableBlockWidth=_tableBlockWidth
   bodyContent=bodyContent
   bodyHeight=_bodyHeight
+  bodyWidth=_width
   rowHeight=rowHeight
-  itemViewClass=tableRowViewClass
+  scrollLeft=_tableScrollLeft
 }}
 {{#if hasFooter}}
   {{view "footer-table-container"}}

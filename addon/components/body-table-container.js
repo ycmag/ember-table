@@ -1,24 +1,24 @@
 import Ember from 'ember';
 import TableContainer from 'ember-table/mixins/table-container';
 import ShowHorizontalScrollMixin from 'ember-table/mixins/show-horizontal-scroll';
-import RegisterTableComponentMixin from 'ember-table/mixins/register-table-component';
 import MouseWheelHandlerMixin from 'ember-table/mixins/mouse-wheel-handler';
 import TouchMoveHandlerMixin from 'ember-table/mixins/touch-move-handler';
 import ScrollHandlerMixin from 'ember-table/mixins/scroll-handler';
 
 export default Ember.Component.extend( TableContainer,
 MouseWheelHandlerMixin, TouchMoveHandlerMixin, ScrollHandlerMixin,
-ShowHorizontalScrollMixin, RegisterTableComponentMixin, {
+ShowHorizontalScrollMixin, {
 
   classNames: ['ember-table-table-container',
       'ember-table-body-container',
       'antiscroll-wrap'],
 
   bodyHeight: null,
+  bodyWidth: null,
+  scrollLeft: null,
   height: Ember.computed.alias('bodyHeight'),
-  width: Ember.computed.alias('tableComponent._width'),
+  width: Ember.computed.alias('bodyWidth'),
   // TODO (Artych) where it should be
-  scrollLeft: Ember.computed.alias('tableComponent._tableScrollLeft'),
   scrollElementSelector: '.antiscroll-inner',
 
   _numItemsShowing: Ember.computed(function() {
