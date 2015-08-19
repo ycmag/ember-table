@@ -15,6 +15,8 @@ ShowHorizontalScrollMixin, RegisterTableComponentMixin, {
       'antiscroll-wrap'],
 
   bodyHeight: null,
+  height: Ember.computed.alias('bodyHeight'),
+  width: Ember.computed.alias('tableComponent._width'),
   // TODO (Artych) where it should be
   scrollLeft: Ember.computed.alias('tableComponent._tableScrollLeft'),
   scrollElementSelector: '.antiscroll-inner',
