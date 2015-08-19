@@ -12,7 +12,8 @@ ShowHorizontalScrollMixin, {
   width: Ember.computed.alias('tableContainerWidth'),
 
   numFixedColumns: null,
-  fixedColumns: null,
+  fixedColumns: Ember.A,
+  tableColumns: Ember.A,
   fixedBlockWidth: null,
   tableBlockWidth: null,
   headerHeight: null,
