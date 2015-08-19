@@ -40,5 +40,10 @@
       bodyHeight=_bodyHeight
   }}
 {{/if}}
-{{view "scroll-container"}}
+{{scroll-container
+    scrollContainerWidth=_scrollContainerWidth
+    fixedColumnsWidth=_fixedColumnsWidth
+    scrollLeft=_tableScrollLeft
+
+}}
 {{view "column-sortable-indicator"}}
