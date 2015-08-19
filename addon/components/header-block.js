@@ -1,7 +1,7 @@
 import Ember from 'ember';
 import TableBlock from 'ember-table/mixins/table-block';
 
-export default Ember.CollectionView.extend(TableBlock, {
+export default Ember.Component.extend(TableBlock, {
   classNames: ['ember-table-header-block'],
   // TODO(new-api): Eliminate view alias
   itemView: 'header-row',

@@ -1,6 +1,6 @@
 <div class="ember-table-table-fixed-wrapper">
   {{#if numFixedColumns}}
-    {{view "footer-block"
+    {{footer-block
       content=footerContent
       columns=fixedColumns
       width=fixedBlockWidth
@@ -8,7 +8,7 @@
       class="ember-table-left-table-block"
     }}
   {{/if}}
-  {{view "footer-block"
+  {{footer-block
     content=footerContent
     columns=tableColumns
     scrollLeft=scrollLeft
