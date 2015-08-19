@@ -3,7 +3,7 @@
     {{view "table-block"
       content=footerContent
       columns=fixedColumns
-      width=_fixedBlockWidth
+      width=fixedBlockWidth
       height=footerHeight
       class="ember-table-left-table-block"
     }}
@@ -11,8 +11,8 @@
   {{view "table-block"
     content=footerContent
     columns=tableColumns
-    scrollLeft=_tableScrollLeft
-    width=_tableBlockWidth
+    scrollLeft=scrollLeft
+    width=tableBlockWidth
     height=footerHeight
     class="ember-table-right-table-block"
   }}

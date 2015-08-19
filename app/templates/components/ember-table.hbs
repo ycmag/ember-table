@@ -15,7 +15,20 @@
   scrollLeft=_tableScrollLeft
 }}
 {{#if hasFooter}}
-  {{view "footer-table-container"}}
+  {{footer-table-container
+      numFixedColumns=numFixedColumns
+      footerContent=footerContent
+      tableColumns=tableColumns
+      fixedColumns=fixedColumns
+      fixedBlockWidth=_fixedBlockWidth
+      tableBlockWidth=_tableBlockWidth
+      footerHeight=footerHeight
+      tableContainerWidth=_tableContainerWidth 
+      scrollLeft=_tableScrollLeft
+      headerHeight=_headerHeight
+      tableContentHeight=_tableContentHeight
+      bodyHeight=_bodyHeight
+  }}
 {{/if}}
 {{view "scroll-container"}}
 {{view "column-sortable-indicator"}}
