@@ -1,5 +1,10 @@
 <div style={{rowWidthSafeString}}>
 {{#each content as |item|}}
-	{{view item.headerCellViewClass content=item}}
+	{{component item.headerCellViewClass
+	    content=item
+	    headerHeight=headerHeight
+  		columnMode=columnMode
+  		columnsFillTable=columnsFillTable
+	}}
 {{/each}}
 </div>

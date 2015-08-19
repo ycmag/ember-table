@@ -2,14 +2,13 @@ import Ember from 'ember';
 import StyleBindingsMixin from 'ember-table/mixins/style-bindings';
 import RegisterTableComponentMixin from 'ember-table/mixins/register-table-component';
 
-export default Ember.View.extend(
+export default Ember.Component.extend(
 StyleBindingsMixin, RegisterTableComponentMixin, {
   // ---------------------------------------------------------------------------
   // API - Inputs
   // ---------------------------------------------------------------------------
 
   // TODO: Doc
-  templateName: 'header-cell',
   classNames: ['ember-table-cell', 'ember-table-header-cell'],
   classNameBindings: ['column.isSortable:sortable', 'column.textAlign'],
   styleBindings: ['width', 'height'],
@@ -23,10 +22,14 @@ StyleBindingsMixin, RegisterTableComponentMixin, {
   minWidth: Ember.computed.alias('column.minWidth'),
   maxWidth: Ember.computed.alias('column.maxWidth'),
   nextResizableColumn: Ember.computed.alias('column.nextResizableColumn'),
-  height: Ember.computed.alias('tableComponent._headerHeight'),
+
+  headerHeight: null,
+  height: Ember.computed.alias('headerHeight'),
+  columnMode: null,
+  columnsFillTable: null,
 
   effectiveMinWidth: Ember.computed(function() {
-    if (this.get('tableComponent.columnMode') === 'standard') {
+    if (this.get('columnMode') === 'standard') {
       return this.get('minWidth');
     }
     var nextColumnMaxDiff = this.get('nextResizableColumn.maxWidth') -
@@ -39,11 +42,11 @@ StyleBindingsMixin, RegisterTableComponentMixin, {
     } else {
       return this.get('width') - nextColumnMaxDiff;
     }
-  }).property('width', 'minWidth', 'tableComponent.columnMode',
+  }).property('width', 'minWidth', 'columnMode',
       'nextResizableColumn.{width,maxWidth}'),
 
   effectiveMaxWidth: Ember.computed(function() {
-    if (this.get('tableComponent.columnMode') === 'standard') {
+    if (this.get('columnMode') === 'standard') {
       return this.get('maxWidth');
     }
     var nextColumnMaxDiff = this.get('nextResizableColumn.width') -
@@ -56,7 +59,7 @@ StyleBindingsMixin, RegisterTableComponentMixin, {
     } else {
       return this.get('width') + nextColumnMaxDiff;
     }
-  }).property('width', 'minWidth', 'tableComponent.columnMode',
+  }).property('width', 'minWidth', 'columnMode',
       'nextResizableColumn.{width,minWidth}'),
 
   // jQuery UI resizable option
@@ -87,20 +90,20 @@ StyleBindingsMixin, RegisterTableComponentMixin, {
   },
 
   _isResizable: Ember.computed(function() {
-    if (this.get('tableComponent.columnMode') === 'standard') {
+    if (this.get('columnMode') === 'standard') {
       return this.get('column.isResizable');
     } else {
       return this.get('column.isResizable') && this.get('nextResizableColumn');
     }
-  }).property('column.isResizable', 'tableComponent.columnMode',
+  }).property('column.isResizable', 'columnMode',
       'nextResizableColumn'),
 
   // `event` here is a jQuery event
   onColumnResize: function(event, ui) {
     var newWidth = Math.round(ui.size.width);
-    if (this.get('tableComponent.columnMode') === 'standard') {
+    if (this.get('columnMode') === 'standard') {
       this.get('column').resize(newWidth);
-      this.set('tableComponent.columnsFillTable', false);
+      this.set('columnsFillTable', false);
     } else {
       var diff = this.get('width') - newWidth;
       this.get('column').resize(newWidth);
@@ -134,7 +137,7 @@ StyleBindingsMixin, RegisterTableComponentMixin, {
     Ember.run.schedule('afterRender', this, this.elementSizeDidChange);
   }),
 
-  resizableObserver: Ember.observer('resizableOption', 'column.isResizable', 'tableComponent.columnMode',
+  resizableObserver: Ember.observer('resizableOption', 'column.isResizable', 'columnMode',
       'nextResizableColumn', function() {
     this.recomputeResizableHandle();
   }),
