@@ -2,16 +2,22 @@
   {{#if numFixedColumns}}
     {{header-block
       columns=fixedColumns
-      width=fixedBlockWidth
-      height=headerHeight
+      rowWidth=fixedBlockWidth
+      rowHeight=headerHeight
+      enableColumnReorder=enableColumnReorder
+      isShowingSortableIndicator=isShowingSortableIndicator
+      sortableIndicatorLeft=sortableIndicatorLeft
       class="ember-table-left-table-block"
     }}
   {{/if}}
   {{header-block
     columns=tableColumns
     scrollLeft=scrollLeft
-    width=tableBlockWidth
-    height=headerHeight
+    rowWidth=tableBlockWidth
+    rowHeight=headerHeight
+    enableColumnReorder=enableColumnReorder
+    isShowingSortableIndicator=isShowingSortableIndicator
+    sortableIndicatorLeft=sortableIndicatorLeft
     class="ember-table-right-table-block"
   }}
 </div>
