@@ -1,5 +1,15 @@
 {{#if hasHeader}}
-  {{view "header-table-container"}}
+  {{header-table-container
+     numFixedColumns=numFixedColumns
+     tableColumns=tableColumns
+     fixedColumns=fixedColumns
+     fixedColumns=fixedColumns
+     fixedBlockWidth=_fixedBlockWidth
+     tableBlockWidth=_tableBlockWidth
+     headerHeight=_headerHeight
+     tableContainerWidth=_tableContainerWidth
+     scrollLeft=_tableScrollLeft
+  }}
 {{/if}}
 {{body-table-container
   itemViewClass=tableRowViewClass

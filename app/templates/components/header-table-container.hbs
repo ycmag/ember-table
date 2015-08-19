@@ -1,16 +1,16 @@
 <div class="ember-table-table-fixed-wrapper">
-  {{#if controller.numFixedColumns}}
+  {{#if numFixedColumns}}
     {{view "header-block"
       columns=fixedColumns
-      width=_fixedBlockWidth
+      width=fixedBlockWidth
       height=headerHeight
       class="ember-table-left-table-block"
     }}
   {{/if}}
   {{view "header-block"
     columns=tableColumns
-    scrollLeft=_tableScrollLeft
-    width=_tableBlockWidth
+    scrollLeft=scrollLeft
+    width=tableBlockWidth
     height=headerHeight
     class="ember-table-right-table-block"
   }}
