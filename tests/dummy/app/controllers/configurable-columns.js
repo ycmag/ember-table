@@ -1,6 +1,6 @@
 import Ember from 'ember';
 import ConfigurableColumnDefinition from
-  '../views/configurable-column-definition';
+  '../components/configurable-column-definition';
 import {randomNumber, randomDate} from '../utils/random';
 
 
