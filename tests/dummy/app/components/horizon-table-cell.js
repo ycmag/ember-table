@@ -1,11 +1,10 @@
 // BEGIN-SNIPPET horizon-table-cell
 import Ember from 'ember';
-import TableCell from 'ember-table/views/table-cell';
+import TableCell from 'ember-table/components/table-cell';
 import d3HorizonUtils from '../utils/horizon';
 
 export default TableCell.extend({
-  templateName: 'empty-cell',
-  heightBinding: 'controller.rowHeight',
+  templateName: 'components/empty-cell',
 
   horizonContent: Ember.computed(function() {
     var normal = d3.random.normal(1.5, 3);
@@ -29,7 +28,7 @@ export default TableCell.extend({
   renderD3View: function() {
     var chart, data, height, svg, width;
     width = this.get('width');
-    height = this.get('height');
+    height = this.$().height();
     data = this.get('horizonContent');
     chart = d3HorizonUtils.d3Horizon().width(width).height(height).bands(2).mode('mirror').interpolate('basis');
     svg = d3.select('#' + this.get('elementId')).append('svg').attr('width', width).attr('height', height);
