@@ -173,16 +173,6 @@ StyleBindingsMixin, ResizeHandlerMixin, {
   tableRowView: 'table-row',
   tableRowViewClass: Ember.computed.alias('tableRowView'),
 
-  onColumnSort: function(column, newIndex) {
-    // Fixed columns are not affected by column reordering
-    var numFixedColumns = this.get('fixedColumns.length');
-    var columns = this.get('columns');
-    columns.removeObject(column);
-    columns.insertAt(numFixedColumns + newIndex, column);
-    this.prepareTableColumns();
-    this.sendAction('onColumnReordered', columns, column, newIndex);
-  },
-
   // An array of Ember.Table.Row computed based on `content`
   // bodyContent: Ember.computed(function() {
   //   return RowArrayController.create({
@@ -627,6 +617,18 @@ StyleBindingsMixin, ResizeHandlerMixin, {
     scrollLeftDidChange: function(scrollLeft) {
       console.log('buble ember table scrollLeftDidChange');
       this.set('_tableScrollLeft', scrollLeft);
+    },
+
+    columnDidSort: function(fromIndex, toIndex) {
+      // Fixed columns are not affected by column reordering
+      var numFixedColumns = this.get('fixedColumns.length');
+      var columns = this.get('columns');
+      var column = columns[ numFixedColumns + fromIndex ];
+      columns.removeObject(column);
+      columns.insertAt( numFixedColumns + toIndex, column);
+      this.prepareTableColumns();
+      this.set('_isShowingSortableIndicator', false);
+      this.sendAction('onColumnReordered', columns, column, toIndex);
     },
 
     toggleRowCollapse: Ember.K,

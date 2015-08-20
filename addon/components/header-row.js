@@ -32,6 +32,7 @@ StyleBindingsMixin, {
       placeholder: 'ui-state-highlight',
       scroll: true,
       tolerance: 'pointer',
+      start: Ember.$.proxy(this.onColumnSortStart, this),
       update: Ember.$.proxy(this.onColumnSortDone, this),
       stop: Ember.$.proxy(this.onColumnSortStop, this),
       sort: Ember.$.proxy(this.onColumnSortChange, this)
@@ -56,6 +57,11 @@ StyleBindingsMixin, {
     this._super();
   },
 
+  //saving start position in ui.item object
+  onColumnSortStart: function(event, ui) {
+    ui.item.startPosition = ui.item.index();
+  },
+
   onColumnSortStop: function() {
     this.set('isShowingSortableIndicator', false);
   },
@@ -68,12 +74,10 @@ StyleBindingsMixin, {
   },
 
   onColumnSortDone: function(event, ui) {
-    var newIndex = ui.item.index();
+    var toIndex = ui.item.index();
+    var fromIndex = ui.item.startPosition;
     this.$('> div').sortable('cancel');
-    var view = Ember.View.views[ui.item.attr('id')];
-    var column = view.get('column');
-    this.get('tableComponent').onColumnSort(column, newIndex);
-    this.set('isShowingSortableIndicator', false);
+    this.sendAction('columnDidSort', fromIndex, toIndex);
   },
 
   actions: {

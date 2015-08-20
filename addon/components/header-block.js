@@ -24,6 +24,10 @@ export default Ember.Component.extend(TableBlock, {
   actions: {
     toggleTableCollapse: function() {
       this.sendAction('toggleTableCollapse');
-    }
+    },
+
+    columnDidSort: function(fromIndex, toIndex) {
+      this.sendAction('columnDidSort', fromIndex, toIndex);
+    },
   }
 });
