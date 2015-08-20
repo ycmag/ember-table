@@ -1,9 +1,8 @@
 <div style={{rowWidthSafeString}}>
 {{#each columns as |item|}}
-	{{view item.tableCellViewClass
+	{{component item.tableCellViewClass
 	    content=item
-  		columnMode=columnMode
-  		columnsFillTable=columnsFillTable
+	    row=row
 	}}
 {{/each}}
 </div>

@@ -1,14 +1,14 @@
 import Ember from 'ember';
 import StyleBindingsMixin from 'ember-table/mixins/style-bindings';
 
-export default Ember.View.extend(
+export default Ember.Component.extend(
 StyleBindingsMixin, {
   // ---------------------------------------------------------------------------
   // API - Inputs
   // ---------------------------------------------------------------------------
 
   // TODO: Doc
-  templateName: 'table-cell',
+
   classNames: ['ember-table-cell'],
   classNameBindings: 'column.textAlign',
   styleBindings: 'width',
@@ -23,7 +23,7 @@ StyleBindingsMixin, {
     this.contentDidChange();
   },
 
-  row: Ember.computed.alias('parentView.row'),
+  row: null,
   column: Ember.computed.alias('content'),
   width: Ember.computed.alias('column.width'),
 
@@ -42,7 +42,6 @@ StyleBindingsMixin, {
       this._oldContentPath = newContentPath;
       if (newContentPath) {
         this.addObserver("row." + newContentPath, this, this.contentDidChange);
-        this.contentDidChange();
       }
     }
   }),
