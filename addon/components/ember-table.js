@@ -197,9 +197,10 @@ StyleBindingsMixin, ResizeHandlerMixin, {
 
   bodyContent: Ember.computed('_resolvedContent.[]', function() {
     var rowClass = this.get('rowClass');
-    return (this.get('_resolvedContent') || []).map(function(datum) {
+    return (this.get('_resolvedContent') || []).map(function(datum, index) {
       return rowClass.create({ 
-        content: datum
+        content: datum,
+        itemIndex: index
       });
     });
   }),

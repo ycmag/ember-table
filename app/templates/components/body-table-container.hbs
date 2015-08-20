@@ -2,7 +2,7 @@
   <div class="antiscroll-inner">
     <div class="ember-table-table-scrollable-wrapper">
       {{#if numFixedColumns}}
-        {{view "lazy-table-block"
+        {{lazy-table-block
           content=bodyContent
           columns=fixedColumns
           blockWidth=fixedBlockWidth
@@ -11,10 +11,11 @@
           startIndex=_startIndex
           itemViewClass=itemViewClass
           rowHeight=rowHeight
+          rowWidth=rowWidth
           class="ember-table-left-table-block"
         }}
       {{/if}}
-      {{view "lazy-table-block"
+      {{lazy-table-block
         content=bodyContent
         columns=tableColumns
         scrollLeft=_tableScrollLeft
@@ -24,6 +25,7 @@
         startIndex=_startIndex
         itemViewClass=itemViewClass
         rowHeight=rowHeight
+        rowWidth=rowWidth
         class="ember-table-right-table-block"
       }}
     </div>

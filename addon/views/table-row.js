@@ -1,20 +1,33 @@
 import Ember from 'ember';
+import StyleBindingsMixin from 'ember-table/mixins/style-bindings';
 import RegisterTableComponentMixin from 'ember-table/mixins/register-table-component';
-import LazyItemView from 'ember-table/views/lazy-item';
 
-export default LazyItemView.extend(
-RegisterTableComponentMixin, {
+export default Ember.View.extend(
+RegisterTableComponentMixin, StyleBindingsMixin, {
   templateName: 'table-row',
   classNames: 'ember-table-table-row',
   classNameBindings: ['row.isHovered:ember-table-hover',
       'row.isSelected:ember-table-selected',
       'row.rowStyle',
       'isLastRow:ember-table-last-row'],
-  styleBindings: ['width', 'height'],
+  styleBindings: ['width', 'height', 'width', 'top', 'display'],
   row: Ember.computed.alias('content'),
-  columns: Ember.computed.alias('parentView.columns'),
-  width: Ember.computed.alias('tableComponent._rowWidth'),
-  height: Ember.computed.alias('tableComponent.rowHeight'),
+  columns: Ember.A,
+  width: Ember.computed.alias('rowWidth'),
+  height: Ember.computed.alias('rowHeight'),
+
+  prepareContent: Ember.K,
+
+  top: Ember.computed(function() {
+    return this.get('row.itemIndex') * this.get('rowHeight');
+  }).property('itemIndex', 'rowHeight'),
+
+  // TODO(azirbel): Add explicit else case
+  display: Ember.computed(function() {
+    if (!this.get('content')) {
+      return 'none';
+    }
+  }).property('content'),
 
   // Use `lastItem` (set manually) instead of the array's built-in `lastObject`
   // to avoid creating a controller for last row on table initialization.  If
