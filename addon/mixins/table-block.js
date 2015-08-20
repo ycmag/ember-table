@@ -12,7 +12,7 @@ StyleBindingsMixin, {
   rowWidth: null,
   rowHeight: null,
 
-  width: Ember.computed.alias('rowWidth'),
+  width: Ember.computed.alias('blockWidth'),
   height: Ember.computed.alias('rowHeight'),
 
   onScrollLeftDidChange: Ember.observer('scrollLeft', function() {

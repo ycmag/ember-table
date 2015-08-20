@@ -2,12 +2,13 @@
   {{#if numFixedColumns}}
     {{header-block
       columns=fixedColumns
-      rowWidth=fixedBlockWidth
+      blockWidth=fixedBlockWidth
+      rowWidth=rowWidth
       rowHeight=headerHeight
+      headerHeight=headerHeight
       enableColumnReorder=enableColumnReorder
       isShowingSortableIndicator=isShowingSortableIndicator
       sortableIndicatorLeft=sortableIndicatorLeft
-      headerHeight=headerHeight
       columnMode=columnMode
       columnsFillTable=columnsFillTable
       class="ember-table-left-table-block"
@@ -16,12 +17,13 @@
   {{header-block
     columns=tableColumns
     scrollLeft=scrollLeft
-    rowWidth=tableBlockWidth
+    blockWidth=tableBlockWidth
+    rowWidth=rowWidth
     rowHeight=headerHeight
+    headerHeight=headerHeight
     enableColumnReorder=enableColumnReorder
     isShowingSortableIndicator=isShowingSortableIndicator
     sortableIndicatorLeft=sortableIndicatorLeft
-    headerHeight=headerHeight
     columnMode=columnMode
     class="ember-table-right-table-block"
   }}
