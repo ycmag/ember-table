@@ -10,7 +10,7 @@ export default TableCell.extend({
     this.renderD3View();
   }),
 
-  didInsertElement: function() {
+  didRender: function() {
     this.renderD3View();
     // TODO(azirbel): Add _this.super()
   },

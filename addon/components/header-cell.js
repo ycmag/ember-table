@@ -76,8 +76,10 @@ StyleBindingsMixin, RegisterTableComponentMixin, {
     };
   }).property('effectiveMinWidth', 'effectiveMaxWidth'),
 
-  didInsertElement: function() {
-    // TODO(azirbel): Call this._super()
+  didRender: function() {
+    Ember.run.scheduleOnce('afterRender', this, 'didRenderCalculations');
+  },
+  didRenderCalculations: function() {
     this.elementSizeDidChange();
     this.recomputeResizableHandle();
   },

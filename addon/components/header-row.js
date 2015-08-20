@@ -39,7 +39,7 @@ StyleBindingsMixin, {
     };
   }),
 
-  didInsertElement: function() {
+  didRender: function() {
     this._super();
     if (this.get('enableColumnReorder')) {
       this.$('> div').sortable(this.get('sortableOption'));

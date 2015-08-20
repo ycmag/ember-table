@@ -16,15 +16,7 @@ StyleBindingsMixin, ScrollHandlerMixin, {
   // 10 is the height of the horizontal scrollbar
   height: 10,
   left: Ember.computed.alias('fixedColumnsWidth'),
-  scrollLeft: null,
-
-  // HACK: onScrollLeftDidChange will not fire unless scrollLeft has been get
-  // at least once. Therefore, we want to call onScrollLeftDidChange in
-  // didInsertElement
-  didInsertElement: function() {
-    this._super();
-    this.onScrollLeftDidChange();
-  },
+  scrollLeft: 0,
 
   // `event` here is a jQuery event
   onScroll: function(event) {

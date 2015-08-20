@@ -9,7 +9,7 @@ export default TableCell.extend({
     this.applyRating(this.get('cellContent'));
   }),
 
-  didInsertElement: function() {
+  didRender: function() {
     this._super();
     this.onRowContentDidChange();
   },

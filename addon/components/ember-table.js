@@ -251,9 +251,10 @@ StyleBindingsMixin, ResizeHandlerMixin, {
   // View concerns
   // ---------------------------------------------------------------------------
 
-  didInsertElement: function() {
-    this._super();
-    // this.set('_tableScrollTop', 0);
+  didRender: function() {
+    Ember.run.scheduleOnce('afterRender', this, 'didRenderCalculations');
+  },
+  didRenderCalculations: function() {
     this.elementSizeDidChange();
     this.doForceFillColumns();
   },
