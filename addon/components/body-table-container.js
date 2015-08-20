@@ -70,6 +70,10 @@ ShowHorizontalScrollMixin, {
     rowDidClick: function(row, event) {
       console.log('buble body container');
       this.sendAction('rowDidClick', row, event);
+    },
+
+    toggleRowCollapse: function(row) {
+      this.sendAction('toggleRowCollapse', row);
     }
   }
 });

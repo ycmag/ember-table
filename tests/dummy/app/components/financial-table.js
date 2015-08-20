@@ -185,7 +185,7 @@ export default TableComponent.extend({
       return this.notifyPropertyChange('rows');
     },
 
-    toggleCollapse: function(row) {
+    toggleRowCollapse: function(row) {
       row.toggleProperty('isCollapsed');
       Ember.run.next(this, function() {
         this.notifyPropertyChange('rows');

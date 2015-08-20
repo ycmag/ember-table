@@ -65,5 +65,11 @@ StyleBindingsMixin, {
       var value = column.getCellContent(row);
       return value;
     }
-  })
+  }),
+
+  actions: {
+    toggleRowCollapse: function(row) {
+      this.sendAction('toggleRowCollapse', row);
+    }
+  }
 });

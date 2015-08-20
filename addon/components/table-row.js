@@ -24,7 +24,7 @@ RegisterTableComponentMixin, StyleBindingsMixin, {
 
   top: Ember.computed(function() {
     return this.get('row.itemIndex') * this.get('rowHeight');
-  }).property('itemIndex', 'rowHeight'),
+  }).property('row.itemIndex', 'rowHeight'),
 
   // TODO(azirbel): Add explicit else case
   display: Ember.computed(function() {
@@ -72,6 +72,12 @@ RegisterTableComponentMixin, StyleBindingsMixin, {
     var row = this.get('row');
     if (row) {
       row.set('isHovered', false);
+    }
+  },
+
+  actions: {
+    toggleRowCollapse: function(row) {
+      this.sendAction('toggleRowCollapse', row);
     }
   }
 });
