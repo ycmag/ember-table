@@ -68,7 +68,6 @@ ShowHorizontalScrollMixin, {
 
   actions: {
     rowDidClick: function(row, event) {
-      console.log('buble body container');
       this.sendAction('rowDidClick', row, event);
     },
 

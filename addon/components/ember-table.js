@@ -570,7 +570,6 @@ StyleBindingsMixin, ResizeHandlerMixin, {
     sortByColumn: Ember.K,
 
     rowDidClick: function(row, event) {
-      console.log('buble ember table');
       var item = row.get('content');
       switch (this.get('selectionMode')) {
         case 'none':
@@ -617,7 +616,6 @@ StyleBindingsMixin, ResizeHandlerMixin, {
     },
 
     scrollLeftDidChange: function(scrollLeft) {
-      console.log('buble ember table scrollLeftDidChange');
       this.set('_tableScrollLeft', scrollLeft);
     },
 

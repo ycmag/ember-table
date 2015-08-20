@@ -29,7 +29,6 @@ StyleBindingsMixin, ScrollHandlerMixin, {
   // `event` here is a jQuery event
   onScroll: function(event) {
     this.sendAction('scrollLeftDidChange', event.target.scrollLeft);
-    console.log('send scrollLeftDidChange', event.target.scrollLeft);
     event.preventDefault();
   },
 

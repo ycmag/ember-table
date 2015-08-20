@@ -3,9 +3,7 @@ import Ember from 'ember';
 import TableCell from 'ember-table/components/table-cell';
 
 export default TableCell.extend({
-
   classNameBindings: ['column.color'],
-
   barWidth: Ember.computed(function() {
     var properties = this.getProperties('column', 'row');
     var column = properties.column;
