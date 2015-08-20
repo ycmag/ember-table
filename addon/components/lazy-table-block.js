@@ -34,10 +34,7 @@ StyleBindingsMixin, RegisterTableComponentMixin, {
     var startIndex = this.get('startIndex') || 0;
     var numChildViews = this.get('numChildViews') || 0;
     var endIndex = startIndex + numChildViews;
-    console.log('startIndex', startIndex);
-    console.log('endIndex', endIndex);
     var result = content.slice(startIndex, endIndex);
-    console.log('result', result);
     return result;
   }),
 
