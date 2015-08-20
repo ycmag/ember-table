@@ -38,6 +38,15 @@ StyleBindingsMixin, RegisterTableComponentMixin, {
     return result;
   }),
 
+  actions: {
+    rowDidClick: function(row, event) {
+      console.log('buble lazy table block');
+      this.sendAction('rowDidClick', row, event);
+    }
+  }
+
+
+
   // init: function() {
   //   this._super();
   //   return this.onNumChildViewsDidChange();

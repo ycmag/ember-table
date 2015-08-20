@@ -64,5 +64,12 @@ ShowHorizontalScrollMixin, {
     var scrollLeft = this.$('.ember-table-right-table-block').scrollLeft() + deltaX;
     this.set('scrollLeft', scrollLeft);
     event.preventDefault();
+  },
+
+  actions: {
+    rowDidClick: function(row, event) {
+      console.log('buble body container');
+      this.sendAction('rowDidClick', row, event);
+    }
   }
 });

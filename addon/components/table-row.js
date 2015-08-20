@@ -60,6 +60,14 @@ RegisterTableComponentMixin, StyleBindingsMixin, {
     }
   },
 
+  click: function(event) {
+    var row = this.get('row');
+    if (row) {
+      console.log('rowDidClick');
+      this.sendAction('rowDidClick', this.get('row'), event);
+    }
+  },
+
   teardownContent: function() {
     var row = this.get('row');
     if (row) {

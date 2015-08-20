@@ -197,10 +197,12 @@ StyleBindingsMixin, ResizeHandlerMixin, {
 
   bodyContent: Ember.computed('_resolvedContent.[]', function() {
     var rowClass = this.get('rowClass');
+    var self = this;
     return (this.get('_resolvedContent') || []).map(function(datum, index) {
       return rowClass.create({ 
         content: datum,
-        itemIndex: index
+        itemIndex: index,
+        tableComponent: self
       });
     });
   }),
@@ -539,57 +541,6 @@ StyleBindingsMixin, ResizeHandlerMixin, {
     return Ember.A();
   }),
 
-  // TODO: Handle click event in the row view
-  click: function(event) {
-    var row = this.getRowForEvent(event);
-    if (!row || !row.get('content')) {
-      return;
-    }
-    var item = row.get('content');
-    switch (this.get('selectionMode')) {
-      case 'none':
-        break;
-      case 'single':
-        this.get('persistedSelection').clear();
-        this.get('persistedSelection').addObject(item);
-        break;
-      case 'multiple':
-        if (event.shiftKey) {
-          this.get('rangeSelection').clear();
-
-          var lastIndex = this.rowIndex(this.get('lastSelected'));
-          // If the last selected row is no longer in the table, use the
-          // first row in the table
-          if (lastIndex === -1) {
-            lastIndex = 0;
-          }
-
-          var curIndex = this.rowIndex(this.getRowForEvent(event));
-          var minIndex = Math.min(lastIndex, curIndex);
-          var maxIndex = Math.max(lastIndex, curIndex);
-
-          this.get('rangeSelection').addObjects(
-            this.get('bodyContent').slice(minIndex, maxIndex + 1)
-            .mapBy('content')
-          );
-        } else {
-          if (!event.ctrlKey && !event.metaKey) {
-            this.get('persistedSelection').clear();
-            this.get('rangeSelection').clear();
-          } else {
-            this.persistSelection();
-          }
-          if (this.get('persistedSelection').contains(item)) {
-            this.get('persistedSelection').removeObject(item);
-          } else {
-            this.get('persistedSelection').addObject(item);
-          }
-          this.set('lastSelected', row);
-        }
-        break;
-    }
-  },
-
   findRow: function(content) {
     // TODO(azirbel): Replace with filter
     this.get('bodyContent').forEach(function(row) {
@@ -624,6 +575,53 @@ StyleBindingsMixin, ResizeHandlerMixin, {
   // TODO(azirbel): Document
   actions: {
     addColumn: Ember.K,
-    sortByColumn: Ember.K
+    sortByColumn: Ember.K,
+
+    rowDidClick: function(row, event) {
+      console.log('buble ember table');
+      var item = row.get('content');
+      switch (this.get('selectionMode')) {
+        case 'none':
+          break;
+        case 'single':
+          this.get('persistedSelection').clear();
+          this.get('persistedSelection').addObject(item);
+          break;
+        case 'multiple':
+          if (event.shiftKey) {
+            this.get('rangeSelection').clear();
+
+            var lastIndex = this.rowIndex(this.get('lastSelected'));
+            // If the last selected row is no longer in the table, use the
+            // first row in the table
+            if (lastIndex === -1) {
+              lastIndex = 0;
+            }
+
+            var curIndex = this.rowIndex(this.getRowForEvent(event));
+            var minIndex = Math.min(lastIndex, curIndex);
+            var maxIndex = Math.max(lastIndex, curIndex);
+
+            this.get('rangeSelection').addObjects(
+              this.get('bodyContent').slice(minIndex, maxIndex + 1)
+              .mapBy('content')
+            );
+          } else {
+            if (!event.ctrlKey && !event.metaKey) {
+              this.get('persistedSelection').clear();
+              this.get('rangeSelection').clear();
+            } else {
+              this.persistSelection();
+            }
+            if (this.get('persistedSelection').contains(item)) {
+              this.get('persistedSelection').removeObject(item);
+            } else {
+              this.get('persistedSelection').addObject(item);
+            }
+            this.set('lastSelected', row);
+          }
+          break;
+      }
+    }
   }
 });
