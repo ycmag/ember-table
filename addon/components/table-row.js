@@ -67,13 +67,6 @@ RegisterTableComponentMixin, StyleBindingsMixin, {
     }
   },
 
-  teardownContent: function() {
-    var row = this.get('row');
-    if (row) {
-      row.set('isHovered', false);
-    }
-  },
-
   actions: {
     toggleRowCollapse: function(row) {
       this.sendAction('toggleRowCollapse', row);
