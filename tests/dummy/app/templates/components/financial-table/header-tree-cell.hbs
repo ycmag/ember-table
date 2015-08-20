@@ -1,13 +1,13 @@
 {{! BEGIN-SNIPPET financial-table-header-tree-cell-template}}
 <div class="ember-table-cell-container">
-  <span {{bind-attr class=":ember-table-toggle-span :ember-table-toggle
-      isCollapsed:ember-table-expand:ember-table-collapse"}}
+  <span class="ember-table-toggle-span ember-table-toggle
+      {{if isCollapsed 'ember-table-expand' 'ember-table-collapse'}}"
       {{action 'toggleTableCollapse'}}>
-    {{fa-icon "caret-down" classNames="ember-table-toggle-icon"}}
+    {{fa-icon "caret-down" class="ember-table-toggle-icon"}}
   </span>
   <div class="ember-table-header-content-container">
     <span class="ember-table-content">
-      {{view.column.headerCellName}}
+      {{column.headerCellName}}
     </span>
   </div>
 </div>

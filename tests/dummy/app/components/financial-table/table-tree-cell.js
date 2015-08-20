@@ -1,9 +1,8 @@
 // BEGIN-SNIPPET financial-table-tree-cell
 import Ember from 'ember';
-import TableCell from 'ember-table/views/table-cell';
+import TableCell from 'ember-table/components/table-cell';
 
 export default TableCell.extend({
-  templateName: 'financial-table/financial-table-tree-cell',
   classNames: 'ember-table-table-tree-cell',
 
   paddingStyle: Ember.computed(function() {
