@@ -1,10 +1,9 @@
 // BEGIN-SNIPPET sparkline-table-cell
 import Ember from 'ember';
-import TableCell from 'ember-table/views/table-cell';
+import TableCell from 'ember-table/components/table-cell';
 
 export default TableCell.extend({
-  templateName: 'empty-cell',
-  heightBinding: 'controller.rowHeight',
+  templateName: 'components/empty-cell',
 
   onContentOrSizeDidChange: Ember.observer('row', 'width', function() {
     this.$('svg').remove();
@@ -21,7 +20,7 @@ export default TableCell.extend({
     if (!data) {
       return;
     }
-    var h = this.get('height');
+    var h = this.$().height();
     var w = this.get('width');
     var p = 2;
     var min = Math.min.apply(null, data);
