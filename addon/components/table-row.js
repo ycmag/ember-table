@@ -2,9 +2,9 @@ import Ember from 'ember';
 import StyleBindingsMixin from 'ember-table/mixins/style-bindings';
 import RegisterTableComponentMixin from 'ember-table/mixins/register-table-component';
 
-export default Ember.View.extend(
+export default Ember.Component.extend(
 RegisterTableComponentMixin, StyleBindingsMixin, {
-  templateName: 'table-row',
+
   classNames: 'ember-table-table-row',
   classNameBindings: ['row.isHovered:ember-table-hover',
       'row.isSelected:ember-table-selected',
@@ -15,6 +15,10 @@ RegisterTableComponentMixin, StyleBindingsMixin, {
   columns: Ember.A,
   width: Ember.computed.alias('rowWidth'),
   height: Ember.computed.alias('rowHeight'),
+
+  rowWidthSafeString: Ember.computed('rowWidth', function() {
+    return new Ember.Handlebars.SafeString('width:' + this.get('rowWidth') + 'px;');
+  }),
 
   prepareContent: Ember.K,
 

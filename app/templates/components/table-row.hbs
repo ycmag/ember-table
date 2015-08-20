@@ -1,0 +1,9 @@
+<div style={{rowWidthSafeString}}>
+{{#each columns as |item|}}
+	{{view item.tableCellViewClass
+	    content=item
+  		columnMode=columnMode
+  		columnsFillTable=columnsFillTable
+	}}
+{{/each}}
+</div>
