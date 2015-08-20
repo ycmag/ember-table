@@ -19,5 +19,11 @@ export default Ember.Component.extend(TableBlock, {
       }
       _this.$().scrollLeft(_this.get('scrollLeft'));
     });
-  })
+  }),
+
+  actions: {
+    toggleTableCollapse: function() {
+      this.sendAction('toggleTableCollapse');
+    }
+  }
 });

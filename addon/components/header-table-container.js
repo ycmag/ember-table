@@ -18,5 +18,11 @@ ShowHorizontalScrollMixin, {
   tableBlockWidth: null,
   headerHeight: null,
   tableContainerWidth: null,
-  scrollLeft: null
+  scrollLeft: null,
+
+  actions: {
+    toggleTableCollapse: function() {
+      this.sendAction('toggleTableCollapse');
+    }
+  }
 });

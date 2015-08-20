@@ -74,5 +74,11 @@ StyleBindingsMixin, {
     var column = view.get('column');
     this.get('tableComponent').onColumnSort(column, newIndex);
     this.set('isShowingSortableIndicator', false);
+  },
+
+  actions: {
+    toggleTableCollapse: function() {
+      this.sendAction('toggleTableCollapse');
+    }
   }
 });

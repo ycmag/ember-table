@@ -150,5 +150,11 @@ StyleBindingsMixin, RegisterTableComponentMixin, {
         this.$().resizable('destroy');
       }
     }
+  },
+
+  actions: {
+    toggleTableCollapse: function() {
+      this.sendAction('toggleTableCollapse');
+    }
   }
 });

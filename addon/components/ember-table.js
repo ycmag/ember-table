@@ -624,11 +624,12 @@ StyleBindingsMixin, ResizeHandlerMixin, {
       }
     },
 
-    toggleRowCollapse: Ember.K,
-
     scrollLeftDidChange: function(scrollLeft) {
       console.log('buble ember table scrollLeftDidChange');
       this.set('_tableScrollLeft', scrollLeft);
-    }
+    },
+
+    toggleRowCollapse: Ember.K,
+    toggleTableCollapse: Ember.K,
   }
 });
