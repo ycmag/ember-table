@@ -2,12 +2,10 @@ import Ember from 'ember';
 
 export default Ember.ObjectProxy.extend({
   content: null,
+  tableComponent: null,
 
   isShowing: true,
   isHovered: false,
-  isSelected: false,
-
-  tableComponent: null,
 
   isSelected: Ember.computed('tableComponent.selection.[]', {
     set: function(key, val) {
