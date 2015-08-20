@@ -374,6 +374,8 @@ StyleBindingsMixin, ResizeHandlerMixin, {
   _height: null,
   _contentHeaderHeight: null,
 
+  _sortableIndicatorLeft: 0,
+
   _hasVerticalScrollbar: Ember.computed(function() {
     var height = this.get('_height');
     var contentHeight = this.get('_tableContentHeight') +
