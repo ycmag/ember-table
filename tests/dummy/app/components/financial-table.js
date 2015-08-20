@@ -129,7 +129,7 @@ export default TableComponent.extend({
   },
 
   createTree: function(parent, node) {
-    var row = FinancialTableTreeRow.create({ parentController: this });
+    var row = FinancialTableTreeRow.create({ tableComponent: this });
     // TODO(azirbel): better map function and _this use
     var children = (node.children || []).map((function(_this) {
       return function(child) {
