@@ -1,9 +1,9 @@
 // BEGIN-SNIPPET bar-table-cell
 import Ember from 'ember';
-import TableCell from 'ember-table/views/table-cell';
+import TableCell from 'ember-table/components/table-cell';
 
 export default TableCell.extend({
-  templateName: 'bar_table/bar-cell',
+
   classNameBindings: ['column.color'],
 
   barWidth: Ember.computed(function() {
