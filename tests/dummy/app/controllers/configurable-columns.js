@@ -63,7 +63,7 @@ export default Ember.Controller.extend({
     return [dateColumn, openColumn, highColumn, lowColumn, closeColumn];
   }),
 
-  content: Ember.computed(function() {
+  tableContent: Ember.computed(function() {
     var content = [];
     var date;
     for (var i = 0; i < 100; i++) {
