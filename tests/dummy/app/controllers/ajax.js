@@ -2,14 +2,14 @@
 import Ember from 'ember';
 import ColumnDefinition from 'ember-table/models/column-definition';
 import AjaxTableLazyDataSource from
-  '../views/ajax-table-lazy-data-source';
+  '../components/ajax-table/lazy-data-source';
 
 export default Ember.Controller.extend({
   tableColumns: Ember.computed(function() {
     var avatar = ColumnDefinition.create({
       savedWidth: 80,
       headerCellName: 'avatar',
-      tableCellViewClass: 'ajax-image-table-cell',
+      tableCellViewClass: 'ajax-table/ajax-cell',
       contentPath: 'avatar'
     });
     var columnNames = ['login', 'type', 'createdAt'];
