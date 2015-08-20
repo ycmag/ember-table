@@ -556,15 +556,6 @@ StyleBindingsMixin, ResizeHandlerMixin, {
     this.get('rangeSelection').clear();
   },
 
-  getRowForEvent: function(event) {
-    var $rowView = Ember.$(event.target).parents('.ember-table-table-row');
-    var view = Ember.View.views[$rowView.attr('id')];
-    if (view) {
-      return view.get('row');
-    }
-    return null;
-  },
-
   // TODO(azirbel): Document
   actions: {
     addColumn: Ember.K,
@@ -590,7 +581,7 @@ StyleBindingsMixin, ResizeHandlerMixin, {
               lastIndex = 0;
             }
 
-            var curIndex = this.rowIndex(this.getRowForEvent(event));
+            var curIndex = this.rowIndex( row );
             var minIndex = Math.min(lastIndex, curIndex);
             var maxIndex = Math.max(lastIndex, curIndex);
 
