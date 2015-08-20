@@ -1,10 +1,9 @@
 // BEGIN-SNIPPET rating-table-cell
 import Ember from 'ember';
-import TableCell from 'ember-table/views/table-cell';
+import TableCell from 'ember-table/components/table-cell';
 
 export default TableCell.extend({
   classNames: 'rating-table-cell',
-  templateName: 'editable-table/rating-table-cell',
 
   onRowContentDidChange: Ember.observer('cellContent', function() {
     this.applyRating(this.get('cellContent'));
