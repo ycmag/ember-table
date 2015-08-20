@@ -97,11 +97,11 @@ export default TableComponent.extend({
     if (!rows) {
       return Ember.A();
     }
-    rows = rows.slice(1, rows.get('length')).filterBy('isShowing')
+    rows = rows.slice(1, rows.get('length')).filterBy('isShowing');
     rows.forEach(function(row, index) {
-      row.set('itemIndex', index)
+      return row.set('itemIndex', index);
     });
-    return rows
+    return rows;
   }).property('rows'),
 
   footerContent: Ember.computed(function() {
