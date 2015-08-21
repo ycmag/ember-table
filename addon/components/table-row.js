@@ -10,7 +10,7 @@ RegisterTableComponentMixin, StyleBindingsMixin, {
       'row.isSelected:ember-table-selected',
       'row.rowStyle',
       'isLastRow:ember-table-last-row'],
-  styleBindings: ['width', 'height', 'width', 'top', 'display'],
+  styleBindings: ['width', 'height', 'top', 'display'],
   row: Ember.computed.alias('content'),
   columns: Ember.A,
   width: Ember.computed.alias('rowWidth'),

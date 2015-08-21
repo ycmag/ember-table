@@ -19,13 +19,13 @@
   }}
 {{/if}}
 {{body-table-container
+  bodyContent=bodyContent
+  numFixedColumns=numFixedColumns
   itemViewClass=tableRowViewClass
-	numFixedColumns=numFixedColumns
 	tableColumns=tableColumns
 	fixedColumns=fixedColumns
 	fixedBlockWidth=_fixedBlockWidth
 	tableBlockWidth=_tableBlockWidth
-  bodyContent=bodyContent
   bodyHeight=_bodyHeight
   bodyWidth=_width
   rowHeight=rowHeight
@@ -36,8 +36,9 @@
 }}
 {{#if hasFooter}}
   {{footer-table-container
-      numFixedColumns=numFixedColumns
       footerContent=footerContent
+      numFixedColumns=numFixedColumns
+      itemViewClass=tableRowViewClass
       tableColumns=tableColumns
       fixedColumns=fixedColumns
       fixedBlockWidth=_fixedBlockWidth
@@ -48,6 +49,7 @@
       headerHeight=_headerHeight
       tableContentHeight=_tableContentHeight
       bodyHeight=_bodyHeight
+      rowWidth=_rowWidth
   }}
 {{/if}}
 {{scroll-container
