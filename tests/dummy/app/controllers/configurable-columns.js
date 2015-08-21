@@ -3,7 +3,6 @@ import ConfigurableColumnDefinition from
   '../components/configurable-column-definition';
 import {randomNumber, randomDate} from '../utils/random';
 
-
 export default Ember.Controller.extend({
   isFluid: false,
   showTable: true,

@@ -38,6 +38,7 @@ RegisterTableComponentMixin, StyleBindingsMixin, {
   // this TableRow is the last row, then the row controller should have been
   // created and set to `lastItem` in RowArrayController, otherwise `lastItem`
   // is null.
+  // (Artych) What should be done here?
   isLastRow: Ember.computed(function() {
     return this.get('row') ===
         this.get('tableComponent.bodyContent.lastItem');

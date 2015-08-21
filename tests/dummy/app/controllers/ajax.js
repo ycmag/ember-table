@@ -1,8 +1,7 @@
 // BEGIN-SNIPPET ajax-controller
 import Ember from 'ember';
 import ColumnDefinition from 'ember-table/models/column-definition';
-import AjaxTableLazyDataSource from
-  '../components/ajax-table/lazy-data-source';
+import AjaxTableLazyDataSource from '../components/ajax-table/lazy-data-source';
 
 export default Ember.Controller.extend({
   tableColumns: Ember.computed(function() {

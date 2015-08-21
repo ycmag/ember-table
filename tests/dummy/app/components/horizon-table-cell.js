@@ -4,7 +4,7 @@ import TableCell from 'ember-table/components/table-cell';
 import d3HorizonUtils from '../utils/horizon';
 
 export default TableCell.extend({
-  templateName: 'components/empty-cell',
+  layoutName: 'components/empty-cell',
 
   horizonContent: Ember.computed(function() {
     var normal = d3.random.normal(1.5, 3);

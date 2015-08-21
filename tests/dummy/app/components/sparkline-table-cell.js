@@ -3,7 +3,7 @@ import Ember from 'ember';
 import TableCell from 'ember-table/components/table-cell';
 
 export default TableCell.extend({
-  templateName: 'components/empty-cell',
+  layoutName: 'components/empty-cell',
 
   onContentOrSizeDidChange: Ember.observer('row', 'width', function() {
     this.$('svg').remove();
