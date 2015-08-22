@@ -25,15 +25,15 @@ ShowHorizontalScrollMixin, {
     return Math.floor(this.get('bodyHeight') / this.get('rowHeight'));
   }).property('bodyHeight', 'rowHeight'),
 
-  _scrollTop: 0,
+ // _scrollTop: 0,
+  _scrollTopIndex: 0,
 
-  _startIndex: Ember.computed('_scrollTop', 'bodyContent.length', '_numItemsShowing', 
-      'rowHeight', function() {
+  _startIndex: Ember.computed('_scrollTopIndex', 'bodyContent.length', '_numItemsShowing', function() {
     var numContent = this.get('bodyContent.length');
     var numViews = this.get('_numItemsShowing');
-    var rowHeight = this.get('rowHeight');
-    var _scrollTop = this.get('_scrollTop');
-    var index = Math.floor(_scrollTop / rowHeight);
+    // var rowHeight = this.get('rowHeight');
+    var index = this.get('_scrollTopIndex');
+    // var index = Math.floor(_scrollTop / rowHeight);
     // Adjust start index so that end index doesn't exceed content length
     if (index + numViews >= numContent) {
       index = numContent - numViews;
@@ -42,7 +42,9 @@ ShowHorizontalScrollMixin, {
   }),
 
   onScroll: function(event) {
-    this.set('_scrollTop', event.target.scrollTop);
+    if (this.get('rowHeight') > 0) {
+      this.set('_scrollTopIndex', Math.floor(event.target.scrollTop / this.get('rowHeight')));
+    }
     return event.preventDefault();
   },
 
