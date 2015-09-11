@@ -157,6 +157,9 @@ StyleBindingsMixin, RegisterTableComponentMixin, {
   actions: {
     toggleTableCollapse: function() {
       this.sendAction('toggleTableCollapse');
-    }
+    },
+    sortByColumn: function() {
+      this.sendAction('sortByColumn', this.get('column'));
+  },
   }
 });

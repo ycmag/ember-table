@@ -142,7 +142,7 @@ StyleBindingsMixin, ResizeHandlerMixin, {
           value = resolvedContent;
         });
 
-        // returns [] if the promise doesn't resolve immediately, or 
+        // returns [] if the promise doesn't resolve immediately, or
         // the resolved value if it's ready
         return value;
       } else {
@@ -189,7 +189,7 @@ StyleBindingsMixin, ResizeHandlerMixin, {
     var rowClass = this.get('rowClass');
     var self = this;
     return (this.get('_resolvedContent') || []).map(function(datum, index) {
-      return rowClass.create({ 
+      return rowClass.create({
         content: datum,
         itemIndex: index,
         tableComponent: self
@@ -559,7 +559,10 @@ StyleBindingsMixin, ResizeHandlerMixin, {
   // TODO(azirbel): Document
   actions: {
     addColumn: Ember.K,
-    sortByColumn: Ember.K,
+    
+    sortByColumn: function(column) {
+      this.sendAction('sortByColumn', column);
+    },
 
     rowDidClick: function(row, event) {
       var item = row.get('content');
