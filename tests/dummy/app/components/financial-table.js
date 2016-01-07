@@ -15,6 +15,7 @@ export default TableComponent.extend({
   hasHeader: true,
   hasFooter: true,
   headerHeight: 70,
+  autoHideScrollbars: false,
 
   // Custom properties
   sortAscending: false,

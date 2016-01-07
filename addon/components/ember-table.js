@@ -58,6 +58,9 @@ StyleBindingsMixin, ResizeHandlerMixin, {
   // TODO(new-api): Control this via `numFooterRows` and remove from API
   hasFooter: true,
 
+  // Enables or disables the visibility of scrollbars
+  autoHideScrollbars: true,
+
   enableColumnReorder: true,
 
   // Allow users to select the content of table cells.
@@ -302,7 +305,15 @@ StyleBindingsMixin, ResizeHandlerMixin, {
       return;
     }
     // updating antiscroll
-    this.$('.antiscroll-wrap').antiscroll().data('antiscroll').rebuild();
+    var options = {};
+    if( ! this.get('autoHideScrollbars') ) {
+      Ember.merge(options, {
+        autoHide: false,
+        initialDisplay: true
+      });
+    }
+
+    this.$('.antiscroll-wrap').antiscroll(options).data('antiscroll').rebuild();
     if (this.get('columnsFillTable')) {
       this.doForceFillColumns();
     }
