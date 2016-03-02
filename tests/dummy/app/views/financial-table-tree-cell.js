@@ -7,7 +7,8 @@ export default TableCell.extend({
   classNames: 'ember-table-table-tree-cell',
 
   paddingStyle: Ember.computed(function() {
-    return new Ember.Handlebars.SafeString('padding-left:' + (this.get('row.indentation')) + 'px;');
+    var safeString = new Ember.Handlebars.SafeString('padding-left:' + (this.get('row.indentation')) + 'px;');
+    return safeString.string;
   }).property('row.indentation')
 });
 // END-SNIPPET
