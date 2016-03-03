@@ -1,25 +1,19 @@
 module.exports = {
+  name: 'ember-table',
   normalizeEntityName: function() {},
 
-  afterInstall: function(options) {
-    // We assume that handlebars, ember, and jquery already exist
-    return this.addBowerPackagesToProject([
-      {
-        // Antiscroll seems to be abandoned by its original authors. We need
-        // two things: (1) a version in package.json, and (2) the name of the
-        // package must be "antiscroll" to satisfy ember-cli.
-        'name': 'antiscroll',
-        'source': 'git://github.com/Addepar/antiscroll#e0d1538cf4f3fd61c5bedd6168df86d651f125da',
-        'version': 'e0d1538cf4f3fd61c5bedd6168df86d651f125da'
-      },
-      {
-        'name': 'jquery-mousewheel',
-        'target': '~3.1.4'
-      },
-      {
-        'name': 'jquery-ui',
-        'target': '~1.11.4'
-      }
-    ]);
+  included: function(options) {
+    this._super.included(app);
+
+    app.import(app.bowerDirectory + '/antiscroll/antiscroll.js');
+    app.import(app.bowerDirectory + '/antiscroll/antiscroll.css');
+    app.import(app.bowerDirectory + '/jquery-ui/jquery-ui.js');
+    app.import(app.bowerDirectory + '/jquery-mousewheel/jquery.mousewheel.js');
+  },
+
+  afterInstall: function() {
+    this.addBowerPackageToProject('antiscroll');
+    this.addBowerPackageToProject('jquery-mousewheel');
+    this.addBowerPackageToProject('jquery-ui');
   }
 };
