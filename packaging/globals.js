@@ -72,17 +72,17 @@ Globals.prototype.write = function(readTree, destDir) {
 
       // Get a listing of all hbs files from inputTree and make sure each one
       // is registered on Ember.TEMPLATES
-      var templateFiles = walk(srcDir).filter(function(f) {
-        return /^templates.*js$/.test(f);
-      });
-      templateFiles.forEach(function(filename) {
-        // Add ember-table namespace and remove .js extension
-        var filePath = 'ember-table/' + filename.slice(0, -3);
-        var parts = filePath.split(path.sep);
-        output.push("window.Ember.TEMPLATES['" +
-            parts.slice(2).join('/') + "']" +
-            " = require('" + filePath + "')['default'];");
-      });
+      // var templateFiles = walk(srcDir).filter(function(f) {
+        // return /^templates.*js$/.test(f);
+      // });
+      // templateFiles.forEach(function(filename) {
+        // // Add ember-table namespace and remove .js extension
+        // var filePath = 'ember-table/' + filename.slice(0, -3);
+        // var parts = filePath.split(path.sep);
+        // output.push("window.Ember.TEMPLATES['" +
+            // parts.slice(2).join('/') + "']" +
+            // " = require('" + filePath + "')['default'];");
+      // });
 
       // Classes to register on the application's container. We need this
       // because we used to refer to views by their full, global name
@@ -98,49 +98,49 @@ Globals.prototype.write = function(readTree, destDir) {
             " = require('" + key + "')['default'];");
         // Register on the container. We only need to register views and
         // components.
-        var type = key.split('/')[1].replace(/s$/, '')
-        if (type === 'view' || type === 'component') {
-          toRegister.push({
-            type: type,
-            moduleName: key,
-            containerName: key.split('/')[2]
-          });
-        }
+        // var type = key.split('/')[1].replace(/s$/, '')
+        // if (type === 'view' || type === 'component') {
+          // toRegister.push({
+            // type: type,
+            // moduleName: key,
+            // containerName: key.split('/')[2]
+          // });
+        // }
       }
 
       // On loading the ember application, register all views and components on
       // the application's container
-      _this.addLinesToOutput(output, [
-        "Ember.onLoad('Ember.Application', function(Application) {",
-          "Application.initializer({",
-            "name: 'ember-table',",
-            "initialize: function(container) {"
-      ]);
-      _this.addLinesToOutput(output, toRegister.map(function(item) {
-        return "container.register('" + item.type + ':' + item.containerName +
-            "', require('" + item.moduleName + "')['default']);";
-        })
-      );
-      _this.addLinesToOutput(output, [
-            "}",
-          "});",
-        "});"
-      ]);
+      // _this.addLinesToOutput(output, [
+        // "Ember.onLoad('Ember.Application', function(Application) {",
+          // "Application.initializer({",
+            // "name: 'ember-table',",
+            // "initialize: function(container) {"
+      // ]);
+      // _this.addLinesToOutput(output, toRegister.map(function(item) {
+        // return "container.register('" + item.type + ':' + item.containerName +
+            // "', require('" + item.moduleName + "')['default']);";
+        // })
+      // );
+      // _this.addLinesToOutput(output, [
+            // "}",
+          // "});",
+        // "});"
+      // ]);
 
       // For backwards compatibility, set a layoutName so the component
       // actually renders
-      _this.addLinesToOutput(output, [
-        "Ember.Table.EmberTableComponent.reopen({",
-        "layoutName: 'components/ember-table'",
-        "});"
-      ]);
+      // _this.addLinesToOutput(output, [
+        // "Ember.Table.EmberTableComponent.reopen({",
+        // "layoutName: 'components/ember-table'",
+        // "});"
+      // ]);
 
       // Register table-component with handlebars so users can just use
       // {{table-component}}
-      output.push("Ember.Handlebars.helper('table-component', " +
-                  "Ember.Table.EmberTableComponent);");
+      // output.push("Ember.Handlebars.helper('table-component', " +
+                  // "Ember.Table.EmberTableComponent);");
 
-      fs.writeFileSync(path.join(destDir, 'globals-output.js'),
+      fs.writeFileSync(path.join(destDir, 'ember-table-export-globals.js'),
           output.join("\n"));
       resolve();
     });

@@ -102,7 +102,7 @@ module.exports = function (grunt) {
     }
   });
 
-  grunt.registerTask("dist", ["replace", "broccoli:dist:build", "uglify", "usebanner"]);
+  grunt.registerTask("dist", ["broccoli:dist:build"]);
   grunt.registerTask("default", ["dist"]);
 };
 

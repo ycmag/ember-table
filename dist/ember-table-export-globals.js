@@ -1,0 +1,35 @@
+(function(){;
+define('ember', ['exports'], function(__exports__) {
+  __exports__['default'] = window.Ember;
+});
+
+window.Ember.Table = Ember.Namespace.create();
+window.Ember.AddeparMixins = {};
+window.Ember.Table.EmberTableComponent = require('ember-table/components/ember-table')['default'];
+window.Ember.Table.RowArrayController = require('ember-table/controllers/row-array')['default'];
+window.Ember.Table.Row = require('ember-table/controllers/row')['default'];
+window.Ember.MouseWheelHandlerMixin = require('ember-table/mixins/mouse-wheel-handler')['default'];
+window.Ember.Table.RegisterTableComponentMixin = require('ember-table/mixins/register-table-component')['default'];
+window.Ember.AddeparMixins.ResizeHandlerMixin = require('ember-table/mixins/resize-handler')['default'];
+window.Ember.ScrollHandlerMixin = require('ember-table/mixins/scroll-handler')['default'];
+window.Ember.Table.ShowHorizontalScrollMixin = require('ember-table/mixins/show-horizontal-scroll')['default'];
+window.Ember.AddeparMixins.StyleBindingsMixin = require('ember-table/mixins/style-bindings')['default'];
+window.Ember.TouchMoveHandlerMixin = require('ember-table/mixins/touch-move-handler')['default'];
+window.Ember.Table.ColumnDefinition = require('ember-table/models/column-definition')['default'];
+window.Ember.Table.BodyTableContainer = require('ember-table/views/body-table-container')['default'];
+window.Ember.Table.ColumnSortableIndicator = require('ember-table/views/column-sortable-indicator')['default'];
+window.Ember.Table.FooterTableContainer = require('ember-table/views/footer-table-container')['default'];
+window.Ember.Table.HeaderBlock = require('ember-table/views/header-block')['default'];
+window.Ember.Table.HeaderCell = require('ember-table/views/header-cell')['default'];
+window.Ember.Table.HeaderRow = require('ember-table/views/header-row')['default'];
+window.Ember.Table.HeaderTableContainer = require('ember-table/views/header-table-container')['default'];
+window.Ember.LazyContainerView = require('ember-table/views/lazy-container')['default'];
+window.Ember.LazyItemView = require('ember-table/views/lazy-item')['default'];
+window.Ember.Table.LazyTableBlock = require('ember-table/views/lazy-table-block')['default'];
+window.Ember.MultiItemViewCollectionView = require('ember-table/views/multi-item-collection')['default'];
+window.Ember.Table.ScrollContainer = require('ember-table/views/scroll-container')['default'];
+window.Ember.Table.ScrollPanel = require('ember-table/views/scroll-panel')['default'];
+window.Ember.Table.TableBlock = require('ember-table/views/table-block')['default'];
+window.Ember.Table.TableCell = require('ember-table/views/table-cell')['default'];
+window.Ember.Table.TableContainer = require('ember-table/views/table-container')['default'];
+window.Ember.Table.TableRow = require('ember-table/views/table-row')['default'];})();
