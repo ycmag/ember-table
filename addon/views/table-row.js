@@ -1,10 +1,11 @@
 import Ember from 'ember';
 import RegisterTableComponentMixin from 'ember-table/mixins/register-table-component';
 import LazyItemView from 'ember-table/views/lazy-item';
+import template from 'ember-table/templates/lazy-row';
 
 export default LazyItemView.extend(
 RegisterTableComponentMixin, {
-  templateName: 'table-row',
+  template: template,
   classNames: 'ember-table-table-row',
   classNameBindings: ['row.isHovered:ember-table-hover',
       'row.isSelected:ember-table-selected',
