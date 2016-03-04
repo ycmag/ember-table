@@ -1,7 +1,6 @@
 import Ember from 'ember';
 import StyleBindingsMixin from 'ember-table/mixins/style-bindings';
 import RegisterTableComponentMixin from 'ember-table/mixins/register-table-component';
-import template from 'ember-table/templates/header-cell';
 
 export default Ember.View.extend(
 StyleBindingsMixin, RegisterTableComponentMixin, {
@@ -10,7 +9,7 @@ StyleBindingsMixin, RegisterTableComponentMixin, {
   // ---------------------------------------------------------------------------
 
   // TODO: Doc
-  template: template,
+  templateName: 'header-cell',
   classNames: ['ember-table-cell', 'ember-table-header-cell'],
   classNameBindings: ['column.isSortable:sortable', 'column.textAlign'],
   styleBindings: ['width', 'height'],

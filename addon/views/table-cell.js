@@ -1,6 +1,5 @@
 import Ember from 'ember';
 import StyleBindingsMixin from 'ember-table/mixins/style-bindings';
-import template from 'ember-table/templates/table-cell';
 
 export default Ember.View.extend(
 StyleBindingsMixin, {
@@ -9,7 +8,7 @@ StyleBindingsMixin, {
   // ---------------------------------------------------------------------------
 
   // TODO: Doc
-  template: template,
+  templateName: 'table-cell',
   classNames: ['ember-table-cell'],
   classNameBindings: 'column.textAlign',
   styleBindings: 'width',

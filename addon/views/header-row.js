@@ -1,13 +1,12 @@
 import Ember from 'ember';
 import StyleBindingsMixin from 'ember-table/mixins/style-bindings';
 import RegisterTableComponentMixin from 'ember-table/mixins/register-table-component';
-import template from 'ember-table/templates/header-row';
 
 // We hacked this. There is an inconsistency at the level in which we are
 // handling scroll event...
 export default Ember.View.extend(
 StyleBindingsMixin, RegisterTableComponentMixin, {
-  template: template,
+  templateName: 'header-row',
   classNames: ['ember-table-table-row', 'ember-table-header-row'],
   styleBindings: ['width'],
   columns: Ember.computed.alias('content'),
