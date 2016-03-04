@@ -5,12 +5,11 @@ import RegisterTableComponentMixin from 'ember-table/mixins/register-table-compo
 import MouseWheelHandlerMixin from 'ember-table/mixins/mouse-wheel-handler';
 import TouchMoveHandlerMixin from 'ember-table/mixins/touch-move-handler';
 import ScrollHandlerMixin from 'ember-table/mixins/scroll-handler';
-import template from 'ember-table/templates/body-table-container';
 
 export default TableContainer.extend(
 MouseWheelHandlerMixin, TouchMoveHandlerMixin, ScrollHandlerMixin,
 ShowHorizontalScrollMixin, RegisterTableComponentMixin, {
-  template: template,
+  templateName: 'body-table-container',
   classNames: ['ember-table-table-container',
       'ember-table-body-container',
       'antiscroll-wrap'],
