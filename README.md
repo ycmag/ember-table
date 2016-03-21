@@ -1,7 +1,6 @@
-# Ember-table-demo
+# Ember Table demo application
 
-This README outlines the details of collaborating on this Ember application.
-A short introduction of this app could easily go here.
+This is the demo application for Ember Table.
 
 ## Prerequisites
 
@@ -25,10 +24,6 @@ You will need the following things properly installed on your computer.
 * `ember server`
 * Visit your app at [http://localhost:4200](http://localhost:4200).
 
-### Code Generators
-
-Make use of the many generators for code, try `ember help generate` for more details
-
 ### Running Tests
 
 * `ember test`
@@ -41,7 +36,8 @@ Make use of the many generators for code, try `ember help generate` for more det
 
 ### Deploying
 
-Specify what it takes to deploy your app.
+* `ember github-pages:commit --message "Initial gh-pages release"`
+* `git checko
 
 ## Further Reading / Useful Links
 
