@@ -7,7 +7,9 @@ export default Ember.Mixin.create({
   unitType: 'px',
   createStyleString: function(styleName, property) {
     var value;
+    console.time('Get ' + property)
     value = this.get(property);
+    console.timeEnd('Get ' + property)
     if (Ember.isNone(value)) {
       return;
     }
@@ -17,7 +19,6 @@ export default Ember.Mixin.create({
     return Ember.String.dasherize("" + styleName) + ":" + value + ";";
   },
   applyStyleBindings: Ember.on('init', Ember.observer('styleBindings', function() {
-    debugger;
     var lookup, properties, styleBindings, styleComputed, styles,
       _this = this;
     styleBindings = this.get('styleBindings');
