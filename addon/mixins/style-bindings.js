@@ -16,8 +16,8 @@ export default Ember.Mixin.create({
     }
     return Ember.String.dasherize("" + styleName) + ":" + value + ";";
   },
-  applyStyleBindings: Ember.on('init',
-    Ember.observer('styleBindings', function() {
+  applyStyleBindings: Ember.on('init', Ember.observer('styleBindings', function() {
+    debugger;
     var lookup, properties, styleBindings, styleComputed, styles,
       _this = this;
     styleBindings = this.get('styleBindings');
