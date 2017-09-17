@@ -1,3 +1,3 @@
-import FooterTableContainer from 'ember-table/views/footer-table-container';
+import FooterTableContainer from 'ember-table-one/views/footer-table-container';
 
 export default FooterTableContainer;

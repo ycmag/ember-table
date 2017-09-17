@@ -1,3 +1,3 @@
-import TableCell from 'ember-table/views/table-cell';
+import TableCell from 'ember-table-one/views/table-cell';
 
 export default TableCell;

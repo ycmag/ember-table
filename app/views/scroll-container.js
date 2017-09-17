@@ -1,3 +1,3 @@
-import ScrollContainer from 'ember-table/views/scroll-container';
+import ScrollContainer from 'ember-table-one/views/scroll-container';
 
 export default ScrollContainer;

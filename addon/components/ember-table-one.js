@@ -1,8 +1,8 @@
 import Ember from 'ember';
-import StyleBindingsMixin from 'ember-table/mixins/style-bindings';
-import ResizeHandlerMixin from 'ember-table/mixins/resize-handler';
-import RowArrayController from 'ember-table/controllers/row-array';
-import Row from 'ember-table/controllers/row';
+import StyleBindingsMixin from 'ember-table-one/mixins/style-bindings';
+import ResizeHandlerMixin from 'ember-table-one/mixins/resize-handler';
+import RowArrayController from 'ember-table-one/controllers/row-array';
+import Row from 'ember-table-one/controllers/row';
 
 export default Ember.Component.extend(
 StyleBindingsMixin, ResizeHandlerMixin, {

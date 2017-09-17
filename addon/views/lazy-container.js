@@ -1,5 +1,5 @@
 import Ember from 'ember';
-import StyleBindingsMixin from 'ember-table/mixins/style-bindings';
+import StyleBindingsMixin from 'ember-table-one/mixins/style-bindings';
 
 export default Ember.ContainerView.extend(
 StyleBindingsMixin, {

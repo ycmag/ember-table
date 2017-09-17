@@ -1,6 +1,6 @@
 import Ember from 'ember';
-import StyleBindingsMixin from 'ember-table/mixins/style-bindings';
-import RegisterTableComponentMixin from 'ember-table/mixins/register-table-component';
+import StyleBindingsMixin from 'ember-table-one/mixins/style-bindings';
+import RegisterTableComponentMixin from 'ember-table-one/mixins/register-table-component';
 
 // TODO: This should be a mixin
 export default Ember.CollectionView.extend(
