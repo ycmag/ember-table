@@ -4,7 +4,7 @@
 
 "@addepar/eslint-config@^1.0.0":
   version "1.0.0"
-  resolved "https://addepar.jfrog.io/addepar/api/npm/npm/@addepar/eslint-config/-/@addepar/eslint-config-1.0.0.tgz#05f24c2d5e83b626915adb3e13d5a44388973620"
+  resolved "https://addepar.jfrog.io/addepar/api/npm/npm/@addepar/eslint-config/-/eslint-config-1.0.0.tgz#5a517e6dab0fbf81572b2675a61b4f0830e74c31"
   dependencies:
     babel-eslint "^7.2.3"
     eslint-plugin-ember-suave "^1.0.0"
