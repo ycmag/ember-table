@@ -274,7 +274,7 @@ export default class EmberTable2 extends Component {
    * width. In this case, we might want to adjust width of every single column.
    */
   fillupColumn() {
-    const columns = this.get('bodyColumns');
+    const columns = this.get('columns');
     const tableWidth = this.get('_width');
     const sum = this.get('allColumnWidths');
     const tableResizeMode = this.get('tableResizeMode');
@@ -302,11 +302,14 @@ export default class EmberTable2 extends Component {
     if (this.get('hasSubcolumns')) {
       const groupColumns = this.get('columns');
       groupColumns.forEach((groupColumn) => {
-        let totalWidth = 0;
-        get(groupColumn, 'subcolumns').forEach((subcolumn) => {
-          totalWidth += get(subcolumn, 'width');
-        });
-        set(groupColumn, 'width', totalWidth);
+        const subcolumns = get(groupColumn, 'subcolumns');
+        if (subcolumns) {
+          // Each subcolumn has equal width.
+          const subcolumnWidth = get(groupColumn, 'width') / get(subcolumns, 'length');
+          subcolumns.forEach((subcolumn) => {
+            set(subcolumn, 'width', subcolumnWidth);
+          });
+        }
       });
     }
   }
