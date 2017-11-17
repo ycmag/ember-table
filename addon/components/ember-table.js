@@ -270,6 +270,15 @@ export default class EmberTable2 extends Component {
   }
 
   /**
+   * Sets column width with newWidth. If the newWidth is smaller than column's minWidth, use the
+   * minWidth value instead.
+   */
+  setColumnWidth(column, newWidth) {
+    const minWidth = get(column, 'minWidth') || 0;
+    set(column, 'width', Math.max(newWidth, minWidth));
+  }
+
+  /**
    * There are cases where the sum of all column width is smaller or bigger than the container
    * width. In this case, we might want to adjust width of every single column.
    */
@@ -284,13 +293,13 @@ export default class EmberTable2 extends Component {
       // Distribute the delta in pixel among columns according to the table fill up mode.
       if (tableResizeMode === TABLE_RESIZE_MODE_FIRST_COLUMN) {
         const [column] = columns;
-        set(column, 'width', get(column, 'width') + delta);
+        this.setColumnWidth(column, get(column, 'width') + delta);
       } else if (tableResizeMode === TABLE_RESIZE_MODE_EQUAL_COLUMN) {
         // Split delta by their proportion.
         const columnDelta = delta / columns.length;
         for (let i = 0; i < columns.length; i++) {
           const column = columns[i];
-          set(column, 'width', Math.min(get(column, 'width')  + columnDelta), get(column, 'minWidth'));
+          this.setColumnWidth(column, get(column, 'width') + columnDelta);
         }
       } else if (tableResizeMode === TABLE_RESIZE_MODE_LAST_COLUMN) {
         // Add all delta to last column
@@ -432,10 +441,10 @@ export default class EmberTable2 extends Component {
       return;
     }
 
-    set(column, 'width', width + delta);
+    this.setColumnWidth(column, width + delta);
     if (columnMode === COLUMN_MODE_FLUID && columnIndex < columns.length - 1) {
       const oldWidth = get(columns[columnIndex + 1], 'width');
-      set(columns[columnIndex + 1], 'width', oldWidth - delta);
+      this.setColumnWidth(columns[columnIndex + 1], oldWidth - delta);
     }
 
     if (!this.element.classList.contains('et-unselectable')) {
