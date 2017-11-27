@@ -8,6 +8,7 @@ export default class CustomFooter extends Route {
     let columns = simpleController.get('columns');
     for (let column of columns) {
       column.set('footerComponent', 'custom-footer');
+      column.set('footerValues', [column.get('columnName')]);
     }
     controller.set('columns', columns);
   }

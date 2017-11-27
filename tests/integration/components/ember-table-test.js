@@ -260,10 +260,14 @@ test('Custom footer', async function(assert) {
   let columnCount = 10;
   let columns = generateColumns(columnCount);
   for (let i = 0; i < columns.length; i++) {
-    columns[i].footerComponent = 'custom-footer';
+    let column = columns[i];
+    column.footerComponent = 'custom-footer';
+    let footerValues = emberA();
+    footerValues.pushObject(get(column, 'columnName'));
+    column.footerValues = footerValues;
   }
 
-  await setupFullTable(this, { columns, hasFooter: true });
+  await setupFullTable(this, { columns });
 
   assert.equal(findAll('table tfoot').length, 1, 'Footer is present in the table');
   let footer = find('table tfoot tr');

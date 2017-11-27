@@ -57,18 +57,21 @@
     </tbody>
   </div>
 
-{{#if hasFooter}}
+{{#if (gt footerRows.length 0)}}
   <tfoot class="et-tfoot">
-    <tr class="et-tr">
-    {{#each columns as |column columnIndex|}}
-      {{ember-table-footer
-        column=column
-        columnIndex=columnIndex
-        numFixedColumns=numFixedColumns
-        width=column.width
-      }}
+    {{#each footerRows as |footerRowIndex|}}
+      <tr class="et-tr">
+      {{#each bodyColumns as |column columnIndex|}}
+        {{ember-table-footer
+          column=column
+          footerRowIndex=footerRowIndex
+          columnIndex=columnIndex
+          numFixedColumns=numFixedColumns
+          width=column.width
+        }}
+      {{/each}}
+      </tr>
     {{/each}}
-    </tr>
   </tfoot>
 {{/if}}
 

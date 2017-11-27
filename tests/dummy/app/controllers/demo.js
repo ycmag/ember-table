@@ -49,22 +49,29 @@ export default Controller.extend({
     let alphabet = 'ABCDEFGHIJKLMNOPQRSTUVWXYZ';
     let columnWidth = 180;
 
+    let footerValues = emberA();
+    footerValues.pushObject('Column id');
+
     arr.pushObject({
       columnName: 'Column id',
       footerName: 'Column id',
       valuePath: 'id',
       width: columnWidth,
-      cellComponent: 'tree-table-grouping-cell'
+      cellComponent: 'tree-table-grouping-cell',
+      footerValues
     });
 
     for (let j = 0; j < COLUMN_COUNT; j++) {
+      footerValues = emberA();
+      footerValues.pushObject(`Col ${alphabet[j % 26]}`);
       arr.pushObject({
         columnName: `Col ${alphabet[j % 26]}`,
         footerName: `Col ${alphabet[j % 26]}`,
         valuePath: alphabet[j % 26],
         width: columnWidth,
         isResizable: true,
-        isReorderable: true
+        isReorderable: true,
+        footerValues
       });
     }
 
